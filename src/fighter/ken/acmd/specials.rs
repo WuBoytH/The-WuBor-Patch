@@ -109,7 +109,7 @@ unsafe extern "C" fn ken_specialsstart_snd(agent: &mut L2CAgentBase) {
             macros::PLAY_SE(agent, Hash40::new("vc_ken_special_s01"));
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
         }
@@ -139,7 +139,7 @@ unsafe extern "C" fn ken_specialairsstart_snd(agent: &mut L2CAgentBase) {
             macros::PLAY_SE(agent, Hash40::new("vc_ken_special_s01"));
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
         }
@@ -268,22 +268,16 @@ unsafe extern "C" fn ken_specialairs2end_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn ken_specialhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 5.0);
+    frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if strength == *FIGHTER_RYU_STRENGTH_S {
-        if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 100, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        }
-    }
-    frame(agent.lua_state_agent, 6.0);
-    let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 80, 58, 0, 80, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
@@ -294,7 +288,14 @@ unsafe extern "C" fn ken_specialhi(agent: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 95, 10, 0, 95, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(8.1), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 100, 100, 100, 0, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(8.1), 0.9, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        }
+    }
+    wait(agent.lua_state_agent, 1.0);
+    let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    if strength == *FIGHTER_RYU_STRENGTH_S {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 95, 10, 0, 95, 4.6, 0.0, 10.0, 7.6, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     frame(agent.lua_state_agent, 9.0);
@@ -305,18 +306,26 @@ unsafe extern "C" fn ken_specialhi(agent: &mut L2CAgentBase) {
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
         if macros::is_excute(agent) {
+            VarModule::off_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 7.0, 70, 90, 0, 60, 5.0, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     else if strength == *FIGHTER_RYU_STRENGTH_M {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 70, 121, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 6.5, 70, 126, 0, 80, 5.5, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
+    }
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        VarModule::off_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
+        macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 7.0, 70, 90, 0, 60, 5.0, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -420,13 +429,10 @@ unsafe extern "C" fn ken_specialhi_exp(agent: &mut L2CAgentBase) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
         }
     }
-    else{
-        frame(agent.lua_state_agent, 5.0);
-        if macros::is_excute(agent) {
-            macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
-        }
+    else {
         frame(agent.lua_state_agent, 6.0);
         if macros::is_excute(agent) {
+            macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
             ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         frame(agent.lua_state_agent, 9.0);
@@ -442,22 +448,16 @@ unsafe extern "C" fn ken_specialhi_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn ken_specialairhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 5.0);
+    frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if strength == *FIGHTER_RYU_STRENGTH_S {
-        if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 90, 100, 90, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        }
-    }
-    frame(agent.lua_state_agent, 6.0);
-    let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 80, 55, 0, 80, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
@@ -468,7 +468,14 @@ unsafe extern "C" fn ken_specialairhi(agent: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 80, 100, 100, 0, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 90, 100, 90, 0, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 0.9, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        }
+    }
+    wait(agent.lua_state_agent, 1.0);
+    let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    if strength == *FIGHTER_RYU_STRENGTH_S {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 80, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     frame(agent.lua_state_agent, 9.0);
@@ -479,18 +486,26 @@ unsafe extern "C" fn ken_specialairhi(agent: &mut L2CAgentBase) {
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
         if macros::is_excute(agent) {
+            VarModule::off_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 7.0, 70, 70, 0, 60, 5.0, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     else if strength == *FIGHTER_RYU_STRENGTH_M {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 70, 112, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 6.0, 70, 107, 0, 76, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
         }
+    }
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        VarModule::off_flag(agent.module_accessor, ken::status::flag::SPECIAL_HI_SPECIAL_EFFECT);
+        macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 7.0, 70, 70, 0, 60, 5.0, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -592,13 +607,10 @@ unsafe extern "C" fn ken_specialairhi_exp(agent: &mut L2CAgentBase) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
         }
     }
-    else{
-        frame(agent.lua_state_agent, 5.0);
-        if macros::is_excute(agent) {
-            macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
-        }
+    else {
         frame(agent.lua_state_agent, 6.0);
         if macros::is_excute(agent) {
+            macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
             ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         }
         frame(agent.lua_state_agent, 9.0);
@@ -666,7 +678,7 @@ unsafe extern "C" fn ken_specialhi2_eff(agent: &mut L2CAgentBase) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
@@ -704,7 +716,7 @@ unsafe extern "C" fn ken_specialhi2command_eff(agent: &mut L2CAgentBase) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
@@ -785,7 +797,7 @@ unsafe extern "C" fn ken_specialhi2_exp(agent: &mut L2CAgentBase) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
@@ -859,7 +871,7 @@ unsafe extern "C" fn ken_specialairhi2_eff(agent: &mut L2CAgentBase) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
@@ -893,7 +905,7 @@ unsafe extern "C" fn ken_specialairhi2command_eff(agent: &mut L2CAgentBase) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
         }
     }
-    else{
+    else {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -3, 2, 2, 5, 0, -5, 1, false);
@@ -975,7 +987,7 @@ unsafe extern "C" fn ken_specialairhi2_exp(agent: &mut L2CAgentBase) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);

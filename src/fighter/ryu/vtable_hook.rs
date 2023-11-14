@@ -226,53 +226,54 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
     ].contains(&status) {
+        if !VarModule::is_flag(module_accessor, ryu::status::flag::SPECIAL_HI_SPECIAL_EFFECT) {
+            return;
+        }
         if collision_kind == 1 {
             let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
             if (*opponent_object).battle_object_id >> 0x1c == 0
             && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
-                if kind == 0x3c || !VarModule::is_flag(module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
-                    let attack_data = AttackModule::attack_data(module_accessor, (*collision_log).collider_id as i32, (*collision_log).x35);
-                    let mut angle = 0.0;
-                    if (*attack_data).vector != 0x169 {
-                        angle = (*attack_data).vector as f32 * 0.01745329;
-                    }
-                    let lr = PostureModule::lr(module_accessor);
+                // let attack_data = AttackModule::attack_data(module_accessor, (*collision_log).collider_id as i32, (*collision_log).x35);
+                // let mut angle = 0.0;
+                // if (*attack_data).vector != 0x169 {
+                //     angle = (*attack_data).vector as f32 * 0.01745329;
+                // }
+                let lr = PostureModule::lr(module_accessor);
 
-                    let rot = lr * 1.570796;
+                let rot = lr * 1.570796;
 
-                    let pos = &(*collision_log).location;
+                let pos = &(*collision_log).location;
 
-                    let command = WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+                let command = WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
 
-                    let eff = if kind == 0x3c {
-                        if command {
-                            hash40("ryu_syoryuken_hit2")
-                        }
-                        else {
-                            hash40("ryu_syoryuken_hit")
-                        }
+                let eff = if kind == 0x3c {
+                    if command {
+                        hash40("ryu_syoryuken_hit2")
                     }
                     else {
-                        if command {
-                            hash40("ken_syoryuken_hit2")
-                        }
-                        else {
-                            hash40("ken_syoryuken_hit")
-                        }
-                    };
-
-                    EffectModule::req(
-                        module_accessor,
-                        Hash40::new_raw(eff),
-                        &Vector3f{x: pos.x, y: pos.y, z: pos.z},
-                        &Vector3f{x: 0.0, y: 0.0, z: rot * angle},
-                        1.0,
-                        0,
-                        -1,
-                        false,
-                        2
-                    );
+                        hash40("ryu_syoryuken_hit")
+                    }
                 }
+                else {
+                    if command {
+                        hash40("ken_syoryuken_hit2")
+                    }
+                    else {
+                        hash40("ken_syoryuken_hit")
+                    }
+                };
+
+                EffectModule::req(
+                    module_accessor,
+                    Hash40::new_raw(eff),
+                    &Vector3f{x: pos.x, y: pos.y, z: pos.z},
+                    &Vector3f{x: 0.0, y: 0.0, z: rot},
+                    1.0,
+                    0,
+                    -1,
+                    false,
+                    2
+                );
             }
         }
         return;

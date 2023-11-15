@@ -793,6 +793,12 @@ pub mod ken {
     }
     pub mod status {
         pub mod flag {
+            pub const SPECIAL_N2_GROUND_BRANCH_CHECK : i32 = 0x1100;
+            pub const SPECIAL_N2_GROUND_BRANCH_LM : i32 = 0x1101;
+            pub const SPECIAL_N2_GROUND_BRANCH_H : i32 = 0x1102;
+
+            pub const SPECIAL_N2_AIR_ENABLE_LANDING : i32 = 0x1100;
+
             pub use super::super::super::ryu::status::flag::SPECIAL_HI_SPECIAL_EFFECT;
 
             pub const SPECIAL_LW_ENABLE_ACTION : i32 = 0x1100;
@@ -802,6 +808,9 @@ pub mod ken {
 
             pub use super::super::super::ryu::status::flag::SPECIAL_DECIDE_STRENGTH;
             pub const QUICK_STEP_INHERITED : i32 = 0x1151;
+        }
+        pub mod int64 {
+            pub const SPECIAL_N2_GROUND_BRANCH_MOTION : i32 = 0x1100;
         }
     }
 }

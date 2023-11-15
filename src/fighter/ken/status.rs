@@ -5,6 +5,8 @@ mod attack;
 mod attack_lw4_start;
 mod attack_lw4;
 
+mod special_n2;
+
 mod special_s;
 mod special_s_loop;
 mod special_s_end;
@@ -20,6 +22,8 @@ pub fn install(agent: &mut smashline::Agent) {
 
     attack_lw4_start::install(agent);
     attack_lw4::install(agent);
+
+    special_n2::install(agent);
 
     special_s::install(agent);
     special_s_loop::install(agent);

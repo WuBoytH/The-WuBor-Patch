@@ -85,64 +85,52 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
         || (fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0
         && fighter.global_table[CMD_CAT3].get_i32() & (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI | *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4) != 0) {
             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-                VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+                set_cat1_backup(fighter, true);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }
         }
     }
-    if can_act {
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
-            return true.into();
-        }
-        if fighter.sub_check_button_jump().get_bool()
-        || fighter.sub_check_button_frick().get_bool() {
-            ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
-            return true.into();
-        }
-    }
-    
+
     if can_act
     && fighter.check_guard_attack_special_hi(false.into()).get_bool() {
         return true.into();
     }
     if can_act {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+            set_cat1_backup(fighter, true);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
         if fighter.sub_check_button_jump().get_bool()
         || fighter.sub_check_button_frick().get_bool() {
-            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+            set_cat1_backup(fighter, false);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
         return true.into();
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F)
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
         return true.into();
     }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B)
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
         return true.into();
     }
+
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
     && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
@@ -150,6 +138,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
         fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
         return true.into();
     }
+
     // if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     // && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN) && {
@@ -171,6 +160,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
             return true.into();
         }
     // }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
@@ -179,12 +169,24 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
             fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
         }
         else {
-            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+            set_cat1_backup(fighter, false);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
         }
         return true.into();
     }
+
     false.into()
+}
+
+unsafe extern "C" fn set_cat1_backup(fighter: &mut L2CFighterCommon, clear_catch: bool) {
+    VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+    let mut cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if clear_catch {
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+            cat1 -= *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH;
+        }
+    }
+    VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_CAT1_BACKUP, cat1);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
@@ -215,8 +217,7 @@ unsafe extern "C" fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommo
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
         && !ItemModule::is_have_item(fighter.module_accessor, 0) {
-            ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+            set_cat1_backup(fighter, true);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -238,7 +239,7 @@ unsafe extern "C" fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommo
             };
             if cont {
                 // fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-                VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
+                set_cat1_backup(fighter, false);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }

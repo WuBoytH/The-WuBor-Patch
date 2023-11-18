@@ -155,6 +155,12 @@ unsafe extern "C" fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
 
 unsafe extern "C" fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
+        let loops = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
+        WorkModule::set_int(fighter.module_accessor, loops - 1, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
+        if loops - 1 <= 0 {
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
+            return 1.into();
+        }
         let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
         return original(fighter);
     }

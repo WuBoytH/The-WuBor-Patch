@@ -174,6 +174,16 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
     || fighter.sub_air_check_fall_common().get_bool() {
         return 1.into();
     }
+
+    // Special handling to allow Dragonlash to be easier performed during Quick Dash
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND)
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_S_UNIQ].clone()).get_bool()
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND.into(), true.into());
+        return 1.into();
+    }
+
     if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION) {
         if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);

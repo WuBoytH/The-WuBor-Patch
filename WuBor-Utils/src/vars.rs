@@ -797,7 +797,8 @@ pub mod ken {
             pub const SPECIAL_N2_GROUND_BRANCH_LM : i32 = 0x1101;
             pub const SPECIAL_N2_GROUND_BRANCH_H : i32 = 0x1102;
 
-            pub const SPECIAL_N2_AIR_ENABLE_LANDING : i32 = 0x1100;
+            pub const SPECIAL_N2_AIR_DISABLE_GRAVITY : i32 = 0x1100;
+            pub const SPECIAL_N2_AIR_ENABLE_LANDING : i32 = 0x1101;
 
             pub use super::super::super::ryu::status::flag::SPECIAL_HI_SPECIAL_EFFECT;
 

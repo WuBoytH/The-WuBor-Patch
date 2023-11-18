@@ -2,7 +2,16 @@ use crate::imports::status_imports::*;
 use crate::fighter::ryu::helper::*;
 
 unsafe extern "C" fn ken_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_status_pre_SpecialNCommon();
+    let attr = if VarModule::is_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT) {
+        0
+    }
+    else {
+        *FIGHTER_STATUS_ATTR_START_TURN
+    };
+
+    if !VarModule::is_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT) {
+        fighter.sub_status_pre_SpecialNCommon();
+    }
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -27,8 +36,8 @@ unsafe extern "C" fn ken_special_n2_command_pre(fighter: &mut L2CFighterCommon) 
             *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON |
             *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N2_COMMAND
         ) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        attr as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
     );
     0.into()
@@ -116,13 +125,6 @@ unsafe extern "C" fn ken_special_n2_command_main(fighter: &mut L2CFighterCommon)
     else {
         ken_special_n2_air_main(fighter)
     }
-}
-
-unsafe extern "C" fn ken_special_n2_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if param_1.get_bool() {
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
-    }
-    0.into()
 }
 
 unsafe extern "C" fn ken_special_n2_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -242,7 +244,7 @@ unsafe extern "C" fn ken_special_n2_ground_main_loop(fighter: &mut L2CFighterCom
 unsafe extern "C" fn ken_special_n2_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_air_n2_start"),
+        Hash40::new("special_air_n2"),
         0.0,
         1.0,
         false,
@@ -251,10 +253,21 @@ unsafe extern "C" fn ken_special_n2_air_main(fighter: &mut L2CFighterCommon) -> 
         false
     );
     if !StopModule::is_stop(fighter.module_accessor) {
-        ken_special_n2_substatus(fighter, false.into());
+        ken_special_n2_air_substatus(fighter, false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ken_special_n2_substatus as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ken_special_n2_air_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_special_n2_air_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn ken_special_n2_air_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if param_1.get_bool() {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
+    }
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_N2_AIR_DISABLE_GRAVITY) {
+        KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fighter.module_accessor);
+        VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_N2_AIR_DISABLE_GRAVITY);
+    }
+    0.into()
 }
 
 unsafe extern "C" fn ken_special_n2_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -273,7 +286,7 @@ unsafe extern "C" fn ken_special_n2_air_main_loop(fighter: &mut L2CFighterCommon
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_N2_AIR_ENABLE_LANDING) {
-        WorkModule::set_float(fighter.module_accessor, 15.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         return 0.into();
     }

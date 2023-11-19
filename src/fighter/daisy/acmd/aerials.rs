@@ -105,8 +105,8 @@ unsafe extern "C" fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", daisy_attackairn);
 
-    agent.game_acmd("game_attackairn", daisy_attackairlw);
-    agent.effect_acmd("effect_attackairn", daisy_attackairlw_eff);
-    agent.sound_acmd("sound_attackairn", daisy_attackairlw_snd);
-    agent.expression_acmd("expression_attackairn", daisy_attackairlw_exp);
+    agent.game_acmd("game_attackairlw", daisy_attackairlw);
+    agent.effect_acmd("effect_attackairlw", daisy_attackairlw_eff);
+    agent.sound_acmd("sound_attackairlw", daisy_attackairlw_snd);
+    agent.expression_acmd("expression_attackairlw", daisy_attackairlw_exp);
 }

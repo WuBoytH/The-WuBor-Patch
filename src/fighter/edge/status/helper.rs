@@ -66,7 +66,7 @@ pub unsafe extern "C" fn edge_special_hi_param_helper_inner(hash: L2CValue, char
     else if hash == hash40("control_speed_x_max_mul") {
         hash40("charged_control_speed_x_max_mul")
     }
-    else{
+    else {
         hash
     };
     new_hash.into()

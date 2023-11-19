@@ -1,5 +1,4 @@
 use crate::imports::acmd_imports::*;
-use super::super::vl;
 
 unsafe extern "C" fn daisy_specialsjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -156,8 +155,8 @@ unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(
             agent,
-            vl::param_special_lw::dive_speed_x,
-            vl::param_special_lw::dive_speed_y,
+            0.5,
+            -2.45,
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         JostleModule::set_status(agent.module_accessor, false);

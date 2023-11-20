@@ -1183,6 +1183,9 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.effect_acmd("effect_specialnhold2", lucario_specialnhold2_eff);
     agent.sound_acmd("sound_specialnhold2", lucario_specialnhold2_snd);
 
+    agent.effect_acmd("effect_specialairnhold2", lucario_specialnhold2_eff);
+    agent.sound_acmd("sound_specialairnhold2", lucario_specialnhold2_snd);
+
     agent.game_acmd("game_specialnshoot2", lucario_specialnshoot2);
     agent.effect_acmd("effect_specialnshoot2", lucario_specialnshoot2_eff);
     agent.sound_acmd("sound_specialnshoot2", lucario_specialnshoot2_snd);

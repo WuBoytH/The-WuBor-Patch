@@ -76,30 +76,29 @@ use {
 //     }
 // }
 
-#[repr(C)]
-struct CommandFlagCat {
-    flags: u32,
-    _x4: u32,
-    count: usize,
-    lifetimes: *mut u8,
-    lifetimes2: *mut u8,
-    lifetimes3: *mut u64,
-}
+// #[repr(C)]
+// struct CommandFlagCat {
+//     flags: u32,
+//     _x4: u32,
+//     count: usize,
+//     lifetimes: *mut u8,
+//     lifetimes2: *mut u8,
+//     lifetimes3: *mut u64,
+// }
 
-#[allow(dead_code)]
-impl CommandFlagCat {
-    fn lifetimes(&self) -> &[u8] {
-        unsafe { std::slice::from_raw_parts(self.lifetimes, self.count) }
-    }
+// impl CommandFlagCat {
+//     fn lifetimes(&self) -> &[u8] {
+//         unsafe { std::slice::from_raw_parts(self.lifetimes, self.count) }
+//     }
 
-    fn lifetimes_mut(&self) -> &mut [u8] {
-        unsafe { std::slice::from_raw_parts_mut(self.lifetimes, self.count) }
-    }
+//     fn lifetimes_mut(&self) -> &mut [u8] {
+//         unsafe { std::slice::from_raw_parts_mut(self.lifetimes, self.count) }
+//     }
 
-    fn lifetimes2(&self) -> &[u8] {
-        unsafe { std::slice::from_raw_parts(self.lifetimes2, self.count) }
-    }
-}
+//     fn lifetimes2(&self) -> &[u8] {
+//         unsafe { std::slice::from_raw_parts(self.lifetimes2, self.count) }
+//     }
+// }
 
 // #[skyline::hook(offset = offsets::get_command_flag_cat())]
 // fn get_command_flag_cat_replace(control_module: u64, cat: i32) -> u32 {
@@ -139,16 +138,8 @@ impl CommandFlagCat {
 //     output
 // }
 
-#[skyline::hook(offset = 0x6babf0)]
-fn exec_command_hook(control_module: u64, flag: bool) {
-    exec_internal_pre(control_module);
-    call_original!(control_module, flag);
-    exec_internal_post(control_module);
-}
-
-fn exec_internal_pre(control_module: u64) {
+fn exec_internal(module_accessor: *mut BattleObjectModuleAccessor) {
     unsafe {
-        let module_accessor = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
         // Prevent game from thinking you are inputting a flick on the frame the cstick stops overriding left stick
         if Buttons::from_bits_unchecked(ControlModule::get_release(module_accessor)).intersects(Buttons::CStickOverride) {
             ControlModule::reset_flick_x(module_accessor);
@@ -157,26 +148,12 @@ fn exec_internal_pre(control_module: u64) {
     }
 }
 
-fn exec_internal_post(control_module: u64) {
-    unsafe {
-        let cats = std::slice::from_raw_parts_mut((control_module + 0x568) as *mut CommandFlagCat, 4);
+#[skyline::hook(offset = 0x6babf0)]
+fn exec_command_hook(control_module: u64, flag: bool) {
+    let boma = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
 
-        for x in 0..4 {
-            // println!("Cat {} flags: {:#b}", x + 1, flags);
-            let lifetimes = cats[x].lifetimes_mut();
-            let mut output = 0;
-            for (idx, life) in lifetimes.iter_mut().enumerate() {
-                if *life == 1 {
-                    let escapes = x == 0 && [0x18, 0x19, 0x1A].contains(&idx);
-                    if !escapes {
-                        *life = 0;
-                    }
-                }
-                output |= ((*life > 0) as u32) << idx as u32;
-            }
-            cats[x].flags = output;
-        }
-    }
+    exec_internal(boma);
+    call_original!(control_module, flag)
 }
 
 // These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat

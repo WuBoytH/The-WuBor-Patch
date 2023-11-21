@@ -11,4 +11,5 @@ pub fn install() {
     frame::install(agent);
     status::install(agent);
     agent_init::install(agent);
+    agent.install();
 }

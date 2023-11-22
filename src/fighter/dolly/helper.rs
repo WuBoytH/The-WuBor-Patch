@@ -94,7 +94,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         }
     }
     if ret.get_bool() {
-        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
     ret
 }

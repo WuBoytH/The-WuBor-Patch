@@ -1,14 +1,10 @@
 use crate::imports::status_imports::*;
 
-unsafe extern "C" fn dolly_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
-    let ret = original(fighter);
-    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
-    ret
-}
-
 unsafe extern "C" fn dolly_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL) {
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
+    }
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_n").into());
     fighter.sub_change_motion_by_situation(Hash40::new("special_n").into(), Hash40::new("special_air_n").into(), false.into());
     fighter.sub_set_ground_correct_by_situation(true.into());
@@ -120,7 +116,6 @@ unsafe extern "C" fn dolly_special_n_end(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, dolly_special_n_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, dolly_special_n_main);
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_N, dolly_special_n_end);
 }

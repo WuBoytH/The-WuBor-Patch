@@ -1,11 +1,12 @@
 use crate::imports::status_imports::*;
 
-unsafe extern "C" fn dolly_super_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL);
-    let ret = original(fighter);
-    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
-    ret
+unsafe extern "C" fn dolly_super_special_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL) {
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
+    }
+    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL);
+    original(fighter)
 }
 
 unsafe extern "C" fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -23,12 +24,13 @@ unsafe extern "C" fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-unsafe extern "C" fn dolly_super_special2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2);
-    let ret = original(fighter);
-    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
-    ret
+unsafe extern "C" fn dolly_super_special2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL) {
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
+    }
+    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2);
+    original(fighter)
 }
 
 unsafe extern "C" fn dolly_super_special_main_helper(fighter: &mut L2CFighterCommon, hash: L2CValue) {
@@ -75,10 +77,10 @@ unsafe extern "C" fn dolly_super_special2_blow_end(fighter: &mut L2CFighterCommo
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_pre);
+    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_main);
     agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_end);
 
-    agent.status(smashline::Pre, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_pre);
+    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_main);
     agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_end);
 
     agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW, dolly_super_special2_blow_end);

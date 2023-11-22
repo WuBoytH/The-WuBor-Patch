@@ -1,11 +1,10 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn dolly_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
     }
-    let attr = if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL)
+    let attr = if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL)
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         0
     }
@@ -37,7 +36,6 @@ unsafe extern "C" fn dolly_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2C
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     0.into()
 }
 
@@ -51,6 +49,10 @@ unsafe extern "C" fn dolly_special_lw_command_main(fighter: &mut L2CFighterCommo
 }
 
 unsafe extern "C" fn dolly_special_lw_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL) {
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
+    }
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     WorkModule::set_int(fighter.module_accessor, situation, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_INT_START_SITUATION);
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_DOLLY_STRENGTH_S, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);

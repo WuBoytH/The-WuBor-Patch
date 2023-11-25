@@ -140,7 +140,7 @@ unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairhi_eff(_agent: &mut L2CAgentBase) {
     // frame(agent.lua_state_agent, 7.0);
     // if macros::is_excute(agent) {
     //     macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("dolly_attack_arc3"), Hash40::new("dolly_attack_arc3"), Hash40::new("top"), -0.5, 11.5, 0.5, 0, 84, 18.5, 0.9, true, *EF_FLIP_YZ, 0.7);

@@ -59,9 +59,7 @@ unsafe extern "C" fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighter
 
 #[skyline::hook(replace = L2CFighterCommon_status_CliffJump1)]
 unsafe extern "C" fn status_cliffjump1(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let stick_jump_command_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
-    if stick_jump_command_life == 0
-    || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
+    if fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
         VarModule::on_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_BUTTON);
         if ControlModule::is_jump_mini_button(fighter.module_accessor) {
             VarModule::on_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_MINI);

@@ -204,6 +204,10 @@ impl VarModule {
             *FIGHTER_STATUS_KIND_ESCAPE_B,
             vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
         ); // Escapes...
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_CLIFF_JUMP2,
+            vec![*FIGHTER_STATUS_KIND_CLIFF_JUMP1]
+        ); // Cliff Jump
         varmodule
     }
 

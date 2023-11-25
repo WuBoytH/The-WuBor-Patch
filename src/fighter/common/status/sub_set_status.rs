@@ -1,6 +1,9 @@
 use {
     crate::imports::status_imports::*,
-    super::escape::escape_air_slide::*
+    super::{
+        escape::escape_air_slide::*,
+        cliff::*
+    }
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_status_pre_msc_common_table)]
@@ -33,6 +36,16 @@ unsafe extern "C" fn sub_set_status_main_msc_common_table(fighter: &mut L2CFight
     );
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_set_exec_status_msc_common_table)]
+unsafe extern "C" fn sub_set_exec_status_msc_common_table(fighter: &mut L2CFighterCommon) {
+    original!()(fighter);
+    fighter.sv_set_status_func(
+        FIGHTER_STATUS_KIND_CLIFF_JUMP1.into(),
+        LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS.into(),
+        &mut *(sub_cliff_jump1_uniq_process_exec as *const () as *mut libc::c_void)
+    );
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_set_status_end_msc_common_table)]
 unsafe extern "C" fn sub_set_status_end_msc_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
@@ -59,6 +72,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_set_status_pre_msc_common_table,
             sub_set_init_status_msc_common_table,
             sub_set_status_main_msc_common_table,
+            sub_set_exec_status_msc_common_table,
             sub_set_status_end_msc_common_table,
             sub_set_calc_param_common_table
         );

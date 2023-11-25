@@ -5,6 +5,7 @@ mod specials;
 mod throws;
 mod lasso;
 mod escape;
+mod cliff;
 
 pub fn install(agent: &mut smashline::Agent) {
     normals::install(agent);
@@ -14,4 +15,5 @@ pub fn install(agent: &mut smashline::Agent) {
     throws::install(agent);
     lasso::install(agent);
     escape::install(agent);
+    cliff::install(agent);
 }

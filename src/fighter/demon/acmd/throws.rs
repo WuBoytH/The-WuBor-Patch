@@ -1,17 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 5.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.7, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_CATCHATTACK, *ATTACK_REGION_PUNCH);
-        AttackModule::set_catch_only_all(agent.module_accessor, true, false);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-}
-
 unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
         if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(agent.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
@@ -58,35 +46,6 @@ unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, false);
-    }
-    macros::FT_MOTION_RATE(agent, 1.6);
-    frame(agent.lua_state_agent, 3.0);
-    macros::FT_START_ADJUST_MOTION_FRAME_arg1(agent, 1.0);
-    frame(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        macros::CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 5.0, Some(0.0), Some(6.6), Some(11.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
-        macros::CATCH(agent, 1, Hash40::new("top"), 2.0, 0.0, 6.6, 3.0, Some(0.0), Some(6.6), Some(13.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_A);
-    }
-    macros::game_CaptureCutCommon(agent);
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-    }
-    frame(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DEMON_STATUS_CATCH_COMMAND_FLAG_CHANGE_THROW);
-    }
-}
-
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", demon_catchattack);
-
     agent.game_acmd("game_throwlw", demon_throwlw);
-
-    agent.game_acmd("game_catchcommand", demon_catchcommand);
 }

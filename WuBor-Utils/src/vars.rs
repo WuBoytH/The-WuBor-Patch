@@ -163,6 +163,13 @@ pub mod attack_dash {
     }
 }
 
+pub mod cliff {
+    pub mod flag {
+        pub const CLIFF_JUMP_BUTTON : i32 = 0x1050;
+        pub const CLIFF_JUMP_MINI : i32 = 0x1051;
+    }
+}
+
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;

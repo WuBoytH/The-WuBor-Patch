@@ -2,7 +2,7 @@ use {
     crate::imports::status_imports::*,
     super::{
         escape::escape_air_slide::*,
-        cliff::*
+        cliff::cliff_jump1::*
     }
 };
 

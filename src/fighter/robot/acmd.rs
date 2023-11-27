@@ -3,6 +3,7 @@ mod aerials;
 mod specials;
 mod catch;
 mod escape;
+mod cliff;
 mod appeal;
 
 pub fn install(agent: &mut smashline::Agent) {
@@ -11,5 +12,6 @@ pub fn install(agent: &mut smashline::Agent) {
     specials::install(agent);
     catch::install(agent);
     escape::install(agent);
+    cliff::install(agent);
     appeal::install(agent);
 }

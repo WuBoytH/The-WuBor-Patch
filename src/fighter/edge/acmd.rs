@@ -1,3 +1,4 @@
+mod normals;
 mod aerials;
 mod throws;
 mod specials;
@@ -6,6 +7,7 @@ mod cliff;
 mod appeal;
 
 pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
     aerials::install(agent);
     throws::install(agent);
     specials::install(agent);

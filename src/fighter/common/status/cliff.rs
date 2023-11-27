@@ -1,8 +1,10 @@
 use crate::imports::status_imports::*;
 
+mod cliff_catch;
+
 mod cliff_wait;
 
-mod cliff_jump1;
+pub mod cliff_jump1;
 mod cliff_jump2;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_cliff_uniq_process_exit_Common)]
@@ -40,6 +42,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+    cliff_catch::install();
+
     cliff_wait::install();
 
     cliff_jump1::install();

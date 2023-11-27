@@ -9,6 +9,7 @@ mod stand;
 mod step;
 mod squat;
 mod escape;
+mod cliff;
 mod appeal;
 
 pub fn install(agent: &mut smashline::Agent) {
@@ -23,5 +24,6 @@ pub fn install(agent: &mut smashline::Agent) {
     step::install(agent);
     squat::install(agent);
     escape::install(agent);
+    cliff::install(agent);
     appeal::install(agent);
 }

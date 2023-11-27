@@ -3,6 +3,7 @@ mod smashes;
 mod aerials;
 mod specials;
 mod escape;
+mod cliff;
 
 pub fn install() {
     normals::install();

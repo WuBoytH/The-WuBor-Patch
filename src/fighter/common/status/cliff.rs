@@ -1,4 +1,5 @@
 use crate::imports::status_imports::*;
+use wubor_utils::controls::*;
 
 #[skyline::hook(replace = L2CFighterCommon_get_cliff_wait_hit_xlu_frame)]
 unsafe extern "C" fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -94,18 +95,14 @@ unsafe extern "C" fn status_cliffjump1(fighter: &mut L2CFighterCommon) -> L2CVal
 
 pub unsafe extern "C" fn sub_cliff_jump1_uniq_process_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_BUTTON) {
-        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let stick_y = if Buttons::from_bits_unchecked(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
+            ControlModule::get_sub_stick_y(fighter.module_accessor)
+        }
+        else {
+            ControlModule::get_stick_y(fighter.module_accessor)
+        };
         let jump_neutral_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y"));
         if stick_y < jump_neutral_y {
-            if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                VarModule::on_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_MINI);
-                return 0.into();
-            }
-        }
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-        && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             VarModule::on_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_MINI);
         }
     }

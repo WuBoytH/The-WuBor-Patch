@@ -1,6 +1,7 @@
 mod jabs;
 mod normals;
 mod smashes;
+mod catch;
 mod throws;
 mod aerials;
 mod specials;
@@ -15,6 +16,7 @@ pub fn install(agent: &mut smashline::Agent) {
     jabs::install(agent);
     normals::install(agent);
     smashes::install(agent);
+    catch::install(agent);
     throws::install(agent);
     aerials::install(agent);
     specials::install(agent);

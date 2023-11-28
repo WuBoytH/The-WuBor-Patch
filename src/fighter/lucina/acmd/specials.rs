@@ -81,7 +81,7 @@ unsafe extern "C" fn lucina_specialnendmax(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(agent.module_accessor);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 1.0);
         if macros::is_excute(agent) {
             KineticModule::mul_speed(agent.module_accessor, &Vector3f {x: 0.4, y: 0.0, z: 0.0}, *FIGHTER_KINETIC_TYPE_UNIQ);
@@ -293,7 +293,7 @@ unsafe extern "C" fn lucina_specialhi(agent: &mut L2CAgentBase) {
             notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 10.0);
         if macros::is_excute(agent) {
             upper_invuln(agent.module_accessor, false);
@@ -442,7 +442,7 @@ unsafe extern "C" fn lucina_specialairhi(agent: &mut L2CAgentBase) {
             notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 10.0);
         if macros::is_excute(agent) {
             upper_invuln(agent.module_accessor, false);

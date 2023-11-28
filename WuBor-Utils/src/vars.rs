@@ -163,6 +163,13 @@ pub mod attack_dash {
     }
 }
 
+pub mod cliff {
+    pub mod flag {
+        pub const CLIFF_JUMP_BUTTON : i32 = 0x1050;
+        pub const CLIFF_JUMP_MINI : i32 = 0x1051;
+    }
+}
+
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;
@@ -258,7 +265,8 @@ pub mod demon {
 pub mod dolly {
     pub mod instance {
         pub mod flag {
-            pub const RISING_FORCE : i32 = 0x0100;
+            pub const SPECIAL_CANCEL : i32 = 0x0100;
+            pub const RISING_FORCE : i32 = 0x0101;
         }
         pub mod int {
             pub const D_TILT_CHAIN_COUNT : i32 = 0x0100;

@@ -196,7 +196,7 @@ pub mod guard {
     }
     pub mod int {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
-        pub const GUARD_OFF_CAT1_BACKUP : i32 = 0x1051;
+        pub const GUARD_OFF_RESERVE_CAT1 : i32 = 0x1051;
     }
 }
 

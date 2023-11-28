@@ -122,10 +122,11 @@ unsafe extern "C" fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1:
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe extern "C" fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        let cat1 = VarModule::get_int(fighter.module_accessor, guard::int::GUARD_OFF_CAT1_BACKUP);
-        if cat1 != 0 {
+        let cat1_reserve = VarModule::get_int(fighter.module_accessor, guard::int::GUARD_OFF_RESERVE_CAT1);
+        if cat1_reserve != 0 {
+            let cat1 = fighter.global_table[CMD_CAT1].get_i32() | cat1_reserve;
             fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
-            VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_CAT1_BACKUP, 0);
+            VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_RESERVE_CAT1, 0);
         }
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return true.into();

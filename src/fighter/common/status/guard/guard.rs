@@ -85,7 +85,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
         || (fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0
         && fighter.global_table[CMD_CAT3].get_i32() & (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI | *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4) != 0) {
             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                set_cat1_backup(fighter, true);
+                set_cat1_backup(fighter, 0, true);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }
@@ -98,13 +98,14 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
     }
     if can_act {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
-            set_cat1_backup(fighter, true);
+            let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+            set_cat1_backup(fighter, cat1, true);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
         if fighter.sub_check_button_jump().get_bool()
         || fighter.sub_check_button_frick().get_bool() {
-            set_cat1_backup(fighter, false);
+            set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP | *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON, false);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -169,7 +170,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
             fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
         }
         else {
-            set_cat1_backup(fighter, false);
+            set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH, false);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
         }
         return true.into();
@@ -178,15 +179,15 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
     false.into()
 }
 
-unsafe extern "C" fn set_cat1_backup(fighter: &mut L2CFighterCommon, clear_catch: bool) {
+unsafe extern "C" fn set_cat1_backup(fighter: &mut L2CFighterCommon, mut reserve_cat: i32, clear_catch: bool) {
     VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
-    let mut cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if clear_catch {
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
-            cat1 -= *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH;
+        ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d);
+        if reserve_cat & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+            reserve_cat -= *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH;
         }
     }
-    VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_CAT1_BACKUP, cat1);
+    VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_RESERVE_CAT1, reserve_cat);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
@@ -217,7 +218,7 @@ unsafe extern "C" fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommo
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
         && !ItemModule::is_have_item(fighter.module_accessor, 0) {
-            set_cat1_backup(fighter, true);
+            set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4, true);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -239,7 +240,7 @@ unsafe extern "C" fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommo
             };
             if cont {
                 // fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-                set_cat1_backup(fighter, false);
+                set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI, false);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }

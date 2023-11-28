@@ -13,7 +13,7 @@ mod collision_hit;
 mod handle_damage;
 mod sound;
 pub mod func_links;
-mod fighter_util;
+mod fighterutil;
 mod menu;
 mod music;
 mod fighterspecializer;
@@ -49,7 +49,7 @@ pub fn install() {
     collision_hit::install();
     handle_damage::install();
     sound::install();
-    fighter_util::install();
+    fighterutil::install();
     menu::install();
     music::install();
     fighterspecializer::install();

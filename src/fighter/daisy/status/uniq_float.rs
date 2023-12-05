@@ -54,7 +54,7 @@ unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterComm
 unsafe extern "C" fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        let limit_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_quake_slash"), hash40("limit_speed_y"));
+        let limit_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_parasol_plummet"), hash40("limit_speed_y"));
         sv_kinetic_energy!(
             set_stable_speed,
             fighter,

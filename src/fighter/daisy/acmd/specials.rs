@@ -155,8 +155,8 @@ unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(
             agent,
-            0.5,
-            -2.45,
+            1.3,
+            -0.1,
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         JostleModule::set_status(agent.module_accessor, false);

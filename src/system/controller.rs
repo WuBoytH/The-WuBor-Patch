@@ -218,7 +218,7 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let rstick_x = ((packet >> 0x30) & 0xFF) as i8;
     let rstick_y = ((packet >> 0x38) & 0xFF) as i8;
 
-    inputs.buttons = Buttons::from_bits_unchecked(raw_buttons as _);
+    inputs.buttons = Buttons::from_bits_retain(raw_buttons as _);
     inputs.lstick_x = lstick_x;
     inputs.lstick_y = lstick_y;
     inputs.rstick_x = rstick_x;
@@ -234,7 +234,7 @@ unsafe extern "C" fn isthrowstick(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = PostureModule::lr(fighter.module_accessor);
     let stick_x;
     let stick_y;
-    if Buttons::from_bits_unchecked(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
+    if Buttons::from_bits_retain(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
         stick_x = ControlModule::get_sub_stick_x(fighter.module_accessor);
         stick_y = ControlModule::get_sub_stick_y(fighter.module_accessor);
     }

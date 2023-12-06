@@ -55,7 +55,7 @@ pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue
         dive_flick_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("cliff_dive_flick_frame_value"));
     }
 
-    let left_stick_y = if Buttons::from_bits_unchecked(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
+    let left_stick_y = if Buttons::from_bits_retain(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
         ControlModule::get_sub_stick_y(fighter.module_accessor)
     }
     else {

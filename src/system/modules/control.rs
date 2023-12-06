@@ -141,7 +141,7 @@ use {
 fn exec_internal(module_accessor: *mut BattleObjectModuleAccessor) {
     unsafe {
         // Prevent game from thinking you are inputting a flick on the frame the cstick stops overriding left stick
-        if Buttons::from_bits_unchecked(ControlModule::get_release(module_accessor)).intersects(Buttons::CStickOverride) {
+        if Buttons::from_bits_retain(ControlModule::get_release(module_accessor)).intersects(Buttons::CStickOverride) {
             ControlModule::reset_flick_x(module_accessor);
             ControlModule::reset_flick_y(module_accessor);
         }

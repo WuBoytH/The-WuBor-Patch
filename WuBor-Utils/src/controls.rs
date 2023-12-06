@@ -6,6 +6,7 @@ use {
 };
 
 bitflags! {
+    #[derive(Copy, Clone)]
     pub struct Cat1: i32 {
         const AttackN       = 0x1;
         const AttackS3      = 0x2;
@@ -41,6 +42,7 @@ bitflags! {
         const NoCmd         = 0x40000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat2: i32 {
         const AppealSL            = 0x1;
         const AppealSR            = 0x2;
@@ -73,6 +75,7 @@ bitflags! {
         const FinalReverseLR      = 0x8000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat3: i32 {
         const ItemLightThrowFB4    = 0x1;
         const ItemLightThrowHi4    = 0x2;
@@ -101,6 +104,7 @@ bitflags! {
         const ItemLightThrowAirAll = 0x1F80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Cat4: i32 {
         const SpecialNCommand       = 0x1;
         const SpecialN2Command      = 0x2;
@@ -131,6 +135,7 @@ bitflags! {
         const Command323Catch       = 0x4000000;
     }
 
+    #[derive(Copy, Clone)]
     pub struct PadFlag: i32 {
         const AttackTrigger  = 0x1;
         const AttrckRelease  = 0x2;
@@ -142,6 +147,7 @@ bitflags! {
         const GuardRelease   = 0x80;
     }
 
+    #[derive(Copy, Clone)]
     pub struct Buttons: i32 {
         const Attack      = 0x1;
         const Special     = 0x2;

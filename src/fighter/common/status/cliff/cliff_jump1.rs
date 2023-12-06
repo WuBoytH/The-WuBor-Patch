@@ -38,7 +38,7 @@ unsafe extern "C" fn status_cliffjump1(fighter: &mut L2CFighterCommon) -> L2CVal
 
 pub unsafe extern "C" fn sub_cliff_jump1_uniq_process_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, cliff::flag::CLIFF_JUMP_BUTTON) {
-        let stick_y = if Buttons::from_bits_unchecked(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
+        let stick_y = if Buttons::from_bits_retain(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
             ControlModule::get_sub_stick_y(fighter.module_accessor)
         }
         else {

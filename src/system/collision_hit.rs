@@ -24,14 +24,6 @@ move_type_again: bool) -> u64 {
     let attacker_cat = utility::get_category(&mut *attacker_boma);
     let defender_cat = utility::get_category(&mut *defender_boma);
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if attacker_fighter_kind == *FIGHTER_KIND_KEN {
-            if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                VarModule::set_int(attacker_boma, fighter::instance::int::TARGET_ID, defender_object_id as i32);
-            }
-            else {
-                VarModule::set_int(attacker_boma, fighter::instance::int::TARGET_ID, 0);
-            }
-        }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
             if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                 handle_slow(attacker_boma, defender_boma);
@@ -39,47 +31,7 @@ move_type_again: bool) -> u64 {
         }
     }
     if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if defender_fighter_kind == *FIGHTER_KIND_RYU {
-            if VarModule::is_flag(defender_boma, ryu::instance::flag::SEC_SEN_STATE) {
-                let target_x;
-                let target_y;
-                if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
-                || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                    VarModule::set_int(defender_boma, fighter::instance::int::TARGET_ID, attacker_object_id as i32);
-                    target_x = PostureModule::pos_x(attacker_boma);
-                    target_y = PostureModule::pos_y(attacker_boma);
-                    if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                        JostleModule::set_status(&mut *attacker_boma, false);
-                    }
-                }
-                else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                    let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-                    let oboma = sv_battle_object::module_accessor(otarget_id);
-                    if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                        target_x = PostureModule::pos_x(defender_boma);
-                        target_y = PostureModule::pos_y(defender_boma);
-                        VarModule::set_int(defender_boma, fighter::instance::int::TARGET_ID, 0);
-                    }
-                    else {
-                        target_x = PostureModule::pos_x(oboma);
-                        target_y = PostureModule::pos_y(oboma);
-                        VarModule::set_int(defender_boma, fighter::instance::int::TARGET_ID, otarget_id as i32);
-                        if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                            JostleModule::set_status(&mut *oboma, false);
-                        }
-                    }
-                }
-                else {
-                    target_x = PostureModule::pos_x(defender_boma);
-                    target_y = PostureModule::pos_y(defender_boma);
-                    VarModule::set_int(defender_boma, fighter::instance::int::TARGET_ID, 0);
-                }
-                VarModule::set_float(defender_boma, ryu::instance::float::TARGET_X, target_x);
-                VarModule::set_float(defender_boma, ryu::instance::float::TARGET_Y, target_y);
-                VarModule::on_flag(defender_boma, ryu::instance::flag::SECRET_SENSATION);
-            }
-        }
-        else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
+        if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
                 VarModule::set_int(defender_boma, fighter::instance::int::TARGET_ID, attacker_object_id as i32);

@@ -118,7 +118,7 @@ unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(agent.lua_state_agent, 6.0);
+    frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("legl"), 9.0, 65, 80, 0, 35, 4.5, 1.2, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(agent, 1, 0, Hash40::new("kneel"), 9.0, 65, 80, 0, 35, 5.0, 3.8, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -140,12 +140,11 @@ unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_eff(_agent: &mut L2CAgentBase) {
-    // frame(agent.lua_state_agent, 7.0);
-    // if macros::is_excute(agent) {
-    //     macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("dolly_attack_arc3"), Hash40::new("dolly_attack_arc3"), Hash40::new("top"), -0.5, 11.5, 0.5, 0, 84, 18.5, 0.9, true, *EF_FLIP_YZ, 0.7);
-    //     macros::LAST_EFFECT_SET_RATE(agent, 1.7);
-    // }
+unsafe extern "C" fn dolly_attackairhi_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 16, 5, 0, 0, 0, 1.0, true, *EF_FLIP_YZ, 0.5);
+    }
 }
 
 unsafe extern "C" fn dolly_attackairhi_snd(agent: &mut L2CAgentBase) {
@@ -164,7 +163,7 @@ unsafe extern "C" fn dolly_attackairhi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(agent.lua_state_agent, 6.0);
+    frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }

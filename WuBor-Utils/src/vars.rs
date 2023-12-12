@@ -157,6 +157,13 @@ pub mod attack_dash {
     }
 }
 
+pub mod cliff {
+    pub mod flag {
+        pub const CLIFF_JUMP_BUTTON : i32 = 0x1050;
+        pub const CLIFF_JUMP_MINI : i32 = 0x1051;
+    }
+}
+
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;
@@ -400,44 +407,6 @@ pub mod kamui {
             pub const DRAGON_INSTALL_TIMER : i32 = 0x0101;
         }
     }
-}
-
-pub mod ken {
-    pub mod instance {
-        pub mod flag {
-            pub const V_TRIGGER : i32 = 0x0100;
-        }
-        pub mod int {
-            pub const SPECIAL_LW_TYPE : i32 = 0x0100;
-            pub const QUICK_STEP_STATE : i32 = 0x0101;
-            pub const FLASH_MAX : i32 = 0x0102;
-            pub const FLASH_COUNTER : i32 = 0x0103;
-            pub const V_TRIGGER_EFF_TIMER : i32 = 0x0104;
-        }
-        pub mod float {
-            pub const V_GAUGE : i32 =  0x0100;
-            pub const DIFF_X : i32 = 0x0101;
-        }
-    }
-    pub mod status {
-        pub mod flag {
-            pub const VS1_CANCEL : i32 = 0x1100;
-            pub const VT1_CANCEL : i32 = 0x1101;
-
-            pub const GUARD_V_SHIFT : i32 = 0x1150;
-
-            pub const SPECIAL_LW_STEP_KICK : i32 = 0x1150;
-
-            pub const SPECIAL_HI_CHANGE_REPPA : i32 = 0x1150;
-        }
-    }
-
-    pub const SPECIAL_LW_TYPE_QUICK_STEP : i32 = 0;
-    pub const SPECIAL_LW_TYPE_HEAT_RUSH : i32 = 1;
-
-    pub const QUICK_STEP_STATE_ENABLE : i32 = 0;
-    pub const QUICK_STEP_STATE_RUN : i32 = 1;
-    pub const QUICK_STEP_STATE_DISABLE : i32 = 2;
 }
 
 pub mod kirby {
@@ -787,25 +756,70 @@ pub mod rockman_airshooter {
 pub mod ryu {
     pub mod instance {
         pub mod flag {
-            pub const DISABLE_EX_FOCUS : i32 = 0x0100;
-            pub const EX_FOCUS : i32 = 0x0101;
-            pub const EX_FLASH : i32 = 0x0102;
-            pub const SEC_SEN_STATE : i32 = 0x0103;
-            pub const SECRET_SENSATION : i32 = 0x0104;
-            pub const SEC_SEN_CAMERA : i32 = 0x0105;
+            pub const DENJIN_CHARGE : i32 = 0x0100;
+            pub const DENJIN_RUSH_INHERIT : i32 = 0x0101;
         }
         pub mod int {
-            pub const FLASH_TIMER : i32 = 0x0100;
+            pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
+            pub const RUSH_VC_TYPE : i32 = 0x0101;
+            pub const IMPACT_PUNISH_VC_TYPE : i32 = 0x0102;
         }
-        pub mod float {
-            pub const RYU_X : i32 = 0x0100;
-            pub const RYU_Y : i32 = 0x0101;
-            pub const TARGET_X : i32 = 0x0102;
-            pub const TARGET_Y : i32 = 0x0103;
-            pub const DISABLE_EX_FOCUS_TIMER : i32 = 0x0104;
-            pub const SEC_SEN_TIMER : i32 = 0x0105;
-            pub const OPPONENT_DIREC : i32 = 0x0106;
-            pub const VERT_EXTRA : i32 = 0x0107;
+    }
+    pub mod status {
+        pub mod flag {
+            pub const USED_DENJIN_CHARGE : i32 = 0x1100;
+            pub const SET_DENJIN_AURA : i32 = 0x1101;
+
+            pub const SPECIAL_HI_SPECIAL_EFFECT : i32 = 0x1102;
+
+            pub const SPECIAL_LW_RUSH_RESUME_ENERGY : i32 = 0x1102;
+            pub const SPECIAL_LW_RUSH_ENABLE_ATTACK : i32 = 0x1103;
+
+            pub const SPECIAL_LW_IMPACT_HIT : i32 = 0x1102;
+            pub const SPECIAL_LW_IMPACT_SHIELD : i32 = 0x1103;
+            pub const SPECIAL_LW_IMPACT_JUST_SHIELD : i32 = 0x1104;
+            pub const SPECIAL_LW_IMPACT_SHIELD_WIND : i32 = 0x1105;
+            pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1106;
+            pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1107;
+
+            pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
+        }
+        pub mod int {
+            pub const GUARD_SPECIAL_LW_KIND : i32 = 0x1100;
+        }
+    }
+
+    pub const GUARD_SPECIAL_LW_KIND_IMPACT : i32 = 0x0;
+    pub const GUARD_SPECIAL_LW_KIND_REVERSAL : i32 = 0x1;
+}
+
+pub mod ken {
+    pub mod instance {
+        pub mod flag {
+            pub const QUICK_STEP_INHERIT : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N2_GROUND_BRANCH_CHECK : i32 = 0x1100;
+            pub const SPECIAL_N2_GROUND_BRANCH_LM : i32 = 0x1101;
+            pub const SPECIAL_N2_GROUND_BRANCH_H : i32 = 0x1102;
+
+            pub const SPECIAL_N2_AIR_DISABLE_GRAVITY : i32 = 0x1100;
+            pub const SPECIAL_N2_AIR_ENABLE_LANDING : i32 = 0x1101;
+
+            pub use super::super::super::ryu::status::flag::SPECIAL_HI_SPECIAL_EFFECT;
+
+            pub const SPECIAL_LW_ENABLE_ACTION : i32 = 0x1100;
+            pub const SPECIAL_LW_UNABLE_ACTION : i32 = 0x1101;
+            pub const SPECIAL_LW_ENABLED_ACTION : i32 = 0x1102;
+            pub const SPECIAL_LW_RESET_GRAVITY : i32 = 0x1103;
+
+            pub use super::super::super::ryu::status::flag::SPECIAL_DECIDE_STRENGTH;
+            pub const QUICK_STEP_INHERITED : i32 = 0x1151;
+        }
+        pub mod int64 {
+            pub const SPECIAL_N2_GROUND_BRANCH_MOTION : i32 = 0x1100;
         }
     }
 }

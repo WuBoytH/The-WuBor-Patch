@@ -9,12 +9,11 @@ use {
 mod init_settings;
 mod get_val;
 // mod get_param;
-mod transition;
 mod collision_hit;
 mod handle_damage;
 mod sound;
 pub mod func_links;
-mod fighter_util;
+mod fighterutil;
 mod menu;
 mod music;
 mod fighterspecializer;
@@ -47,11 +46,10 @@ pub fn install() {
     init_settings::install();
     get_val::install();
     // get_param::install();
-    transition::install();
     collision_hit::install();
     handle_damage::install();
     sound::install();
-    fighter_util::install();
+    fighterutil::install();
     menu::install();
     music::install();
     fighterspecializer::install();

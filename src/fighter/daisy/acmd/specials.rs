@@ -155,8 +155,8 @@ unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(
             agent,
-            0.5,
-            -2.45,
+            1.3,
+            -0.1,
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         JostleModule::set_status(agent.module_accessor, false);
@@ -209,8 +209,8 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.game_acmd("game_specialairhistart", daisy_specialairhistart);
 
-    agent.game_acmd("game_specialairlw", daisy_specialairlw);
-    agent.effect_acmd("game_specialairlw", daisy_specialairlw_eff);
-    agent.sound_acmd("game_specialairlw", daisy_specialairlw_snd);
-    agent.expression_acmd("game_specialairlw", daisy_specialairlw_exp);
+    agent.game_acmd("game_fuwafuwastart", daisy_specialairlw);
+    agent.effect_acmd("effect_fuwafuwastart", daisy_specialairlw_eff);
+    agent.sound_acmd("sound_fuwafuwastart", daisy_specialairlw_snd);
+    agent.expression_acmd("expression_fuwafuwastart", daisy_specialairlw_exp);
 }

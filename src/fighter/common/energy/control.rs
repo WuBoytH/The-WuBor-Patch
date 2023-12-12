@@ -293,7 +293,7 @@ impl DerefMut for FighterKineticEnergyControl {
 unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
-    let mut stick = if Buttons::from_bits_unchecked(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
+    let mut stick = if Buttons::from_bits_retain(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
         Vector2f {
             x: ControlModule::get_sub_stick_x(module_accessor),
             y: ControlModule::get_sub_stick_y(module_accessor)
@@ -581,7 +581,7 @@ unsafe extern "C" fn initialize(energy: &mut FighterKineticEnergyControl, module
                 }
 
                 if !VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
-                    let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
+                    let stick_x = if Buttons::from_bits_retain(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
                         ControlModule::get_sub_stick_x(module_accessor)
                     }
                     else {

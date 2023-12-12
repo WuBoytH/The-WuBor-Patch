@@ -81,7 +81,10 @@ unsafe extern "C" fn ganon_attackhi3(agent: &mut L2CAgentBase) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
     }
+    frame(agent.lua_state_agent, 11.0);
+    macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 13.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 14.0, 78, 75, 0, 50, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("haver"), 14.0, 78, 75, 0, 50, 4.5, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_SWORD);
@@ -106,20 +109,50 @@ unsafe extern "C" fn ganon_attackhi3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
-        let lr = PostureModule::lr(agent.module_accessor);
-        macros::FOOT_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), -10, 0, 3.0 * lr, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -10, 0, 3.0, 0, 0, 120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        else {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -10, 0, 3.0, 0, 0, -120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_sword_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -8, 0, 3.0, 0, 0, 120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        else {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -8, 0, 3.0, 0, 0, -120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
-        let lr = PostureModule::lr(agent.module_accessor);
-        macros::FOOT_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), -6, 0, 3.0 * lr, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -6, 0, 3.0, 0, 0, 120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        else {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -6, 0, 3.0, 0, 0, -120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
+    frame(agent.lua_state_agent, 9.0);
+    if macros::is_excute(agent) {
+        if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -4, 0, 3.0, 0, 0, 120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        else {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -4, 0, 3.0, 0, 0, -120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        macros::FOOT_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        let lr = PostureModule::lr(agent.module_accessor);
-        macros::FOOT_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), -2, 0, 3.0 * lr, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
-        macros::FOOT_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_sword_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+        if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -2, 0, 3.0, 0, 0, 120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
+        else {
+            macros::EFFECT(agent, Hash40::new("sys_damage_spark_s"), Hash40::new("top"), -2, 0, 3.0, 0, 0, -120, 1.0, 0, 0, 0, 0, 0, 0, false);
+        }
     }
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {

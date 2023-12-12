@@ -1,43 +1,191 @@
-use {
-    crate::imports::status_imports::*,
-    super::super::helper::*
-};
+use crate::imports::status_imports::*;
 
-unsafe extern "C" fn ryu_specials_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ryu_specials_loop_init_main(fighter)
+unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
+    let current_sit = fighter.global_table[SITUATION_KIND].get_i32();
+    let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+    let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    let loop_count_hash;
+    let speed_x;
+    if start_sit != *SITUATION_KIND_GROUND {
+        fighter.set_situation(SITUATION_KIND_AIR.into());
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        loop_count_hash = hash40("air_loop_num_s");
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+    }
+    else {
+        let speed_x_hash;
+        if current_sit != *SITUATION_KIND_GROUND {
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            if strength == *FIGHTER_RYU_STRENGTH_W {
+                loop_count_hash = hash40("air_loop_num_w");
+                speed_x_hash = hash40("air_speed_x_w");
+            }
+            else if strength == *FIGHTER_RYU_STRENGTH_M {
+                loop_count_hash = hash40("air_loop_num_m");
+                speed_x_hash = hash40("air_speed_x_m");
+            }
+            else {
+                loop_count_hash = hash40("air_loop_num_s");
+                speed_x_hash = hash40("air_speed_x_s");
+            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+        }
+        else {
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            if strength == *FIGHTER_RYU_STRENGTH_W {
+                loop_count_hash = hash40("loop_num_w");
+                speed_x_hash = hash40("speed_x_w");
+            }
+            else if strength == *FIGHTER_RYU_STRENGTH_M {
+                loop_count_hash = hash40("loop_num_m");
+                speed_x_hash = hash40("speed_x_m");
+            }
+            else {
+                loop_count_hash = hash40("loop_num_s");
+                speed_x_hash = hash40("speed_x_s");
+            }
+        }
+        let lr = PostureModule::lr(fighter.module_accessor);
+        speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), speed_x_hash) * lr;
+    }
+    let current_sit = fighter.global_table[SITUATION_KIND].get_i32();
+    let loops = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), loop_count_hash);
+    WorkModule::set_int(fighter.module_accessor, loops, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
+    let stop_type = if current_sit != *SITUATION_KIND_GROUND {
+        ENERGY_STOP_RESET_TYPE_AIR
+    }
+    else {
+        ENERGY_STOP_RESET_TYPE_NONE
+    };
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        stop_type,
+        speed_x,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_accel,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    let brake = if start_sit != *SITUATION_KIND_GROUND {
+        0.05
+    }
+    else {
+        0.0
+    };
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        brake,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    if current_sit == *SITUATION_KIND_GROUND {
+        let ground_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("ground_speed_limit"));
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ground_speed_limit,
+            0.0
+        );
+    }
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    if current_sit != *SITUATION_KIND_GROUND {
+        let speed_y = if start_sit == *SITUATION_KIND_GROUND {
+            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+        }
+        else {
+            1.2
+        };
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            speed_y, 
+            0.0,
+            0.0,
+            0.0
+        );
+        let air_accel_y = if start_sit == *SITUATION_KIND_GROUND {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"))
+        }
+        else {
+            0.1
+        };
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y
+        );
+        let air_max_speed_y = if start_sit == *SITUATION_KIND_GROUND {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
+        }
+        else {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0)
+        };
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            air_max_speed_y
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    if command {
+        let command_power_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_power_mul"));
+        AttackModule::set_power_mul_status(fighter.module_accessor, command_power_mul);
+    }
+    let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, boma);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
+    0.into()
 }
 
-unsafe extern "C" fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-    if start_sit != *SITUATION_KIND_GROUND {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_air_s"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
+    if start_sit == *SITUATION_KIND_GROUND {
+        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
+        return original(fighter);
     }
-    else {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new("special_s"),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
-    }
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_air_s2"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     let eff = if !MotionModule::is_flip(fighter.module_accessor) {
-        Hash40::new("ryu_tatsumaki_wind_r")
+        hash40("ryu_tatsumaki_wind_r")
     }
     else {
-        Hash40::new("ryu_tatsumaki_wind_l")
+        hash40("ryu_tatsumaki_wind_l")
     };
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
@@ -52,107 +200,38 @@ unsafe extern "C" fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L
         let alpha = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_wind_alpha")) * 0.01;
         EffectModule::set_alpha(fighter.module_accessor, spineffect, alpha);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specials_loop_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_s2_loop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ryu_specials_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 1.into();
-    }
-    if !StatusModule::is_changing(fighter.module_accessor) {
-        if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            }
-            else {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                    WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                    return 1.into();
-                }
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-            }
-        }
-    }
-    else {
-        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        }
-        else {
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-            let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-            if start_sit != *SITUATION_KIND_GROUND {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                sv_kinetic_energy!(
-                    set_accel,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_STOP,
-                    0.0,
-                    0.0
-                );
-                sv_kinetic_energy!(
-                    set_brake,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_STOP,
-                    0.0,
-                    0.0
-                );
-                sv_kinetic_energy!(
-                    set_stable_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_STOP,
-                    0.0,
-                    0.0
-                );
-            }
-        }
+unsafe extern "C" fn ryu_special_s2_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        WorkModule::set_float(fighter.module_accessor, 16.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        return 0.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
         let loop_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
         if loop_count > 0 {
-            let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-            if start_sit != *SITUATION_KIND_GROUND {
-                MotionModule::change_motion(
-                    fighter.module_accessor,
-                    Hash40::new("special_air_s"),
-                    0.0,
-                    1.0,
-                    false,
-                    0.0,
-                    false,
-                    false
-                );
-            }
-            else {
-                MotionModule::change_motion(
-                    fighter.module_accessor,
-                    Hash40::new("special_s"),
-                    0.0,
-                    1.0,
-                    false,
-                    0.0,
-                    false,
-                    false
-                );
-            }
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_air_s2"),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
         }
         else {
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
         }
     }
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
-    }
-    else {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
-    }
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_specials_loop_init,
-        ryu_specials_loop_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_init);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_main);
 }

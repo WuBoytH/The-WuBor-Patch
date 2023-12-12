@@ -12,8 +12,7 @@ use {
 #[skyline::hook(offset = 0xab9950)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
-    let object_id = object.battle_object_id;
-    let module_accessor = sv_battle_object::module_accessor(object_id);
+    let module_accessor = (*object).module_accessor;
     let collision_log = log as *mut CollisionLogScuffed;
     let status = StatusModule::status_kind(module_accessor);
     if [

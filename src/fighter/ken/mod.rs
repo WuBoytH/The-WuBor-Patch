@@ -1,12 +1,17 @@
-// mod acmd;
-// mod frame;
-// mod status;
-// mod agent_init;
-pub mod helper;
+mod acmd;
+mod status;
+mod frame;
+mod agent_init;
+
+mod hadoken;
 
 pub fn install() {
-    // acmd::install();
-    // frame::install();
-    // status::install();
-    // agent_init::install();
+    let agent = &mut smashline::Agent::new("ken");
+    acmd::install(agent);
+    status::install(agent);
+    frame::install(agent);
+    agent_init::install(agent);
+    agent.install();
+
+    hadoken::install();
 }

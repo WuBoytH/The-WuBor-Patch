@@ -3,6 +3,34 @@ use {
     crate::fighter::common::status::attack::attack::only_jabs
 };
 
+#[inline(always)]
+pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, b: f32) {
+    if !VarModule::is_flag(agent.module_accessor, ryu::status::flag::SET_DENJIN_AURA) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SET_DENJIN_AURA);
+    }
+}
+
+pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
+    VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE);
+    let eff_handle = VarModule::get_int(fighter.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+        EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
+    }
+    VarModule::set_int(fighter.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE, 0);
+}
+
 pub unsafe extern "C" fn ryu_attack_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
@@ -261,342 +289,340 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub unsafe extern "C" fn ryu_specials_init_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let sit = fighter.global_table[SITUATION_KIND].get_i32();
-    WorkModule::set_int(fighter.module_accessor, sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-    let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
-    WorkModule::set_int(fighter.module_accessor, *FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_x_mul"));
-    let speed_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_y_mul"));
-    let mut speed_x = sum_speed_x * speed_x_mul;
-    let mut speed_y = sum_speed_y * speed_y_mul;
-    let add_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_x"));
+pub unsafe extern "C" fn ryu_attack_s3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_attack_reset(fighter);
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_TURN_RUN {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RUN_STOP);
+    }
+    ControlModule::reset_trigger(fighter.module_accessor);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_attack3_uniq_check(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack3_uniq_check as *const () as _));
+    PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
     let lr = PostureModule::lr(fighter.module_accessor);
-    speed_x += add_speed_x * lr;
-    let stop_type = if sit != *SITUATION_KIND_GROUND {
-        let add_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_y"));
-        speed_y += add_speed_y;
-        ENERGY_STOP_RESET_TYPE_AIR
-    }
-    else {
-        ENERGY_STOP_RESET_TYPE_NONE
-    };
     sv_kinetic_energy!(
-        reset_energy,
+        set_chara_dir,
         fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        stop_type,
-        speed_x,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        lr
     );
-    sv_kinetic_energy!(
-        set_brake,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        0.0,
-        0.0
-    );
-    sv_kinetic_energy!(
-        set_stable_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        0.0,
-        0.0
-    );
-    if sit == *SITUATION_KIND_GROUND {
-        let ground_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("ground_speed_limit"));
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            ground_speed_limit,
-            0.0
-        );
-    }
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-    if sit != *SITUATION_KIND_GROUND {
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-            0.0,
-            speed_y, 
-            0.0,
-            0.0,
-            0.0
-        );
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y
-        );
-        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-            1.0
-        }
-        else {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
-        };
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            air_max_speed_y
-        );
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    }
-    if command {
-        let command_power_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_power_mul"));
-        AttackModule::set_power_mul_status(fighter.module_accessor, command_power_mul);
-    }
-    let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, boma);
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
-    0.into()
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_s3_main_loop as *const () as _))
 }
 
-pub unsafe extern "C" fn ryu_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_specials_substatus as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specials_main_loop as *const () as _))
-}
-
-unsafe extern "C" fn ryu_specials_substatus(fighter: &mut L2CFighterCommon, param_2: L2CValue) -> L2CValue {
-    if param_2.get_bool() {
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
-    }
-    0.into()
-}
-
-unsafe extern "C" fn ryu_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !StatusModule::is_changing(fighter.module_accessor) {
-        if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+unsafe extern "C" fn ryu_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
                 return 1.into();
             }
-            else {
-                ryu_specials_mot_helper(fighter);
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+                return 1.into();
+            }
+        }
+        let frame = fighter.global_table[STATUS_FRAME].get_f32();
+        let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
+        if frame <= attack_start_cancel_frame {
+            if ryu_kara_cancel(fighter).get_bool() {
+                return 1.into();
             }
         }
     }
     else {
-        ryu_specials_mot_helper(fighter);
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 1.into();
+        }
     }
+
+    if StatusModule::is_changing(fighter.module_accessor)
+    || {
+        let count = ComboModule::count(fighter.module_accessor) as i32;
+        let s3_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("s3_combo_max"), 0);
+        count < s3_combo_max &&
+        WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE) &&
+        WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
+    } {
+        fighter.attack_s3_mtrans();
+    }
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
+
+    // Normally has code to allow attack cancels, but attack canceling no longer exists...
+
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP.into(), false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    }
+
+    0.into()
+}
+
+pub unsafe extern "C" fn ryu_attack_hi3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    let allow_jump_mini_attack = status == prev_status && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true);
+    ryu_attack_reset(fighter);
+    fighter.clear_lua_stack();
+    let mot = sv_fighter_util::get_attack_hi3_motion(fighter.lua_state_agent);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    let info = ryu_get_mini_jump_attack_data_log_info(fighter, mot.into());
+    WorkModule::set_int64(fighter.module_accessor, info.get_u64() as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x265a5c1b6b), Hash40::new("attack_hi3_s"), Hash40::new("attack_hi3_w"));
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
+    let fb = ControlModule::get_attack_hi3_fb_kind(fighter.module_accessor);
+    if fb == *FIGHTER_COMMAND_ATTACK3_KIND_B {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        sv_kinetic_energy!(
+            set_chara_dir,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            lr
+        );
+    }
+    if allow_jump_mini_attack {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
+            let jump_mini_attack_enable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("jump_mini_attack_enable_frame"));
+            WorkModule::set_int(fighter.module_accessor, jump_mini_attack_enable_frame + 1, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+        }
+    }
+    if !StopModule::is_stop(fighter.module_accessor) {
+        ryu_attack_hi3_substatus(fighter, false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_attack_hi3_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_hi3_main_loop as *const() as _))
+}
+
+unsafe extern "C" fn ryu_attack_hi3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    let stop = param_1.get_bool();
+    fighter.sub_attack3_uniq_check(stop.into());
+    if stop
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER) {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
+            if stick_y >= attack_hi3_stick_y {
+                WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+            }
+        }
+        else {
+            WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+        }
     }
     0.into()
 }
 
-unsafe extern "C" fn ryu_specials_mot_helper(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if StatusModule::is_changing(fighter.module_accessor) {
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new("special_air_s_start"),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
+unsafe extern "C" fn ryu_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+                return 1.into();
+            }
         }
-        if StatusModule::is_changing(fighter.module_accessor) {
-            return;
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+                return 1.into();
+            }
         }
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y
-        );
-        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-            1.0
+        let frame = fighter.global_table[STATUS_FRAME].get_f32();
+        let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
+        if frame <= attack_start_cancel_frame {
+            if ryu_kara_cancel(fighter).get_bool() {
+                return 1.into();
+            }
         }
-        else {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
-        };
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            air_max_speed_y
-        );
     }
     else {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        if StatusModule::is_changing(fighter.module_accessor) {
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new("special_s_start"),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 1.into();
         }
-        if StatusModule::is_changing(fighter.module_accessor) {
-            return;
+    }
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER)
+        && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
+            if stick_y >= attack_hi3_stick_y {
+                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), false.into());
+                return 1.into();
+            }
         }
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        sv_kinetic_energy!(
-            set_brake,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            0.0,
-            0.0
-        );
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL) {
+        let button_on_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+        let attack_hi3_s_button_on_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_hi3_s_button_on_frame"));
+        if attack_hi3_s_button_on_frame <= button_on_frame as f32 {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), false.into());
+            return 1.into();
+        }
+    }
+
+    // Normally has code to allow f tilt to transition into the next hit, I did not want to rewrite it...
+
+    // Normally has code to allow attack cancels, but attack canceling no longer exists...
+
+    if !MotionModule::is_end(fighter.module_accessor) {
+        ryu_check_attack_button_trigger(fighter);
+    }
+    else {
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    }
+    
+    0.into()
+}
+
+unsafe extern "C" fn ryu_check_attack_button_trigger(fighter: &mut L2CFighterCommon) {
+    if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON)
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER);
     }
 }
 
-pub unsafe extern "C" fn ryu_specials_loop_init_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let sit = fighter.global_table[SITUATION_KIND].get_i32();
-    WorkModule::set_int(fighter.module_accessor, sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-    let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
-    let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    let lr = PostureModule::lr(fighter.module_accessor);
-    let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    let loop_count_hash;
-    let speed_x_hash;
-    if sit != *SITUATION_KIND_GROUND {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if strength == *FIGHTER_RYU_STRENGTH_W {
-            loop_count_hash = hash40("air_loop_num_w");
-            speed_x_hash = hash40("air_speed_x_w");
-        }
-        else if strength == *FIGHTER_RYU_STRENGTH_M {
-            loop_count_hash = hash40("air_loop_num_m");
-            speed_x_hash = hash40("air_speed_x_m");
-        }
-        else {
-            loop_count_hash = hash40("air_loop_num_s");
-            speed_x_hash = hash40("air_speed_x_s");
-        }
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
-    }
-    else {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        if strength == *FIGHTER_RYU_STRENGTH_W {
-            loop_count_hash = hash40("loop_num_w");
-            speed_x_hash = hash40("speed_x_w");
-        }
-        else if strength == *FIGHTER_RYU_STRENGTH_M {
-            loop_count_hash = hash40("loop_num_m");
-            speed_x_hash = hash40("speed_x_m");
-        }
-        else {
-            loop_count_hash = hash40("loop_num_s");
-            speed_x_hash = hash40("speed_x_s");
-        }
-    }
-    let loops = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), loop_count_hash);
-    WorkModule::set_int(fighter.module_accessor, loops, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
-    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), speed_x_hash);
-    let stop_type = if sit != *SITUATION_KIND_GROUND {
-        ENERGY_STOP_RESET_TYPE_AIR
-    }
-    else {
-        ENERGY_STOP_RESET_TYPE_NONE
-    };
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        stop_type,
-        speed_x * lr,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+pub unsafe extern "C" fn ryu_attack_lw3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_attack_reset(fighter);
+    fighter.status_AttackLw3_common_param(
+        true.into(),
+        L2CValue::Ptr(L2CFighterCommon_sub_attack3_uniq_check as *const () as _),
+        0.into()
     );
-    sv_kinetic_energy!(
-        set_accel,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        0.0,
-        0.0
-    );
-    sv_kinetic_energy!(
-        set_brake,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        0.0,
-        0.0
-    );
-    sv_kinetic_energy!(
-        set_stable_speed,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_STOP,
-        0.0,
-        0.0
-    );
-    if sit == *SITUATION_KIND_GROUND {
-        let ground_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("ground_speed_limit"));
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            ground_speed_limit,
-            0.0
-        );
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x265a5c1b6b), Hash40::new("attack_lw3_s"), Hash40::new("attack_lw3_w"));
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        ryu_attack_lw3_substatus(fighter, false.into());
     }
-    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-    if sit != *SITUATION_KIND_GROUND {
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-            0.0,
-            sum_speed_y, 
-            0.0,
-            0.0,
-            0.0
-        );
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y
-        );
-        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-            1.0
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_attack_lw3_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_lw3_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn ryu_attack_lw3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    let stop = param_1.get_bool();
+    fighter.sub_attack3_uniq_check(stop.into());
+    if stop
+    && !SlowModule::is_skip(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                let stick_y = fighter.global_table[STICK_Y].get_f32();
+                let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
+                if stick_y <= attack_lw3_stick_y {
+                    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+                }
+            }
+            else {
+                WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+            }
         }
-        else {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
-        };
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            air_max_speed_y
-        );
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
-    if command {
-        let command_power_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_power_mul"));
-        AttackModule::set_power_mul_status(fighter.module_accessor, command_power_mul);
-    }
-    let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, boma);
-    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
     0.into()
+}
+
+unsafe extern "C" fn ryu_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+                return 1.into();
+            }
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+            if ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+                return 1.into();
+            }
+        }
+        let frame = fighter.global_table[STATUS_FRAME].get_f32();
+        let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
+        if frame <= attack_start_cancel_frame {
+            if ryu_kara_cancel(fighter).get_bool() {
+                return 1.into();
+            }
+        }
+    }
+    else {
+        if fighter.sub_wait_ground_check_common(true.into()).get_bool() {
+            return 1.into();
+        }
+    }
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER)
+        && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
+            if stick_y <= attack_lw3_stick_y {
+                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), false.into());
+                return 1.into();
+            }
+        }
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL) {
+        let button_on_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
+        let attack_lw3_s_button_on_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_lw3_s_button_on_frame"));
+        if attack_lw3_s_button_on_frame <= button_on_frame as f32 {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), false.into());
+            return 1.into();
+        }
+    }
+
+    // Normally has code to allow f tilt to transition into the next hit, I did not want to rewrite it...
+
+    // Normally has code to allow attack cancels, but attack canceling no longer exists...
+
+    if !MotionModule::is_end(fighter.module_accessor) {
+        ryu_check_attack_button_trigger(fighter);
+    }
+    else {
+        fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), false.into());
+    }
+    
+    0.into()
+}
+
+unsafe extern "C" fn ryu_get_mini_jump_attack_data_log_info(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    let info = fighter.get_mini_jump_attack_data_log_info(param_1.clone());
+    if info.get_bool() {
+        info
+    }
+    else {
+        let log = &*(((fighter as *const L2CFighterCommon as u64) + 0x228) as *const L2CValue);
+        (*log)["log_infos"][param_1.clone()].clone()
+    }
 }
 
 pub unsafe extern "C" fn ryu_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -639,9 +665,9 @@ unsafe extern "C" fn ryu_specialhi_substatus(fighter: &mut L2CFighterCommon, par
     if !param_2.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
-            let stickx = fighter.global_table[STICK_X].get_f32().abs();
+            let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("lr_stick_x"));
-            if lr_stick_x < stickx {
+            if lr_stick_x < stick_x.abs() {
                 PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
                 PostureModule::update_rot_y_lr(fighter.module_accessor);
             }

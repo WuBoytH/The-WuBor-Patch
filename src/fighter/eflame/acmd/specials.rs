@@ -129,7 +129,7 @@ unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.0, y: -4.0, z: 0.0});
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_EFLAME_STATUS_SPECIAL_HI_FLAG_END_CONTROL);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 280, 130, 39, 0, 6.0, 0.0, 3.0, 9.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        // AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 10.0, false);
+        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 10.0, false);
     }
     frame(agent.lua_state_agent, 33.0);
     if macros::is_excute(agent) {

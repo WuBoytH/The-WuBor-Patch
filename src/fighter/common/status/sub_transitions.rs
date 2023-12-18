@@ -1,6 +1,22 @@
 use crate::imports::status_imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
+#[skyline::hook(replace = L2CFighterCommon_sub_wait_ground_check_common)]
+unsafe extern "C" fn sub_wait_ground_check_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool()
+    || fighter.sub_transition_group_check_ground_item().get_bool()
+    || fighter.sub_transition_group_check_ground_catch().get_bool()
+    || fighter.sub_transition_group_check_ground_escape().get_bool()
+    || fighter.sub_transition_group_check_ground_special().get_bool()
+    || fighter.sub_transition_group_check_ground_attack().get_bool()
+    || fighter.sub_transition_group_check_ground_jump().get_bool()
+    || fighter.sub_transition_group_check_ground_guard().get_bool()
+    || fighter.sub_transition_group_check_ground(param_1).get_bool() {
+        return true.into();
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
 unsafe extern "C" fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -41,9 +57,10 @@ unsafe extern "C" fn sub_transition_group_check_ground_guard(fighter: &mut L2CFi
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
         && fighter.sub_check_command_guard().get_bool() {
-            let guard_trigger = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF;
-            VarModule::set_int(fighter.module_accessor, fighter::instance::int::GUARD_TRIGGER, guard_trigger);
-            let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
+            let clear_buffer =
+                fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 &&
+                fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER == 0
+            ;
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), clear_buffer.into());
             return true.into();
         }
@@ -556,12 +573,15 @@ unsafe extern "C" fn sub_transition_group_check_air_cliff(fighter: &mut L2CFight
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_wait_ground_check_common,
+
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_ground_guard,
             sub_transition_group_check_ground_catch,
             sub_transition_group_check_ground_item,
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground,
+
             sub_transition_group_check_air_attack,
             sub_transition_group_check_air_escape,
             sub_transition_group_check_air_tread_jump,

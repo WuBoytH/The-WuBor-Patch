@@ -2,6 +2,7 @@ mod wait;
 
 mod dash_back;
 
+mod guard_on;
 mod guard_off;
 
 mod escape;
@@ -35,6 +36,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     dash_back::install(agent);
 
+    guard_on::install(agent);
     guard_off::install(agent);
 
     escape::install(agent);

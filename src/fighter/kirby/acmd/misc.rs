@@ -126,9 +126,9 @@ unsafe extern "C" fn kirby_appeals_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
-    for x in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
-            VarModule::set_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT, x + 1);
+            VarModule::inc_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         }
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
@@ -141,7 +141,7 @@ unsafe extern "C" fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn kirby_appealsloop_snd(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 4.0);
         let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let sound;
@@ -167,7 +167,7 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
-    for _ in 0..i32::MAX {
+    loop {
         let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let quake;
         let rbkind;

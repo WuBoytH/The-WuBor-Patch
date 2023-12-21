@@ -69,6 +69,18 @@ unsafe extern "C" fn ganon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
+unsafe extern "C" fn ganon_attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    sv_kinetic_energy!(
+        set_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        0.0,
+        0.0
+    );
+    fighter.status_end_AttackLw3()
+}
+
 pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, ganon_attack_lw3_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW3, ganon_attack_lw3_end);
 }

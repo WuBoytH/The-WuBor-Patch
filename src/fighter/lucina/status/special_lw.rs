@@ -1,6 +1,11 @@
 use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let spent = VarModule::get_float(fighter.module_accessor, yu::instance::float::SPENT_SP);
+    let meter_max = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX);
+    FGCModule::update_meter(fighter.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
+    sp_diff_checker(fighter.module_accessor);
     VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
     VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

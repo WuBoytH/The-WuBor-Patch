@@ -132,9 +132,9 @@ unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleOb
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
-    if MiscModule::is_damage_check(module_accessor, false) {
-        return false;
-    }
+    // if MiscModule::is_damage_check(module_accessor, false) {
+    //     return false;
+    // }
     let status = StatusModule::status_kind(module_accessor);
     ![
         *FIGHTER_STATUS_KIND_DEAD,

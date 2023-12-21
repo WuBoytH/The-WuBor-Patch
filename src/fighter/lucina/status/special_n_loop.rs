@@ -22,13 +22,13 @@ unsafe extern "C" fn lucina_special_n_loop_main_loop(fighter: &mut L2CFighterCom
     }
     else {
         if MotionModule::is_end(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            // if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
-            }
-            else {
-                // VarModule::on_flag(fighter.module_accessor, yu::instance::flag::HEROIC_GRAB);
-                fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), false.into());
-            }
+            // }
+            // else {
+            //     // VarModule::on_flag(fighter.module_accessor, yu::instance::flag::HEROIC_GRAB);
+            //     fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), false.into());
+            // }
         }
     }
     0.into()

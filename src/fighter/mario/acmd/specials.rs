@@ -225,7 +225,7 @@ unsafe extern "C" fn mario_groundpoundfall(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn mario_groundpoundfall_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 1, -90, 0, 0, 1, true);
         }

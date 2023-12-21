@@ -31,7 +31,7 @@ unsafe extern "C" fn edge_appeals(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 120.0);
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("edge_sword_light"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
@@ -64,7 +64,7 @@ unsafe extern "C" fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn edge_appealsloop_snd(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 116.0);
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_edge_appeal_s02"));
@@ -80,7 +80,7 @@ unsafe extern "C" fn edge_appealsloop_exp(agent: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 116.0);
         if macros::is_excute(agent) {
             ControlModule::set_rumble(
@@ -370,7 +370,7 @@ unsafe extern "C" fn edge_appeallw(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn edge_appeallwloop_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 1.0);
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("edge_aura"), Hash40::new("hip"), -2, -2, 0, 80, 90, 0, 1, true);
@@ -389,7 +389,7 @@ unsafe extern "C" fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 70.0);
         if macros::is_excute(agent) {
             ControlModule::set_rumble(

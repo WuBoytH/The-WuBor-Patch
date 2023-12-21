@@ -56,7 +56,7 @@ unsafe extern "C" fn lucario_specialairnshoot_exp(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn lucario_specialnhold2_eff(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
-    for _ in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
             macros::FOOT_EFFECT(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false)
         }

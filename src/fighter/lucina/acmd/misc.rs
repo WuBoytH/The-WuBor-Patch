@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 unsafe extern "C" fn lucina_run_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 4.0);
         if macros::is_excute(agent) {
             macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -25,7 +25,7 @@ unsafe extern "C" fn lucina_run_eff(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn lucina_run_snd(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
             macros::PLAY_STEP(agent, Hash40::new("se_lucina_step_right_l"));
@@ -49,7 +49,7 @@ unsafe extern "C" fn lucina_run_snd(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn lucina_run_exp(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
             slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 6);
         }

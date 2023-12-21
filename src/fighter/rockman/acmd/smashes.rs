@@ -255,7 +255,7 @@ unsafe extern "C" fn rockman_attacks4charge_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 12, 0, 4, 0, 0, 0, false);
     }
-    for _ in 0..i32::MAX {
+    loop {
         wait(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
             macros::EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 0, 0, 0, false);

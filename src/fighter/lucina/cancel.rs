@@ -85,6 +85,7 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_lucina");
+    CustomCancelManager::initialize_agent(agent);
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK,

@@ -494,7 +494,6 @@ pub mod yu { // lucina
             pub const SHADOW_FRENZY : i32 = 0x0102;
             pub const ROMAN_ON_HIT : i32 = 0x0103;
             pub const HEROIC_GRAB : i32 = 0x0104;
-            pub const COMMAND : i32 = 0x0105;
         }
         pub mod int {
             pub const SP_LEVEL : i32 = 0x0100;
@@ -524,6 +523,10 @@ pub mod yu { // lucina
         pub mod float {
             pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1150;
         }
+
+        pub const SPECIAL_N_COMMAND       : i32 = 0x1EB + 0;
+        pub const SPECIAL_S_COMMAND       : i32 = 0x1EB + 1;
+        pub const SPECIAL_HI_COMMAND      : i32 = 0x1EB + 2;
     }
 
     pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};

@@ -797,7 +797,7 @@ unsafe extern "C" fn elight_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, false)
+        macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {

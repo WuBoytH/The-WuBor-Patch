@@ -300,14 +300,14 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.expression_acmd("expression_speciallwjump", mario_longjump_exp);
 
     agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_snd);
-    agent.sound_acmd("sound_speciallwlanding", mario_longjumpland_eff);
+    agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_eff);
     agent.expression_acmd("expression_speciallwlanding", mario_longjumpland_exp);
 
     agent.game_acmd("game_specialairlwstart", mario_groundpoundstart);
     agent.effect_acmd("effect_specialairlwstart", mario_groundpoundstart_snd);
 
     agent.game_acmd("game_specialairlwfall", mario_groundpoundfall);
-    agent.sound_acmd("sound_specialairlwfall", mario_groundpoundfall_eff);
+    agent.effect_acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
     agent.expression_acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
 
     agent.game_acmd("game_specialairlwlanding", mario_groundpoundland);

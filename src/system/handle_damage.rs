@@ -3,10 +3,11 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    crate::fighter::{
-        dolly::helper::*,
-        ken::helper::*,
-        lucina::helper::*
+    crate::{
+        fighter::{
+            dolly::helper::*,
+            lucina::helper::*
+        }
     },
     wubor_utils::wua_bind::*
 };
@@ -32,9 +33,6 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
             let kind = utility::get_kind(&mut *module_accessor);
             if kind == *FIGHTER_KIND_LUCINA {
                 add_sp(module_accessor, damage_received);
-            }
-            else if kind == *FIGHTER_KIND_KEN {
-                add_vgauge(module_accessor, damage_received);
             }
             else if kind == *FIGHTER_KIND_DOLLY {
                 add_go(module_accessor, damage_received);

@@ -7,7 +7,7 @@ use {
     },
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::{vtable_hook::*, vl}
+    super::vtable_hook::*
 };
 
 pub unsafe extern "C" fn add_go(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
@@ -94,7 +94,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         }
     }
     if ret.get_bool() {
-        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
     ret
 }
@@ -167,8 +167,10 @@ pub struct SpecialCancelStats {
 
 pub unsafe extern "C" fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
     if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
-        dmg *= vl::param_private::special_cancel_damage_mul;
-        bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
+        let special_cancel_damage_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_misc"), hash40("special_cancel_damage_mul"));
+        let special_cancel_bkb_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_misc"), hash40("special_cancel_bkb_mul"));
+        dmg *= special_cancel_damage_mul;
+        bkb = (bkb as f32 * special_cancel_bkb_mul) as i32;
     }
     SpecialCancelStats{dmg, bkb}
 }

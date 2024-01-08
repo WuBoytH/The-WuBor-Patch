@@ -8,7 +8,7 @@ unsafe extern "C" fn koopa_breath_move(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn koopa_breath_move_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
             macros::EFFECT_FOLLOW(agent, Hash40::new("koopa_breath_m_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true);

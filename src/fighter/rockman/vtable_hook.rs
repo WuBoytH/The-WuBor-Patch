@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
-use super::vl;
 use std::arch::asm;
 
 #[skyline::hook(offset = 0x107e950)]
@@ -52,7 +51,8 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     rockman_kill_charge(module_accessor);
                 }
                 else if !VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE) {
-                    VarModule::set_int(module_accessor, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME, vl::private::CHARGE_SHOT_RELEASE_FRAME);
+                    let release_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("release_frame"));
+                    VarModule::set_int(module_accessor, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME, release_frame);
                     VarModule::on_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE);
                 }
             }
@@ -70,11 +70,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
         }
         if VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_CHARGING) {
             let charge_frame = VarModule::get_int(module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
-            if charge_frame < vl::private::CHARGE_SHOT_MAX_FRAME + 1 {
+            let charge_max_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("charge_max_frame"));
+            if charge_frame < charge_max_frame + 1 {
                 VarModule::inc_int(module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
             }
             let charge_frame = VarModule::get_int(module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
-            if charge_frame == vl::private::CHARGE_SHOT_MAX_FRAME {
+            if charge_frame == charge_max_frame {
                 FighterUtil::flash_eye_info(module_accessor);
                 EffectModule::req_follow(
                     module_accessor,
@@ -93,10 +94,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     false
                 );
             }
-            if charge_frame == vl::private::CHARGE_SHOT_CLEAR_INPUT_FRAME {
+            let clear_input_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("clear_input_frame"));
+            if charge_frame == clear_input_frame {
                 ControlModule::clear_command_one(module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_N);
             }
-            if charge_frame > vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME {
+            let delay_charge_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("delay_charge_frame"));
+            if charge_frame > delay_charge_frame {
                 if !VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
                     SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0));
                     EffectModule::req_follow(
@@ -129,9 +132,9 @@ unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleOb
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
-    if MiscModule::is_damage_check(module_accessor, false) {
-        return false;
-    }
+    // if MiscModule::is_damage_check(module_accessor, false) {
+    //     return false;
+    // }
     let status = StatusModule::status_kind(module_accessor);
     ![
         *FIGHTER_STATUS_KIND_DEAD,

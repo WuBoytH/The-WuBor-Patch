@@ -1,7 +1,4 @@
-use {
-    crate::imports::status_imports::*,
-    super::super::vl
-};
+use crate::imports::status_imports::*;
 
 unsafe extern "C" fn chrom_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -76,10 +73,12 @@ unsafe extern "C" fn chrom_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2
         );
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        let dive_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_quake_slash"), hash40("dive_speed_x"));
+        let dive_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_quake_slash"), hash40("dive_speed_y"));
         macros::SET_SPEED_EX(
             fighter,
-            vl::param_special_lw::dive_speed_x,
-            vl::param_special_lw::dive_speed_y,
+            dive_speed_x,
+            dive_speed_y,
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));

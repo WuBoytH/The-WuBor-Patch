@@ -453,6 +453,29 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighte
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_exitStatus_common)]
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighter: &mut L2CFighterCommon) {
+    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+    let type_of_guard = FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) as i32;
+    ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            // Extends intangibiltiy for X frames into the next action.
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 8, 0);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        }
+        EffectModule::remove_common(fighter.module_accessor, Hash40::new("just_shield"));
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {
+                ModelModule::disable_gold_eye(fighter.module_accessor);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
+            }
+        }
+        ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -461,7 +484,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_guarddamage_common,
             sub_guarddamageuniq,
             status_guarddamage_main,
-            sub_ftstatusuniqprocessguarddamage_execstatus_common
+            sub_ftstatusuniqprocessguarddamage_execstatus_common,
+            sub_ftstatusuniqprocessguarddamage_exitstatus_common
         );
     }
 }

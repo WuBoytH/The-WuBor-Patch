@@ -8,8 +8,8 @@ unsafe extern "C" fn mario_throwlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::CHECK_FINISH_CAMERA(agent, 4, 0);
-        FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.7);
-        FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: 0.0, z: 0.0});
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.7);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 0.0, y: 0.0, z: 0.0});
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {

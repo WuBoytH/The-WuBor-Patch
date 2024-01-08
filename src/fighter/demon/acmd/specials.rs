@@ -50,7 +50,7 @@ unsafe extern "C" fn demon_specialhi(agent: &mut L2CAgentBase) {
         frame(agent.lua_state_agent, 54.0);
         FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
     }
-    else{
+    else {
         FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 2.0);
         if macros::is_excute(agent) {
             GroundModule::select_cliff_hangdata(agent.module_accessor, 1);

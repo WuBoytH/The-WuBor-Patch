@@ -1,5 +1,5 @@
 use crate::imports::acmd_imports::*;
-use super::super::{helper::*, vl, vtable_hook::*};
+use super::super::{helper::*, vtable_hook::*};
 
 unsafe extern "C" fn dolly_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
@@ -45,7 +45,7 @@ unsafe extern "C" fn dolly_specialairn(agent: &mut L2CAgentBase) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {
-            KineticModule::add_speed(agent.module_accessor, &Vector3f {x: 0.0, y: vl::param_special_n::feint_speed_y_add, z: 0.0});
+            KineticModule::add_speed(agent.module_accessor, &Vector3f {x: 0.0, y: 1.2, z: 0.0});
             MotionModule::set_rate(agent.module_accessor, 1.5);
         }
     }

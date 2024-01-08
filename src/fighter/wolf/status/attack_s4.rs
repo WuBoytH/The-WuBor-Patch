@@ -1,10 +1,17 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn wolf_attack_s4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    let kinetic = if status == *FIGHTER_STATUS_KIND_DASH {
+        *FIGHTER_KINETIC_TYPE_MOTION
+    }
+    else {
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        kinetic,
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,

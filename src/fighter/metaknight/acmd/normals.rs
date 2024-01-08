@@ -240,7 +240,7 @@ unsafe extern "C" fn metaknight_attack100start_snd(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn metaknight_attack100(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 1.0);
         metaknight_attack100_internal(agent);
         frame(agent.lua_state_agent, 4.0);

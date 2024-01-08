@@ -8,7 +8,7 @@ mod catch;
 mod fall;
 
 mod passive;
-mod cliff;
+pub mod cliff;
 mod appeal;
 mod rebirth;
 mod sub;

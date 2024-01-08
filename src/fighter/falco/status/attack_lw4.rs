@@ -11,7 +11,7 @@ unsafe extern "C" fn falco_attacks4_end(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD, falco_attacks4hold_end);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD, falco_attacks4hold_end);
 
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW4, falco_attacks4_end);
 }

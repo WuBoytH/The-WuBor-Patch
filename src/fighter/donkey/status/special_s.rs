@@ -1,7 +1,4 @@
-use {
-    crate::imports::status_imports::*,
-    super::super::vl
-};
+use crate::imports::status_imports::*;
 
 unsafe extern "C" fn donkey_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
@@ -54,9 +51,10 @@ unsafe extern "C" fn donkey_special_s_main_loop(fighter: &mut L2CFighterCommon) 
 /// existing at a time, DK will be unable to pull out a barrel.
 pub unsafe extern "C" fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let itemmanager = smash_rs::app::ItemManager::instance().unwrap();
+    let barrel_count_max = WorkModule::get_param_int(module_accessor, hash40("param_barrel"), hash40("barrel_count_max"));
     smash_rs::app::ItemManager::get_num_of_ownered_item(itemmanager, (*module_accessor).battle_object_id, smash_rs::app::ItemKind::Barrel)
     <
-    vl::param_special_s::barrel_count as usize
+    barrel_count_max as usize
 }
 
 pub fn install(agent: &mut smashline::Agent) {

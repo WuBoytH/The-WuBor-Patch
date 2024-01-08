@@ -1,11 +1,15 @@
 mod normals;
+mod smashes;
+mod aerials;
 mod specials;
 mod escape;
-mod misc;
+mod cliff;
 
-pub fn install() {
-    normals::install();
-    specials::install();
-    escape::install();
-    misc::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    escape::install(agent);
+    cliff::install(agent);
 }

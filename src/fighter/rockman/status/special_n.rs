@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::{helper::*, super::vl};
+use super::helper::*;
 
 unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
@@ -49,8 +49,10 @@ unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2
 unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
     let charge_frame = VarModule::get_int(fighter.module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
-    let top = charge_frame as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
-    let bottom = vl::private::CHARGE_SHOT_MAX_FRAME as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
+    let charge_max_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_buster_charge"), hash40("charge_max_frame"));
+    let delay_charge_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_buster_charge"), hash40("delay_charge_frame"));
+    let top = charge_frame as f32 - delay_charge_frame as f32;
+    let bottom = charge_max_frame as f32 - delay_charge_frame as f32;
     let ratio = top / bottom;
     WorkModule::set_float(fighter.module_accessor, ratio, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_HOLD_RATE);
     fighter.sub_shift_status_main(L2CValue::Ptr(rockman_special_n_main_loop as *const () as _))

@@ -81,7 +81,7 @@ unsafe extern "C" fn lucina_specialnendmax(agent: &mut L2CAgentBase) {
             AttackModule::clear_all(agent.module_accessor);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 1.0);
         if macros::is_excute(agent) {
             KineticModule::mul_speed(agent.module_accessor, &Vector3f {x: 0.4, y: 0.0, z: 0.0}, *FIGHTER_KINETIC_TYPE_UNIQ);
@@ -106,18 +106,6 @@ unsafe extern "C" fn lucina_specialnendmax(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn lucina_specialairs1(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, yu::instance::flag::COMMAND)
-    && spent_meter(agent.module_accessor, false) {
-        let spent = VarModule::get_float(agent.module_accessor, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(agent.module_accessor, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(agent.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        VarModule::set_int(agent.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
-        VarModule::on_flag(agent.module_accessor, yu::status::flag::IS_EX);
-        sp_diff_checker(agent.module_accessor);
-    }
-    else {
-        VarModule::off_flag(agent.module_accessor, yu::status::flag::IS_EX);
-    }
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -255,19 +243,11 @@ unsafe extern "C" fn lucina_specials2hi_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn lucina_specialhi(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, yu::instance::flag::COMMAND)
-    && spent_meter(agent.module_accessor, false) {
-        let spent = VarModule::get_float(agent.module_accessor, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(agent.module_accessor, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(agent.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        VarModule::set_int(agent.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
-        VarModule::on_flag(agent.module_accessor, yu::status::flag::IS_EX);
-        sp_diff_checker(agent.module_accessor);
+    if VarModule::is_flag(agent.module_accessor, yu::status::flag::IS_EX) {
         full_invuln(agent.module_accessor, true);
         macros::FT_MOTION_RATE(agent, 2.0 / 3.0);
     }
     else {
-        VarModule::off_flag(agent.module_accessor, yu::status::flag::IS_EX);
         upper_invuln(agent.module_accessor, true);
     }
     if VarModule::is_flag(agent.module_accessor, yu::status::flag::IS_EX) {
@@ -293,7 +273,7 @@ unsafe extern "C" fn lucina_specialhi(agent: &mut L2CAgentBase) {
             notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 10.0);
         if macros::is_excute(agent) {
             upper_invuln(agent.module_accessor, false);
@@ -399,14 +379,7 @@ unsafe extern "C" fn lucina_specialhi_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn lucina_specialairhi(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, yu::instance::flag::COMMAND)
-    && spent_meter(agent.module_accessor, false) {
-        let spent = VarModule::get_float(agent.module_accessor, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(agent.module_accessor, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(agent.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        VarModule::set_int(agent.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
-        VarModule::on_flag(agent.module_accessor, yu::status::flag::IS_EX);
-        sp_diff_checker(agent.module_accessor);
+    if VarModule::is_flag(agent.module_accessor, yu::status::flag::IS_EX) {
         full_invuln(agent.module_accessor, true);
         macros::FT_MOTION_RATE(agent, 2.0 / 3.0);
     }
@@ -442,7 +415,7 @@ unsafe extern "C" fn lucina_specialairhi(agent: &mut L2CAgentBase) {
             notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
     }
-    else{
+    else {
         frame(agent.lua_state_agent, 10.0);
         if macros::is_excute(agent) {
             upper_invuln(agent.module_accessor, false);
@@ -550,10 +523,6 @@ unsafe extern "C" fn lucina_specialairhi_exp(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn lucina_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        let spent = VarModule::get_float(agent.module_accessor, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(agent.module_accessor, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(agent.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        sp_diff_checker(agent.module_accessor);
         JostleModule::set_status(agent.module_accessor, false);
         KineticModule::unable_energy_all(agent.module_accessor);
         if VarModule::is_flag(agent.module_accessor, yu::instance::flag::ROMAN_ON_HIT) {
@@ -694,18 +663,6 @@ unsafe extern "C" fn lucina_speciallwhit_exp(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn lucina_lightningflash(agent: &mut L2CAgentBase) {
     let mut dmg : f32;
     let kbg : i32;
-    if VarModule::is_flag(agent.module_accessor, yu::instance::flag::COMMAND)
-    && spent_meter_super(agent.module_accessor) {
-        let spent = VarModule::get_float(agent.module_accessor, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(agent.module_accessor, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(agent.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        VarModule::set_int(agent.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
-        VarModule::on_flag(agent.module_accessor, yu::status::flag::IS_EX);
-        sp_diff_checker(agent.module_accessor);
-    }
-    else {
-        VarModule::off_flag(agent.module_accessor, yu::status::flag::IS_EX);
-    }
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
     frame(agent.lua_state_agent, 15.0);

@@ -136,6 +136,12 @@ pub mod appeal {
     }
 }
 
+pub mod attack {
+    pub mod flag {
+        pub const INVALID_HOLD_INPUT : i32 = 0x1051;
+    }
+}
+
 pub mod attack_air {
     pub mod flag {
         pub const WHIFF : i32 = 0x1051;

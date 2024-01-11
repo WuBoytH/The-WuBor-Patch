@@ -72,7 +72,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
         let fightermoduleaccessor = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut FighterModuleAccessor;
         let speed = FighterSpecializer_Reflet::get_special_hi_jump_speed(fightermoduleaccessor);
         let grav_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) as *mut smash::app::KineticEnergy;
-        KineticEnergy::reset_energy(
+        lua_bind::KineticEnergy::reset_energy(
             grav_energy,
             *ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
             &Vector2f{x: 0.0, y: speed.y},
@@ -88,9 +88,9 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
             0.0,
             0.0
         );
-        KineticEnergy::unable(stop_energy);
+        lua_bind::KineticEnergy::unable(stop_energy);
         let control_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        KineticEnergy::reset_energy(
+        lua_bind::KineticEnergy::reset_energy(
             control_energy as *mut smash::app::KineticEnergy,
             *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
             &Vector2f{x: 0.0, y: 0.0},
@@ -109,9 +109,9 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
         let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
         let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
         let air_speed_x_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("air_speed_x_limit"));
-        FighterKineticEnergyController::set_accel_x_mul(control_energy as *mut smash::app::FighterKineticEnergyController, air_accel_x_mul * control_mul);
-        FighterKineticEnergyController::set_accel_x_add(control_energy as *mut smash::app::FighterKineticEnergyController, air_accel_x_add * control_mul);
-        KineticEnergyNormal::set_limit_speed(control_energy as *mut smash::app::KineticEnergyNormal, &Vector2f{x: air_speed_x_limit * control_mul, y: 0.0});
+        lua_bind::FighterKineticEnergyController::set_accel_x_mul(control_energy as *mut smash::app::FighterKineticEnergyController, air_accel_x_mul * control_mul);
+        lua_bind::FighterKineticEnergyController::set_accel_x_add(control_energy as *mut smash::app::FighterKineticEnergyController, air_accel_x_add * control_mul);
+        lua_bind::KineticEnergyNormal::set_limit_speed(control_energy as *mut smash::app::KineticEnergyNormal, &Vector2f{x: air_speed_x_limit * control_mul, y: 0.0});
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
         VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);

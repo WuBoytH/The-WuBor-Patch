@@ -79,12 +79,16 @@ unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
             }
+            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+        }
+        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
         }
         let button = param_2.get_i32();
         if !ControlModule::check_button_on(fighter.module_accessor, button) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
         }
-        else {
+        else if !VarModule::is_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT) {
             if !AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
                 if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
                     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON) {

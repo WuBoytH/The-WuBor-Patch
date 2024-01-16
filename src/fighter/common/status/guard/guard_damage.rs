@@ -169,6 +169,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT);
+        VarModule::inc_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
         // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() == false {
         //     CancelModule::enable_cancel(fighter.module_accessor);
         //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK);
@@ -334,7 +335,11 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
         }
         let fighter_kind = fighter.global_table[KIND].get_i32();
         let se = FighterUtil::get_just_shield_se(fighter_kind);
-        SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0));
+        let se_handle = SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0)) as i32;
+        let just_shield_count = VarModule::get_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
+        if just_shield_count > 1 {
+            SoundModule::set_se_vol(fighter.module_accessor, se_handle, 0.7, 0);
+        }
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_GuardDamageUniq(false.into());

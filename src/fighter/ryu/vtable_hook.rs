@@ -1,6 +1,5 @@
-#![allow(non_snake_case)]
-
 use crate::imports::status_imports::*;
+use wubor_utils::app::*;
 
 #[skyline::hook(offset = 0x10d4550)]
 unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
@@ -200,7 +199,7 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                 }
             }
             if collision_kind == 2
-            && (*collision_log).x28 == 0 {
+            && (*collision_log).opponent_object_category == 0 {
                 let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
                 let func: extern "C" fn(*mut BattleObject) -> u64 = std::mem::transmute(*((*(opponent_object as *const u64) + 0x2d0) as *const u64));
                 let flag = if func(opponent_object) == 0 {
@@ -279,32 +278,6 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
         return;
     }
     original!()(vtable, fighter, log, some_float);
-}
-
-#[repr(C)]
-pub struct CollisionLogScuffed {
-    x00: *const u64,
-    x08: *const u64,
-    location: smash_rs::cpp::simd::Vector3,
-    x20: u8,
-    x21: u8,
-    x22: u8,
-    x23: u8,
-    opponent_object_id: u32,
-    x28: u8,
-    x29: u8,
-    x2A: u8,
-    x2B: u8,
-    x2C: u8,
-    x2D: u8,
-    x2E: u8,
-    collision_kind: u8,
-    receiver_part_id: u8,
-    collider_part_id: u8,
-    receiver_id: u8,
-    collider_id: u8,
-    x34: u8,
-    x35: bool
 }
 
 #[skyline::hook(offset = 0x10d7400)]

@@ -523,7 +523,6 @@ unsafe extern "C" fn lucina_specialairhi_exp(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn lucina_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, 1);
         JostleModule::set_status(agent.module_accessor, false);
         KineticModule::unable_energy_all(agent.module_accessor);
         if VarModule::is_flag(agent.module_accessor, yu::instance::flag::ROMAN_ON_HIT) {

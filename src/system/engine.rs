@@ -11,7 +11,7 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
 
 // Turns off Autoturn for Ryu, Ken, Terry, and Kazuya
 #[skyline::hook(offset = 0x69a6c0)]
-unsafe fn autoturn_handler(_fighter: &mut Fighter, _some_bool: bool, _some_int: i32, _some_uint: u32) -> f32 {
+unsafe fn autoturn_handler(_module_accessor: *mut BattleObjectModuleAccessor, _some_bool: bool, _some_int: i32, _some_uint: u32) -> f32 {
     0.0
 }
 

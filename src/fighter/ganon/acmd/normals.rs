@@ -166,6 +166,10 @@ unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn ganon_attackhi3_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ganon_appeal_l01"));
+    }
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ganon_attack06"));

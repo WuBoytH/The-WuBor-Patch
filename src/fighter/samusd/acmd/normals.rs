@@ -63,7 +63,7 @@ unsafe extern "C" fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, false, 0);
-        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new_raw(0x03dbd0dc6a), false, 0.0);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new("s4s"), false, 0.0);
     }
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);

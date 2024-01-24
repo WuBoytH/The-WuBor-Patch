@@ -275,7 +275,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x113434cb66),
+                Hash40::new("sys_shield_damage"),
                 Hash40::new("throw"),
                 &ZERO_VECTOR,
                 &ZERO_VECTOR,

@@ -127,7 +127,7 @@ unsafe extern "C" fn status_damageflyreflectlr(fighter: &mut L2CFighterCommon) -
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_damage_fly_chk_uniq as *const () as _));
     SoundModule::play_se(
         fighter.module_accessor,
-        Hash40::new_raw(0x157ce9b678),
+        Hash40::new("se_common_down_soil_s"),
         true,
         false,
         false,

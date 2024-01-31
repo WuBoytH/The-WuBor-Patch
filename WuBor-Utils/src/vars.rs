@@ -897,3 +897,11 @@ pub mod wario {
         }
     }
 }
+
+pub mod yoshi {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_HOP : i32 = 0x1150;
+        }
+    }
+}

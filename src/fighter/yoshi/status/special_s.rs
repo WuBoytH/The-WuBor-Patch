@@ -35,11 +35,7 @@ unsafe extern "C" fn yoshi_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CV
 
 unsafe extern "C" fn yoshi_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let y_spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_spd_mul"));
-    let y_spd_add = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_spd_add"));
-    let y_up_spd_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_up_spd_max"));
-    let y_spd_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_spd_max"));
     let y_acl = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_acl"));
-    let hop_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("hop_max")) as i32;
     let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
     let x_spd_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("x_spd_max_mul"));
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -47,26 +43,12 @@ unsafe extern "C" fn yoshi_special_s_init(fighter: &mut L2CFighterCommon) -> L2C
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
     else {
-        let hop_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_YOSHI_INSTANCE_WORK_ID_INT_HOP_COUNT);
-        let hop_speed = if hop_count < hop_max {
-            if hop_count != 0 {
-                WorkModule::get_float(fighter.module_accessor, *FIGHTER_YOSHI_INSTANCE_WORK_ID_FLOAT_HOP_SPEED)
-            }
-            else {
-                y_spd_add
-            }
-        }
-        else {
-            0.0
-        };
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let mut speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         speed_y *= y_spd_mul;
-        speed_y += hop_speed;
-        speed_y = speed_y.min(y_up_spd_max);
         sv_kinetic_energy!(
             set_speed,
             fighter,
@@ -79,21 +61,6 @@ unsafe extern "C" fn yoshi_special_s_init(fighter: &mut L2CFighterCommon) -> L2C
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -y_acl
         );
-        sv_kinetic_energy!(
-            set_stable_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            y_spd_max
-        );
-        sv_kinetic_energy!(
-            set_limit_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            y_up_spd_max
-        );
-        let hop_y_spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("hop_y_spd_mul"));
-        WorkModule::set_float(fighter.module_accessor, hop_speed * hop_y_spd_mul, *FIGHTER_YOSHI_INSTANCE_WORK_ID_FLOAT_HOP_SPEED);
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_YOSHI_INSTANCE_WORK_ID_INT_HOP_COUNT);
         sv_kinetic_energy!(
             set_stable_speed,
             fighter,
@@ -110,10 +77,10 @@ unsafe extern "C" fn yoshi_special_s_main(fighter: &mut L2CFighterCommon) -> L2C
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_YOSHI_STATUS_SPECIAL_HI_FLAG_EGG_SHOOT);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_YOSHI_STATUS_SPECIAL_HI_WORK_INT_EGG_COUNT);
     let motion = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        hash40("special_hi")
+        hash40("special_s")
     }
     else {
-        hash40("special_air_hi")
+        hash40("special_air_s")
     };
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -180,7 +147,7 @@ unsafe extern "C" fn yoshi_special_s_main_loop(fighter: &mut L2CFighterCommon) -
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
-                Hash40::new("special_hi"),
+                Hash40::new("special_s"),
                 -1.0,
                 1.0,
                 0.0,
@@ -202,7 +169,7 @@ unsafe extern "C" fn yoshi_special_s_main_loop(fighter: &mut L2CFighterCommon) -
             );
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
-                Hash40::new("special_air_hi"),
+                Hash40::new("special_air_s"),
                 -1.0,
                 1.0,
                 0.0,
@@ -215,7 +182,47 @@ unsafe extern "C" fn yoshi_special_s_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-unsafe extern "C" fn yoshi_special_s_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn yoshi_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, yoshi::status::flag::SPECIAL_S_HOP) {
+        VarModule::off_flag(fighter.module_accessor, yoshi::status::flag::SPECIAL_S_HOP);
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.set_situation(SITUATION_KIND_AIR.into());
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_air_s"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            1.5
+        );
+        let y_acl = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_acl"));
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -y_acl
+        );
+        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+        let x_spd_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("x_spd_max_mul"));
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_speed_x_stable * x_spd_max_mul,
+            0.0
+        );
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    }
     0.into()
 }
 

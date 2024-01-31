@@ -34,10 +34,56 @@ unsafe extern "C" fn yoshi_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_specialsloop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_specials(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 0.85);
+    frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 43, 5.5, 0.0, 5.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 32, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        JostleModule::set_status(agent.module_accessor, false);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_YOSHI_STATUS_SPECIAL_HI_FLAG_EGG_APPEAR);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_YOSHI_STATUS_SPECIAL_HI_FLAG_EGG_SHOOT);
+        VarModule::on_flag(agent.module_accessor, yoshi::status::flag::SPECIAL_S_HOP);
+    }
+    macros::FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn yoshi_specials_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 4, 10.5, -11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 360, true);
+    }
+    frame(agent.lua_state_agent, 16.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FLIP(agent, Hash40::new("sys_smash_flash"), Hash40::new("sys_smash_flash"), Hash40::new("top"), 2, 20, 9, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        macros::LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+unsafe extern "C" fn yoshi_specials_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 19.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_yoshi_special_h01"));
+    }
+}
+
+unsafe extern "C" fn yoshi_specials_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_lightthrow4item"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 28.0);
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
     }
 }
 
@@ -46,5 +92,13 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.game_acmd("game_specialairn", yoshi_specialn);
 
-    agent.game_acmd("game_specialsloop", yoshi_specialsloop);
+    agent.game_acmd("game_specials", yoshi_specials);
+    agent.effect_acmd("effect_specials", yoshi_specials_eff);
+    agent.sound_acmd("sound_specials", yoshi_specials_snd);
+    agent.expression_acmd("expression_specials", yoshi_specials_exp);
+
+    agent.game_acmd("game_specialairs", yoshi_specials);
+    agent.effect_acmd("effect_specialairs", yoshi_specials_eff);
+    agent.sound_acmd("sound_specialairs", yoshi_specials_snd);
+    agent.expression_acmd("expression_specialairs", yoshi_specials_exp);
 }

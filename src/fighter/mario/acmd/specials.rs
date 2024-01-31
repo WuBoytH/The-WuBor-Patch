@@ -225,7 +225,7 @@ unsafe extern "C" fn mario_groundpoundfall(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn mario_groundpoundfall_eff(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 1, -90, 0, 0, 1, true);
         }
@@ -300,14 +300,14 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.expression_acmd("expression_speciallwjump", mario_longjump_exp);
 
     agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_snd);
-    agent.sound_acmd("sound_speciallwlanding", mario_longjumpland_eff);
+    agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_eff);
     agent.expression_acmd("expression_speciallwlanding", mario_longjumpland_exp);
 
     agent.game_acmd("game_specialairlwstart", mario_groundpoundstart);
     agent.effect_acmd("effect_specialairlwstart", mario_groundpoundstart_snd);
 
     agent.game_acmd("game_specialairlwfall", mario_groundpoundfall);
-    agent.sound_acmd("sound_specialairlwfall", mario_groundpoundfall_eff);
+    agent.effect_acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
     agent.expression_acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
 
     agent.game_acmd("game_specialairlwlanding", mario_groundpoundland);

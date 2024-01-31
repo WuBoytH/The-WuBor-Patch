@@ -96,7 +96,7 @@ unsafe extern "C" fn bayonetta_attack100(agent: &mut L2CAgentBase) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2b7cb92b79), *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, true, true, 10);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
     }
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 2.0);
         bayonetta_attack100_inner(agent);
         frame(agent.lua_state_agent, 6.0);

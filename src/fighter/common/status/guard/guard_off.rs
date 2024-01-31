@@ -95,9 +95,6 @@ unsafe extern "C" fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L
     // && 0.0 < anim_cancel_frame {
     //     motion_rate = anim_cancel_frame / guard_off_cancel_frame as f32;
     // }
-    if VarModule::is_flag(fighter.module_accessor, guard::flag::ADD_BUFFER) {
-        ControlModule::set_command_life_extend(fighter.module_accessor, guard_off_cancel_frame as u8);
-    }
     let guard_off_enable_shield_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_enable_shield_frame"));
     let disable_guard_escape_frame = guard_off_cancel_frame + guard_off_enable_shield_frame;
     WorkModule::set_int(fighter.module_accessor, disable_guard_escape_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME);
@@ -125,6 +122,12 @@ unsafe extern "C" fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1:
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe extern "C" fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let cat1_reserve = VarModule::get_int(fighter.module_accessor, guard::int::GUARD_OFF_RESERVE_CAT1);
+        if cat1_reserve != 0 {
+            let cat1 = fighter.global_table[CMD_CAT1].get_i32() | cat1_reserve;
+            fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1));
+            VarModule::set_int(fighter.module_accessor, guard::int::GUARD_OFF_RESERVE_CAT1, 0);
+        }
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return true.into();
         }
@@ -175,9 +178,6 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
-    if VarModule::is_flag(fighter.module_accessor, guard::flag::ADD_BUFFER) {
-        ControlModule::set_command_life_extend(fighter.module_accessor, 0);
-    }
     0.into()
 }
 

@@ -8,12 +8,9 @@ unsafe extern "C" fn dolly_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn dolly_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        VarModule::set_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);
-    }
     if dolly_hit_cancel(fighter).get_i32() == 0
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
-        if VarModule::get_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT) > 0
+        if VarModule::get_int(fighter.module_accessor, dolly::status::int::D_TILT_CHAIN_COUNT) > 0
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
             let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
@@ -40,10 +37,10 @@ unsafe extern "C" fn dolly_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
         && FGCModule::chain_cancels(fighter,
             *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,
             true,
-            dolly::instance::int::D_TILT_CHAIN_COUNT,
+            dolly::status::int::D_TILT_CHAIN_COUNT,
             1
         ).get_bool() {
-            let count = VarModule::get_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT);
+            let count = VarModule::get_int(fighter.module_accessor, dolly::status::int::D_TILT_CHAIN_COUNT);
             let mot = match count {
                 1 => Hash40::new("attack_lw32"),
                 _ => Hash40::new("attack_lw3")
@@ -66,14 +63,6 @@ unsafe extern "C" fn dolly_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     1.into()
 }
 
-unsafe extern "C" fn dolly_attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-        VarModule::set_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);
-    }
-    fighter.status_end_AttackLw3()
-}
-
 pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_main);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_end);
 }

@@ -327,7 +327,7 @@ unsafe extern "C" fn sub_damage_uniq_process_mainstop(fighter: &mut L2CFighterCo
 
     // if StopModule::is_damage(fighter.module_accessor) {
     //     fighter.clear_lua_stack();
-    //     lua_args!(fighter, Hash40::new_raw(0x8a6df7656));
+    //     lua_args!(fighter, Hash40::new("absolute"));
     //     sv_information::damage_log_value(fighter.lua_state_agent);
     //     if !fighter.pop_lua_stack(1).get_bool() {
     //         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP) {
@@ -373,7 +373,7 @@ unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         }
         fighter.clear_lua_stack();
-        lua_args!(fighter, Hash40::new_raw(0x8a6df7656));
+        lua_args!(fighter, Hash40::new("absolute"));
         sv_information::damage_log_value(fighter.lua_state_agent);
         if !fighter.pop_lua_stack(1).get_bool() {
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP) {
@@ -431,7 +431,7 @@ unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
     }
     // else {
     //     fighter.clear_lua_stack();
-    //     lua_args!(fighter, Hash40::new_raw(0x8a6df7656));
+    //     lua_args!(fighter, Hash40::new("absolute"));
     //     sv_information::damage_log_value(fighter.lua_state_agent);
     //     if !fighter.pop_lua_stack(1).get_bool() {
     //         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PARALYZE_STOP) {

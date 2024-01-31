@@ -708,10 +708,10 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.sound_acmd("sound_speciallwspecials", marth_speciallwspecials_snd);
     agent.expression_acmd("expression_speciallwspecials", marth_speciallwspecials_exp);
 
-    agent.game_acmd("game_specialairlwspecials", marth_speciallwspecialairs);
-    agent.effect_acmd("effect_specialairlwspecials", marth_speciallwspecialairs_eff);
-    agent.sound_acmd("sound_specialairlwspecials", marth_speciallwspecialairs_snd);
-    agent.expression_acmd("expression_specialairlwspecials", marth_speciallwspecialairs_exp);
+    agent.game_acmd("game_speciallwspecialairs", marth_speciallwspecialairs);
+    agent.effect_acmd("effect_speciallwspecialairs", marth_speciallwspecialairs_eff);
+    agent.sound_acmd("sound_speciallwspecialairs", marth_speciallwspecialairs_snd);
+    agent.expression_acmd("expression_speciallwspecialairs", marth_speciallwspecialairs_exp);
 
     agent.game_acmd("game_speciallwspecials2start", marth_speciallwspecials2start);
     agent.effect_acmd("effect_speciallwspecials2start", marth_speciallwspecials2start_eff);

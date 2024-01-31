@@ -41,12 +41,12 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             rockman_kill_charge(module_accessor);
         }
         else if !VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_CHARGING) {
-            if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
                 VarModule::on_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_CHARGING);
             }
         }
         else {
-            if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::get_button(module_accessor) >> 1 & 1 == 0 {
                 if !VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
                     rockman_kill_charge(module_accessor);
                 }
@@ -132,9 +132,9 @@ unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleOb
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
-    if MiscModule::is_damage_check(module_accessor, false) {
-        return false;
-    }
+    // if MiscModule::is_damage_check(module_accessor, false) {
+    //     return false;
+    // }
     let status = StatusModule::status_kind(module_accessor);
     ![
         *FIGHTER_STATUS_KIND_DEAD,

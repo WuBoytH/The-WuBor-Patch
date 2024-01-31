@@ -169,6 +169,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT);
+        VarModule::inc_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
         // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() == false {
         //     CancelModule::enable_cancel(fighter.module_accessor);
         //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK);
@@ -274,7 +275,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x113434cb66),
+                Hash40::new("sys_shield_damage"),
                 Hash40::new("throw"),
                 &ZERO_VECTOR,
                 &ZERO_VECTOR,
@@ -329,12 +330,16 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
         let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
         ColorBlendModule::set_last_attack_direction(fighter.module_accessor, &Vector3f{x: -shield_lr, y: 0.0, z: 0.0});
         EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
-        if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON {
+        let just_shield_count = VarModule::get_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
+        if just_shield_count == 1 {
             EffectModule::req_screen(fighter.module_accessor, Hash40::new("just_shield_screen"), false, false, false);
         }
         let fighter_kind = fighter.global_table[KIND].get_i32();
         let se = FighterUtil::get_just_shield_se(fighter_kind);
-        SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0));
+        let se_handle = SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0)) as i32;
+        if just_shield_count > 1 {
+            SoundModule::set_se_vol(fighter.module_accessor, se_handle, 0.7, 0);
+        }
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_GuardDamageUniq(false.into());
@@ -453,6 +458,29 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighte
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_exitStatus_common)]
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighter: &mut L2CFighterCommon) {
+    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+    let type_of_guard = FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) as i32;
+    ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            // Extends intangibiltiy for X frames into the next action.
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 8, 0);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        }
+        EffectModule::remove_common(fighter.module_accessor, Hash40::new("just_shield"));
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {
+                ModelModule::disable_gold_eye(fighter.module_accessor);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
+            }
+        }
+        ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -461,7 +489,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_guarddamage_common,
             sub_guarddamageuniq,
             status_guarddamage_main,
-            sub_ftstatusuniqprocessguarddamage_execstatus_common
+            sub_ftstatusuniqprocessguarddamage_execstatus_common,
+            sub_ftstatusuniqprocessguarddamage_exitstatus_common
         );
     }
 }

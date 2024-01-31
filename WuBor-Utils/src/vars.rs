@@ -76,7 +76,6 @@ pub mod fighter {
             // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
             // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
             pub const JUMP_FROM_SQUAT_COUNT_STATUS : i32 = 0x000B;
-            pub const GUARD_TRIGGER : i32 = 0x000C;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;
@@ -134,6 +133,12 @@ pub mod appeal {
     pub mod int64 {
         pub const ACTION_MOT : i32 = 0x1050;
         pub const LOOP_MOT : i32 = 0x1051;
+    }
+}
+
+pub mod attack {
+    pub mod flag {
+        pub const INVALID_HOLD_INPUT : i32 = 0x1051;
     }
 }
 
@@ -197,6 +202,8 @@ pub mod guard {
     }
     pub mod int {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
+        pub const GUARD_OFF_RESERVE_CAT1 : i32 = 0x1051;
+        pub const JUST_SHIELD_COUNT : i32 = 0x1052;
     }
 }
 
@@ -263,7 +270,6 @@ pub mod dolly {
             pub const RISING_FORCE : i32 = 0x0101;
         }
         pub mod int {
-            pub const D_TILT_CHAIN_COUNT : i32 = 0x0100;
             pub const SUPER_SPECIAL_AURA : i32 = 0x0101;
             pub const SUPER_SPECIAL_AURA2 : i32 = 0x0102;
         }
@@ -275,14 +281,17 @@ pub mod dolly {
         pub mod flag {
             pub const DISABLE_METER_GAIN : i32 = 0x1100;
             pub const IS_SPECIAL_CANCEL : i32 = 0x1101;
-
+            
             pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
-
+            
             pub const SPECIAL_N_FEINT : i32 = 0x1150;
-
+            
             pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1150;
             pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1151;
             pub const SPECIAL_LW_BREAK : i32 = 0x1152;
+        }
+        pub mod int {
+            pub const D_TILT_CHAIN_COUNT : i32 = 0x1150;
         }
     }
 }
@@ -494,7 +503,6 @@ pub mod yu { // lucina
             pub const SHADOW_FRENZY : i32 = 0x0102;
             pub const ROMAN_ON_HIT : i32 = 0x0103;
             pub const HEROIC_GRAB : i32 = 0x0104;
-            pub const COMMAND : i32 = 0x0105;
         }
         pub mod int {
             pub const SP_LEVEL : i32 = 0x0100;
@@ -524,6 +532,10 @@ pub mod yu { // lucina
         pub mod float {
             pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1150;
         }
+
+        pub const SPECIAL_N_COMMAND       : i32 = 0x1EB + 0;
+        pub const SPECIAL_S_COMMAND       : i32 = 0x1EB + 1;
+        pub const SPECIAL_HI_COMMAND      : i32 = 0x1EB + 2;
     }
 
     pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};

@@ -50,7 +50,7 @@ unsafe extern "C" fn duckhunt_attack13(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn duckhunt_attack100(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 2.0);
         duckhunt_attack100_inner(agent);
         frame(agent.lua_state_agent, 4.0);

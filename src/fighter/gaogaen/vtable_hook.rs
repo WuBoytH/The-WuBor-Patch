@@ -1,19 +1,16 @@
-#![allow(non_snake_case)]
-
 use {
     smash::{
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::{wua_bind::*, vars::*, app::*}
 };
 
 #[skyline::hook(offset = 0xab9950)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
-    let object_id = object.battle_object_id;
-    let module_accessor = sv_battle_object::module_accessor(object_id);
+    let module_accessor = (*object).module_accessor;
     let collision_log = log as *mut CollisionLogScuffed;
     let status = StatusModule::status_kind(module_accessor);
     if [
@@ -27,30 +24,6 @@ pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, l
         return;
     }
     original!()(vtable, fighter, log)
-}
-
-#[repr(C)]
-pub struct CollisionLogScuffed {
-    x00: *const u64,
-    x08: *const u64,
-    location: smash_rs::cpp::simd::Vector3,
-    x20: u8,
-    x21: u8,
-    x22: u8,
-    x23: u8,
-    opponent_object_id: u32,
-    x28: u8,
-    x29: u8,
-    x2A: u8,
-    x2B: u8,
-    x2C: u8,
-    x2D: u8,
-    x2E: u8,
-    collision_kind: u8,
-    receiver_part_id: u8,
-    collider_part_id: u8,
-    receiver_id: u8,
-    collider_id: u8,
 }
 
 pub fn install() {

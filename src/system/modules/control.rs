@@ -141,7 +141,7 @@ use {
 fn exec_internal(module_accessor: *mut BattleObjectModuleAccessor) {
     unsafe {
         // Prevent game from thinking you are inputting a flick on the frame the cstick stops overriding left stick
-        if Buttons::from_bits_unchecked(ControlModule::get_release(module_accessor)).intersects(Buttons::CStickOverride) {
+        if Buttons::from_bits_retain(ControlModule::get_release(module_accessor)).intersects(Buttons::CStickOverride) {
             ControlModule::reset_flick_x(module_accessor);
             ControlModule::reset_flick_y(module_accessor);
         }
@@ -194,6 +194,17 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x17527e0).nop();
     skyline::patching::Patch::in_text(0x17527e4).nop();
     skyline::patching::Patch::in_text(0x17527e8).nop();
+
+    // Custom buffer-state handling
+    // Always uses the hitlag handling that cat4 uses
+    skyline::patching::Patch::in_text(0x6bd428).nop();
+    skyline::patching::Patch::in_text(0x6bd484).nop();
+    // Stubs setting the buffer lifetime to 2 if held
+    skyline::patching::Patch::in_text(0x6bd51c).nop();
+    skyline::patching::Patch::in_text(0x6bd598).nop();
+    // Stubs adding 1 to the buffer when released
+    skyline::patching::Patch::in_text(0x6bd4f8).nop();
+    skyline::patching::Patch::in_text(0x6bd5b4).nop();
 
     skyline::install_hooks!(
         // get_command_flag_cat_replace,

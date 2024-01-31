@@ -3,6 +3,8 @@ mod frame;
 mod status;
 mod agent_init;
 
+mod waterdragon;
+
 pub fn install() {
     let agent = &mut smashline::Agent::new("kamui");
     acmd::install(agent);
@@ -10,4 +12,6 @@ pub fn install() {
     status::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    waterdragon::install();
 }

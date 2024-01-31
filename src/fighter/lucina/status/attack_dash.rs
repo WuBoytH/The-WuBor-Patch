@@ -47,8 +47,7 @@ unsafe extern "C" fn lucina_attack_dash_main_loop(fighter: &mut L2CFighterCommon
     }
     if VarModule::is_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
     && VarModule::is_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
-        VarModule::on_flag(fighter.module_accessor, yu::instance::flag::COMMAND);
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
+        fighter.change_status(yu::status::SPECIAL_HI_COMMAND.into(), true.into());
         return 1.into();
     }
     fighter.status_AttackDash_Main()

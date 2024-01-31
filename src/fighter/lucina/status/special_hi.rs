@@ -1,7 +1,8 @@
 use crate::imports::status_imports::*;
+use super::super::helper::*;
 
-unsafe extern "C" fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
+unsafe extern "C" fn lucina_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let turn = if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != yu::status::SPECIAL_HI_COMMAND {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
     else {
@@ -34,7 +35,7 @@ unsafe extern "C" fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-unsafe extern "C" fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -64,13 +65,13 @@ unsafe extern "C" fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2
     let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame"));
     WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     if !StopModule::is_stop(fighter.module_accessor) {
-        lucina_specialhi_substatus(fighter);
+        lucina_special_hi_substatus(fighter);
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucina_specialhi_substatus as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialhi_main_loop as *const () as _))
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucina_special_hi_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_special_hi_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specialhi_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_hi_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE) {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.set_situation(SITUATION_KIND_AIR.into());
@@ -84,7 +85,7 @@ unsafe extern "C" fn lucina_specialhi_substatus(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -110,12 +111,39 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-unsafe extern "C" fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_hi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+unsafe extern "C" fn lucina_special_hi_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let original = smashline::original_status(smashline::Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI);
+    original(fighter)
+}
+
+unsafe extern "C" fn lucina_special_hi_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if spent_meter(fighter.module_accessor, false) {
+        let spent = VarModule::get_float(fighter.module_accessor, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.module_accessor, yu::status::flag::IS_EX);
+        sp_diff_checker(fighter.module_accessor);
+    }
+    lucina_special_hi_main(fighter)
+}
+
+unsafe extern "C" fn lucina_special_hi_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let original = smashline::original_status(smashline::End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI);
+    original(fighter)
+}
+
 pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_main);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_exec);
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_special_hi_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_special_hi_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_special_hi_exec);
+
+    agent.status(smashline::Pre, yu::status::SPECIAL_HI_COMMAND, lucina_special_hi_pre);
+    agent.status(smashline::Init, yu::status::SPECIAL_HI_COMMAND, lucina_special_hi_command_init);
+    agent.status(smashline::Main, yu::status::SPECIAL_HI_COMMAND, lucina_special_hi_command_main);
+    agent.status(smashline::End, yu::status::SPECIAL_HI_COMMAND, lucina_special_hi_command_end);
 }

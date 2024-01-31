@@ -1,7 +1,8 @@
 use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn lucina_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
+    let is_turn = if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != yu::status::SPECIAL_S_COMMAND {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
     else {
@@ -73,7 +74,40 @@ unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
+unsafe extern "C" fn lucina_special_s_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let original = smashline::original_status(smashline::Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S);
+    original(fighter)
+}
+
+unsafe extern "C" fn lucina_special_s_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if spent_meter(fighter.module_accessor, false) {
+        let spent = VarModule::get_float(fighter.module_accessor, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.module_accessor, yu::status::flag::IS_EX);
+        sp_diff_checker(fighter.module_accessor);
+    }
+    lucina_special_s_main(fighter)
+}
+
+unsafe extern "C" fn lucina_special_s_command_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let original = smashline::original_status(smashline::Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S);
+    original(fighter)
+}
+
+unsafe extern "C" fn lucina_special_s_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let original = smashline::original_status(smashline::End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_S);
+    original(fighter)
+}
+
 pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, lucina_special_s_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, lucina_special_s_main);
+
+    agent.status(smashline::Pre, yu::status::SPECIAL_S_COMMAND, lucina_special_s_pre);
+    agent.status(smashline::Init, yu::status::SPECIAL_S_COMMAND, lucina_special_s_command_init);
+    agent.status(smashline::Main, yu::status::SPECIAL_S_COMMAND, lucina_special_s_command_main);
+    agent.status(smashline::Exec, yu::status::SPECIAL_S_COMMAND, lucina_special_s_command_exec);
+    agent.status(smashline::End, yu::status::SPECIAL_S_COMMAND, lucina_special_s_command_end);
 }

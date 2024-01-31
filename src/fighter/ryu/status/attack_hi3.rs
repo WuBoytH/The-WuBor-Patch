@@ -1,16 +1,14 @@
-use {
-    crate::imports::status_imports::*
-};
+use crate::imports::status_imports::*;
+use super::super::helper::*;
 
-unsafe extern "C" fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::JUMP_CANCEL) {
-        FGCModule::jump_cancel_check_hit(fighter, false);
+unsafe extern "C" fn ryu_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT) {
+        VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
-    0.into()
+    ryu_attack_hi3_main_inner(fighter)
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_attackhi3_exec
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, ryu_attack_hi3_main);
 }

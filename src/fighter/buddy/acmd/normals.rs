@@ -62,7 +62,7 @@ unsafe extern "C" fn buddy_attack13(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn buddy_attack100(agent: &mut L2CAgentBase) {
-    for _ in 0..i32::MAX {
+    loop {
         frame(agent.lua_state_agent, 1.0);
         buddy_attack100_inner(agent);
         frame(agent.lua_state_agent, 3.0);

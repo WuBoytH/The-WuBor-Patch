@@ -1,4 +1,5 @@
 use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn lucina_special_s4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -30,6 +31,14 @@ unsafe extern "C" fn lucina_special_s4_pre(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn lucina_special_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if spent_meter_super(fighter.module_accessor) {
+        let spent = VarModule::get_float(fighter.module_accessor, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.module_accessor, yu::status::flag::IS_EX);
+        sp_diff_checker(fighter.module_accessor);
+    }
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,

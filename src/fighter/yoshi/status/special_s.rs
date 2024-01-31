@@ -68,6 +68,11 @@ unsafe extern "C" fn yoshi_special_s_init(fighter: &mut L2CFighterCommon) -> L2C
             air_speed_x_stable * x_spd_max_mul,
             -1.0
         );
+        sv_kinetic_energy!(
+            controller_set_accel_x_add,
+            fighter,
+            0.01
+        );
     }
     0.into()
 }
@@ -167,6 +172,11 @@ unsafe extern "C" fn yoshi_special_s_main_loop(fighter: &mut L2CFighterCommon) -
                 air_speed_x_stable * x_spd_max_mul,
                 0.0
             );
+            sv_kinetic_energy!(
+                controller_set_accel_x_add,
+                fighter,
+                0.01
+            );
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
                 Hash40::new("special_air_s"),
@@ -220,6 +230,11 @@ unsafe extern "C" fn yoshi_special_s_exec(fighter: &mut L2CFighterCommon) -> L2C
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
             air_speed_x_stable * x_spd_max_mul,
             0.0
+        );
+        sv_kinetic_energy!(
+            controller_set_accel_x_add,
+            fighter,
+            0.01
         );
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     }

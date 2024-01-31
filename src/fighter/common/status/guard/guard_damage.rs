@@ -169,6 +169,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT);
+        VarModule::inc_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
         // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() == false {
         //     CancelModule::enable_cancel(fighter.module_accessor);
         //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK);
@@ -274,7 +275,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
-                Hash40::new_raw(0x113434cb66),
+                Hash40::new("sys_shield_damage"),
                 Hash40::new("throw"),
                 &ZERO_VECTOR,
                 &ZERO_VECTOR,
@@ -329,12 +330,16 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
         let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
         ColorBlendModule::set_last_attack_direction(fighter.module_accessor, &Vector3f{x: -shield_lr, y: 0.0, z: 0.0});
         EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
-        if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON {
+        let just_shield_count = VarModule::get_int(fighter.module_accessor, guard::int::JUST_SHIELD_COUNT);
+        if just_shield_count == 1 {
             EffectModule::req_screen(fighter.module_accessor, Hash40::new("just_shield_screen"), false, false, false);
         }
         let fighter_kind = fighter.global_table[KIND].get_i32();
         let se = FighterUtil::get_just_shield_se(fighter_kind);
-        SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0));
+        let se_handle = SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0)) as i32;
+        if just_shield_count > 1 {
+            SoundModule::set_se_vol(fighter.module_accessor, se_handle, 0.7, 0);
+        }
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_GuardDamageUniq(false.into());

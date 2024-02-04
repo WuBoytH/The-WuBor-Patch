@@ -28,7 +28,7 @@ unsafe extern "C" fn sonic_catchattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", sonic_catchattack);
-    agent.effect_acmd("effect_catchattack", sonic_catchattack_eff);
-    agent.expression_acmd("expression_catchattack", sonic_catchattack_exp);
+    agent.acmd("game_catchattack", sonic_catchattack);
+    agent.acmd("effect_catchattack", sonic_catchattack_eff);
+    agent.acmd("expression_catchattack", sonic_catchattack_exp);
 }

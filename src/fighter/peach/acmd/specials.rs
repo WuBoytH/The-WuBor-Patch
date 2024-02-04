@@ -59,7 +59,7 @@ unsafe extern "C" fn peach_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhistart", peach_specialhistart);
+    agent.acmd("game_specialhistart", peach_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", peach_specialhistart);
+    agent.acmd("game_specialairhistart", peach_specialhistart);
 }

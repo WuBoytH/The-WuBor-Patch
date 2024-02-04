@@ -229,13 +229,13 @@ unsafe extern "C" fn elight_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack100end", elight_attack100end);
+    agent.acmd("game_attack100end", elight_attack100end);
 
-    agent.game_acmd("game_attackdash", elight_attackdash);
+    agent.acmd("game_attackdash", elight_attackdash);
 
-    agent.game_acmd("game_attacks3", elight_attacks3);
+    agent.acmd("game_attacks3", elight_attacks3);
 
-    agent.game_acmd("game_attackhi3", elight_attackhi3);
+    agent.acmd("game_attackhi3", elight_attackhi3);
 
-    agent.game_acmd("game_attacklw3", elight_attacklw3);
+    agent.acmd("game_attacklw3", elight_attacklw3);
 }

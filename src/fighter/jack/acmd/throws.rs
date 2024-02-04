@@ -97,11 +97,11 @@ unsafe extern "C" fn jack_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwf", jack_throwf);
+    agent.acmd("game_throwf", jack_throwf);
 
-    agent.game_acmd("game_throwb", jack_throwb);
+    agent.acmd("game_throwb", jack_throwb);
 
-    agent.game_acmd("game_throwhi", jack_throwhi);
+    agent.acmd("game_throwhi", jack_throwhi);
 
-    agent.game_acmd("game_throwlw", jack_throwlw);
+    agent.acmd("game_throwlw", jack_throwlw);
 }

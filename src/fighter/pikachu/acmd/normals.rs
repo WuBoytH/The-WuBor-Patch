@@ -69,9 +69,9 @@ unsafe extern "C" fn pikachu_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", pikachu_attack11);
+    agent.acmd("game_attack11", pikachu_attack11);
 
-    agent.game_acmd("game_attackhi3", pikachu_attackhi3);
+    agent.acmd("game_attackhi3", pikachu_attackhi3);
 
-    agent.game_acmd("game_attacks4", pikachu_attacks4);
+    agent.acmd("game_attacks4", pikachu_attacks4);
 }

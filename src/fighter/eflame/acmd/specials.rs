@@ -383,30 +383,30 @@ unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specials", eflame_specials);
+    agent.acmd("game_specials", eflame_specials);
 
-    agent.game_acmd("game_specialairs", eflame_specials);
+    agent.acmd("game_specialairs", eflame_specials);
 
-    agent.game_acmd("game_specialsflick", eflame_specials);
+    agent.acmd("game_specialsflick", eflame_specials);
 
-    agent.game_acmd("game_specialairsflick", eflame_specials);
+    agent.acmd("game_specialairsflick", eflame_specials);
 
-    agent.game_acmd("game_specialhistart", eflame_specialhistart);
-    agent.expression_acmd("expression_specialhistart", eflame_specialhistart_exp);
+    agent.acmd("game_specialhistart", eflame_specialhistart);
+    agent.acmd("expression_specialhistart", eflame_specialhistart_exp);
 
-    agent.game_acmd("game_specialairhistart", eflame_specialhistart);
-    agent.expression_acmd("expression_specialairhistart", eflame_specialairhistart_exp);
+    agent.acmd("game_specialairhistart", eflame_specialhistart);
+    agent.acmd("expression_specialairhistart", eflame_specialairhistart_exp);
 
-    agent.game_acmd("game_specialairhijump", eflame_specialairhijump);
-    agent.effect_acmd("effect_specialairhijump", eflame_specialairhijump_eff);
+    agent.acmd("game_specialairhijump", eflame_specialairhijump);
+    agent.acmd("effect_specialairhijump", eflame_specialairhijump_eff);
 
-    agent.game_acmd("game_speciallwattack", eflame_speciallwattack);
-    agent.effect_acmd("effect_speciallwattack", eflame_speciallwattack_eff);
-    agent.sound_acmd("sound_speciallwattack", eflame_speciallwattack_snd);
-    agent.expression_acmd("expression_speciallwattack", eflame_speciallwattack_exp);
+    agent.acmd("game_speciallwattack", eflame_speciallwattack);
+    agent.acmd("effect_speciallwattack", eflame_speciallwattack_eff);
+    agent.acmd("sound_speciallwattack", eflame_speciallwattack_snd);
+    agent.acmd("expression_speciallwattack", eflame_speciallwattack_exp);
 
-    agent.game_acmd("game_specialairlwattack", eflame_speciallwattack);
-    agent.effect_acmd("effect_specialairlwattack", eflame_speciallwattack_eff);
-    agent.sound_acmd("sound_specialairlwattack", eflame_specialairlwattack_snd);
-    agent.expression_acmd("expression_specialairlwattack", eflame_speciallwattack_exp);
+    agent.acmd("game_specialairlwattack", eflame_speciallwattack);
+    agent.acmd("effect_specialairlwattack", eflame_speciallwattack_eff);
+    agent.acmd("sound_specialairlwattack", eflame_specialairlwattack_snd);
+    agent.acmd("expression_specialairlwattack", eflame_speciallwattack_exp);
 }

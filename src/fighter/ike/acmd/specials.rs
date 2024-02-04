@@ -402,25 +402,25 @@ unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnend", ike_specialnend);
-    agent.effect_acmd("effect_specialnend", ike_specialnend_eff);
-    agent.sound_acmd("sound_specialnend", ike_specialnend_snd);
-    agent.expression_acmd("expression_specialnend", ike_specialnend_exp);
+    agent.acmd("game_specialnend", ike_specialnend);
+    agent.acmd("effect_specialnend", ike_specialnend_eff);
+    agent.acmd("sound_specialnend", ike_specialnend_snd);
+    agent.acmd("expression_specialnend", ike_specialnend_exp);
 
-    agent.game_acmd("game_specialairnend", ike_specialairnend);
-    agent.effect_acmd("effect_specialairnend", ike_specialairnend_eff);
-    agent.sound_acmd("sound_specialairnend", ike_specialairnend_snd);
-    agent.expression_acmd("expression_specialairnend", ike_specialairnend_exp);
+    agent.acmd("game_specialairnend", ike_specialairnend);
+    agent.acmd("effect_specialairnend", ike_specialairnend_eff);
+    agent.acmd("sound_specialairnend", ike_specialairnend_snd);
+    agent.acmd("expression_specialairnend", ike_specialairnend_exp);
 
-    agent.sound_acmd("sound_specialsdash", ike_specialsdash_snd);
+    agent.acmd("sound_specialsdash", ike_specialsdash_snd);
 
-    agent.game_acmd("game_specialsend", ike_specialsend);
+    agent.acmd("game_specialsend", ike_specialsend);
 
-    agent.game_acmd("game_specialsattack", ike_specialsattack);
-    agent.effect_acmd("effect_specialsattack", ike_specialsattack_eff);
-    agent.sound_acmd("sound_specialsattack", ike_specialsattack_snd);
+    agent.acmd("game_specialsattack", ike_specialsattack);
+    agent.acmd("effect_specialsattack", ike_specialsattack_eff);
+    agent.acmd("sound_specialsattack", ike_specialsattack_snd);
 
-    agent.game_acmd("game_specialairsattack", ike_specialsattack);
-    agent.effect_acmd("effect_specialairsattack", ike_specialsattack_eff);
-    agent.sound_acmd("sound_specialairsattack", ike_specialsattack_snd);
+    agent.acmd("game_specialairsattack", ike_specialsattack);
+    agent.acmd("effect_specialairsattack", ike_specialsattack_eff);
+    agent.acmd("sound_specialairsattack", ike_specialsattack_snd);
 }

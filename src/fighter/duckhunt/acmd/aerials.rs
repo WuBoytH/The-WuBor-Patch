@@ -117,11 +117,11 @@ unsafe extern "C" fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", duckhunt_attackairn);
+    agent.acmd("game_attackairn", duckhunt_attackairn);
 
-    agent.game_acmd("game_attackairf", duckhunt_attackairf);
+    agent.acmd("game_attackairf", duckhunt_attackairf);
 
-    agent.game_acmd("game_attackairhi", duckhunt_attackairhi);
+    agent.acmd("game_attackairhi", duckhunt_attackairhi);
 
-    agent.game_acmd("game_attackairlw", duckhunt_attackairlw);
+    agent.acmd("game_attackairlw", duckhunt_attackairlw);
 }

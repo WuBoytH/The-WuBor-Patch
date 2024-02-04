@@ -11,5 +11,5 @@ unsafe extern "C" fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_regular", pikachu_kaminari_regular);
+    agent.acmd("game_regular", pikachu_kaminari_regular);
 }

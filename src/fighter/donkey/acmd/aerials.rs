@@ -25,5 +25,5 @@ unsafe extern "C" fn donkey_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairb", donkey_attackairb);
+    agent.acmd("game_attackairb", donkey_attackairb);
 }

@@ -308,45 +308,45 @@ unsafe extern "C" fn brave_speciallw20(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi1", brave_specialhi1);
+    agent.acmd("game_specialhi1", brave_specialhi1);
 
-    agent.game_acmd("game_specialairhi1", brave_specialhi1);
+    agent.acmd("game_specialairhi1", brave_specialhi1);
 
-    agent.game_acmd("game_specialhi2", brave_specialhi2);
+    agent.acmd("game_specialhi2", brave_specialhi2);
 
-    agent.game_acmd("game_specialairhi2", brave_specialhi2);
+    agent.acmd("game_specialairhi2", brave_specialhi2);
 
-    agent.game_acmd("game_specialhi3", brave_specialhi3);
+    agent.acmd("game_specialhi3", brave_specialhi3);
 
-    agent.game_acmd("game_specialairhi3", brave_specialhi3);
+    agent.acmd("game_specialairhi3", brave_specialhi3);
 
-    agent.sound_acmd("sound_speciallw9", brave_speciallw9_snd);
+    agent.acmd("sound_speciallw9", brave_speciallw9_snd);
 
-    agent.sound_acmd("sound_specialairlw9", brave_speciallw9_snd);
+    agent.acmd("sound_specialairlw9", brave_speciallw9_snd);
 
-    agent.game_acmd("game_speciallw9end", brave_speciallw9end);
-    agent.effect_acmd("effect_speciallw9end", brave_speciallw9end_eff);
-    agent.sound_acmd("sound_speciallw9end", brave_speciallw9end_snd);
-    agent.expression_acmd("expression_speciallw9end", brave_speciallw9end_exp);
+    agent.acmd("game_speciallw9end", brave_speciallw9end);
+    agent.acmd("effect_speciallw9end", brave_speciallw9end_eff);
+    agent.acmd("sound_speciallw9end", brave_speciallw9end_snd);
+    agent.acmd("expression_speciallw9end", brave_speciallw9end_exp);
 
-    agent.game_acmd("game_specialairlw9end", brave_speciallw9end);
-    agent.effect_acmd("effect_specialairlw9end", brave_speciallw9end_eff);
-    agent.sound_acmd("sound_specialairlw9end", brave_speciallw9end_snd);
-    agent.expression_acmd("expression_specialairlw9end", brave_speciallw9end_exp);
+    agent.acmd("game_specialairlw9end", brave_speciallw9end);
+    agent.acmd("effect_specialairlw9end", brave_speciallw9end_eff);
+    agent.acmd("sound_specialairlw9end", brave_speciallw9end_snd);
+    agent.acmd("expression_specialairlw9end", brave_speciallw9end_exp);
 
-    agent.game_acmd("game_speciallw17", brave_speciallw17);
+    agent.acmd("game_speciallw17", brave_speciallw17);
 
-    agent.game_acmd("game_specialairlw17", brave_speciallw17);
+    agent.acmd("game_specialairlw17", brave_speciallw17);
 
-    agent.game_acmd("game_speciallw18", brave_speciallw18);
+    agent.acmd("game_speciallw18", brave_speciallw18);
 
-    agent.game_acmd("game_specialairlw18", brave_speciallw18);
+    agent.acmd("game_specialairlw18", brave_speciallw18);
 
-    agent.game_acmd("game_speciallw19", brave_speciallw19);
+    agent.acmd("game_speciallw19", brave_speciallw19);
 
-    agent.game_acmd("game_specialairlw19", brave_speciallw19);
+    agent.acmd("game_specialairlw19", brave_speciallw19);
 
-    agent.game_acmd("game_speciallw20", brave_speciallw20);
+    agent.acmd("game_speciallw20", brave_speciallw20);
 
-    agent.game_acmd("game_specialairlw20", brave_speciallw20);
+    agent.acmd("game_specialairlw20", brave_speciallw20);
 }

@@ -15,5 +15,5 @@ unsafe extern "C" fn lucario_qigong_shoot(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_shoot", lucario_qigong_shoot);
+    agent.acmd("game_shoot", lucario_qigong_shoot);
 }

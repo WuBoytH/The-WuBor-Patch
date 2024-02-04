@@ -131,11 +131,11 @@ unsafe extern "C" fn mariod_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi", mariod_specialhi);
+    agent.acmd("game_specialhi", mariod_specialhi);
 
-    agent.game_acmd("game_specialairhi", mariod_specialairhi);
+    agent.acmd("game_specialairhi", mariod_specialairhi);
 
-    agent.game_acmd("game_speciallw", mariod_speciallw);
+    agent.acmd("game_speciallw", mariod_speciallw);
 
-    agent.game_acmd("game_specialairlw", mariod_specialairlw);
+    agent.acmd("game_specialairlw", mariod_specialairlw);
 }

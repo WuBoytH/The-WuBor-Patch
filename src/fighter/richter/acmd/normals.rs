@@ -350,29 +350,29 @@ unsafe extern "C" fn richter_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", richter_attack11);
-    agent.effect_acmd("effect_attack11", richter_attack11_eff);
-    agent.sound_acmd("sound_attack11", richter_attack11_snd);
-    agent.expression_acmd("expressoin_attack11", richter_attack11_exp);
+    agent.acmd("game_attack11", richter_attack11);
+    agent.acmd("effect_attack11", richter_attack11_eff);
+    agent.acmd("sound_attack11", richter_attack11_snd);
+    agent.acmd("expressoin_attack11", richter_attack11_exp);
 
-    agent.game_acmd("game_attack12", richter_attack12);
-    agent.effect_acmd("effect_attack12", richter_attack12_eff);
-    agent.sound_acmd("sound_attack12", richter_attack12_snd);
-    agent.expression_acmd("expressoin_attack12", richter_attack12_exp);
+    agent.acmd("game_attack12", richter_attack12);
+    agent.acmd("effect_attack12", richter_attack12_eff);
+    agent.acmd("sound_attack12", richter_attack12_snd);
+    agent.acmd("expressoin_attack12", richter_attack12_exp);
 
-    agent.game_acmd("game_attack12f", richter_attack12f);
-    agent.effect_acmd("effect_attack12f", richter_attack12f_eff);
-    agent.sound_acmd("sound_attack12f", richter_attack12f_snd);
-    agent.expression_acmd("expressoin_attack12f", richter_attack12f_exp);
+    agent.acmd("game_attack12f", richter_attack12f);
+    agent.acmd("effect_attack12f", richter_attack12f_eff);
+    agent.acmd("sound_attack12f", richter_attack12f_snd);
+    agent.acmd("expressoin_attack12f", richter_attack12f_exp);
 
-    agent.game_acmd("game_attackdash", richter_attackdash);
+    agent.acmd("game_attackdash", richter_attackdash);
 
-    agent.game_acmd("game_attacks3", richter_attacks3);
-    agent.effect_acmd("effect_attacks3", richter_attacks3_eff);
+    agent.acmd("game_attacks3", richter_attacks3);
+    agent.acmd("effect_attacks3", richter_attacks3_eff);
 
-    agent.game_acmd("game_attackhi3", richter_attackhi3);
+    agent.acmd("game_attackhi3", richter_attackhi3);
 
-    agent.game_acmd("game_attacklw3", richter_attacklw3);
+    agent.acmd("game_attacklw3", richter_attacklw3);
 
-    agent.game_acmd("game_attacklw32", richter_attacklw32);
+    agent.acmd("game_attacklw32", richter_attacklw32);
 }

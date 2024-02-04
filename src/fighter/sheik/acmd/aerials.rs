@@ -49,7 +49,7 @@ unsafe extern "C" fn sheik_attackairf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", sheik_attackairn);
+    agent.acmd("game_attackairn", sheik_attackairn);
 
-    agent.game_acmd("game_attackairf", sheik_attackairf);
+    agent.acmd("game_attackairf", sheik_attackairf);
 }

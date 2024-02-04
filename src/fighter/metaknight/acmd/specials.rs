@@ -109,15 +109,15 @@ unsafe extern "C" fn metaknight_specialhiloop(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnstart", metaknight_specialnstart);
-    agent.effect_acmd("effect_specialnstart", metaknight_specialnstart_eff);
+    agent.acmd("game_specialnstart", metaknight_specialnstart);
+    agent.acmd("effect_specialnstart", metaknight_specialnstart_eff);
 
-    agent.game_acmd("game_specialairnstart", metaknight_specialnstart);
-    agent.effect_acmd("effect_specialairnstart", metaknight_specialnstart_eff);
+    agent.acmd("game_specialairnstart", metaknight_specialnstart);
+    agent.acmd("effect_specialairnstart", metaknight_specialnstart_eff);
 
-    agent.game_acmd("game_specialnspin", metaknight_specialnspin);
+    agent.acmd("game_specialnspin", metaknight_specialnspin);
 
-    agent.game_acmd("game_specialhi", metaknight_specialhi);
+    agent.acmd("game_specialhi", metaknight_specialhi);
 
-    agent.game_acmd("game_specialhiloop", metaknight_specialhiloop);
+    agent.acmd("game_specialhiloop", metaknight_specialhiloop);
 }

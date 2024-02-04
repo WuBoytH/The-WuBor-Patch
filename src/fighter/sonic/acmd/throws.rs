@@ -92,10 +92,10 @@ unsafe extern "C" fn sonic_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwf", sonic_throwf);
-    agent.effect_acmd("effect_throwf", sonic_throwf_eff);
-    agent.game_acmd("sound_throwf", sonic_throwf_snd);
-    agent.game_acmd("expression_throwf", sonic_throwf_exp);
+    agent.acmd("game_throwf", sonic_throwf);
+    agent.acmd("effect_throwf", sonic_throwf_eff);
+    agent.acmd("sound_throwf", sonic_throwf_snd);
+    agent.acmd("expression_throwf", sonic_throwf_exp);
 
-    agent.game_acmd("game_throwlw", sonic_throwlw);
+    agent.acmd("game_throwlw", sonic_throwlw);
 }

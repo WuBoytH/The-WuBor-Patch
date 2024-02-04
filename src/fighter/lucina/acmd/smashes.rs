@@ -91,9 +91,9 @@ unsafe extern "C" fn lucina_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", lucina_attacks4);
+    agent.acmd("game_attacks4", lucina_attacks4);
 
-    agent.game_acmd("game_attackhi4", lucina_attackhi4);
+    agent.acmd("game_attackhi4", lucina_attackhi4);
 
-    agent.game_acmd("game_attacklw4", lucina_attacklw4);
+    agent.acmd("game_attacklw4", lucina_attacklw4);
 }

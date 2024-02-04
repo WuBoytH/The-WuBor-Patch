@@ -55,15 +55,15 @@ unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_start", rockman_leafshield_start);
+    agent.acmd("game_start", rockman_leafshield_start);
 
-    agent.game_acmd("game_startreverse", rockman_leafshield_start);
+    agent.acmd("game_startreverse", rockman_leafshield_start);
 
-    agent.game_acmd("game_shield", rockman_leafshield_shield);
+    agent.acmd("game_shield", rockman_leafshield_shield);
 
-    agent.game_acmd("game_shieldreverse", rockman_leafshield_shield);
+    agent.acmd("game_shieldreverse", rockman_leafshield_shield);
 
-    agent.game_acmd("game_fly", rockman_leafshield_fly);
+    agent.acmd("game_fly", rockman_leafshield_fly);
 
-    agent.game_acmd("game_flyreverse", rockman_leafshield_shield);
+    agent.acmd("game_flyreverse", rockman_leafshield_shield);
 }

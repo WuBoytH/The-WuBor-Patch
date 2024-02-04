@@ -166,15 +166,15 @@ unsafe extern "C" fn toonlink_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnstart", toonlink_specialnstart);
+    agent.acmd("game_specialnstart", toonlink_specialnstart);
 
-    agent.game_acmd("game_specialairnstart", toonlink_specialnstart);
+    agent.acmd("game_specialairnstart", toonlink_specialnstart);
 
-    agent.game_acmd("game_specialhi", toonlink_specialhi);
+    agent.acmd("game_specialhi", toonlink_specialhi);
 
-    agent.game_acmd("game_specialairhi", toonlink_specialairhi);
+    agent.acmd("game_specialairhi", toonlink_specialairhi);
 
-    agent.game_acmd("game_speciallw", toonlink_speciallw);
+    agent.acmd("game_speciallw", toonlink_speciallw);
 
-    agent.game_acmd("game_specialairlw", toonlink_speciallw);
+    agent.acmd("game_specialairlw", toonlink_speciallw);
 }

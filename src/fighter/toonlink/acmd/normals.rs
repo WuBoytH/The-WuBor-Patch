@@ -19,5 +19,5 @@ unsafe extern "C" fn toonlink_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackdash", toonlink_attackdash);
+    agent.acmd("game_attackdash", toonlink_attackdash);
 }

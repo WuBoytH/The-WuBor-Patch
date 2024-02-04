@@ -297,31 +297,31 @@ unsafe extern "C" fn ganon_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", ganon_specialn);
-    agent.effect_acmd("effect_specialn", ganon_specialn_eff);
-    agent.sound_acmd("sound_specialn", ganon_specialn_snd);
+    agent.acmd("game_specialn", ganon_specialn);
+    agent.acmd("effect_specialn", ganon_specialn_eff);
+    agent.acmd("sound_specialn", ganon_specialn_snd);
 
-    agent.game_acmd("game_specialairn", ganon_specialn);
-    agent.effect_acmd("effect_specialairn", ganon_specialn_eff);
-    agent.sound_acmd("sound_specialairn", ganon_specialn_snd);
+    agent.acmd("game_specialairn", ganon_specialn);
+    agent.acmd("effect_specialairn", ganon_specialn_eff);
+    agent.acmd("sound_specialairn", ganon_specialn_snd);
 
-    agent.game_acmd("game_specialsstart", ganon_specialsstart);
+    agent.acmd("game_specialsstart", ganon_specialsstart);
 
-    agent.game_acmd("game_specialairsstart", ganon_specialairsstart);
+    agent.acmd("game_specialairsstart", ganon_specialairsstart);
 
-    agent.game_acmd("game_specialairscatch", ganon_specialairscatch);
+    agent.acmd("game_specialairscatch", ganon_specialairscatch);
 
-    agent.game_acmd("game_specialairs", ganon_specialairs);
+    agent.acmd("game_specialairs", ganon_specialairs);
 
-    agent.game_acmd("game_specialhi", ganon_specialhi);
+    agent.acmd("game_specialhi", ganon_specialhi);
 
-    agent.game_acmd("game_specialairhi", ganon_specialhi);
+    agent.acmd("game_specialairhi", ganon_specialhi);
 
-    agent.game_acmd("game_specialhicatch", ganon_specialhicatch);
+    agent.acmd("game_specialhicatch", ganon_specialhicatch);
 
-    agent.game_acmd("game_specialhithrow", ganon_specialhithrow);
+    agent.acmd("game_specialhithrow", ganon_specialhithrow);
 
-    agent.game_acmd("game_speciallw", ganon_speciallw);
+    agent.acmd("game_speciallw", ganon_speciallw);
 
-    agent.game_acmd("game_specialairlw", ganon_specialairlw);
+    agent.acmd("game_specialairlw", ganon_specialairlw);
 }

@@ -505,26 +505,26 @@ unsafe extern "C" fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", elight_attackairn);
-    agent.effect_acmd("effect_attackairn", elight_attackairn_eff);
-    agent.sound_acmd("sound_attackairn", elight_attackairn_snd);
-    agent.expression_acmd("expression_attackairn", elight_attackairn_exp);
+    agent.acmd("game_attackairn", elight_attackairn);
+    agent.acmd("effect_attackairn", elight_attackairn_eff);
+    agent.acmd("sound_attackairn", elight_attackairn_snd);
+    agent.acmd("expression_attackairn", elight_attackairn_exp);
 
-    agent.game_acmd("game_landingairn", elight_landingairn);
+    agent.acmd("game_landingairn", elight_landingairn);
 
-    agent.game_acmd("game_attackairf", elight_attackairf);
+    agent.acmd("game_attackairf", elight_attackairf);
 
-    agent.game_acmd("game_attackairb", elight_attackairb);
+    agent.acmd("game_attackairb", elight_attackairb);
 
-    agent.game_acmd("game_attackairhi", elight_attackairhi);
+    agent.acmd("game_attackairhi", elight_attackairhi);
 
-    agent.game_acmd("game_attackairlw", elight_attackairlw);
-    agent.effect_acmd("effect_attackairlw", elight_attackairlw_eff);
-    agent.sound_acmd("sound_attackairlw", elight_attackairlw_snd);
-    agent.expression_acmd("expression_attackairlw", elight_attackairlw_exp);
+    agent.acmd("game_attackairlw", elight_attackairlw);
+    agent.acmd("effect_attackairlw", elight_attackairlw_eff);
+    agent.acmd("sound_attackairlw", elight_attackairlw_snd);
+    agent.acmd("expression_attackairlw", elight_attackairlw_exp);
 
-    agent.game_acmd("game_landingairlw", elight_landingairlw);
-    agent.effect_acmd("effect_landingairlw", elight_landingairlw_eff);
-    agent.sound_acmd("sound_landingairlw", elight_landingairlw_snd);
-    agent.expression_acmd("expression_landingairlw", elight_landingairlw_exp);
+    agent.acmd("game_landingairlw", elight_landingairlw);
+    agent.acmd("effect_landingairlw", elight_landingairlw_eff);
+    agent.acmd("sound_landingairlw", elight_landingairlw_snd);
+    agent.acmd("expression_landingairlw", elight_landingairlw_exp);
 }

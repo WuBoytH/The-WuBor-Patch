@@ -182,16 +182,16 @@ unsafe extern "C" fn mariod_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", mariod_attackairn);
-    agent.effect_acmd("effect_attackairn", mariod_attackairn_eff);
-    agent.sound_acmd("sound_attackairn", mariod_attackairn_snd);
-    agent.expression_acmd("expression_attackairn", mariod_attackairn_exp);
+    agent.acmd("game_attackairn", mariod_attackairn);
+    agent.acmd("effect_attackairn", mariod_attackairn_eff);
+    agent.acmd("sound_attackairn", mariod_attackairn_snd);
+    agent.acmd("expression_attackairn", mariod_attackairn_exp);
 
-    agent.game_acmd("game_attackairf", mariod_attackairf);
+    agent.acmd("game_attackairf", mariod_attackairf);
 
-    agent.game_acmd("game_attackairb", mariod_attackairb);
+    agent.acmd("game_attackairb", mariod_attackairb);
 
-    agent.game_acmd("game_attackairhi", mariod_attackairhi);
+    agent.acmd("game_attackairhi", mariod_attackairhi);
 
-    agent.game_acmd("game_attackairlw", mariod_attackairlw);
+    agent.acmd("game_attackairlw", mariod_attackairlw);
 }

@@ -196,12 +196,12 @@ unsafe extern "C" fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialairsu", bayonetta_specialairsu);
-    agent.effect_acmd("effect_specialairsu", bayonetta_specialairsu_eff);
+    agent.acmd("game_specialairsu", bayonetta_specialairsu);
+    agent.acmd("effect_specialairsu", bayonetta_specialairsu_eff);
 
-    agent.game_acmd("game_specialairsd", bayonetta_specialairsd);
+    agent.acmd("game_specialairsd", bayonetta_specialairsd);
 
-    agent.game_acmd("game_specialhi", bayonetta_specialhi);
+    agent.acmd("game_specialhi", bayonetta_specialhi);
 
-    agent.game_acmd("game_specialairhi", bayonetta_specialhi);
+    agent.acmd("game_specialairhi", bayonetta_specialhi);
 }

@@ -107,16 +107,16 @@ unsafe extern "C" fn cloud_appeallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_appealsl", cloud_appeals);
-    agent.game_acmd("game_appealsr", cloud_appeals);
+    agent.acmd("game_appealsl", cloud_appeals);
+    agent.acmd("game_appealsr", cloud_appeals);
 
-    agent.game_acmd("game_appealsloop", cloud_appealsloop);
-    agent.sound_acmd("sound_appealsloop", cloud_appealsloop_snd);
-    agent.expression_acmd("expression_appealsloop", cloud_appealsloop_exp);
+    agent.acmd("game_appealsloop", cloud_appealsloop);
+    agent.acmd("sound_appealsloop", cloud_appealsloop_snd);
+    agent.acmd("expression_appealsloop", cloud_appealsloop_exp);
 
-    agent.game_acmd("game_appealhil", cloud_appealhil);
-    agent.game_acmd("game_appealhir", cloud_appealhir);
+    agent.acmd("game_appealhil", cloud_appealhil);
+    agent.acmd("game_appealhir", cloud_appealhir);
 
-    agent.game_acmd("game_appeallwl", cloud_appeallw);
-    agent.game_acmd("game_appeallwr", cloud_appeallw);
+    agent.acmd("game_appeallwl", cloud_appeallw);
+    agent.acmd("game_appeallwr", cloud_appeallw);
 }

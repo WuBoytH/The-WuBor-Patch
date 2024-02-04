@@ -1170,112 +1170,112 @@ unsafe extern "C" fn lucario_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnstart", lucario_specialnstart);
+    agent.acmd("game_specialnstart", lucario_specialnstart);
 
-    agent.game_acmd("game_specialairnstart", lucario_specialnstart);
+    agent.acmd("game_specialairnstart", lucario_specialnstart);
 
-    agent.game_acmd("game_specialnshoot", lucario_specialnshoot);
-    agent.expression_acmd("expression_specialnshoot", lucario_specialnshoot_exp);
+    agent.acmd("game_specialnshoot", lucario_specialnshoot);
+    agent.acmd("expression_specialnshoot", lucario_specialnshoot_exp);
 
-    agent.game_acmd("game_specialairnshoot", lucario_specialnshoot);
-    agent.expression_acmd("expression_specialairnshoot", lucario_specialairnshoot_exp);
+    agent.acmd("game_specialairnshoot", lucario_specialnshoot);
+    agent.acmd("expression_specialairnshoot", lucario_specialairnshoot_exp);
 
-    agent.effect_acmd("effect_specialnhold2", lucario_specialnhold2_eff);
-    agent.sound_acmd("sound_specialnhold2", lucario_specialnhold2_snd);
+    agent.acmd("effect_specialnhold2", lucario_specialnhold2_eff);
+    agent.acmd("sound_specialnhold2", lucario_specialnhold2_snd);
 
-    agent.effect_acmd("effect_specialairnhold2", lucario_specialnhold2_eff);
-    agent.sound_acmd("sound_specialairnhold2", lucario_specialnhold2_snd);
+    agent.acmd("effect_specialairnhold2", lucario_specialnhold2_eff);
+    agent.acmd("sound_specialairnhold2", lucario_specialnhold2_snd);
 
-    agent.game_acmd("game_specialnshoot2", lucario_specialnshoot2);
-    agent.effect_acmd("effect_specialnshoot2", lucario_specialnshoot2_eff);
-    agent.sound_acmd("sound_specialnshoot2", lucario_specialnshoot2_snd);
-    agent.expression_acmd("expression_specialnshoot2", lucario_specialnshoot2_exp);
+    agent.acmd("game_specialnshoot2", lucario_specialnshoot2);
+    agent.acmd("effect_specialnshoot2", lucario_specialnshoot2_eff);
+    agent.acmd("sound_specialnshoot2", lucario_specialnshoot2_snd);
+    agent.acmd("expression_specialnshoot2", lucario_specialnshoot2_exp);
 
-    agent.game_acmd("game_specialairnshoot2", lucario_specialnshoot2);
-    agent.sound_acmd("sound_specialairnshoot2", lucario_specialnshoot2_snd);
-    agent.expression_acmd("expression_specialairnshoot2", lucario_specialnshoot2_exp);
+    agent.acmd("game_specialairnshoot2", lucario_specialnshoot2);
+    agent.acmd("sound_specialairnshoot2", lucario_specialnshoot2_snd);
+    agent.acmd("expression_specialairnshoot2", lucario_specialnshoot2_exp);
 
-    agent.game_acmd("game_specials", lucario_specials);
-    agent.effect_acmd("effect_specials", lucario_specials_eff);
-    agent.sound_acmd("sound_specials", lucario_specials_snd);
-    agent.expression_acmd("expression_specials", lucario_specials_exp);
+    agent.acmd("game_specials", lucario_specials);
+    agent.acmd("effect_specials", lucario_specials_eff);
+    agent.acmd("sound_specials", lucario_specials_snd);
+    agent.acmd("expression_specials", lucario_specials_exp);
 
-    agent.game_acmd("game_specials2", lucario_specials2);
-    agent.effect_acmd("effect_specials2", lucario_specials2_eff);
-    agent.sound_acmd("sound_specials2", lucario_specials2_snd);
-    agent.expression_acmd("expression_specials2", lucario_specials2_exp);
+    agent.acmd("game_specials2", lucario_specials2);
+    agent.acmd("effect_specials2", lucario_specials2_eff);
+    agent.acmd("sound_specials2", lucario_specials2_snd);
+    agent.acmd("expression_specials2", lucario_specials2_exp);
 
-    agent.game_acmd("game_specialairs", lucario_specialairs);
-    agent.effect_acmd("effect_specialairs", lucario_specialairs_eff);
-    agent.sound_acmd("sound_specialairs", lucario_specialairs_snd);
-    agent.expression_acmd("expression_specialairs", lucario_specialairs_exp);
+    agent.acmd("game_specialairs", lucario_specialairs);
+    agent.acmd("effect_specialairs", lucario_specialairs_eff);
+    agent.acmd("sound_specialairs", lucario_specialairs_snd);
+    agent.acmd("expression_specialairs", lucario_specialairs_exp);
 
-    agent.game_acmd("game_specialairs2", lucario_specialairs2);
-    agent.effect_acmd("effect_specialairs2", lucario_specialairs2_eff);
-    agent.sound_acmd("sound_specialairs2", lucario_specialairs2_snd);
-    agent.expression_acmd("expression_specialairs2", lucario_specialairs2_exp);
+    agent.acmd("game_specialairs2", lucario_specialairs2);
+    agent.acmd("effect_specialairs2", lucario_specialairs2_eff);
+    agent.acmd("sound_specialairs2", lucario_specialairs2_snd);
+    agent.acmd("expression_specialairs2", lucario_specialairs2_exp);
 
-    agent.game_acmd("game_specialsthrow", lucario_specialsthrow);
-    agent.effect_acmd("effect_specialsthrow", lucario_specialsthrow_eff);
-    agent.sound_acmd("sound_specialsthrow", lucario_specialsthrow_snd);
-    agent.expression_acmd("expression_specialsthrow", lucario_specialsthrow_exp);
+    agent.acmd("game_specialsthrow", lucario_specialsthrow);
+    agent.acmd("effect_specialsthrow", lucario_specialsthrow_eff);
+    agent.acmd("sound_specialsthrow", lucario_specialsthrow_snd);
+    agent.acmd("expression_specialsthrow", lucario_specialsthrow_exp);
 
-    agent.game_acmd("game_specialsthrow2", lucario_specialsthrow2);
-    agent.effect_acmd("effect_specialsthrow2", lucario_specialsthrow2_eff);
-    agent.sound_acmd("sound_specialsthrow2", lucario_specialsthrow2_snd);
-    agent.expression_acmd("expression_specialsthrow2", lucario_specialsthrow2_exp);
+    agent.acmd("game_specialsthrow2", lucario_specialsthrow2);
+    agent.acmd("effect_specialsthrow2", lucario_specialsthrow2_eff);
+    agent.acmd("sound_specialsthrow2", lucario_specialsthrow2_snd);
+    agent.acmd("expression_specialsthrow2", lucario_specialsthrow2_exp);
 
-    agent.game_acmd("game_specialairsthrow", lucario_specialairsthrow);
-    agent.effect_acmd("effect_specialairsthrow", lucario_specialairsthrow_eff);
-    agent.sound_acmd("sound_specialairsthrow", lucario_specialairsthrow_snd);
-    agent.expression_acmd("expression_specialairsthrow", lucario_specialairsthrow_exp);
+    agent.acmd("game_specialairsthrow", lucario_specialairsthrow);
+    agent.acmd("effect_specialairsthrow", lucario_specialairsthrow_eff);
+    agent.acmd("sound_specialairsthrow", lucario_specialairsthrow_snd);
+    agent.acmd("expression_specialairsthrow", lucario_specialairsthrow_exp);
 
-    agent.game_acmd("game_specialairsthrow2", lucario_specialairsthrow2);
-    agent.effect_acmd("effect_specialairsthrow2", lucario_specialairsthrow2_eff);
-    agent.sound_acmd("sound_specialairsthrow2", lucario_specialairsthrow2_snd);
-    agent.expression_acmd("expression_specialairsthrow2", lucario_specialairsthrow2_exp);
+    agent.acmd("game_specialairsthrow2", lucario_specialairsthrow2);
+    agent.acmd("effect_specialairsthrow2", lucario_specialairsthrow2_eff);
+    agent.acmd("sound_specialairsthrow2", lucario_specialairsthrow2_snd);
+    agent.acmd("expression_specialairsthrow2", lucario_specialairsthrow2_exp);
 
-    agent.game_acmd("game_specialhi", lucario_specialhi);
+    agent.acmd("game_specialhi", lucario_specialhi);
 
-    agent.game_acmd("game_specialairhi", lucario_specialairhi);
+    agent.acmd("game_specialairhi", lucario_specialairhi);
 
-    agent.game_acmd("game_specialhimove", lucario_specialhimove);
-    agent.effect_acmd("effect_specialhimove", lucario_specialhimove_eff);
-    agent.sound_acmd("sound_specialhimove", lucario_specialhimove_snd);
+    agent.acmd("game_specialhimove", lucario_specialhimove);
+    agent.acmd("effect_specialhimove", lucario_specialhimove_eff);
+    agent.acmd("sound_specialhimove", lucario_specialhimove_snd);
 
-    agent.game_acmd("game_specialhiend", lucario_specialhiend);
+    agent.acmd("game_specialhiend", lucario_specialhiend);
 
-    agent.game_acmd("game_specialairhiend", lucario_specialairhiend);
+    agent.acmd("game_specialairhiend", lucario_specialairhiend);
 
-    agent.game_acmd("game_speciallw", lucario_speciallw);
-    agent.effect_acmd("effect_speciallw", lucario_speciallw_eff);
-    agent.sound_acmd("sound_speciallw", lucario_speciallw_snd);
+    agent.acmd("game_speciallw", lucario_speciallw);
+    agent.acmd("effect_speciallw", lucario_speciallw_eff);
+    agent.acmd("sound_speciallw", lucario_speciallw_snd);
 
-    agent.game_acmd("game_specialairlw", lucario_specialairlw);
-    agent.effect_acmd("effect_specialairlw", lucario_specialairlw_eff);
-    agent.sound_acmd("sound_specialairlw", lucario_specialairlw_snd);
+    agent.acmd("game_specialairlw", lucario_specialairlw);
+    agent.acmd("effect_specialairlw", lucario_specialairlw_eff);
+    agent.acmd("sound_specialairlw", lucario_specialairlw_snd);
 
-    agent.game_acmd("game_specialairlwend", lucario_speciallwend);
-    agent.effect_acmd("effect_specialairlwend", lucario_speciallwend_eff);
+    agent.acmd("game_specialairlwend", lucario_speciallwend);
+    agent.acmd("effect_specialairlwend", lucario_speciallwend_eff);
 
-    agent.game_acmd("game_specialairlwend", lucario_speciallwend);
-    agent.effect_acmd("effect_specialairlwend", lucario_speciallwend_eff);
+    agent.acmd("game_specialairlwend", lucario_speciallwend);
+    agent.acmd("effect_specialairlwend", lucario_speciallwend_eff);
 
-    agent.game_acmd("game_speciallwcancel", lucario_speciallwcancel);
-    agent.effect_acmd("effect_speciallwcancel", lucario_speciallwcancel_eff);
-    agent.sound_acmd("sound_speciallwcancel", lucario_speciallwcancel_snd);
+    agent.acmd("game_speciallwcancel", lucario_speciallwcancel);
+    agent.acmd("effect_speciallwcancel", lucario_speciallwcancel_eff);
+    agent.acmd("sound_speciallwcancel", lucario_speciallwcancel_snd);
 
-    agent.game_acmd("game_specialairlwcancel", lucario_speciallwcancel);
-    agent.effect_acmd("effect_specialairlwcancel", lucario_speciallwcancel_eff);
-    agent.sound_acmd("sound_specialairlwcancel", lucario_speciallwcancel_snd);
+    agent.acmd("game_specialairlwcancel", lucario_speciallwcancel);
+    agent.acmd("effect_specialairlwcancel", lucario_speciallwcancel_eff);
+    agent.acmd("sound_specialairlwcancel", lucario_speciallwcancel_snd);
 
-    agent.game_acmd("game_speciallwattack", lucario_speciallwattack);
-    agent.effect_acmd("effect_speciallwattack", lucario_speciallwattack_eff);
-    agent.sound_acmd("sound_speciallwattack", lucario_speciallwattack_snd);
-    agent.expression_acmd("expression_speciallwattack", lucario_speciallwattack_exp);
+    agent.acmd("game_speciallwattack", lucario_speciallwattack);
+    agent.acmd("effect_speciallwattack", lucario_speciallwattack_eff);
+    agent.acmd("sound_speciallwattack", lucario_speciallwattack_snd);
+    agent.acmd("expression_speciallwattack", lucario_speciallwattack_exp);
 
-    agent.game_acmd("game_specialairlwattack", lucario_specialairlwattack);
-    agent.effect_acmd("effect_specialairlwattack", lucario_specialairlwattack_eff);
-    agent.sound_acmd("sound_specialairlwattack", lucario_specialairlwattack_snd);
-    agent.expression_acmd("expression_specialairlwattack", lucario_specialairlwattack_exp);
+    agent.acmd("game_specialairlwattack", lucario_specialairlwattack);
+    agent.acmd("effect_specialairlwattack", lucario_specialairlwattack_eff);
+    agent.acmd("sound_specialairlwattack", lucario_specialairlwattack_snd);
+    agent.acmd("expression_specialairlwattack", lucario_specialairlwattack_exp);
 }

@@ -54,7 +54,7 @@ unsafe extern "C" fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
+   .acmd_scripts!(
         shulk_attackairb,
         shulk_attackairb_eff
     );

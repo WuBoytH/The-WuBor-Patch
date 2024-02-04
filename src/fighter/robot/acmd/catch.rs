@@ -20,6 +20,6 @@ unsafe extern "C" fn robot_catchattack_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", robot_catchattack);
-    agent.effect_acmd("effect_catchattack", robot_catchattack_eff);
+    agent.acmd("game_catchattack", robot_catchattack);
+    agent.acmd("effect_catchattack", robot_catchattack_eff);
 }

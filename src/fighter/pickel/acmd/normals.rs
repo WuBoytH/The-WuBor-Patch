@@ -229,9 +229,9 @@ unsafe extern "C" fn pickel_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackdash", pickel_attackdash);
+    agent.acmd("game_attackdash", pickel_attackdash);
 
-    agent.game_acmd("game_attacks3", pickel_attacks3);
+    agent.acmd("game_attacks3", pickel_attacks3);
 
-    agent.game_acmd("game_attackhi3", pickel_attackhi3);
+    agent.acmd("game_attackhi3", pickel_attackhi3);
 }

@@ -22,5 +22,5 @@ unsafe extern "C" fn kirby_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairhi", kirby_attackairhi);
+    agent.acmd("game_attackairhi", kirby_attackairhi);
 }

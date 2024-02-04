@@ -13,5 +13,5 @@ unsafe extern "C" fn simon_axe_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_fly", simon_axe_fly);
+    agent.acmd("game_fly", simon_axe_fly);
 }

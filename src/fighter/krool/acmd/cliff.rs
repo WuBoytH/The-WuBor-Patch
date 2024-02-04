@@ -8,5 +8,5 @@ unsafe extern "C" fn krool_cliffcatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_cliffcatch", krool_cliffcatch);
+    agent.acmd("game_cliffcatch", krool_cliffcatch);
 }

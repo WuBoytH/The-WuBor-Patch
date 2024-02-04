@@ -223,13 +223,13 @@ unsafe extern "C" fn richter_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", richter_attacks4);
+    agent.acmd("game_attacks4", richter_attacks4);
 
-    agent.game_acmd("game_attacks4hi", richter_attacks4hi);
+    agent.acmd("game_attacks4hi", richter_attacks4hi);
 
-    agent.game_acmd("game_attacks4lw", richter_attacks4lw);
+    agent.acmd("game_attacks4lw", richter_attacks4lw);
 
-    agent.game_acmd("game_attackhi4", richter_attackhi4);
+    agent.acmd("game_attackhi4", richter_attackhi4);
 
-    agent.game_acmd("game_attacklw4", richter_attacklw4);
+    agent.acmd("game_attacklw4", richter_attacklw4);
 }

@@ -1685,125 +1685,125 @@ unsafe extern "C" fn ken_speciallwstepf_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", ken_specialn);
+    agent.acmd("game_specialn", ken_specialn);
 
-    agent.game_acmd("game_specialairn", ken_specialn);
+    agent.acmd("game_specialairn", ken_specialn);
 
-    agent.game_acmd("game_specialn2start", ken_specialn2start);
-    agent.effect_acmd("effect_specialn2start", ken_specialn2start_eff);
-    agent.sound_acmd("sound_specialn2start", ken_specialn2start_snd);
-    agent.expression_acmd("expression_specialn2start", ken_specialn2start_exp);
+    agent.acmd("game_specialn2start", ken_specialn2start);
+    agent.acmd("effect_specialn2start", ken_specialn2start_eff);
+    agent.acmd("sound_specialn2start", ken_specialn2start_snd);
+    agent.acmd("expression_specialn2start", ken_specialn2start_exp);
 
-    agent.game_acmd("game_specialn2lw", ken_specialn2lw);
-    agent.effect_acmd("effect_specialn2lw", ken_specialn2lw_eff);
-    agent.sound_acmd("sound_specialn2lw", ken_specialn2lw_snd);
-    agent.expression_acmd("expression_specialn2lw", ken_specialn2lw_exp);
+    agent.acmd("game_specialn2lw", ken_specialn2lw);
+    agent.acmd("effect_specialn2lw", ken_specialn2lw_eff);
+    agent.acmd("sound_specialn2lw", ken_specialn2lw_snd);
+    agent.acmd("expression_specialn2lw", ken_specialn2lw_exp);
 
-    agent.game_acmd("game_specialn2hi", ken_specialn2hi);
-    agent.effect_acmd("effect_specialn2hi", ken_specialn2hi_eff);
-    agent.sound_acmd("sound_specialn2hi", ken_specialn2hi_snd);
-    agent.expression_acmd("expression_specialn2hi", ken_specialn2hi_exp);
+    agent.acmd("game_specialn2hi", ken_specialn2hi);
+    agent.acmd("effect_specialn2hi", ken_specialn2hi_eff);
+    agent.acmd("sound_specialn2hi", ken_specialn2hi_snd);
+    agent.acmd("expression_specialn2hi", ken_specialn2hi_exp);
 
-    agent.game_acmd("game_specialn2s", ken_specialn2s);
-    agent.effect_acmd("effect_specialn2s", ken_specialn2s_eff);
-    agent.sound_acmd("sound_specialn2s", ken_specialn2s_snd);
-    agent.expression_acmd("expression_specialn2s", ken_specialn2s_exp);
+    agent.acmd("game_specialn2s", ken_specialn2s);
+    agent.acmd("effect_specialn2s", ken_specialn2s_eff);
+    agent.acmd("sound_specialn2s", ken_specialn2s_snd);
+    agent.acmd("expression_specialn2s", ken_specialn2s_exp);
 
-    agent.game_acmd("game_specialairn2", ken_specialairn2);
-    agent.effect_acmd("effect_specialairn2", ken_specialairn2_eff);
-    agent.sound_acmd("sound_specialairn2", ken_specialairn2_snd);
+    agent.acmd("game_specialairn2", ken_specialairn2);
+    agent.acmd("effect_specialairn2", ken_specialairn2_eff);
+    agent.acmd("sound_specialairn2", ken_specialairn2_snd);
 
-    agent.game_acmd("game_specialsstart", ken_specialsstart);
-    agent.effect_acmd("effect_specialsstart", ken_specialsstart_eff);
-    agent.sound_acmd("sound_specialsstart", ken_specialsstart_snd);
+    agent.acmd("game_specialsstart", ken_specialsstart);
+    agent.acmd("effect_specialsstart", ken_specialsstart_eff);
+    agent.acmd("sound_specialsstart", ken_specialsstart_snd);
 
-    agent.game_acmd("game_specialairsstart", ken_specialsstart);
-    agent.effect_acmd("effect_specialairsstart", ken_specialsstart_eff);
-    agent.sound_acmd("sound_specialairsstart", ken_specialairsstart_snd);
+    agent.acmd("game_specialairsstart", ken_specialsstart);
+    agent.acmd("effect_specialairsstart", ken_specialsstart_eff);
+    agent.acmd("sound_specialairsstart", ken_specialairsstart_snd);
 
-    agent.game_acmd("game_specialsend", ken_specialsend);
-    agent.expression_acmd("expression_specialsend", ken_specialsend_exp);
+    agent.acmd("game_specialsend", ken_specialsend);
+    agent.acmd("expression_specialsend", ken_specialsend_exp);
 
-    agent.game_acmd("game_specialairsend", ken_specialairsend);
-    agent.expression_acmd("expression_specialairsend", ken_specialairsend_exp);
+    agent.acmd("game_specialairsend", ken_specialairsend);
+    agent.acmd("expression_specialairsend", ken_specialairsend_exp);
 
-    agent.game_acmd("game_specialairs2", ken_specialairs2);
-    agent.effect_acmd("effect_specialairs2", ken_specialairs2_eff);
-    agent.sound_acmd("sound_specialairs2", ken_specialairs2_snd);
-    agent.expression_acmd("expression_specialairs2", ken_specialairs2_exp);
+    agent.acmd("game_specialairs2", ken_specialairs2);
+    agent.acmd("effect_specialairs2", ken_specialairs2_eff);
+    agent.acmd("sound_specialairs2", ken_specialairs2_snd);
+    agent.acmd("expression_specialairs2", ken_specialairs2_exp);
 
-    agent.game_acmd("game_specialairs2end", ken_specialairs2end);
-    agent.effect_acmd("effect_specialairs2end", ken_specialairs2end_eff);
-    agent.sound_acmd("sound_specialairs2end", ken_specialairs2end_snd);
-    agent.expression_acmd("expression_specialairs2end", ken_specialairs2end_exp);
+    agent.acmd("game_specialairs2end", ken_specialairs2end);
+    agent.acmd("effect_specialairs2end", ken_specialairs2end_eff);
+    agent.acmd("sound_specialairs2end", ken_specialairs2end_snd);
+    agent.acmd("expression_specialairs2end", ken_specialairs2end_exp);
 
-    agent.game_acmd("game_specialhi", ken_specialhi);
-    agent.effect_acmd("effect_specialhi", ken_specialhi_eff);
-    agent.sound_acmd("sound_specialhi", ken_specialhi_snd);
-    agent.expression_acmd("expression_specialhi", ken_specialhi_exp);
+    agent.acmd("game_specialhi", ken_specialhi);
+    agent.acmd("effect_specialhi", ken_specialhi_eff);
+    agent.acmd("sound_specialhi", ken_specialhi_snd);
+    agent.acmd("expression_specialhi", ken_specialhi_exp);
 
-    agent.game_acmd("game_specialhicommand", ken_specialhi);
-    agent.effect_acmd("effect_specialhicommand", ken_specialhicommand_eff);
-    agent.sound_acmd("sound_specialhicommand", ken_specialhicommand_snd);
-    agent.expression_acmd("expression_specialhicommand", ken_specialhi_exp);
+    agent.acmd("game_specialhicommand", ken_specialhi);
+    agent.acmd("effect_specialhicommand", ken_specialhicommand_eff);
+    agent.acmd("sound_specialhicommand", ken_specialhicommand_snd);
+    agent.acmd("expression_specialhicommand", ken_specialhi_exp);
 
-    agent.game_acmd("game_specialairhi", ken_specialairhi);
-    agent.effect_acmd("effect_specialairhi", ken_specialairhi_eff);
-    agent.sound_acmd("sound_specialairhi", ken_specialairhi_snd);
-    agent.expression_acmd("expression_specialairhi", ken_specialairhi_exp);
+    agent.acmd("game_specialairhi", ken_specialairhi);
+    agent.acmd("effect_specialairhi", ken_specialairhi_eff);
+    agent.acmd("sound_specialairhi", ken_specialairhi_snd);
+    agent.acmd("expression_specialairhi", ken_specialairhi_exp);
 
-    agent.game_acmd("game_specialairhicommand", ken_specialairhi);
-    agent.effect_acmd("effect_specialairhicommand", ken_specialairhicommand_eff);
-    agent.sound_acmd("sound_specialairhicommand", ken_specialairhicommand_snd);
-    agent.expression_acmd("expression_specialairhicommand", ken_specialairhi_exp);
+    agent.acmd("game_specialairhicommand", ken_specialairhi);
+    agent.acmd("effect_specialairhicommand", ken_specialairhicommand_eff);
+    agent.acmd("sound_specialairhicommand", ken_specialairhicommand_snd);
+    agent.acmd("expression_specialairhicommand", ken_specialairhi_exp);
 
-    agent.game_acmd("game_specialhi2", ken_specialhi2);
-    agent.effect_acmd("effect_specialhi2", ken_specialhi2_eff);
-    agent.sound_acmd("sound_specialhi2", ken_specialhi2_snd);
-    agent.expression_acmd("expression_specialhi2", ken_specialhi2_exp);
+    agent.acmd("game_specialhi2", ken_specialhi2);
+    agent.acmd("effect_specialhi2", ken_specialhi2_eff);
+    agent.acmd("sound_specialhi2", ken_specialhi2_snd);
+    agent.acmd("expression_specialhi2", ken_specialhi2_exp);
 
-    agent.game_acmd("game_specialhi2command", ken_specialhi2);
-    agent.effect_acmd("effect_specialhi2command", ken_specialhi2command_eff);
-    agent.sound_acmd("sound_specialhi2command", ken_specialhi2command_snd);
-    agent.expression_acmd("expression_specialhi2command", ken_specialhi2_exp);
+    agent.acmd("game_specialhi2command", ken_specialhi2);
+    agent.acmd("effect_specialhi2command", ken_specialhi2command_eff);
+    agent.acmd("sound_specialhi2command", ken_specialhi2command_snd);
+    agent.acmd("expression_specialhi2command", ken_specialhi2_exp);
 
-    agent.game_acmd("game_specialairhi2", ken_specialairhi2);
-    agent.effect_acmd("effect_specialairhi2", ken_specialairhi2_eff);
-    agent.sound_acmd("sound_specialairhi2", ken_specialairhi2_snd);
-    agent.expression_acmd("expression_specialairhi2", ken_specialairhi2_exp);
+    agent.acmd("game_specialairhi2", ken_specialairhi2);
+    agent.acmd("effect_specialairhi2", ken_specialairhi2_eff);
+    agent.acmd("sound_specialairhi2", ken_specialairhi2_snd);
+    agent.acmd("expression_specialairhi2", ken_specialairhi2_exp);
 
-    agent.game_acmd("game_specialairhi2command", ken_specialairhi2);
-    agent.effect_acmd("effect_specialairhi2command", ken_specialairhi2command_eff);
-    agent.sound_acmd("sound_specialairhi2command", ken_specialairhi2command_snd);
-    agent.expression_acmd("expression_specialairhi2command", ken_specialairhi2_exp);
+    agent.acmd("game_specialairhi2command", ken_specialairhi2);
+    agent.acmd("effect_specialairhi2command", ken_specialairhi2command_eff);
+    agent.acmd("sound_specialairhi2command", ken_specialairhi2command_snd);
+    agent.acmd("expression_specialairhi2command", ken_specialairhi2_exp);
 
-    agent.game_acmd("game_speciallwstart", ken_speciallwstart);
-    agent.effect_acmd("effect_speciallwstart", ken_speciallwstart_eff);
-    agent.sound_acmd("sound_speciallwstart", ken_speciallwstart_snd);
-    agent.expression_acmd("expression_speciallwstart", ken_speciallwstart_exp);
+    agent.acmd("game_speciallwstart", ken_speciallwstart);
+    agent.acmd("effect_speciallwstart", ken_speciallwstart_eff);
+    agent.acmd("sound_speciallwstart", ken_speciallwstart_snd);
+    agent.acmd("expression_speciallwstart", ken_speciallwstart_exp);
 
-    agent.game_acmd("game_specialairlwstart", ken_speciallwstart);
-    agent.effect_acmd("effect_specialairlwstart", ken_speciallwstart_eff);
-    agent.sound_acmd("sound_specialairlwstart", ken_speciallwstart_snd);
-    agent.expression_acmd("expression_specialairlwstart", ken_specialairlwstart_exp);
+    agent.acmd("game_specialairlwstart", ken_speciallwstart);
+    agent.acmd("effect_specialairlwstart", ken_speciallwstart_eff);
+    agent.acmd("sound_specialairlwstart", ken_speciallwstart_snd);
+    agent.acmd("expression_specialairlwstart", ken_specialairlwstart_exp);
 
-    agent.game_acmd("game_speciallw", ken_speciallw);
-    agent.effect_acmd("effect_speciallw", ken_speciallw_eff);
-    agent.sound_acmd("sound_speciallw", ken_speciallw_snd);
-    agent.expression_acmd("expression_speciallw", ken_speciallw_exp);
+    agent.acmd("game_speciallw", ken_speciallw);
+    agent.acmd("effect_speciallw", ken_speciallw_eff);
+    agent.acmd("sound_speciallw", ken_speciallw_snd);
+    agent.acmd("expression_speciallw", ken_speciallw_exp);
 
-    agent.game_acmd("game_specialairlw", ken_speciallw);
-    agent.effect_acmd("effect_specialairlw", ken_speciallw_eff);
-    agent.sound_acmd("sound_specialairlw", ken_speciallw_snd);
-    agent.expression_acmd("expression_specialairlw", ken_speciallw_exp);
+    agent.acmd("game_specialairlw", ken_speciallw);
+    agent.acmd("effect_specialairlw", ken_speciallw_eff);
+    agent.acmd("sound_specialairlw", ken_speciallw_snd);
+    agent.acmd("expression_specialairlw", ken_speciallw_exp);
 
-    agent.game_acmd("game_speciallwstepf", ken_speciallwstepf);
-    agent.effect_acmd("effect_speciallwstepf", ken_speciallwstepf_eff);
-    agent.sound_acmd("sound_speciallwstepf", ken_speciallwstepf_snd);
-    agent.expression_acmd("expression_speciallwstepf", ken_speciallwstepf_exp);
+    agent.acmd("game_speciallwstepf", ken_speciallwstepf);
+    agent.acmd("effect_speciallwstepf", ken_speciallwstepf_eff);
+    agent.acmd("sound_speciallwstepf", ken_speciallwstepf_snd);
+    agent.acmd("expression_speciallwstepf", ken_speciallwstepf_exp);
 
-    agent.game_acmd("game_specialairlwstepf", ken_speciallwstepf);
-    agent.effect_acmd("effect_specialairlwstepf", ken_speciallwstepf_eff);
-    agent.sound_acmd("sound_specialairlwstepf", ken_speciallwstepf_snd);
-    agent.expression_acmd("expression_specialairlwstepf", ken_speciallwstepf_exp);
+    agent.acmd("game_specialairlwstepf", ken_speciallwstepf);
+    agent.acmd("effect_specialairlwstepf", ken_speciallwstepf_eff);
+    agent.acmd("sound_specialairlwstepf", ken_speciallwstepf_snd);
+    agent.acmd("expression_specialairlwstepf", ken_speciallwstepf_exp);
 }

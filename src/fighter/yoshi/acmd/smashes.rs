@@ -28,5 +28,5 @@ unsafe extern "C" fn yoshi_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacklw4", yoshi_attacklw4);
+    agent.acmd("game_attacklw4", yoshi_attacklw4);
 }

@@ -81,9 +81,9 @@ unsafe extern "C" fn snake_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks3s2", snake_attacks3s2);
+    agent.acmd("game_attacks3s2", snake_attacks3s2);
 
-    agent.game_acmd("game_attackhi3", snake_attackhi3);
+    agent.acmd("game_attackhi3", snake_attackhi3);
 
-    agent.game_acmd("game_attacklw3", snake_attacklw3);
+    agent.acmd("game_attacklw3", snake_attacklw3);
 }

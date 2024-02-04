@@ -8,5 +8,5 @@ unsafe extern "C" fn dolly_guarddamage_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.sound_acmd("sound_guarddamage", dolly_guarddamage_snd);
+    agent.acmd("sound_guarddamage", dolly_guarddamage_snd);
 }

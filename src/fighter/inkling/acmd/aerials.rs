@@ -78,9 +78,9 @@ unsafe extern "C" fn inkling_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", inkling_attackairn);
+    agent.acmd("game_attackairn", inkling_attackairn);
 
-    agent.game_acmd("game_attackairf", inkling_attackairf);
+    agent.acmd("game_attackairf", inkling_attackairf);
 
-    agent.game_acmd("game_attackairlw", inkling_attackairlw);
+    agent.acmd("game_attackairlw", inkling_attackairlw);
 }

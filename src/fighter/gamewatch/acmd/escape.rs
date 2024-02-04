@@ -22,7 +22,7 @@ unsafe extern "C" fn gamewatch_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_escapeair", gamewatch_escapeair);
+    agent.acmd("game_escapeair", gamewatch_escapeair);
 
-    agent.game_acmd("game_escapeairslide", gamewatch_escapeairslide);
+    agent.acmd("game_escapeairslide", gamewatch_escapeairslide);
 }

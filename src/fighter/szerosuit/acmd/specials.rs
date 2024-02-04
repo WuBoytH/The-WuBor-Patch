@@ -281,17 +281,17 @@ unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi", szerosuit_specialhi);
+    agent.acmd("game_specialhi", szerosuit_specialhi);
 
-    agent.game_acmd("game_specialairhi", szerosuit_specialairhi);
+    agent.acmd("game_specialairhi", szerosuit_specialairhi);
 
-    agent.game_acmd("game_specialhi2", szerosuit_specialhi2);
-    agent.effect_acmd("effect_specialhi2", szerosuit_specialhi2_eff);
-    agent.sound_acmd("sound_specialhi2", szerosuit_specialhi2_snd);
-    agent.expression_acmd("expression_specialhi2", szerosuit_specialhi2_exp);
+    agent.acmd("game_specialhi2", szerosuit_specialhi2);
+    agent.acmd("effect_specialhi2", szerosuit_specialhi2_eff);
+    agent.acmd("sound_specialhi2", szerosuit_specialhi2_snd);
+    agent.acmd("expression_specialhi2", szerosuit_specialhi2_exp);
 
-    agent.game_acmd("game_specialairhi2", szerosuit_specialairhi2);
-    agent.effect_acmd("effect_specialairhi2", szerosuit_specialairhi2_eff);
-    agent.sound_acmd("sound_specialairhi2", szerosuit_specialairhi2_snd);
-    agent.expression_acmd("expression_specialairhi2", szerosuit_specialairhi2_exp);
+    agent.acmd("game_specialairhi2", szerosuit_specialairhi2);
+    agent.acmd("effect_specialairhi2", szerosuit_specialairhi2_eff);
+    agent.acmd("sound_specialairhi2", szerosuit_specialairhi2_snd);
+    agent.acmd("expression_specialairhi2", szerosuit_specialairhi2_exp);
 }

@@ -152,13 +152,13 @@ unsafe extern "C" fn zelda_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", zelda_attackairn);
+    agent.acmd("game_attackairn", zelda_attackairn);
 
-    agent.game_acmd("game_attackairf", zelda_attackairf);
+    agent.acmd("game_attackairf", zelda_attackairf);
 
-    agent.game_acmd("game_attackairb", zelda_attackairb);
+    agent.acmd("game_attackairb", zelda_attackairb);
 
-    agent.game_acmd("game_attackairhi", zelda_attackairhi);
+    agent.acmd("game_attackairhi", zelda_attackairhi);
 
-    agent.game_acmd("game_attackairlw", zelda_attackairlw);
+    agent.acmd("game_attackairlw", zelda_attackairlw);
 }

@@ -73,13 +73,13 @@ unsafe extern "C" fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_speciallwdashf", marth_speciallwdashf);
-    agent.effect_acmd("effect_speciallwdashf", marth_speciallwdashf_eff);
-    agent.sound_acmd("sound_speciallwdashf", marth_speciallwdashf_snd);
-    agent.expression_acmd("expression_speciallwdashf", marth_speciallwdashf_exp);
+    agent.acmd("game_speciallwdashf", marth_speciallwdashf);
+    agent.acmd("effect_speciallwdashf", marth_speciallwdashf_eff);
+    agent.acmd("sound_speciallwdashf", marth_speciallwdashf_snd);
+    agent.acmd("expression_speciallwdashf", marth_speciallwdashf_exp);
 
-    agent.game_acmd("game_speciallwdashb", marth_speciallwdashb);
-    agent.effect_acmd("effect_speciallwdashb", marth_speciallwdashb_eff);
-    agent.sound_acmd("sound_speciallwdashb", marth_speciallwdashb_snd);
-    agent.expression_acmd("expression_speciallwdashb", marth_speciallwdashb_exp);
+    agent.acmd("game_speciallwdashb", marth_speciallwdashb);
+    agent.acmd("effect_speciallwdashb", marth_speciallwdashb_eff);
+    agent.acmd("sound_speciallwdashb", marth_speciallwdashb_snd);
+    agent.acmd("expression_speciallwdashb", marth_speciallwdashb_exp);
 }

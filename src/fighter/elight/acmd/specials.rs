@@ -971,21 +971,21 @@ unsafe extern "C" fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", elight_specialn);
+    agent.acmd("game_specialn", elight_specialn);
 
-    agent.game_acmd("game_specialairn", elight_specialairn);
+    agent.acmd("game_specialairn", elight_specialairn);
 
-    agent.game_acmd("game_specialn2", elight_specialn2);
+    agent.acmd("game_specialn2", elight_specialn2);
 
-    agent.game_acmd("game_specialairn2", elight_specialairn2);
+    agent.acmd("game_specialairn2", elight_specialairn2);
 
-    agent.game_acmd("game_speciallwattack", elight_speciallwattack);
-    agent.effect_acmd("effect_speciallwattack", elight_speciallwattack_eff);
-    agent.sound_acmd("sound_speciallwattack", elight_speciallwattack_snd);
-    agent.expression_acmd("expression_speciallwattack", elight_speciallwattack_exp);
+    agent.acmd("game_speciallwattack", elight_speciallwattack);
+    agent.acmd("effect_speciallwattack", elight_speciallwattack_eff);
+    agent.acmd("sound_speciallwattack", elight_speciallwattack_snd);
+    agent.acmd("expression_speciallwattack", elight_speciallwattack_exp);
 
-    agent.game_acmd("game_specialairlwattack", elight_specialairlwattack);
-    agent.effect_acmd("effect_specialairlwattack", elight_specialairlwattack_eff);
-    agent.sound_acmd("sound_specialairlwattack", elight_specialairlwattack_snd);
-    agent.expression_acmd("expression_specialairlwattack", elight_specialairlwattack_exp);
+    agent.acmd("game_specialairlwattack", elight_specialairlwattack);
+    agent.acmd("effect_specialairlwattack", elight_specialairlwattack_eff);
+    agent.acmd("sound_specialairlwattack", elight_specialairlwattack_snd);
+    agent.acmd("expression_specialairlwattack", elight_specialairlwattack_exp);
 }

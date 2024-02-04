@@ -68,8 +68,8 @@ unsafe extern "C" fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairb", cloud_attackairb);
+    agent.acmd("game_attackairb", cloud_attackairb);
 
-    agent.game_acmd("game_attackairhi", cloud_attackairhi);
-    agent.expression_acmd("expression_attackairhi", cloud_attackairhi_exp);
+    agent.acmd("game_attackairhi", cloud_attackairhi);
+    agent.acmd("expression_attackairhi", cloud_attackairhi_exp);
 }

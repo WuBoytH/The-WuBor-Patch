@@ -66,9 +66,9 @@ unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", demon_catchattack);
-    agent.effect_acmd("effect_catchattack", demon_catchattack_eff);
-    agent.sound_acmd("sound_catchattack", demon_catchattack_snd);
+    agent.acmd("game_catchattack", demon_catchattack);
+    agent.acmd("effect_catchattack", demon_catchattack_eff);
+    agent.acmd("sound_catchattack", demon_catchattack_snd);
 
-    agent.game_acmd("game_catchcommand", demon_catchcommand);
+    agent.acmd("game_catchcommand", demon_catchcommand);
 }

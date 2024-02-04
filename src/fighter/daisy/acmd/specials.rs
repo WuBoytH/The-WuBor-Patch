@@ -201,16 +201,16 @@ unsafe extern "C" fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsjump", daisy_specialsjump);
+    agent.acmd("game_specialsjump", daisy_specialsjump);
 
-    agent.game_acmd("game_specialshitend", daisy_specialshitend);
+    agent.acmd("game_specialshitend", daisy_specialshitend);
 
-    agent.game_acmd("game_specialhistart", daisy_specialhistart);
+    agent.acmd("game_specialhistart", daisy_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", daisy_specialairhistart);
+    agent.acmd("game_specialairhistart", daisy_specialairhistart);
 
-    agent.game_acmd("game_fuwafuwastart", daisy_specialairlw);
-    agent.effect_acmd("effect_fuwafuwastart", daisy_specialairlw_eff);
-    agent.sound_acmd("sound_fuwafuwastart", daisy_specialairlw_snd);
-    agent.expression_acmd("expression_fuwafuwastart", daisy_specialairlw_exp);
+    agent.acmd("game_fuwafuwastart", daisy_specialairlw);
+    agent.acmd("effect_fuwafuwastart", daisy_specialairlw_eff);
+    agent.acmd("sound_fuwafuwastart", daisy_specialairlw_snd);
+    agent.acmd("expression_fuwafuwastart", daisy_specialairlw_exp);
 }

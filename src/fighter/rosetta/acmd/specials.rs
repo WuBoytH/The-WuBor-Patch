@@ -22,11 +22,11 @@ unsafe extern "C" fn rosetta_specialhiend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhistart", rosetta_specialhistart);
+    agent.acmd("game_specialhistart", rosetta_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", rosetta_specialhistart);
+    agent.acmd("game_specialairhistart", rosetta_specialhistart);
 
-    agent.game_acmd("game_specialhi", rosetta_specialhi);
+    agent.acmd("game_specialhi", rosetta_specialhi);
 
-    agent.game_acmd("game_specialhiend", rosetta_specialhiend);
+    agent.acmd("game_specialhiend", rosetta_specialhiend);
 }

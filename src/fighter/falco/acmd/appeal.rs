@@ -7,6 +7,6 @@ unsafe extern "C" fn falco_appeallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_appeallwl", falco_appeallw);
-    agent.game_acmd("game_appeallwr", falco_appeallw);
+    agent.acmd("game_appeallwl", falco_appeallw);
+    agent.acmd("game_appeallwr", falco_appeallw);
 }

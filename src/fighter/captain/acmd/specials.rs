@@ -140,15 +140,15 @@ unsafe extern "C" fn captain_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsstart", captain_specialsstart);
+    agent.acmd("game_specialsstart", captain_specialsstart);
 
-    agent.game_acmd("game_specialsend", captain_specialsend);
+    agent.acmd("game_specialsend", captain_specialsend);
 
-    agent.game_acmd("game_specialairsstart", captain_specialairsstart);
+    agent.acmd("game_specialairsstart", captain_specialairsstart);
 
-    agent.game_acmd("game_specialairsend", captain_specialairsend);
+    agent.acmd("game_specialairsend", captain_specialairsend);
 
-    agent.game_acmd("game_specialhi", captain_specialhi);
+    agent.acmd("game_specialhi", captain_specialhi);
 
-    agent.game_acmd("game_specialairhi", captain_specialhi);
+    agent.acmd("game_specialairhi", captain_specialhi);
 }

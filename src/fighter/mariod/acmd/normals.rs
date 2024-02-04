@@ -136,21 +136,21 @@ unsafe extern "C" fn mariod_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", mariod_attack11);
+    agent.acmd("game_attack11", mariod_attack11);
 
-    agent.game_acmd("game_attack12", mariod_attack12);
+    agent.acmd("game_attack12", mariod_attack12);
 
-    agent.game_acmd("game_attack13", mariod_attack13);
+    agent.acmd("game_attack13", mariod_attack13);
 
-    agent.game_acmd("game_attackdash", mariod_attackdash);
+    agent.acmd("game_attackdash", mariod_attackdash);
 
-    agent.game_acmd("game_attacks3", mariod_attacks3);
+    agent.acmd("game_attacks3", mariod_attacks3);
 
-    agent.game_acmd("game_attacks3hi", mariod_attacks3);
+    agent.acmd("game_attacks3hi", mariod_attacks3);
 
-    agent.game_acmd("game_attacks3lw", mariod_attacks3);
+    agent.acmd("game_attacks3lw", mariod_attacks3);
 
-    agent.game_acmd("game_attackhi3", mariod_attackhi3);
+    agent.acmd("game_attackhi3", mariod_attackhi3);
 
-    agent.game_acmd("game_attacklw3", mariod_attacklw3);
+    agent.acmd("game_attacklw3", mariod_attacklw3);
 }

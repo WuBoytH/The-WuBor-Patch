@@ -92,11 +92,11 @@ unsafe extern "C" fn captain_attack100_inner(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", captain_attack11);
+    agent.acmd("game_attack11", captain_attack11);
 
-    agent.game_acmd("game_attack12", captain_attack12);
+    agent.acmd("game_attack12", captain_attack12);
 
-    agent.game_acmd("game_attack13", captain_attack13);
+    agent.acmd("game_attack13", captain_attack13);
 
-    agent.game_acmd("game_attack100", captain_attack100);
+    agent.acmd("game_attack100", captain_attack100);
 }

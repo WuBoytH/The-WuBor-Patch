@@ -192,11 +192,11 @@ unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.effect_acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
-    agent.sound_acmd("sound_ikespecialnend", kirby_ikespecialnend_snd);
-    agent.expression_acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);
+    agent.acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
+    agent.acmd("sound_ikespecialnend", kirby_ikespecialnend_snd);
+    agent.acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);
 
-    agent.effect_acmd("effect_ikespecialairnend", kirby_ikespecialairnend_eff);
-    agent.sound_acmd("sound_ikespecialairnend", kirby_ikespecialairnend_snd);
-    agent.expression_acmd("expression_ikespecialairnend", kirby_ikespecialairnend_exp);
+    agent.acmd("effect_ikespecialairnend", kirby_ikespecialairnend_eff);
+    agent.acmd("sound_ikespecialairnend", kirby_ikespecialairnend_snd);
+    agent.acmd("expression_ikespecialairnend", kirby_ikespecialairnend_exp);
 }

@@ -290,21 +290,21 @@ unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", brave_attack11);
-    agent.effect_acmd("effect_attack11", brave_attack11_eff);
-    agent.expression_acmd("expression_attack11", brave_attack11_exp);
+    agent.acmd("game_attack11", brave_attack11);
+    agent.acmd("effect_attack11", brave_attack11_eff);
+    agent.acmd("expression_attack11", brave_attack11_exp);
 
-    agent.game_acmd("game_attack12", brave_attack12);
-    agent.effect_acmd("effect_attack12", brave_attack12_eff);
-    agent.expression_acmd("expression_attack12", brave_attack12_exp);
+    agent.acmd("game_attack12", brave_attack12);
+    agent.acmd("effect_attack12", brave_attack12_eff);
+    agent.acmd("expression_attack12", brave_attack12_exp);
 
-    agent.game_acmd("game_attack13", brave_attack13);
-    agent.effect_acmd("effect_attack13", brave_attack13_eff);
-    agent.expression_acmd("expression_attack13", brave_attack13_exp);
+    agent.acmd("game_attack13", brave_attack13);
+    agent.acmd("effect_attack13", brave_attack13_eff);
+    agent.acmd("expression_attack13", brave_attack13_exp);
 
-    agent.game_acmd("game_attackdash", brave_attackdash);
+    agent.acmd("game_attackdash", brave_attackdash);
 
-    agent.game_acmd("game_attacks3s2", brave_attacks3s2);
+    agent.acmd("game_attacks3s2", brave_attacks3s2);
 
-    agent.game_acmd("game_attackhi3", brave_attackhi3);
+    agent.acmd("game_attackhi3", brave_attackhi3);
 }

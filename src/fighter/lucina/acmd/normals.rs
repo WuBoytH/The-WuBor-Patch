@@ -281,25 +281,25 @@ unsafe extern "C" fn lucina_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", lucina_attack11);
-    agent.effect_acmd("effect_attack11", lucina_attack11_eff);
-    agent.expression_acmd("expression_attack11", lucina_attack11_exp);
+    agent.acmd("game_attack11", lucina_attack11);
+    agent.acmd("effect_attack11", lucina_attack11_eff);
+    agent.acmd("expression_attack11", lucina_attack11_exp);
 
-    agent.game_acmd("game_attack12", lucina_attack12);
-    agent.effect_acmd("effect_attack12", lucina_attack12_eff);
-    agent.expression_acmd("expression_attack12", lucina_attack12_exp);
+    agent.acmd("game_attack12", lucina_attack12);
+    agent.acmd("effect_attack12", lucina_attack12_eff);
+    agent.acmd("expression_attack12", lucina_attack12_exp);
 
-    agent.game_acmd("game_attackdash", lucina_attackdash);
-    agent.effect_acmd("effect_attackdash", lucina_attackdash_eff);
-    agent.sound_acmd("sound_attackdash", lucina_attackdash_snd);
-    agent.expression_acmd("expression_attackdash", lucina_attackdash_exp);
+    agent.acmd("game_attackdash", lucina_attackdash);
+    agent.acmd("effect_attackdash", lucina_attackdash_eff);
+    agent.acmd("sound_attackdash", lucina_attackdash_snd);
+    agent.acmd("expression_attackdash", lucina_attackdash_exp);
 
-    agent.game_acmd("game_attacks3", lucina_attacks3);
+    agent.acmd("game_attacks3", lucina_attacks3);
 
-    agent.game_acmd("game_attackhi3", lucina_attackhi3);
-    agent.effect_acmd("effect_attackhi3", lucina_attackhi3_eff);
-    agent.sound_acmd("sound_attackhi3", lucina_attackhi3_snd);
-    agent.expression_acmd("expression_attackhi3", lucina_attackhi3_exp);
+    agent.acmd("game_attackhi3", lucina_attackhi3);
+    agent.acmd("effect_attackhi3", lucina_attackhi3_eff);
+    agent.acmd("sound_attackhi3", lucina_attackhi3_snd);
+    agent.acmd("expression_attackhi3", lucina_attackhi3_exp);
 
-    agent.game_acmd("game_attacklw3", lucina_attacklw3);
+    agent.acmd("game_attacklw3", lucina_attacklw3);
 }

@@ -157,7 +157,7 @@ unsafe extern "C" fn elight_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", elight_attacks4);
+    agent.acmd("game_attacks4", elight_attacks4);
 
-    agent.game_acmd("game_attackhi4", elight_attackhi4);
+    agent.acmd("game_attackhi4", elight_attackhi4);
 }

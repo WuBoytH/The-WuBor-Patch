@@ -73,11 +73,11 @@ unsafe extern "C" fn miiswordsman_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", miiswordsman_attack11);
+    agent.acmd("game_attack11", miiswordsman_attack11);
 
-    agent.game_acmd("game_attack12", miiswordsman_attack12);
+    agent.acmd("game_attack12", miiswordsman_attack12);
 
-    agent.game_acmd("game_attack13", miiswordsman_attack13);
+    agent.acmd("game_attack13", miiswordsman_attack13);
 
-    agent.game_acmd("game_attackhi3", miiswordsman_attackhi3);
+    agent.acmd("game_attackhi3", miiswordsman_attackhi3);
 }

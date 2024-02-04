@@ -20,5 +20,5 @@ unsafe extern "C" fn cloud_catch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catch", cloud_catch);
+    agent.acmd("game_catch", cloud_catch);
 }

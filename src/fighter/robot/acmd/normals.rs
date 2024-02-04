@@ -169,16 +169,16 @@ unsafe extern "C" fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks3", robot_attacks3);
+    agent.acmd("game_attacks3", robot_attacks3);
 
-    agent.game_acmd("game_attacks3hi", robot_attacks3hi);
+    agent.acmd("game_attacks3hi", robot_attacks3hi);
 
-    agent.game_acmd("game_attacks3lw", robot_attacks3lw);
+    agent.acmd("game_attacks3lw", robot_attacks3lw);
 
-    agent.game_acmd("game_attackhi3", robot_attackhi3);
+    agent.acmd("game_attackhi3", robot_attackhi3);
 
-    agent.game_acmd("game_attacklw3", robot_attacklw3);
-    agent.effect_acmd("effect_attacklw3", robot_attacklw3_eff);
-    agent.sound_acmd("sound_attacklw3", robot_attacklw3_snd);
-    agent.expression_acmd("expressoin_attacklw3", robot_attacklw3_exp);
+    agent.acmd("game_attacklw3", robot_attacklw3);
+    agent.acmd("effect_attacklw3", robot_attacklw3_eff);
+    agent.acmd("sound_attacklw3", robot_attacklw3_snd);
+    agent.acmd("expressoin_attacklw3", robot_attacklw3_exp);
 }

@@ -90,11 +90,11 @@ unsafe extern "C" fn dolly_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwf", dolly_throwf);
+    agent.acmd("game_throwf", dolly_throwf);
 
-    agent.game_acmd("game_throwb", dolly_throwb);
+    agent.acmd("game_throwb", dolly_throwb);
 
-    agent.game_acmd("game_throwhi", dolly_throwhi);
+    agent.acmd("game_throwhi", dolly_throwhi);
 
-    agent.game_acmd("game_throwlw", dolly_throwlw);
+    agent.acmd("game_throwlw", dolly_throwlw);
 }

@@ -307,27 +307,27 @@ unsafe extern "C" fn ganon_attacklw32_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", ganon_attack11);
-    agent.effect_acmd("effect_attack11", ganon_attack11_eff);
-    agent.sound_acmd("sound_attack11", ganon_attack11_snd);
-    agent.expression_acmd("expression_attack11", ganon_attack11_exp);
+    agent.acmd("game_attack11", ganon_attack11);
+    agent.acmd("effect_attack11", ganon_attack11_eff);
+    agent.acmd("sound_attack11", ganon_attack11_snd);
+    agent.acmd("expression_attack11", ganon_attack11_exp);
 
-    agent.game_acmd("game_attackdash", ganon_attackdash);
+    agent.acmd("game_attackdash", ganon_attackdash);
 
-    agent.game_acmd("game_attacks3", ganon_attacks3);
+    agent.acmd("game_attacks3", ganon_attacks3);
 
-    agent.game_acmd("game_attackhi3", ganon_attackhi3);
-    agent.effect_acmd("effect_attackhi3", ganon_attackhi3_eff);
-    agent.sound_acmd("sound_attackhi3", ganon_attackhi3_snd);
-    agent.expression_acmd("expression_attackhi3", ganon_attackhi3_exp);
+    agent.acmd("game_attackhi3", ganon_attackhi3);
+    agent.acmd("effect_attackhi3", ganon_attackhi3_eff);
+    agent.acmd("sound_attackhi3", ganon_attackhi3_snd);
+    agent.acmd("expression_attackhi3", ganon_attackhi3_exp);
 
-    agent.game_acmd("game_attacklw3", ganon_attacklw3);
-    agent.effect_acmd("effect_attacklw3", ganon_attacklw3_eff);
-    agent.sound_acmd("sound_attacklw3", ganon_attacklw3_snd);
-    agent.expression_acmd("expression_attacklw3", ganon_attacklw3_exp);
+    agent.acmd("game_attacklw3", ganon_attacklw3);
+    agent.acmd("effect_attacklw3", ganon_attacklw3_eff);
+    agent.acmd("sound_attacklw3", ganon_attacklw3_snd);
+    agent.acmd("expression_attacklw3", ganon_attacklw3_exp);
 
-    agent.game_acmd("game_attacklw32", ganon_attacklw32);
-    agent.effect_acmd("effect_attacklw32", ganon_attacklw32_eff);
-    agent.sound_acmd("sound_attacklw32", ganon_attacklw32_snd);
-    agent.expression_acmd("expression_attacklw32", ganon_attacklw32_exp);
+    agent.acmd("game_attacklw32", ganon_attacklw32);
+    agent.acmd("effect_attacklw32", ganon_attacklw32_eff);
+    agent.acmd("sound_attacklw32", ganon_attacklw32_snd);
+    agent.acmd("expression_attacklw32", ganon_attacklw32_exp);
 }

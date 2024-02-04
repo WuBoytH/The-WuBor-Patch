@@ -52,5 +52,5 @@ unsafe extern "C" fn younglink_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_aircatch", younglink_aircatch);
+    agent.acmd("game_aircatch", younglink_aircatch);
 }

@@ -127,7 +127,7 @@ unsafe extern "C" fn shulk_speciallwf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
+   .acmd_scripts!(
         shulk_specials,
 
         shulk_specialairsfall,

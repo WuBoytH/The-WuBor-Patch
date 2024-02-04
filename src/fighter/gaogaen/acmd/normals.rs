@@ -74,16 +74,16 @@ unsafe extern "C" fn gaogaen_attacks3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", gaogaen_attack11);
+    agent.acmd("game_attack11", gaogaen_attack11);
 
-    agent.game_acmd("game_attack12", gaogaen_attack12);
+    agent.acmd("game_attack12", gaogaen_attack12);
 
-    agent.game_acmd("game_attack13", gaogaen_attack13);
+    agent.acmd("game_attack13", gaogaen_attack13);
 
-    agent.game_acmd("game_attacks3", gaogaen_attacks3);
+    agent.acmd("game_attacks3", gaogaen_attacks3);
 
-    agent.game_acmd("game_attacks3hi", gaogaen_attacks3);
+    agent.acmd("game_attacks3hi", gaogaen_attacks3);
 
-    agent.game_acmd("game_attacks3lw", gaogaen_attacks3);
+    agent.acmd("game_attacks3lw", gaogaen_attacks3);
 
 }

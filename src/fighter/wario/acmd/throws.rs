@@ -111,11 +111,11 @@ unsafe extern "C" fn wario_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwf", wario_throwf);
+    agent.acmd("game_throwf", wario_throwf);
 
-    agent.game_acmd("game_throwb", wario_throwb);
+    agent.acmd("game_throwb", wario_throwb);
 
-    agent.game_acmd("game_throwhi", wario_throwhi);
+    agent.acmd("game_throwhi", wario_throwhi);
 
-    agent.game_acmd("game_throwlw", wario_throwlw);
+    agent.acmd("game_throwlw", wario_throwlw);
 }

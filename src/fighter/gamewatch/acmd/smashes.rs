@@ -95,11 +95,11 @@ unsafe extern "C" fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", gamewatch_attacks4);
+    agent.acmd("game_attacks4", gamewatch_attacks4);
 
-    agent.game_acmd("game_attackhi4", gamewatch_attackhi4);
+    agent.acmd("game_attackhi4", gamewatch_attackhi4);
 
-    agent.game_acmd("game_attackhi4r", gamewatch_attackhi4r);
+    agent.acmd("game_attackhi4r", gamewatch_attackhi4r);
 
-    agent.game_acmd("game_attacklw4", gamewatch_attacklw4);
+    agent.acmd("game_attacklw4", gamewatch_attacklw4);
 }

@@ -104,11 +104,11 @@ unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn3", trail_attackairn3);
+    agent.acmd("game_attackairn3", trail_attackairn3);
 
-    agent.game_acmd("game_attackairf", trail_attackairf);
+    agent.acmd("game_attackairf", trail_attackairf);
 
-    agent.game_acmd("game_attackairlw", trail_attackairlw);
+    agent.acmd("game_attackairlw", trail_attackairlw);
 
-    agent.game_acmd("game_landingairlw", trail_landingairlw);
+    agent.acmd("game_landingairlw", trail_landingairlw);
 }

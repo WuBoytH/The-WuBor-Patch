@@ -105,12 +105,12 @@ unsafe extern "C" fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_charge", lucario_auraball_charge);
-    agent.sound_acmd("sound_charge", lucario_auraball_charge_snd);
+    agent.acmd("game_charge", lucario_auraball_charge);
+    agent.acmd("sound_charge", lucario_auraball_charge_snd);
 
-    agent.game_acmd("game_shoot", lucario_auraball_shoot);
-    agent.sound_acmd("sound_shoot", lucario_auraball_shoot_snd);
+    agent.acmd("game_shoot", lucario_auraball_shoot);
+    agent.acmd("sound_shoot", lucario_auraball_shoot_snd);
 
-    agent.game_acmd("game_explosion", lucario_auraball_explosion);
-    agent.effect_acmd("effect_explosion", lucario_auraball_explosion_eff);
+    agent.acmd("game_explosion", lucario_auraball_explosion);
+    agent.acmd("effect_explosion", lucario_auraball_explosion_eff);
 }

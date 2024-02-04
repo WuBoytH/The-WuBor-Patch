@@ -898,37 +898,37 @@ unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn1", jack_specialn1);
+    agent.acmd("game_specialn1", jack_specialn1);
 
-    agent.game_acmd("game_specialairn1", jack_specialairn1);
+    agent.acmd("game_specialairn1", jack_specialairn1);
 
-    agent.game_acmd("game_specialn1_ex", jack_specialn1_ex);
+    agent.acmd("game_specialn1_ex", jack_specialn1_ex);
 
-    agent.game_acmd("game_specialairn1_ex", jack_specialairn1_ex);
+    agent.acmd("game_specialairn1_ex", jack_specialairn1_ex);
 
-    agent.game_acmd("game_specialnjump", jack_specialnjump);
-    agent.effect_acmd("effect_specialnjump", jack_specialnjump_eff);
-    agent.sound_acmd("sound_specialnjump", jack_specialnjump_snd);
+    agent.acmd("game_specialnjump", jack_specialnjump);
+    agent.acmd("effect_specialnjump", jack_specialnjump_eff);
+    agent.acmd("sound_specialnjump", jack_specialnjump_snd);
 
-    agent.game_acmd("game_specialairnshoot", jack_specialairnshoot);
+    agent.acmd("game_specialairnshoot", jack_specialairnshoot);
 
-    agent.game_acmd("game_specials1", jack_specials1);
-    agent.effect_acmd("effect_specials1", jack_specials1_eff);
-    agent.sound_acmd("sound_specials1", jack_specials1_snd);
-    agent.expression_acmd("expression_specials1", jack_specials1_exp);
+    agent.acmd("game_specials1", jack_specials1);
+    agent.acmd("effect_specials1", jack_specials1_eff);
+    agent.acmd("sound_specials1", jack_specials1_snd);
+    agent.acmd("expression_specials1", jack_specials1_exp);
 
-    agent.game_acmd("game_specialairs1", jack_specialairs1);
-    agent.effect_acmd("effect_specialairs1", jack_specialairs1_eff);
-    agent.sound_acmd("sound_specialairs1", jack_specialairs1_snd);
-    agent.expression_acmd("expression_specialairs1", jack_specialairs1_exp);
+    agent.acmd("game_specialairs1", jack_specialairs1);
+    agent.acmd("effect_specialairs1", jack_specialairs1_eff);
+    agent.acmd("sound_specialairs1", jack_specialairs1_snd);
+    agent.acmd("expression_specialairs1", jack_specialairs1_exp);
 
-    agent.game_acmd("game_specialairhi", jack_specialairhi);
+    agent.acmd("game_specialairhi", jack_specialairhi);
 
-    agent.game_acmd("game_specialhithrow", jack_specialhithrow);
+    agent.acmd("game_specialhithrow", jack_specialhithrow);
 
-    agent.game_acmd("game_specialairhithrow", jack_specialhithrow);
+    agent.acmd("game_specialairhithrow", jack_specialhithrow);
 
-    agent.effect_acmd("effect_wait4", jack_wait4_eff);
+    agent.acmd("effect_wait4", jack_wait4_eff);
 
-    agent.effect_acmd("effect_wait5", jack_wait5_eff);
+    agent.acmd("effect_wait5", jack_wait5_eff);
 }

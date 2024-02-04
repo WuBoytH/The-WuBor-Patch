@@ -267,31 +267,31 @@ unsafe extern "C" fn luigi_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsstart", luigi_specialsstart);
+    agent.acmd("game_specialsstart", luigi_specialsstart);
 
-    agent.game_acmd("game_specialairsstart", luigi_specialsstart);
+    agent.acmd("game_specialairsstart", luigi_specialsstart);
 
-    agent.game_acmd("game_specialshold", luigi_specialshold);
-    agent.effect_acmd("effect_specialshold", luigi_specialshold_eff);
+    agent.acmd("game_specialshold", luigi_specialshold);
+    agent.acmd("effect_specialshold", luigi_specialshold_eff);
 
-    agent.game_acmd("game_specialairshold", luigi_specialshold);
-    agent.effect_acmd("effect_specialairshold", luigi_specialshold_eff);
+    agent.acmd("game_specialairshold", luigi_specialshold);
+    agent.acmd("effect_specialairshold", luigi_specialshold_eff);
 
-    agent.game_acmd("game_specialsend", luigi_specialsend);
-    agent.effect_acmd("effect_specialsend", luigi_specialsend_eff);
-    agent.sound_acmd("sound_specialsend", luigi_specialsend_snd);
-    agent.expression_acmd("expression_specialsend", luigi_specialsend_exp);
+    agent.acmd("game_specialsend", luigi_specialsend);
+    agent.acmd("effect_specialsend", luigi_specialsend_eff);
+    agent.acmd("sound_specialsend", luigi_specialsend_snd);
+    agent.acmd("expression_specialsend", luigi_specialsend_exp);
 
-    agent.game_acmd("game_specialairsend", luigi_specialsend);
-    agent.effect_acmd("effect_specialairsend", luigi_specialsend_eff);
-    agent.sound_acmd("sound_specialairsend", luigi_specialsend_snd);
-    agent.expression_acmd("expression_specialairsend", luigi_specialsend_exp);
+    agent.acmd("game_specialairsend", luigi_specialsend);
+    agent.acmd("effect_specialairsend", luigi_specialsend_eff);
+    agent.acmd("sound_specialairsend", luigi_specialsend_snd);
+    agent.acmd("expression_specialairsend", luigi_specialsend_exp);
 
-    agent.game_acmd("game_specialhi", luigi_specialhi);
+    agent.acmd("game_specialhi", luigi_specialhi);
 
-    agent.game_acmd("game_specialairhi", luigi_specialairhi);
+    agent.acmd("game_specialairhi", luigi_specialairhi);
 
-    agent.game_acmd("game_speciallw", luigi_speciallw);
+    agent.acmd("game_speciallw", luigi_speciallw);
 
-    agent.game_acmd("game_specialairlw", luigi_specialairlw);
+    agent.acmd("game_specialairlw", luigi_specialairlw);
 }

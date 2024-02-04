@@ -79,10 +79,10 @@ unsafe extern "C" fn chrom_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", chrom_attackairf);
+    agent.acmd("game_attackairf", chrom_attackairf);
 
-    agent.game_acmd("game_attackairlw", chrom_attackairlw);
-    agent.effect_acmd("effect_attackairlw", chrom_attackairlw_eff);
-    agent.sound_acmd("sound_attackairlw", chrom_attackairlw_snd);
-    agent.expression_acmd("expression_attackairlw", chrom_attackairlw_exp);
+    agent.acmd("game_attackairlw", chrom_attackairlw);
+    agent.acmd("effect_attackairlw", chrom_attackairlw_eff);
+    agent.acmd("sound_attackairlw", chrom_attackairlw_snd);
+    agent.acmd("expression_attackairlw", chrom_attackairlw_exp);
 }

@@ -98,11 +98,11 @@ unsafe extern "C" fn dedede_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", dedede_attack11);
+    agent.acmd("game_attack11", dedede_attack11);
 
-    agent.game_acmd("game_attack12", dedede_attack12);
+    agent.acmd("game_attack12", dedede_attack12);
 
-    agent.game_acmd("game_attackhi3", dedede_attackhi3);
+    agent.acmd("game_attackhi3", dedede_attackhi3);
 
-    agent.game_acmd("game_attacklw3", dedede_attacklw3);
+    agent.acmd("game_attacklw3", dedede_attacklw3);
 }

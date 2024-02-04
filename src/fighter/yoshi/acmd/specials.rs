@@ -88,17 +88,17 @@ unsafe extern "C" fn yoshi_specials_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", yoshi_specialn);
+    agent.acmd("game_specialn", yoshi_specialn);
 
-    agent.game_acmd("game_specialairn", yoshi_specialn);
+    agent.acmd("game_specialairn", yoshi_specialn);
 
-    agent.game_acmd("game_specials", yoshi_specials);
-    agent.effect_acmd("effect_specials", yoshi_specials_eff);
-    agent.sound_acmd("sound_specials", yoshi_specials_snd);
-    agent.expression_acmd("expression_specials", yoshi_specials_exp);
+    agent.acmd("game_specials", yoshi_specials);
+    agent.acmd("effect_specials", yoshi_specials_eff);
+    agent.acmd("sound_specials", yoshi_specials_snd);
+    agent.acmd("expression_specials", yoshi_specials_exp);
 
-    agent.game_acmd("game_specialairs", yoshi_specials);
-    agent.effect_acmd("effect_specialairs", yoshi_specials_eff);
-    agent.sound_acmd("sound_specialairs", yoshi_specials_snd);
-    agent.expression_acmd("expression_specialairs", yoshi_specials_exp);
+    agent.acmd("game_specialairs", yoshi_specials);
+    agent.acmd("effect_specialairs", yoshi_specials_eff);
+    agent.acmd("sound_specialairs", yoshi_specials_snd);
+    agent.acmd("expression_specialairs", yoshi_specials_exp);
 }

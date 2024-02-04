@@ -81,15 +81,15 @@ unsafe extern "C" fn kirby_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsstart", kirby_specialsstart);
+    agent.acmd("game_specialsstart", kirby_specialsstart);
 
-    agent.game_acmd("game_specialairsstart", kirby_specialairsstart);
+    agent.acmd("game_specialairsstart", kirby_specialairsstart);
 
-    agent.game_acmd("game_specialairs", kirby_specialairs);
+    agent.acmd("game_specialairs", kirby_specialairs);
 
-    agent.game_acmd("game_specialairss", kirby_specialairss);
+    agent.acmd("game_specialairss", kirby_specialairss);
 
-    agent.game_acmd("game_specialhi", kirby_specialhi);
+    agent.acmd("game_specialhi", kirby_specialhi);
 
-    agent.game_acmd("game_specialairhi", kirby_specialhi);
+    agent.acmd("game_specialairhi", kirby_specialhi);
 }

@@ -538,16 +538,16 @@ unsafe extern "C" fn pickel_attackairlw2_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", pickel_attackairn);
+    agent.acmd("game_attackairn", pickel_attackairn);
 
-    agent.game_acmd("game_attackairf", pickel_attackairf);
+    agent.acmd("game_attackairf", pickel_attackairf);
 
-    agent.game_acmd("game_attackairb", pickel_attackairb);
+    agent.acmd("game_attackairb", pickel_attackairb);
 
-    agent.game_acmd("game_attackairhi", pickel_attackairhi);
+    agent.acmd("game_attackairhi", pickel_attackairhi);
 
-    agent.game_acmd("game_attackairlw", pickel_attackairlw);
+    agent.acmd("game_attackairlw", pickel_attackairlw);
 
-    agent.game_acmd("game_attackairlw2", pickel_attackairlw2);
-    agent.expression_acmd("expression_attackairlw2", pickel_attackairlw2_exp);
+    agent.acmd("game_attackairlw2", pickel_attackairlw2);
+    agent.acmd("expression_attackairlw2", pickel_attackairlw2_exp);
 }

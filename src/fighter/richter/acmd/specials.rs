@@ -160,25 +160,25 @@ unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", richter_specialn);
-    agent.expression_acmd("expression_specialn", richter_specialn_exp);
+    agent.acmd("game_specialn", richter_specialn);
+    agent.acmd("expression_specialn", richter_specialn_exp);
 
-    agent.game_acmd("game_specialairn", richter_specialn);
-    agent.expression_acmd("expression_specialairn", richter_specialn_exp);
+    agent.acmd("game_specialairn", richter_specialn);
+    agent.acmd("expression_specialairn", richter_specialn_exp);
 
-    agent.game_acmd("game_specialnblank", richter_specialnblank);
+    agent.acmd("game_specialnblank", richter_specialnblank);
 
-    agent.game_acmd("game_specialairnblank", richter_specialnblank);
+    agent.acmd("game_specialairnblank", richter_specialnblank);
 
-    agent.game_acmd("game_specials1", richter_specials1);
+    agent.acmd("game_specials1", richter_specials1);
 
-    agent.game_acmd("game_specialairs1", richter_specials1);
+    agent.acmd("game_specialairs1", richter_specials1);
 
-    agent.game_acmd("game_specialhi", richter_specialhi);
+    agent.acmd("game_specialhi", richter_specialhi);
 
-    agent.game_acmd("game_specialairhi", richter_specialairhi);
+    agent.acmd("game_specialairhi", richter_specialairhi);
 
-    agent.game_acmd("game_speciallw", richter_speciallw);
+    agent.acmd("game_speciallw", richter_speciallw);
 
-    agent.game_acmd("game_specialairlw", richter_speciallw);
+    agent.acmd("game_specialairlw", richter_speciallw);
 }

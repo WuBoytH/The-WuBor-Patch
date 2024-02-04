@@ -67,9 +67,9 @@ unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", koopajr_attack11);
+    agent.acmd("game_attack11", koopajr_attack11);
 
-    agent.game_acmd("game_attack12", koopajr_attack12);
+    agent.acmd("game_attack12", koopajr_attack12);
 
-    agent.game_acmd("game_attackhi3", koopajr_attackhi3);
+    agent.acmd("game_attackhi3", koopajr_attackhi3);
 }

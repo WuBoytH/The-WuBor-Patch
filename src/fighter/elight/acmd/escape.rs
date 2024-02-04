@@ -38,13 +38,13 @@ unsafe extern "C" fn elight_escapeairslideforesight(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_escapen", elight_escapen);
+    agent.acmd("game_escapen", elight_escapen);
 
-    agent.game_acmd("game_escapef", elight_escapef);
+    agent.acmd("game_escapef", elight_escapef);
 
-    agent.game_acmd("game_escapeb", elight_escapeb);
+    agent.acmd("game_escapeb", elight_escapeb);
 
-    agent.game_acmd("game_escapeairslide", elight_escapeairslide);
+    agent.acmd("game_escapeairslide", elight_escapeairslide);
 
-    agent.game_acmd("game_escapeairslideforesight", elight_escapeairslideforesight);
+    agent.acmd("game_escapeairslideforesight", elight_escapeairslideforesight);
 }

@@ -64,17 +64,17 @@ unsafe extern "C" fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", richter_whip_attackairf);
+    agent.acmd("game_attackairf", richter_whip_attackairf);
 
-    agent.game_acmd("game_attackairfhi", richter_whip_attackairf);
+    agent.acmd("game_attackairfhi", richter_whip_attackairf);
 
-    agent.game_acmd("game_attackairflw", richter_whip_attackairf);
+    agent.acmd("game_attackairflw", richter_whip_attackairf);
 
-    agent.game_acmd("game_attackairb", richter_whip_attackairb);
+    agent.acmd("game_attackairb", richter_whip_attackairb);
 
-    agent.game_acmd("game_attackairbhi", richter_whip_attackairb);
+    agent.acmd("game_attackairbhi", richter_whip_attackairb);
 
-    agent.game_acmd("game_attackairblw", richter_whip_attackairb);
+    agent.acmd("game_attackairblw", richter_whip_attackairb);
 
-    agent.game_acmd("game_attackairhi", richter_whip_attackairhi);
+    agent.acmd("game_attackairhi", richter_whip_attackairhi);
 }

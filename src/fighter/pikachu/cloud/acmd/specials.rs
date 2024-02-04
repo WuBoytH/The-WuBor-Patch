@@ -14,6 +14,6 @@ unsafe extern "C" fn pikachu_cloud_regular_eff(_agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_regular", pikachu_cloud_regular);
-    agent.effect_acmd("effect_regular", pikachu_cloud_regular_eff);
+    agent.acmd("game_regular", pikachu_cloud_regular);
+    agent.acmd("effect_regular", pikachu_cloud_regular_eff);
 }

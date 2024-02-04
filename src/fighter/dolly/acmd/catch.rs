@@ -29,7 +29,7 @@ unsafe extern "C" fn dolly_catchattack_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", dolly_catchattack);
-    agent.effect_acmd("effect_catchattack", dolly_catchattack_eff);
-    agent.sound_acmd("sound_catchattack", dolly_catchattack_snd);
+    agent.acmd("game_catchattack", dolly_catchattack);
+    agent.acmd("effect_catchattack", dolly_catchattack_eff);
+    agent.acmd("sound_catchattack", dolly_catchattack_snd);
 }

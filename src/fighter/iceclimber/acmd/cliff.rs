@@ -24,6 +24,6 @@ unsafe extern "C" fn iceclimber_cliffcatch_nana(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_cliffcatch", iceclimber_cliffcatch);
-    agent.game_acmd("game_cliffcatch_nana", iceclimber_cliffcatch_nana);
+    agent.acmd("game_cliffcatch", iceclimber_cliffcatch);
+    agent.acmd("game_cliffcatch_nana", iceclimber_cliffcatch_nana);
 }

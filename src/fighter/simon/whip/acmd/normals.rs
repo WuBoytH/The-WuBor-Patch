@@ -164,17 +164,17 @@ unsafe extern "C" fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackdash", simon_whip_attackdash);
+    agent.acmd("game_attackdash", simon_whip_attackdash);
 
-    agent.game_acmd("game_attacks3", simon_whip_attacks3);
-    agent.effect_acmd("effect_attacks3", simon_whip_attacks3_eff);
+    agent.acmd("game_attacks3", simon_whip_attacks3);
+    agent.acmd("effect_attacks3", simon_whip_attacks3_eff);
 
-    agent.game_acmd("game_attacks3hi", simon_whip_attacks3);
-    agent.effect_acmd("effect_attacks3hi", simon_whip_attacks3_eff);
+    agent.acmd("game_attacks3hi", simon_whip_attacks3);
+    agent.acmd("effect_attacks3hi", simon_whip_attacks3_eff);
 
-    agent.game_acmd("game_attacks3lw", simon_whip_attacks3);
-    agent.effect_acmd("effect_attacks3lw", simon_whip_attacks3_eff);
+    agent.acmd("game_attacks3lw", simon_whip_attacks3);
+    agent.acmd("effect_attacks3lw", simon_whip_attacks3_eff);
 
-    agent.game_acmd("game_attacklw3", simon_whip_attacklw3);
-    agent.effect_acmd("effect_attacklw3", simon_whip_attacklw3_eff);
+    agent.acmd("game_attacklw3", simon_whip_attacklw3);
+    agent.acmd("effect_attacklw3", simon_whip_attacklw3_eff);
 }

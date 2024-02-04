@@ -56,9 +56,9 @@ unsafe extern "C" fn ike_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", ike_attack11);
+    agent.acmd("game_attack11", ike_attack11);
 
-    agent.game_acmd("game_attack12", ike_attack12);
+    agent.acmd("game_attack12", ike_attack12);
 
-    agent.game_acmd("game_attack13", ike_attack13);
+    agent.acmd("game_attack13", ike_attack13);
 }

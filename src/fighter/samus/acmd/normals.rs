@@ -86,8 +86,8 @@ unsafe extern "C" fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackhi3", samus_attackhi3);
-    agent.effect_acmd("effect_attackhi3", samus_attackhi3_eff);
-    agent.sound_acmd("sound_attackhi3", samus_attackhi3_snd);
-    agent.expression_acmd("expression_attackhi3", samus_attackhi3_exp);
+    agent.acmd("game_attackhi3", samus_attackhi3);
+    agent.acmd("effect_attackhi3", samus_attackhi3_eff);
+    agent.acmd("sound_attackhi3", samus_attackhi3_snd);
+    agent.acmd("expression_attackhi3", samus_attackhi3_exp);
 }

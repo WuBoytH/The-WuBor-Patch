@@ -184,63 +184,63 @@ unsafe extern "C" fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnstart", pitb_specialnstart);
-    agent.expression_acmd("expression_specialnstart", pitb_specialnstart_exp);
+    agent.acmd("game_specialnstart", pitb_specialnstart);
+    agent.acmd("expression_specialnstart", pitb_specialnstart_exp);
 
-    agent.game_acmd("game_specialairnstart", pitb_specialnstart);
-    agent.expression_acmd("expression_specialairnstart", pitb_specialnstart_exp);
+    agent.acmd("game_specialairnstart", pitb_specialnstart);
+    agent.acmd("expression_specialairnstart", pitb_specialnstart_exp);
 
-    agent.effect_acmd("effect_specialnholds", pitb_specialnhold_eff);
+    agent.acmd("effect_specialnholds", pitb_specialnhold_eff);
 
-    agent.effect_acmd("effect_specialnholdhi", pitb_specialnhold_eff);
+    agent.acmd("effect_specialnholdhi", pitb_specialnhold_eff);
 
-    agent.effect_acmd("effect_specialnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstos", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstos", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnholds", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnholds", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnholdhi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnholdhi", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstos", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstos", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialnstohi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstohi", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnstohi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstohi", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialnhitos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnhitos", pitb_specialairnhold_eff);
 
-    agent.effect_acmd("effect_specialairnhitos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnhitos", pitb_specialairnhold_eff);
 
-    agent.game_acmd("game_specialnfires", pitb_specialnfire);
-    agent.expression_acmd("expression_specialnfires", pitb_specialnfires_exp);
+    agent.acmd("game_specialnfires", pitb_specialnfire);
+    agent.acmd("expression_specialnfires", pitb_specialnfires_exp);
 
-    agent.game_acmd("game_specialairnfires", pitb_specialnfire);
-    agent.expression_acmd("expression_specialairnfires", pitb_specialnfires_exp);
+    agent.acmd("game_specialairnfires", pitb_specialnfire);
+    agent.acmd("expression_specialairnfires", pitb_specialnfires_exp);
 
-    agent.game_acmd("game_specialnfirehi", pitb_specialnfire);
-    agent.effect_acmd("effect_specialnfirehi", pitb_specialnfirehi_eff);
-    agent.expression_acmd("expression_specialnfirehi", pitb_specialnfires_exp);
+    agent.acmd("game_specialnfirehi", pitb_specialnfire);
+    agent.acmd("effect_specialnfirehi", pitb_specialnfirehi_eff);
+    agent.acmd("expression_specialnfirehi", pitb_specialnfires_exp);
 
-    agent.game_acmd("game_specialairnfirehi", pitb_specialnfire);
-    agent.effect_acmd("effect_specialairnfirehi", pitb_specialnairfirehi_eff);
-    agent.expression_acmd("expression_specialairnfirehi", pitb_specialnfires_exp);
+    agent.acmd("game_specialairnfirehi", pitb_specialnfire);
+    agent.acmd("effect_specialairnfirehi", pitb_specialnairfirehi_eff);
+    agent.acmd("expression_specialairnfirehi", pitb_specialnfires_exp);
 
-    agent.game_acmd("game_specialsend", pitb_specialsend);
+    agent.acmd("game_specialsend", pitb_specialsend);
 
-    agent.game_acmd("game_specialairsend", pitb_specialairsend);
+    agent.acmd("game_specialairsend", pitb_specialairsend);
 
-    agent.game_acmd("game_specialhistart", pitb_specialhistart);
+    agent.acmd("game_specialhistart", pitb_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", pitb_specialhistart);
+    agent.acmd("game_specialairhistart", pitb_specialhistart);
 
-    agent.game_acmd("game_specialhi", pitb_specialhi);
+    agent.acmd("game_specialhi", pitb_specialhi);
 
-    agent.game_acmd("game_specialairhiend", pitb_specialhiend);
+    agent.acmd("game_specialairhiend", pitb_specialhiend);
 
-    agent.game_acmd("game_speciallwhold", pitb_dspecialhold);
+    agent.acmd("game_speciallwhold", pitb_dspecialhold);
 
-    agent.game_acmd("game_specialairlwhold", pitb_dspecialhold);
+    agent.acmd("game_specialairlwhold", pitb_dspecialhold);
 }

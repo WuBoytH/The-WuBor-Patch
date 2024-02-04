@@ -77,11 +77,11 @@ unsafe extern "C" fn iceclimber_attack12_nana(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", iceclimber_attack11);
+    agent.acmd("game_attack11", iceclimber_attack11);
 
-    agent.game_acmd("game_attack11_nana", iceclimber_attack11_nana);
+    agent.acmd("game_attack11_nana", iceclimber_attack11_nana);
 
-    agent.game_acmd("game_attack12", iceclimber_attack12);
+    agent.acmd("game_attack12", iceclimber_attack12);
 
-    agent.game_acmd("game_attack12_nana", iceclimber_attack12_nana);
+    agent.acmd("game_attack12_nana", iceclimber_attack12_nana);
 }

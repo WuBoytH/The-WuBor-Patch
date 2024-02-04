@@ -5,8 +5,8 @@ unsafe extern "C" fn rosetta_tico_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhistart", rosetta_tico_specialhistart);
+    agent.acmd("game_specialhistart", rosetta_tico_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", rosetta_tico_specialhistart);
+    agent.acmd("game_specialairhistart", rosetta_tico_specialhistart);
 
 }

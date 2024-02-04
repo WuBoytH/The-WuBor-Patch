@@ -98,11 +98,11 @@ unsafe extern "C" fn diddy_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", diddy_attack11);
+    agent.acmd("game_attack11", diddy_attack11);
 
-    agent.game_acmd("game_attack12", diddy_attack12);
+    agent.acmd("game_attack12", diddy_attack12);
 
-    agent.game_acmd("game_attack13", diddy_attack13);
+    agent.acmd("game_attack13", diddy_attack13);
 
-    agent.game_acmd("game_attackdash", diddy_attackdash);
+    agent.acmd("game_attackdash", diddy_attackdash);
 }

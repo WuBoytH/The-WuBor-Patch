@@ -30,5 +30,5 @@ unsafe extern "C" fn metaknight_throwf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwf", metaknight_throwf);
+    agent.acmd("game_throwf", metaknight_throwf);
 }

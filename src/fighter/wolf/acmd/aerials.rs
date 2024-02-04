@@ -72,9 +72,9 @@ unsafe extern "C" fn wolf_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", wolf_attackairn);
+    agent.acmd("game_attackairn", wolf_attackairn);
 
-    agent.game_acmd("game_attackairb", wolf_attackairb);
+    agent.acmd("game_attackairb", wolf_attackairb);
 
-    agent.game_acmd("game_attackairlw", wolf_attackairlw);
+    agent.acmd("game_attackairlw", wolf_attackairlw);
 }

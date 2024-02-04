@@ -61,9 +61,9 @@ unsafe extern "C" fn plizardon_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", plizardon_attack11);
+    agent.acmd("game_attack11", plizardon_attack11);
 
-    agent.game_acmd("game_attack12", plizardon_attack12);
+    agent.acmd("game_attack12", plizardon_attack12);
 
-    agent.game_acmd("game_attack13", plizardon_attack13);
+    agent.acmd("game_attack13", plizardon_attack13);
 }

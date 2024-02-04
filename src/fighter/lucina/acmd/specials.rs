@@ -772,67 +772,67 @@ unsafe extern "C" fn lucina_lightningflash_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.effect_acmd("effect_specialnstart", lucina_specialnstart_eff);
-    agent.sound_acmd("sound_specialnstart", lucina_specialnstart_snd);
+    agent.acmd("effect_specialnstart", lucina_specialnstart_eff);
+    agent.acmd("sound_specialnstart", lucina_specialnstart_snd);
 
-    agent.effect_acmd("effect_specialairnstart", lucina_specialnstart_eff);
-    agent.sound_acmd("sound_specialairnstart", lucina_specialnstart_snd);
+    agent.acmd("effect_specialairnstart", lucina_specialnstart_eff);
+    agent.acmd("sound_specialairnstart", lucina_specialnstart_snd);
 
-    agent.game_acmd("game_specialnloop", lucina_specialnloop);
+    agent.acmd("game_specialnloop", lucina_specialnloop);
 
-    agent.game_acmd("game_specialairnloop", lucina_specialnloop);
+    agent.acmd("game_specialairnloop", lucina_specialnloop);
 
-    agent.game_acmd("game_specialnend", lucina_specialnend);
+    agent.acmd("game_specialnend", lucina_specialnend);
 
-    agent.game_acmd("game_specialairnend", lucina_specialnend);
+    agent.acmd("game_specialairnend", lucina_specialnend);
 
-    agent.game_acmd("game_specialnendmax", lucina_specialnendmax);
+    agent.acmd("game_specialnendmax", lucina_specialnendmax);
 
-    agent.game_acmd("game_specialairnendmax", lucina_specialnendmax);
+    agent.acmd("game_specialairnendmax", lucina_specialnendmax);
 
-    agent.game_acmd("game_specialairs1", lucina_specialairs1);
-    agent.effect_acmd("effect_specialairs1", lucina_specialairs1_eff);
-    agent.sound_acmd("sound_specialairs1", lucina_specialairs1_snd);
+    agent.acmd("game_specialairs1", lucina_specialairs1);
+    agent.acmd("effect_specialairs1", lucina_specialairs1_eff);
+    agent.acmd("sound_specialairs1", lucina_specialairs1_snd);
 
-    agent.game_acmd("game_specialairs2hi", lucina_specialairs2hi);
-    agent.effect_acmd("effect_specialairs2hi", lucina_specialairs2hi_eff);
-    agent.sound_acmd("sound_specialairs2hi", lucina_specialairs2hi_snd);
+    agent.acmd("game_specialairs2hi", lucina_specialairs2hi);
+    agent.acmd("effect_specialairs2hi", lucina_specialairs2hi_eff);
+    agent.acmd("sound_specialairs2hi", lucina_specialairs2hi_snd);
 
-    agent.game_acmd("game_specials2hi", lucina_specials2hi);
-    agent.effect_acmd("effect_specials2hi", lucina_specials2hi_eff);
-    agent.sound_acmd("sound_specials2hi", lucina_specials2hi_snd);
-    agent.expression_acmd("expression_specials2hi", lucina_specials2hi_exp);
+    agent.acmd("game_specials2hi", lucina_specials2hi);
+    agent.acmd("effect_specials2hi", lucina_specials2hi_eff);
+    agent.acmd("sound_specials2hi", lucina_specials2hi_snd);
+    agent.acmd("expression_specials2hi", lucina_specials2hi_exp);
 
-    agent.game_acmd("game_specialhi", lucina_specialhi);
-    agent.effect_acmd("effect_specialhi", lucina_specialhi_eff);
-    agent.sound_acmd("sound_specialhi", lucina_specialhi_snd);
-    agent.expression_acmd("expression_specialhi", lucina_specialhi_exp);
+    agent.acmd("game_specialhi", lucina_specialhi);
+    agent.acmd("effect_specialhi", lucina_specialhi_eff);
+    agent.acmd("sound_specialhi", lucina_specialhi_snd);
+    agent.acmd("expression_specialhi", lucina_specialhi_exp);
 
-    agent.game_acmd("game_specialairhi", lucina_specialairhi);
-    agent.effect_acmd("effect_specialairhi", lucina_specialairhi_eff);
-    agent.sound_acmd("sound_specialairhi", lucina_specialairhi_snd);
-    agent.expression_acmd("expression_specialairhi", lucina_specialairhi_exp);
+    agent.acmd("game_specialairhi", lucina_specialairhi);
+    agent.acmd("effect_specialairhi", lucina_specialairhi_eff);
+    agent.acmd("sound_specialairhi", lucina_specialairhi_snd);
+    agent.acmd("expression_specialairhi", lucina_specialairhi_exp);
 
-    agent.game_acmd("game_speciallw", lucina_speciallw);
-    agent.effect_acmd("effect_speciallw", lucina_speciallw_eff);
-    agent.sound_acmd("sound_speciallw", lucina_speciallw_snd);
+    agent.acmd("game_speciallw", lucina_speciallw);
+    agent.acmd("effect_speciallw", lucina_speciallw_eff);
+    agent.acmd("sound_speciallw", lucina_speciallw_snd);
 
-    agent.game_acmd("game_specialairlw", lucina_speciallw);
-    agent.effect_acmd("effect_specialairlw", lucina_speciallw_eff);
-    agent.sound_acmd("sound_specialairlw", lucina_speciallw_snd);
+    agent.acmd("game_specialairlw", lucina_speciallw);
+    agent.acmd("effect_specialairlw", lucina_speciallw_eff);
+    agent.acmd("sound_specialairlw", lucina_speciallw_snd);
 
-    agent.game_acmd("game_speciallwhit", lucina_speciallwhit);
-    agent.effect_acmd("effect_speciallwhit", lucina_speciallwhit_eff);
-    agent.sound_acmd("sound_speciallwhit", lucina_speciallwhit_snd);
-    agent.expression_acmd("expression_speciallwhit", lucina_speciallwhit_exp);
+    agent.acmd("game_speciallwhit", lucina_speciallwhit);
+    agent.acmd("effect_speciallwhit", lucina_speciallwhit_eff);
+    agent.acmd("sound_speciallwhit", lucina_speciallwhit_snd);
+    agent.acmd("expression_speciallwhit", lucina_speciallwhit_exp);
 
-    agent.game_acmd("game_specialairlwhit", lucina_specialairlwhit);
-    agent.effect_acmd("effect_specialairlwhit", lucina_speciallwhit_eff);
-    agent.sound_acmd("sound_specialairlwhit", lucina_speciallwhit_snd);
-    agent.expression_acmd("expression_specialairlwhit", lucina_speciallwhit_exp);
+    agent.acmd("game_specialairlwhit", lucina_specialairlwhit);
+    agent.acmd("effect_specialairlwhit", lucina_speciallwhit_eff);
+    agent.acmd("sound_specialairlwhit", lucina_speciallwhit_snd);
+    agent.acmd("expression_specialairlwhit", lucina_speciallwhit_exp);
 
-    agent.game_acmd("game_specials1", lucina_lightningflash);
-    agent.effect_acmd("effect_specials1", lucina_lightningflash_eff);
-    agent.sound_acmd("sound_specials1", lucina_lightningflash_snd);
-    agent.expression_acmd("expression_specials1", lucina_lightningflash_exp);
+    agent.acmd("game_specials1", lucina_lightningflash);
+    agent.acmd("effect_specials1", lucina_lightningflash_eff);
+    agent.acmd("sound_specials1", lucina_lightningflash_snd);
+    agent.acmd("expression_specials1", lucina_lightningflash_exp);
 }

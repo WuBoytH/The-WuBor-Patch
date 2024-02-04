@@ -47,5 +47,5 @@ unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_throwlw", demon_throwlw);
+    agent.acmd("game_throwlw", demon_throwlw);
 }

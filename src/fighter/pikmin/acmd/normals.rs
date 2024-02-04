@@ -255,28 +255,28 @@ unsafe extern "C" fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", pikmin_attack11);
+    agent.acmd("game_attack11", pikmin_attack11);
 
-    agent.game_acmd("game_attack12", pikmin_attack12);
+    agent.acmd("game_attack12", pikmin_attack12);
 
-    agent.game_acmd("game_attackdash", pikmin_attackdash);
-    agent.expression_acmd("expression_attack_dash", pikmin_attackdash_exp);
+    agent.acmd("game_attackdash", pikmin_attackdash);
+    agent.acmd("expression_attack_dash", pikmin_attackdash_exp);
 
-    agent.game_acmd("game_attacks3", pikmin_attacks3);
-    agent.sound_acmd("sound_attacks3", pikmin_attacks3_snd);
+    agent.acmd("game_attacks3", pikmin_attacks3);
+    agent.acmd("sound_attacks3", pikmin_attacks3_snd);
 
-    agent.effect_acmd("effect_attacks3loop", pikmin_attacks3loop_eff);
-    agent.sound_acmd("sound_attacks3loop", pikmin_attacks3loop_snd);
-    agent.expression_acmd("expression_attacks3loop", pikmin_attacks3loop_exp);
+    agent.acmd("effect_attacks3loop", pikmin_attacks3loop_eff);
+    agent.acmd("sound_attacks3loop", pikmin_attacks3loop_snd);
+    agent.acmd("expression_attacks3loop", pikmin_attacks3loop_exp);
 
-    agent.game_acmd("game_attacks3end", pikmin_attacks3end);
-    agent.effect_acmd("effect_attacks3end", pikmin_attacks3end_eff);
-    agent.sound_acmd("sound_attacks3end", pikmin_attacks3end_snd);
-    agent.expression_acmd("expression_attacks3end", pikmin_attacks3end_exp);
+    agent.acmd("game_attacks3end", pikmin_attacks3end);
+    agent.acmd("effect_attacks3end", pikmin_attacks3end_eff);
+    agent.acmd("sound_attacks3end", pikmin_attacks3end_snd);
+    agent.acmd("expression_attacks3end", pikmin_attacks3end_exp);
 
-    agent.game_acmd("game_attackhi3", pikmin_attackhi3);
-    agent.effect_acmd("effect_attackhi3", pikmin_attackhi3_eff);
-    agent.sound_acmd("sound_attackhi3", pikmin_attackhi3_snd);
+    agent.acmd("game_attackhi3", pikmin_attackhi3);
+    agent.acmd("effect_attackhi3", pikmin_attackhi3_eff);
+    agent.acmd("sound_attackhi3", pikmin_attackhi3_snd);
 
-    agent.game_acmd("game_attacklw3", pikmin_attacklw3);
+    agent.acmd("game_attacklw3", pikmin_attacklw3);
 }

@@ -35,7 +35,7 @@ unsafe extern "C" fn shizue_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", shizue_attackairf);
+    agent.acmd("game_attackairf", shizue_attackairf);
 
-    agent.game_acmd("game_attackairb", shizue_attackairb);
+    agent.acmd("game_attackairb", shizue_attackairb);
 }

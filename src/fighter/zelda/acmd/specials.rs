@@ -23,11 +23,11 @@ unsafe extern "C" fn zelda_specialsend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsstart", zelda_specialsstart);
+    agent.acmd("game_specialsstart", zelda_specialsstart);
 
-    agent.game_acmd("game_specialairsstart", zelda_specialsstart);
+    agent.acmd("game_specialairsstart", zelda_specialsstart);
 
-    agent.game_acmd("game_specialsend", zelda_specialsend);
+    agent.acmd("game_specialsend", zelda_specialsend);
 
-    agent.game_acmd("game_specialairsend", zelda_specialsend);
+    agent.acmd("game_specialairsend", zelda_specialsend);
 }

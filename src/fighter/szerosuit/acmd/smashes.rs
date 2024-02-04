@@ -39,7 +39,7 @@ unsafe extern "C" fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4hi", szerosuit_attacks4hi);
+    agent.acmd("game_attacks4hi", szerosuit_attacks4hi);
 
-    agent.game_acmd("game_attacks4lw", szerosuit_attacks4lw);
+    agent.acmd("game_attacks4lw", szerosuit_attacks4lw);
 }

@@ -78,9 +78,9 @@ unsafe extern "C" fn donkey_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specials", donkey_specials);
+    agent.acmd("game_specials", donkey_specials);
 
-    agent.game_acmd("game_specialairs", donkey_specialairs);
+    agent.acmd("game_specialairs", donkey_specialairs);
 
-    agent.game_acmd("game_specialairhi", donkey_specialairhi);
+    agent.acmd("game_specialairhi", donkey_specialairhi);
 }

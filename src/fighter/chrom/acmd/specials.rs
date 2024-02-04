@@ -118,13 +118,13 @@ unsafe extern "C" fn chrom_speciallwhit_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialairlw", chrom_speciallw);
-    agent.effect_acmd("effect_specialairlw", chrom_speciallw_eff);
-    agent.sound_acmd("sound_specialairlw", chrom_speciallw_snd);
-    agent.expression_acmd("expression_specialairlw", chrom_speciallw_exp);
+    agent.acmd("game_specialairlw", chrom_speciallw);
+    agent.acmd("effect_specialairlw", chrom_speciallw_eff);
+    agent.acmd("sound_specialairlw", chrom_speciallw_snd);
+    agent.acmd("expression_specialairlw", chrom_speciallw_exp);
 
-    agent.game_acmd("game_speciallwhit", chrom_speciallwhit);
-    agent.effect_acmd("effect_speciallwhit", chrom_speciallwhit_eff);
-    agent.sound_acmd("sound_speciallwhit", chrom_speciallwhit_snd);
-    agent.expression_acmd("expression_speciallwhit", chrom_speciallwhit_exp);
+    agent.acmd("game_speciallwhit", chrom_speciallwhit);
+    agent.acmd("effect_speciallwhit", chrom_speciallwhit_eff);
+    agent.acmd("sound_speciallwhit", chrom_speciallwhit_snd);
+    agent.acmd("expression_speciallwhit", chrom_speciallwhit_exp);
 }

@@ -8,5 +8,5 @@ unsafe extern "C" fn wario_cliffcatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_cliffcatch", wario_cliffcatch);
+    agent.acmd("game_cliffcatch", wario_cliffcatch);
 }

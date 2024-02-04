@@ -37,7 +37,7 @@ unsafe extern "C" fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacklw3", demon_attacklw3);
+    agent.acmd("game_attacklw3", demon_attacklw3);
 
-    agent.game_acmd("game_attacklw3cancel", demon_attacklw3cancel);
+    agent.acmd("game_attacklw3cancel", demon_attacklw3cancel);
 }

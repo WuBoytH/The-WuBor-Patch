@@ -64,5 +64,5 @@ unsafe extern "C" fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_superspecial", dolly_burst_superspecial);
+    agent.acmd("game_superspecial", dolly_burst_superspecial);
 }

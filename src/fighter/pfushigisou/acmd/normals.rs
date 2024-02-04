@@ -40,7 +40,7 @@ unsafe extern "C" fn pfushigisou_attack12(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", pfushigisou_attack11);
+    agent.acmd("game_attack11", pfushigisou_attack11);
 
-    agent.game_acmd("game_attack12", pfushigisou_attack12);
+    agent.acmd("game_attack12", pfushigisou_attack12);
 }

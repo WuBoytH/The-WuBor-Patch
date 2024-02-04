@@ -108,11 +108,11 @@ unsafe extern "C" fn buddy_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", buddy_attackairn);
+    agent.acmd("game_attackairn", buddy_attackairn);
 
-    agent.game_acmd("game_attackairhi", buddy_attackairhi);
+    agent.acmd("game_attackairhi", buddy_attackairhi);
 
-    agent.game_acmd("game_attackairlw", buddy_attackairlw);
+    agent.acmd("game_attackairlw", buddy_attackairlw);
 
-    agent.game_acmd("game_landingairlw", buddy_landingairlw);
+    agent.acmd("game_landingairlw", buddy_landingairlw);
 }

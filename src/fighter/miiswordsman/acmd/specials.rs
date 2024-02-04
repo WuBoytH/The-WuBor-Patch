@@ -170,11 +170,11 @@ unsafe extern "C" fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi1", miiswordsman_specialhi1);
+    agent.acmd("game_specialhi1", miiswordsman_specialhi1);
 
-    agent.game_acmd("game_specialairhi1", miiswordsman_specialhi1);
+    agent.acmd("game_specialairhi1", miiswordsman_specialhi1);
 
-    agent.game_acmd("game_specialhi3", miiswordsman_specialhi3);
+    agent.acmd("game_specialhi3", miiswordsman_specialhi3);
 
-    agent.game_acmd("game_specialairhi3", miiswordsman_specialairhi3);
+    agent.acmd("game_specialairhi3", miiswordsman_specialairhi3);
 }

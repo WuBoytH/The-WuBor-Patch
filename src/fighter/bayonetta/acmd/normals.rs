@@ -304,21 +304,21 @@ unsafe extern "C" fn bayonetta_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", bayonetta_attack11);
+    agent.acmd("game_attack11", bayonetta_attack11);
 
-    agent.game_acmd("game_attack12", bayonetta_attack12);
+    agent.acmd("game_attack12", bayonetta_attack12);
 
-    agent.game_acmd("game_attack13", bayonetta_attack13);
+    agent.acmd("game_attack13", bayonetta_attack13);
 
-    agent.game_acmd("game_attack100", bayonetta_attack100);
+    agent.acmd("game_attack100", bayonetta_attack100);
 
-    agent.game_acmd("game_attack100end", bayonetta_attack100end);
+    agent.acmd("game_attack100end", bayonetta_attack100end);
 
-    agent.game_acmd("game_attacks32", bayonetta_attacks32);
+    agent.acmd("game_attacks32", bayonetta_attacks32);
 
-    agent.game_acmd("game_attacks33", bayonetta_attacks33);
+    agent.acmd("game_attacks33", bayonetta_attacks33);
 
-    agent.game_acmd("game_attacklw3", bayonetta_attacklw3);
+    agent.acmd("game_attacklw3", bayonetta_attacklw3);
 
-    agent.game_acmd("game_attackdash", bayonetta_attackdash);
+    agent.acmd("game_attackdash", bayonetta_attackdash);
 }

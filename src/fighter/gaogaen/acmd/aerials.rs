@@ -74,9 +74,9 @@ unsafe extern "C" fn gaogaen_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", gaogaen_attackairn);
+    agent.acmd("game_attackairn", gaogaen_attackairn);
 
-    agent.game_acmd("game_attackairb", gaogaen_attackairb);
+    agent.acmd("game_attackairb", gaogaen_attackairb);
 
-    agent.game_acmd("game_attackairlw", gaogaen_attackairlw);
+    agent.acmd("game_attackairlw", gaogaen_attackairlw);
 }

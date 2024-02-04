@@ -9,9 +9,9 @@ unsafe extern "C" fn ken_hadoken_move(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_movew", ken_hadoken_move);
+    agent.acmd("game_movew", ken_hadoken_move);
 
-    agent.game_acmd("game_movem", ken_hadoken_move);
+    agent.acmd("game_movem", ken_hadoken_move);
 
-    agent.game_acmd("game_moves", ken_hadoken_move);
+    agent.acmd("game_moves", ken_hadoken_move);
 }

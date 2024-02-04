@@ -61,9 +61,9 @@ unsafe extern "C" fn edge_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", edge_attack11);
+    agent.acmd("game_attack11", edge_attack11);
 
-    agent.game_acmd("game_attack12", edge_attack12);
+    agent.acmd("game_attack12", edge_attack12);
 
-    agent.game_acmd("game_attack13", edge_attack13);
+    agent.acmd("game_attack13", edge_attack13);
 }

@@ -183,14 +183,14 @@ unsafe extern "C" fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_flyl", eflame_esword_fly);
-    agent.game_acmd("game_flyr", eflame_esword_fly);
+    agent.acmd("game_flyl", eflame_esword_fly);
+    agent.acmd("game_flyr", eflame_esword_fly);
 
-    agent.game_acmd("game_flyflickl", eflame_esword_flyflick);
-    agent.game_acmd("game_flyflickr", eflame_esword_flyflick);
+    agent.acmd("game_flyflickl", eflame_esword_flyflick);
+    agent.acmd("game_flyflickr", eflame_esword_flyflick);
 
-    agent.game_acmd("game_rotate", eflame_esword_rotate);
-    agent.effect_acmd("effect_rotate", eflame_esword_rotate_eff);
+    agent.acmd("game_rotate", eflame_esword_rotate);
+    agent.acmd("effect_rotate", eflame_esword_rotate_eff);
 
-    agent.game_acmd("game_reflected", eflame_esword_reflected);
+    agent.acmd("game_reflected", eflame_esword_reflected);
 }

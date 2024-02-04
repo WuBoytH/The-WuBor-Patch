@@ -27,21 +27,21 @@ unsafe extern "C" fn ryu_hadoken_movesp_last(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_movew", ryu_hadoken_move);
+    agent.acmd("game_movew", ryu_hadoken_move);
 
-    agent.game_acmd("game_movem", ryu_hadoken_move);
+    agent.acmd("game_movem", ryu_hadoken_move);
 
-    agent.game_acmd("game_moves", ryu_hadoken_move);
+    agent.acmd("game_moves", ryu_hadoken_move);
 
-    agent.game_acmd("game_movespw", ryu_hadoken_movesp);
+    agent.acmd("game_movespw", ryu_hadoken_movesp);
 
-    agent.game_acmd("game_movespm", ryu_hadoken_movesp);
+    agent.acmd("game_movespm", ryu_hadoken_movesp);
 
-    agent.game_acmd("game_movesps", ryu_hadoken_movesp);
+    agent.acmd("game_movesps", ryu_hadoken_movesp);
 
-    agent.game_acmd("game_movespw_last", ryu_hadoken_movesp_last);
+    agent.acmd("game_movespw_last", ryu_hadoken_movesp_last);
 
-    agent.game_acmd("game_movespm_last", ryu_hadoken_movesp_last);
+    agent.acmd("game_movespm_last", ryu_hadoken_movesp_last);
 
-    agent.game_acmd("game_movesps_last", ryu_hadoken_movesp_last);
+    agent.acmd("game_movesps_last", ryu_hadoken_movesp_last);
 }

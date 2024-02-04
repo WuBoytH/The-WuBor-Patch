@@ -57,13 +57,13 @@ unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsend", pit_specialsend);
+    agent.acmd("game_specialsend", pit_specialsend);
 
-    agent.game_acmd("game_specialairsend", pit_specialairsend);
+    agent.acmd("game_specialairsend", pit_specialairsend);
 
-    agent.game_acmd("game_specialhistart", pit_specialhistart);
+    agent.acmd("game_specialhistart", pit_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", pit_specialhistart);
+    agent.acmd("game_specialairhistart", pit_specialhistart);
 
-    agent.game_acmd("game_specialhi", pit_specialhi);
+    agent.acmd("game_specialhi", pit_specialhi);
 }

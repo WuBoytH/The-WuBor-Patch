@@ -101,13 +101,13 @@ unsafe extern "C" fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsjump", kamui_specialsjump);
+    agent.acmd("game_specialsjump", kamui_specialsjump);
 
-    agent.game_acmd("game_specialhi", kamui_specialhi);
+    agent.acmd("game_specialhi", kamui_specialhi);
 
-    agent.game_acmd("game_specialairhi", kamui_specialhi);
+    agent.acmd("game_specialairhi", kamui_specialhi);
 
-    agent.game_acmd("game_speciallwhit", kamui_speciallwhit);
+    agent.acmd("game_speciallwhit", kamui_speciallwhit);
 
-    agent.game_acmd("game_specialairlwhit", kamui_speciallwhit);
+    agent.acmd("game_specialairlwhit", kamui_speciallwhit);
 }

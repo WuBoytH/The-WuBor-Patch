@@ -135,10 +135,10 @@ unsafe extern "C" fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", toonlink_attackairn);
+    agent.acmd("game_attackairn", toonlink_attackairn);
 
-    agent.game_acmd("game_attackairn", toonlink_attackairhi);
+    agent.acmd("game_attackairn", toonlink_attackairhi);
 
-    agent.game_acmd("game_attackairlw", toonlink_attackairlw);
-    agent.effect_acmd("effect_attackairlw", toonlink_attackairlw_eff);
+    agent.acmd("game_attackairlw", toonlink_attackairlw);
+    agent.acmd("effect_attackairlw", toonlink_attackairlw_eff);
 }

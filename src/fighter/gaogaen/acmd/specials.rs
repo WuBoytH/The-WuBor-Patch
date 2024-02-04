@@ -799,45 +799,45 @@ unsafe extern "C" fn gaogaen_speciallwturn_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", gaogaen_specialn);
+    agent.acmd("game_specialn", gaogaen_specialn);
 
-    agent.game_acmd("game_specialairn", gaogaen_specialairn);
+    agent.acmd("game_specialairn", gaogaen_specialairn);
 
-    agent.game_acmd("game_specialsstart", gaogaen_specialsstart);
+    agent.acmd("game_specialsstart", gaogaen_specialsstart);
 
-    agent.game_acmd("game_specialairsstart", gaogaen_specialairsstart);
+    agent.acmd("game_specialairsstart", gaogaen_specialairsstart);
 
-    agent.game_acmd("game_specialsshoulder", gaogaen_specialsshoulder);
+    agent.acmd("game_specialsshoulder", gaogaen_specialsshoulder);
 
-    agent.game_acmd("game_specialairsshoulder", gaogaen_specialairsshoulder);
+    agent.acmd("game_specialairsshoulder", gaogaen_specialairsshoulder);
 
-    agent.game_acmd("game_specialslariat", gaogaen_specialslariat);
+    agent.acmd("game_specialslariat", gaogaen_specialslariat);
 
-    agent.game_acmd("game_specialairslariat", gaogaen_specialslariat);
+    agent.acmd("game_specialairslariat", gaogaen_specialslariat);
 
-    agent.game_acmd("game_specialhistart", gaogaen_specialhistart);
+    agent.acmd("game_specialhistart", gaogaen_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", gaogaen_specialhistart);
+    agent.acmd("game_specialairhistart", gaogaen_specialhistart);
 
-    agent.game_acmd("game_specialairhifall", gaogaen_specialairhifall);
+    agent.acmd("game_specialairhifall", gaogaen_specialairhifall);
 
-    agent.game_acmd("game_specialairhifall2", gaogaen_specialairhifall2);
+    agent.acmd("game_specialairhifall2", gaogaen_specialairhifall2);
 
-    agent.game_acmd("game_speciallwstart", gaogaen_speciallwstart);
-    agent.effect_acmd("effect_speciallwstart", gaogaen_speciallwstart_eff);
+    agent.acmd("game_speciallwstart", gaogaen_speciallwstart);
+    agent.acmd("effect_speciallwstart", gaogaen_speciallwstart_eff);
 
-    agent.game_acmd("game_specialairlwstart", gaogaen_speciallwstart);
-    agent.effect_acmd("effect_specialairlwstart", gaogaen_speciallwstart_eff);
+    agent.acmd("game_specialairlwstart", gaogaen_speciallwstart);
+    agent.acmd("effect_specialairlwstart", gaogaen_speciallwstart_eff);
 
-    agent.game_acmd("game_speciallw", gaogaen_speciallw);
-    agent.effect_acmd("effect_speciallw", gaogaen_speciallw_eff);
+    agent.acmd("game_speciallw", gaogaen_speciallw);
+    agent.acmd("effect_speciallw", gaogaen_speciallw_eff);
 
-    agent.game_acmd("game_specialairlw", gaogaen_speciallw);
-    agent.effect_acmd("effect_specialairlw", gaogaen_speciallw_eff);
+    agent.acmd("game_specialairlw", gaogaen_speciallw);
+    agent.acmd("effect_specialairlw", gaogaen_speciallw_eff);
 
-    agent.game_acmd("game_speciallwturn", gaogaen_speciallwturn);
-    agent.effect_acmd("effect_speciallwturn", gaogaen_speciallwturn_eff);
+    agent.acmd("game_speciallwturn", gaogaen_speciallwturn);
+    agent.acmd("effect_speciallwturn", gaogaen_speciallwturn_eff);
 
-    agent.game_acmd("game_specialairlwturn", gaogaen_speciallwturn);
-    agent.effect_acmd("effect_specialairlwturn", gaogaen_speciallwturn_eff);
+    agent.acmd("game_specialairlwturn", gaogaen_speciallwturn);
+    agent.acmd("effect_specialairlwturn", gaogaen_speciallwturn_eff);
 }

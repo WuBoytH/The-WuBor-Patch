@@ -281,19 +281,19 @@ unsafe extern "C" fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", cloud_specialn);
-    agent.effect_acmd("effect_specialn", cloud_specialn_eff);
-    agent.expression_acmd("expression_specialn", cloud_specialn_exp);
+    agent.acmd("game_specialn", cloud_specialn);
+    agent.acmd("effect_specialn", cloud_specialn_eff);
+    agent.acmd("expression_specialn", cloud_specialn_exp);
 
-    agent.game_acmd("game_specialairn", cloud_specialn);
-    agent.effect_acmd("effect_specialairn", cloud_specialairn_eff);
-    agent.expression_acmd("expression_specialairn", cloud_specialairn_exp);
+    agent.acmd("game_specialairn", cloud_specialn);
+    agent.acmd("effect_specialairn", cloud_specialairn_eff);
+    agent.acmd("expression_specialairn", cloud_specialairn_exp);
 
-    agent.game_acmd("game_specialhi", cloud_specialhi);
+    agent.acmd("game_specialhi", cloud_specialhi);
 
-    agent.game_acmd("game_specialhi2", cloud_specialhi2);
+    agent.acmd("game_specialhi2", cloud_specialhi2);
 
-    agent.game_acmd("game_specialhi2fall", cloud_specialhi2fall);
+    agent.acmd("game_specialhi2fall", cloud_specialhi2fall);
 
-    agent.game_acmd("game_specialhi_lb", cloud_specialhi_lb);
+    agent.acmd("game_specialhi_lb", cloud_specialhi_lb);
 }

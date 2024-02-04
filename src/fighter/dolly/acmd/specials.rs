@@ -1219,45 +1219,45 @@ unsafe extern "C" fn dolly_superspecial2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", dolly_specialn);
+    agent.acmd("game_specialn", dolly_specialn);
 
-    agent.game_acmd("game_specialairn", dolly_specialairn);
+    agent.acmd("game_specialairn", dolly_specialairn);
 
-    agent.game_acmd("game_specialsfattack", dolly_specialsfattack);
+    agent.acmd("game_specialsfattack", dolly_specialsfattack);
 
-    agent.game_acmd("game_specialsbattackw", dolly_specialsbattackw);
+    agent.acmd("game_specialsbattackw", dolly_specialsbattackw);
 
-    agent.game_acmd("game_specialsbattack", dolly_specialsbattack);
-    agent.effect_acmd("effect_specialsbattack", dolly_specialsbattack_eff);
-    agent.sound_acmd("sound_specialsbattack", dolly_specialsbattack_snd);
-    agent.expression_acmd("expression_specialsbattack", dolly_specialsbattack_exp);
+    agent.acmd("game_specialsbattack", dolly_specialsbattack);
+    agent.acmd("effect_specialsbattack", dolly_specialsbattack_eff);
+    agent.acmd("sound_specialsbattack", dolly_specialsbattack_snd);
+    agent.acmd("expression_specialsbattack", dolly_specialsbattack_exp);
 
-    agent.game_acmd("game_specialhi1", dolly_specialhi);
+    agent.acmd("game_specialhi1", dolly_specialhi);
 
-    agent.game_acmd("game_specialairhi1", dolly_specialhi);
+    agent.acmd("game_specialairhi1", dolly_specialhi);
 
-    agent.game_acmd("game_specialhicommand", dolly_specialhicommand);
+    agent.acmd("game_specialhicommand", dolly_specialhicommand);
 
-    agent.game_acmd("game_specialairhicommand", dolly_specialhicommand);
+    agent.acmd("game_specialairhicommand", dolly_specialhicommand);
 
-    agent.game_acmd("game_speciallwstart", dolly_speciallwstart);
-    agent.effect_acmd("effect_speciallwstart", dolly_speciallwstart_eff);
-    agent.sound_acmd("sound_speciallwstart", dolly_speciallwstart_snd);
-    agent.expression_acmd("expression_speciallwstart", dolly_speciallwstart_exp);
+    agent.acmd("game_speciallwstart", dolly_speciallwstart);
+    agent.acmd("effect_speciallwstart", dolly_speciallwstart_eff);
+    agent.acmd("sound_speciallwstart", dolly_speciallwstart_snd);
+    agent.acmd("expression_speciallwstart", dolly_speciallwstart_exp);
 
-    agent.game_acmd("game_specialairlwrisew", dolly_specialairlwrisew);
+    agent.acmd("game_specialairlwrisew", dolly_specialairlwrisew);
 
-    agent.game_acmd("game_specialairlwrise", dolly_specialairlwrise);
+    agent.acmd("game_specialairlwrise", dolly_specialairlwrise);
 
-    agent.game_acmd("game_specialairlw", dolly_specialairlw);
+    agent.acmd("game_specialairlw", dolly_specialairlw);
 
-    agent.game_acmd("game_superspecial", dolly_superspecial);
-    agent.effect_acmd("effect_superspecial", dolly_superspecial_eff);
-    agent.sound_acmd("sound_superspecial", dolly_superspecial_snd);
+    agent.acmd("game_superspecial", dolly_superspecial);
+    agent.acmd("effect_superspecial", dolly_superspecial_eff);
+    agent.acmd("sound_superspecial", dolly_superspecial_snd);
 
-    agent.game_acmd("game_superspecial2start", dolly_superspecial2start);
-    agent.effect_acmd("effect_superspecial2start", dolly_superspecial2start_eff);
-    agent.sound_acmd("sound_superspecial2start", dolly_superspecial2start_snd);
+    agent.acmd("game_superspecial2start", dolly_superspecial2start);
+    agent.acmd("effect_superspecial2start", dolly_superspecial2start_eff);
+    agent.acmd("sound_superspecial2start", dolly_superspecial2start_snd);
 
-    agent.game_acmd("game_superspecial2", dolly_superspecial2);
+    agent.acmd("game_superspecial2", dolly_superspecial2);
 }

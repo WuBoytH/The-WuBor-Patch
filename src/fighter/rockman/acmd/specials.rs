@@ -84,21 +84,21 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_busterchargeshot", rockman_specialn);
-    agent.effect_acmd("effect_busterchargeshot", rockman_specialn_eff);
-    agent.sound_acmd("sound_busterchargeshot", rockman_specialn_snd);
-    agent.expression_acmd("expression_busterchargeshot", rockman_specialn_exp);
+    agent.acmd("game_busterchargeshot", rockman_specialn);
+    agent.acmd("effect_busterchargeshot", rockman_specialn_eff);
+    agent.acmd("sound_busterchargeshot", rockman_specialn_snd);
+    agent.acmd("expression_busterchargeshot", rockman_specialn_exp);
 
-    agent.game_acmd("game_busterairchargeshot", rockman_specialn);
-    agent.effect_acmd("effect_busterairchargeshot", rockman_specialn_eff);
-    agent.sound_acmd("sound_busterairchargeshot", rockman_specialn_snd);
-    agent.expression_acmd("expression_busterairchargeshot", rockman_specialn_exp);
+    agent.acmd("game_busterairchargeshot", rockman_specialn);
+    agent.acmd("effect_busterairchargeshot", rockman_specialn_eff);
+    agent.acmd("sound_busterairchargeshot", rockman_specialn_snd);
+    agent.acmd("expression_busterairchargeshot", rockman_specialn_exp);
 
-    agent.game_acmd("game_specialhi", rockman_specialhi);
+    agent.acmd("game_specialhi", rockman_specialhi);
 
-    agent.game_acmd("game_specialairhi", rockman_specialhi);
+    agent.acmd("game_specialairhi", rockman_specialhi);
 
-    agent.game_acmd("game_speciallw", rockman_speciallw);
+    agent.acmd("game_speciallw", rockman_speciallw);
 
-    agent.game_acmd("game_specialairlw", rockman_specialairlw);
+    agent.acmd("game_specialairlw", rockman_specialairlw);
 }

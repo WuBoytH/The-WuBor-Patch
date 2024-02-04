@@ -209,16 +209,16 @@ unsafe extern "C" fn dolly_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", dolly_attackairn);
+    agent.acmd("game_attackairn", dolly_attackairn);
 
-    agent.game_acmd("game_attackairf", dolly_attackairf);
+    agent.acmd("game_attackairf", dolly_attackairf);
 
-    agent.game_acmd("game_attackairb", dolly_attackairb);
+    agent.acmd("game_attackairb", dolly_attackairb);
 
-    agent.game_acmd("game_attackairhi", dolly_attackairhi);
-    agent.effect_acmd("effect_attackairhi", dolly_attackairhi_eff);
-    agent.sound_acmd("sound_attackairhi", dolly_attackairhi_snd);
-    agent.expression_acmd("expression_attackairhi", dolly_attackairhi_exp);
+    agent.acmd("game_attackairhi", dolly_attackairhi);
+    agent.acmd("effect_attackairhi", dolly_attackairhi_eff);
+    agent.acmd("sound_attackairhi", dolly_attackairhi_snd);
+    agent.acmd("expression_attackairhi", dolly_attackairhi_exp);
 
-    agent.game_acmd("game_attackairlw", dolly_attackairlw);
+    agent.acmd("game_attackairlw", dolly_attackairlw);
 }

@@ -409,16 +409,16 @@ unsafe extern "C" fn eflame_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", eflame_attackairn);
-    agent.effect_acmd("effect_attackairn", eflame_attackairn_eff);
-    agent.sound_acmd("sound_attackairn", eflame_attackairn_snd);
-    agent.expression_acmd("expression_attackairn", eflame_attackairn_exp);
+    agent.acmd("game_attackairn", eflame_attackairn);
+    agent.acmd("effect_attackairn", eflame_attackairn_eff);
+    agent.acmd("sound_attackairn", eflame_attackairn_snd);
+    agent.acmd("expression_attackairn", eflame_attackairn_exp);
 
-    agent.game_acmd("game_attackairf", eflame_attackairf);
+    agent.acmd("game_attackairf", eflame_attackairf);
 
-    agent.game_acmd("game_attackairb", eflame_attackairb);
+    agent.acmd("game_attackairb", eflame_attackairb);
 
-    agent.game_acmd("game_attackairhi", eflame_attackairhi);
+    agent.acmd("game_attackairhi", eflame_attackairhi);
 
-    agent.game_acmd("game_attackairlw", eflame_attackairlw);
+    agent.acmd("game_attackairlw", eflame_attackairlw);
 }

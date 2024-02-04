@@ -407,26 +407,26 @@ unsafe extern "C" fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_appealsl", edge_appeals);
-    agent.game_acmd("game_appealsr", edge_appeals);
+    agent.acmd("game_appealsl", edge_appeals);
+    agent.acmd("game_appealsr", edge_appeals);
 
-    agent.effect_acmd("effect_appealsloop", edge_appealsloop_eff);
-    agent.sound_acmd("sound_appealsloop", edge_appealsloop_snd);
-    agent.expression_acmd("expression_appealsloop", edge_appealsloop_exp);
+    agent.acmd("effect_appealsloop", edge_appealsloop_eff);
+    agent.acmd("sound_appealsloop", edge_appealsloop_snd);
+    agent.acmd("expression_appealsloop", edge_appealsloop_exp);
 
-    agent.game_acmd("game_appealsattack", edge_appealsattack);
-    agent.effect_acmd("effect_appealsattack", edge_appealsattack_eff);
-    agent.sound_acmd("sound_appealsattack", edge_appealsattack_snd);
-    agent.expression_acmd("expression_appealsattack", edge_appealsattack_exp);
+    agent.acmd("game_appealsattack", edge_appealsattack);
+    agent.acmd("effect_appealsattack", edge_appealsattack_eff);
+    agent.acmd("sound_appealsattack", edge_appealsattack_snd);
+    agent.acmd("expression_appealsattack", edge_appealsattack_exp);
 
-    agent.game_acmd("game_appealsattackjust", edge_appealsattackjust);
-    agent.effect_acmd("effect_appealsattackjust", edge_appealsattackjust_eff);
-    agent.sound_acmd("sound_appealsattackjust", edge_appealsattackjust_snd);
-    agent.expression_acmd("expression_appealsattackjust", edge_appealsattackjust_exp);
+    agent.acmd("game_appealsattackjust", edge_appealsattackjust);
+    agent.acmd("effect_appealsattackjust", edge_appealsattackjust_eff);
+    agent.acmd("sound_appealsattackjust", edge_appealsattackjust_snd);
+    agent.acmd("expression_appealsattackjust", edge_appealsattackjust_exp);
 
-    agent.game_acmd("game_appeallwl", edge_appeallw);
-    agent.game_acmd("game_appeallwr", edge_appeallw);
+    agent.acmd("game_appeallwl", edge_appeallw);
+    agent.acmd("game_appeallwr", edge_appeallw);
 
-    agent.effect_acmd("effect_appeallwloop", edge_appeallwloop_eff);
-    agent.expression_acmd("expression_appeallwloop", edge_appeallwloop_exp);
+    agent.acmd("effect_appeallwloop", edge_appeallwloop_eff);
+    agent.acmd("expression_appeallwloop", edge_appeallwloop_exp);
 }

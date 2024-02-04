@@ -27,7 +27,7 @@ unsafe extern "C" fn pikmin_catchattack_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_catchattack", pikmin_catchattack);
-    agent.effect_acmd("effect_catchattack", pikmin_catchattack_eff);
-    agent.sound_acmd("sound_catchattack", pikmin_catchattack_snd);
+    agent.acmd("game_catchattack", pikmin_catchattack);
+    agent.acmd("effect_catchattack", pikmin_catchattack_eff);
+    agent.acmd("sound_catchattack", pikmin_catchattack_snd);
 }

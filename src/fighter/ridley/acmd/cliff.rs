@@ -8,5 +8,5 @@ unsafe extern "C" fn ridley_cliffcatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_cliffcatch", ridley_cliffcatch);
+    agent.acmd("game_cliffcatch", ridley_cliffcatch);
 }

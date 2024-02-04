@@ -210,17 +210,17 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_appealsl", kirby_appeals);
-    agent.effect_acmd("effect_appealsl", kirby_appeals_eff);
-    agent.sound_acmd("sound_appealsl", kirby_appeals_snd);
-    agent.expression_acmd("expression_appealsl", kirby_appeals_exp);
+    agent.acmd("game_appealsl", kirby_appeals);
+    agent.acmd("effect_appealsl", kirby_appeals_eff);
+    agent.acmd("sound_appealsl", kirby_appeals_snd);
+    agent.acmd("expression_appealsl", kirby_appeals_exp);
 
-    agent.game_acmd("game_appealsr", kirby_appeals);
-    agent.effect_acmd("effect_appealsr", kirby_appeals_eff);
-    agent.sound_acmd("sound_appealsr", kirby_appeals_snd);
-    agent.expression_acmd("expression_appealsr", kirby_appeals_exp);
+    agent.acmd("game_appealsr", kirby_appeals);
+    agent.acmd("effect_appealsr", kirby_appeals_eff);
+    agent.acmd("sound_appealsr", kirby_appeals_snd);
+    agent.acmd("expression_appealsr", kirby_appeals_exp);
 
-    agent.effect_acmd("effect_appealsloop", kirby_appealsloop_eff);
-    agent.sound_acmd("sound_appealsloop", kirby_appealsloop_snd);
-    agent.expression_acmd("expression_appealsloop", kirby_appealsloop_exp);
+    agent.acmd("effect_appealsloop", kirby_appealsloop_eff);
+    agent.acmd("sound_appealsloop", kirby_appealsloop_snd);
+    agent.acmd("expression_appealsloop", kirby_appealsloop_exp);
 }

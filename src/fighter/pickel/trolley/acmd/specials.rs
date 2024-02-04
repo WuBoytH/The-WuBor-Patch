@@ -33,7 +33,7 @@ unsafe extern "C" fn pickel_trolley_specialsdriveemptypartial(agent: &mut L2CAge
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialsdrivepartial", pickel_trolley_specialsdrivepartial);
+    agent.acmd("game_specialsdrivepartial", pickel_trolley_specialsdrivepartial);
 
-    agent.game_acmd("game_specialsdriveemptypartial", pickel_trolley_specialsdriveemptypartial);
+    agent.acmd("game_specialsdriveemptypartial", pickel_trolley_specialsdriveemptypartial);
 }

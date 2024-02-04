@@ -342,40 +342,40 @@ unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialn", pikachu_specialn);
-    agent.effect_acmd("effect_specialn", pikachu_specialn_eff);
-    agent.sound_acmd("sound_specialn", pikachu_specialn_snd);
-    agent.expression_acmd("expression_specialn", pikachu_specialn_exp);
+    agent.acmd("game_specialn", pikachu_specialn);
+    agent.acmd("effect_specialn", pikachu_specialn_eff);
+    agent.acmd("sound_specialn", pikachu_specialn_snd);
+    agent.acmd("expression_specialn", pikachu_specialn_exp);
 
-    agent.game_acmd("game_specialairn", pikachu_specialn);
-    agent.effect_acmd("effect_specialairn", pikachu_specialairn_eff);
-    agent.sound_acmd("sound_specialairn", pikachu_specialn_snd);
-    agent.expression_acmd("expression_specialairn", pikachu_specialn_exp);
+    agent.acmd("game_specialairn", pikachu_specialn);
+    agent.acmd("effect_specialairn", pikachu_specialairn_eff);
+    agent.acmd("sound_specialairn", pikachu_specialn_snd);
+    agent.acmd("expression_specialairn", pikachu_specialn_exp);
 
-    agent.game_acmd("game_specialhistart", pikachu_specialhistart);
+    agent.acmd("game_specialhistart", pikachu_specialhistart);
 
-    agent.game_acmd("game_specialairhistart", pikachu_specialhistart);
+    agent.acmd("game_specialairhistart", pikachu_specialhistart);
 
-    agent.game_acmd("game_specialhi1", pikachu_specialhi1);
+    agent.acmd("game_specialhi1", pikachu_specialhi1);
 
-    agent.game_acmd("game_specialairhi1", pikachu_specialhi1);
+    agent.acmd("game_specialairhi1", pikachu_specialhi1);
 
-    agent.game_acmd("game_specialhi2", pikachu_specialhi2);
+    agent.acmd("game_specialhi2", pikachu_specialhi2);
 
-    agent.game_acmd("game_specialairhi2", pikachu_specialhi2);
+    agent.acmd("game_specialairhi2", pikachu_specialhi2);
 
-    agent.game_acmd("game_speciallw", pikachu_speciallw);
-    agent.effect_acmd("effect_speciallw", pikachu_speciallw_eff);
-    agent.sound_acmd("sound_speciallw", pikachu_speciallw_snd);
-    agent.expression_acmd("expression_speciallw", pikachu_speciallw_exp);
+    agent.acmd("game_speciallw", pikachu_speciallw);
+    agent.acmd("effect_speciallw", pikachu_speciallw_eff);
+    agent.acmd("sound_speciallw", pikachu_speciallw_snd);
+    agent.acmd("expression_speciallw", pikachu_speciallw_exp);
 
-    agent.game_acmd("game_specialairlw", pikachu_speciallw);
-    agent.effect_acmd("effect_specialairlw", pikachu_speciallw_eff);
-    agent.sound_acmd("sound_specialairlw", pikachu_speciallw_snd);
-    agent.expression_acmd("expression_specialairlw", pikachu_speciallw_exp);
+    agent.acmd("game_specialairlw", pikachu_speciallw);
+    agent.acmd("effect_specialairlw", pikachu_speciallw_eff);
+    agent.acmd("sound_specialairlw", pikachu_speciallw_snd);
+    agent.acmd("expression_specialairlw", pikachu_speciallw_exp);
 
-    agent.game_acmd("game_speciallwstrike", pikachu_speciallwstrike);
-    agent.effect_acmd("effect_speciallwstrike", pikachu_speciallwstrike_eff);
-    agent.sound_acmd("sound_speciallwstrike", pikachu_speciallwstrike_snd);
-    agent.expression_acmd("expression_speciallwstrike", pikachu_speciallwstrike_exp);
+    agent.acmd("game_speciallwstrike", pikachu_speciallwstrike);
+    agent.acmd("effect_speciallwstrike", pikachu_speciallwstrike_eff);
+    agent.acmd("sound_speciallwstrike", pikachu_speciallwstrike_snd);
+    agent.acmd("expression_speciallwstrike", pikachu_speciallwstrike_exp);
 }

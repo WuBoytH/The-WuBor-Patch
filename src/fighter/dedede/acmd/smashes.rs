@@ -39,5 +39,5 @@ unsafe extern "C" fn dedede_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", dedede_attacks4);
+    agent.acmd("game_attacks4", dedede_attacks4);
 }

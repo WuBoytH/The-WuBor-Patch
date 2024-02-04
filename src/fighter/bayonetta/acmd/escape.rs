@@ -28,7 +28,7 @@ unsafe extern "C" fn bayonetta_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_escapef", bayonetta_escapef);
+    agent.acmd("game_escapef", bayonetta_escapef);
 
-    agent.game_acmd("game_escapeairslide", bayonetta_escapeairslide);
+    agent.acmd("game_escapeairslide", bayonetta_escapeairslide);
 }

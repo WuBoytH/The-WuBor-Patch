@@ -96,17 +96,17 @@ unsafe extern "C" fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", mewtwo_attack11);
+    agent.acmd("game_attack11", mewtwo_attack11);
 
-    agent.game_acmd("game_attackdash", mewtwo_attackdash);
+    agent.acmd("game_attackdash", mewtwo_attackdash);
 
-    agent.game_acmd("game_attacks3", mewtwo_attacks3);
+    agent.acmd("game_attacks3", mewtwo_attacks3);
 
-    agent.game_acmd("game_attacks3hi", mewtwo_attacks3);
+    agent.acmd("game_attacks3hi", mewtwo_attacks3);
 
-    agent.game_acmd("game_attacks3lw", mewtwo_attacks3);
+    agent.acmd("game_attacks3lw", mewtwo_attacks3);
 
-    agent.game_acmd("game_attackhi3", mewtwo_attackhi3);
+    agent.acmd("game_attackhi3", mewtwo_attackhi3);
 
-    agent.game_acmd("game_attacklw3", mewtwo_attacklw3);
+    agent.acmd("game_attacklw3", mewtwo_attacklw3);
 }

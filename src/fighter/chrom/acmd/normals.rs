@@ -93,7 +93,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("sound_attack11", chrom_attack11_snd);
     agent.acmd("expression_attack11", chrom_attack11_exp);
 
-    agent.acmd("chrom_attacks3", chrom_attacks3);
+    agent.acmd("game_attacks3", chrom_attacks3);
 
     agent.acmd("game_attacklw3", chrom_attacklw3);
 }

@@ -311,6 +311,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attack142", demon_attack142);
     agent.acmd("effect_attack142", demon_attack142_eff);
-    agent.acmd("soubd_attack142", demon_attack142_snd);
+    agent.acmd("sound_attack142", demon_attack142_snd);
     agent.acmd("expression_attack142", demon_attack142_exp);
 }

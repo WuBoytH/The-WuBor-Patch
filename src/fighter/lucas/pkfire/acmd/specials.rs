@@ -13,5 +13,5 @@ unsafe extern "C" fn lucas_pkfire_pillar(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("lucas_pkfire_pillar", lucas_pkfire_pillar);
+    agent.acmd("game_pillar", lucas_pkfire_pillar);
 }

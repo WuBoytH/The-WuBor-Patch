@@ -88,7 +88,7 @@ unsafe extern "C" fn chrom_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_dash", chrom_attack11);
+    agent.acmd("game_attack11", chrom_attack11);
     agent.acmd("effect_attack11", chrom_attack11_eff);
     agent.acmd("sound_attack11", chrom_attack11_snd);
     agent.acmd("expression_attack11", chrom_attack11_exp);

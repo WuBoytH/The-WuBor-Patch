@@ -1,10 +1,7 @@
 use {
-    smash::{
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::vars::*
+    crate::imports::status_imports::*,
+    wubor_utils::app::*,
+    super::helper::*
 };
 
 #[skyline::hook(offset = 0x971230)]
@@ -87,10 +84,30 @@ pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, f
     WorkModule::off_flag(module_accessor, 0x200000E5);
 }
 
+unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u64, damage: f32) {
+    let module_accessor = fighter.battle_object.module_accessor;
+    let collision_log = log as *mut CollisionLogScuffed;
+    let collision_kind = (*collision_log).collision_kind;
+    if [1, 2].contains(&collision_kind) {
+        let mul = if collision_kind == 2 {
+            0.1
+        }
+        else {
+            1.0
+        };
+        add_go(module_accessor, damage * mul);
+    }
+    dolly_on_attack_inner(vtable, fighter, log)
+}
+
+#[skyline::from_offset(0x972080)]
+unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
+
 pub fn install() {
     skyline::install_hooks!(
         dolly_check_super_special,
         dolly_check_super_special_pre,
         dolly_handle_special_command_turnaround
     );
+    MiscModule::patch_vtable_function(0x4fa5a28, dolly_on_attack as u64);
 }

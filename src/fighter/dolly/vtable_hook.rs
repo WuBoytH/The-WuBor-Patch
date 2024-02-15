@@ -4,7 +4,7 @@ use {
     super::helper::*
 };
 
-#[skyline::hook(offset = 0x971230)]
+#[skyline::hook(offset = 0x971250)]
 pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u64 {
     let module_accessor = &mut *(*((work as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
@@ -21,12 +21,12 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     0
 }
 
-#[skyline::hook(offset = 0x970fd0)]
+#[skyline::hook(offset = 0x970ff0)]
 pub unsafe extern "C" fn dolly_check_super_special_pre(module_accessor: *mut BattleObjectModuleAccessor, param_2: u8) {
     original!()(module_accessor, param_2)
 }
 
-#[skyline::hook(offset = 0x972d90)]
+#[skyline::hook(offset = 0x972db0)]
 pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
@@ -100,7 +100,7 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
     dolly_on_attack_inner(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0x972080)]
+#[skyline::from_offset(0x9720a0)]
 unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
@@ -109,5 +109,5 @@ pub fn install() {
         dolly_check_super_special_pre,
         dolly_handle_special_command_turnaround
     );
-    MiscModule::patch_vtable_function(0x4fa5a28, dolly_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fa7a28, dolly_on_attack as u64);
 }

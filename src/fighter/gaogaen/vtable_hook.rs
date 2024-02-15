@@ -7,7 +7,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, app::*}
 };
 
-#[skyline::hook(offset = 0xab9950)]
+#[skyline::hook(offset = 0xab9970)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;

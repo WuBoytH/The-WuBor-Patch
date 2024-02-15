@@ -148,7 +148,7 @@ fn exec_internal(module_accessor: *mut BattleObjectModuleAccessor) {
     }
 }
 
-#[skyline::hook(offset = 0x6babf0)]
+#[skyline::hook(offset = 0x6bac10)]
 fn exec_command_hook(control_module: u64, flag: bool) {
     let boma = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
 
@@ -158,7 +158,7 @@ fn exec_command_hook(control_module: u64, flag: bool) {
 
 // These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat
 // Both found in ControlModule::exec_command
-#[skyline::hook(offset = 0x6be610)]
+#[skyline::hook(offset = 0x6be630)]
 unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
     // Only happens during jumpsquat currently
@@ -169,7 +169,7 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     call_original!(control_module, arg);
 }
 
-// #[skyline::hook(offset = 0x6bd6a4, inline)]
+// #[skyline::hook(offset = 0x6bd6c4, inline)]
 // unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
 //     let control_module = *ctx.registers[21].x.as_ref();
 //     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -184,27 +184,27 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
 
 pub fn install() {
     // Prevents buffered C-stick aerials from triggering nair
-    skyline::patching::Patch::in_text(0x6be644).data(0x52800040);
+    skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
 
     // Prevents Aerial Kind resetting every frame
-    skyline::patching::Patch::in_text(0x6bd6a4).nop();
+    skyline::patching::Patch::in_text(0x6bd6c4).nop();
 
     // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17527dc).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x17527e0).nop();
-    skyline::patching::Patch::in_text(0x17527e4).nop();
-    skyline::patching::Patch::in_text(0x17527e8).nop();
+    skyline::patching::Patch::in_text(0x17527fc).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x1752800).nop();
+    skyline::patching::Patch::in_text(0x1752804).nop();
+    skyline::patching::Patch::in_text(0x1752808).nop();
 
     // Custom buffer-state handling
     // Always uses the hitlag handling that cat4 uses
-    skyline::patching::Patch::in_text(0x6bd428).nop();
-    skyline::patching::Patch::in_text(0x6bd484).nop();
+    skyline::patching::Patch::in_text(0x6bd448).nop();
+    skyline::patching::Patch::in_text(0x6bd4a4).nop();
     // Stubs setting the buffer lifetime to 2 if held
-    skyline::patching::Patch::in_text(0x6bd51c).nop();
-    skyline::patching::Patch::in_text(0x6bd598).nop();
+    skyline::patching::Patch::in_text(0x6bd53c).nop();
+    skyline::patching::Patch::in_text(0x6bd5b8).nop();
     // Stubs adding 1 to the buffer when released
-    skyline::patching::Patch::in_text(0x6bd4f8).nop();
-    skyline::patching::Patch::in_text(0x6bd5b4).nop();
+    skyline::patching::Patch::in_text(0x6bd518).nop();
+    skyline::patching::Patch::in_text(0x6bd5d4).nop();
 
     skyline::install_hooks!(
         // get_command_flag_cat_replace,

@@ -54,11 +54,11 @@ unsafe extern "C" fn lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u
     marth_lucina_on_attack(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0xcd9e80)]
+#[skyline::from_offset(0xcd9ea0)]
 unsafe extern "C" fn marth_lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
-    MiscModule::patch_vtable_function(0x4fe5fc0, lucina_init as u64);
-    MiscModule::patch_vtable_function(0x4fe6008, lucina_per_frame as u64);
-    MiscModule::patch_vtable_function(0x4fe60c0, lucina_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fe7fc0, lucina_init as u64);
+    MiscModule::patch_vtable_function(0x4fe8008, lucina_per_frame as u64);
+    MiscModule::patch_vtable_function(0x4fe80c0, lucina_on_attack as u64);
 }

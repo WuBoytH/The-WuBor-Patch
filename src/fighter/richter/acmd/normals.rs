@@ -353,17 +353,17 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", richter_attack11);
     agent.acmd("effect_attack11", richter_attack11_eff);
     agent.acmd("sound_attack11", richter_attack11_snd);
-    agent.acmd("expressoin_attack11", richter_attack11_exp);
+    agent.acmd("expression_attack11", richter_attack11_exp);
 
     agent.acmd("game_attack12", richter_attack12);
     agent.acmd("effect_attack12", richter_attack12_eff);
     agent.acmd("sound_attack12", richter_attack12_snd);
-    agent.acmd("expressoin_attack12", richter_attack12_exp);
+    agent.acmd("expression_attack12", richter_attack12_exp);
 
     agent.acmd("game_attack12f", richter_attack12f);
     agent.acmd("effect_attack12f", richter_attack12f_eff);
     agent.acmd("sound_attack12f", richter_attack12f_snd);
-    agent.acmd("expressoin_attack12f", richter_attack12f_exp);
+    agent.acmd("expression_attack12f", richter_attack12f_exp);
 
     agent.acmd("game_attackdash", richter_attackdash);
 

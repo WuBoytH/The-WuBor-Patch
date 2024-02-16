@@ -72,10 +72,6 @@ unsafe extern "C" fn lucina_meter_display(fighter: &mut L2CFighterCommon) {
         sp_diff_checker(fighter.module_accessor);
     }
 
-    if VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAIN_PENALTY) > 0.0 {
-        VarModule::sub_float(fighter.module_accessor, yu::instance::float::SP_GAIN_PENALTY, 1.0);
-    }
-
     if VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_EFFECT_TIMER) > 0 {
         VarModule::dec_int(fighter.module_accessor, yu::instance::int::SP_EFFECT_TIMER);
         if VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_EFFECT_TIMER) == 0 {

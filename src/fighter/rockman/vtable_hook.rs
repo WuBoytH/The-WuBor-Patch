@@ -1,8 +1,8 @@
 use crate::imports::status_imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
-use std::arch::asm;
+// use std::arch::asm;
 
-#[skyline::hook(offset = 0x107e950)]
+#[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -164,13 +164,13 @@ unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModul
     }
 }
 
-#[skyline::hook(offset = 0x1083bcc, inline)]
+#[skyline::hook(offset = 0x1083bec, inline)]
 unsafe extern "C" fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
-#[skyline::hook(offset = 0x10838c0, inline)]
+#[skyline::hook(offset = 0x10838e0, inline)]
 unsafe extern "C" fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
@@ -238,72 +238,48 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
     }
 }
 
-// #[skyline::hook(offset = 0x1085d40)]
-// pub unsafe extern "C" fn rockman_airshooter_init(article: &mut smash::app::Article, fighter: &mut smash::app::FighterModuleAccessor) -> u64 {
-//     let ret = original!()(article, fighter);
-//     println!("Initializing Air Shooter");
-//     let object_id = fighter.battle_object_module_accessor.battle_object_id;
-//     let object = MiscModule::get_battle_object_from_id(object_id);
-//     let num = VarModule::get_int(module_accessor, rockman::status::int::AIR_SHOOTER_NUM);
-//     VarModule::set_int(&mut article.battle_object as *mut BattleObject, rockman_airshooter::instance::int::NUM, num);
-//     ret
-// }
-
-#[skyline::hook(offset = 0x1080264, inline)]
-unsafe extern "C" fn rockman_check_remove_metal_blade(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = *ctx.registers[20].x.as_ref() as *mut Fighter;
-    let status = if (*fighter).battle_object.kind == 0x31 {
-        0x1dd
-    }
-    else {
-        0x1dc
-    };
-    asm!("cmp w0, w8", in("w8") status);
-}
-
 pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
-    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001Eu32);
+    skyline::patching::Patch::in_text(0x107eaa4).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007u32);
+    skyline::patching::Patch::in_text(0x107ff6c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable
-    skyline::patching::Patch::in_text(0x1083bcc).nop();
     skyline::patching::Patch::in_text(0x1083bec).nop();
-    skyline::patching::Patch::in_text(0x1083c08).nop();
-    skyline::patching::Patch::in_text(0x1083c1c).nop();
-    skyline::patching::Patch::in_text(0x1083c30).nop();
-    skyline::patching::Patch::in_text(0x1083c4c).nop();
-    skyline::patching::Patch::in_text(0x1083c60).nop();
-    skyline::patching::Patch::in_text(0x1083c74).nop();
-    skyline::patching::Patch::in_text(0x1083c88).nop();
-    skyline::patching::Patch::in_text(0x1083c9c).nop();
-    skyline::patching::Patch::in_text(0x1083cb0).nop();
-    skyline::patching::Patch::in_text(0x1083cc4).nop();
+    skyline::patching::Patch::in_text(0x1083c0c).nop();
+    skyline::patching::Patch::in_text(0x1083c28).nop();
+    skyline::patching::Patch::in_text(0x1083c3c).nop();
+    skyline::patching::Patch::in_text(0x1083c50).nop();
+    skyline::patching::Patch::in_text(0x1083c6c).nop();
+    skyline::patching::Patch::in_text(0x1083c80).nop();
+    skyline::patching::Patch::in_text(0x1083c94).nop();
+    skyline::patching::Patch::in_text(0x1083ca8).nop();
+    skyline::patching::Patch::in_text(0x1083cbc).nop();
+    skyline::patching::Patch::in_text(0x1083cd0).nop();
+    skyline::patching::Patch::in_text(0x1083ce4).nop();
     // Enable
-    skyline::patching::Patch::in_text(0x10838c0).nop();
     skyline::patching::Patch::in_text(0x10838e0).nop();
-    skyline::patching::Patch::in_text(0x1083908).nop();
-    skyline::patching::Patch::in_text(0x1083924).nop();
-    skyline::patching::Patch::in_text(0x1083938).nop();
-    skyline::patching::Patch::in_text(0x108394c).nop();
-    skyline::patching::Patch::in_text(0x1083968).nop();
-    skyline::patching::Patch::in_text(0x108397c).nop();
-    skyline::patching::Patch::in_text(0x1083990).nop();
-    skyline::patching::Patch::in_text(0x10839a4).nop();
-    skyline::patching::Patch::in_text(0x10839b8).nop();
-    skyline::patching::Patch::in_text(0x10839cc).nop();
+    skyline::patching::Patch::in_text(0x1083900).nop();
+    skyline::patching::Patch::in_text(0x1083928).nop();
+    skyline::patching::Patch::in_text(0x1083944).nop();
+    skyline::patching::Patch::in_text(0x1083958).nop();
+    skyline::patching::Patch::in_text(0x108396c).nop();
+    skyline::patching::Patch::in_text(0x1083988).nop();
+    skyline::patching::Patch::in_text(0x108399c).nop();
+    skyline::patching::Patch::in_text(0x10839b0).nop();
+    skyline::patching::Patch::in_text(0x10839c4).nop();
+    skyline::patching::Patch::in_text(0x10839d8).nop();
+    skyline::patching::Patch::in_text(0x10839ec).nop();
 
     // Patches which status to compare to for Metal Blade.
-    skyline::patching::Patch::in_text(0x1080264).nop();
+    skyline::patching::Patch::in_text(0x1080284).nop();
+    skyline::patching::Patch::in_text(0x1080288).nop();
 
     skyline::install_hooks!(
         rockman_vtable_func,
         rockman_do_leafshield_things_disable,
         rockman_do_leafshield_things_enable,
-        set_leafshield,
-        // rockman_airshooter_init,
-        rockman_check_remove_metal_blade
+        set_leafshield
     );
 }

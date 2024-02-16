@@ -9,8 +9,8 @@ use {
 mod init_settings;
 mod get_val;
 // mod get_param;
-mod collision_hit;
-mod handle_damage;
+// mod collision_hit;
+// mod handle_damage;
 mod sound;
 pub mod func_links;
 mod fighterutil;
@@ -46,8 +46,8 @@ pub fn install() {
     init_settings::install();
     get_val::install();
     // get_param::install();
-    collision_hit::install();
-    handle_damage::install();
+    // collision_hit::install();
+    // handle_damage::install();
     sound::install();
     fighterutil::install();
     menu::install();

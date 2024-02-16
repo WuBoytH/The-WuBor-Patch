@@ -1,6 +1,6 @@
 use skyline::hooks::InlineCtx;
 
-#[skyline::from_offset(0x37a1270)]
+#[skyline::from_offset(0x37a1ef0)]
 unsafe fn set_text_string(pane: u64, string: *const u8);
 
 // unsafe fn get_pane_by_name(arg: u64, arg2: *const u8) -> [u64; 4] {
@@ -23,7 +23,7 @@ static mut MOST_RECENT_AUTO: isize = -1;
 const MAX_INPUT_BUFFER: isize = 25;
 const MIN_INPUT_BUFFER: isize = -1;
 
-#[skyline::hook(offset = 0x1887700, inline)]
+#[skyline::hook(offset = 0x18881d0, inline)]
 unsafe fn non_hdr_update_room_hook(_: &skyline::hooks::InlineCtx) {
     static mut CURRENT_COUNTER: usize = 0;
     if ninput::any::is_press(ninput::Buttons::RIGHT) {
@@ -67,7 +67,7 @@ unsafe fn non_hdr_set_room_id(ctx: &skyline::hooks::InlineCtx) {
 
 static mut IS_USABLE: bool = false;
 
-#[skyline::hook(offset = 0x16cdb08, inline)]
+#[skyline::hook(offset = 0x16ccc58, inline)]
 unsafe fn non_hdr_set_online_latency(ctx: &InlineCtx) {
     let auto = *(*ctx.registers[19].x.as_ref() as *mut u8);
     if IS_USABLE {
@@ -78,22 +78,22 @@ unsafe fn non_hdr_set_online_latency(ctx: &InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x22d91f4, inline)]
+#[skyline::hook(offset = 0x22d9cd4, inline)]
 unsafe fn online_melee_any_scene_create(_: &InlineCtx) {
     IS_USABLE = false;
 }
 
-#[skyline::hook(offset = 0x22d9124, inline)]
+#[skyline::hook(offset = 0x22d9c04, inline)]
 unsafe fn bg_matchmaking_seq(_: &InlineCtx) {
     IS_USABLE = false;
 }
 
-#[skyline::hook(offset = 0x22d9054, inline)]
+#[skyline::hook(offset = 0x22d9b34, inline)]
 unsafe fn arena_seq(_: &InlineCtx) {
     IS_USABLE = true;
 }
 
-#[skyline::hook(offset = 0x23599b0, inline)]
+#[skyline::hook(offset = 0x235a630, inline)]
 unsafe fn main_menu(_: &InlineCtx) {
     IS_USABLE = false;
 }

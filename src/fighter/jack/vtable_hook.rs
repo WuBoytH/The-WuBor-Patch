@@ -3,27 +3,27 @@
 use crate::imports::status_imports::*;
 use wubor_utils::app::*;
 
-#[skyline::hook(offset = 0xb36ec0)]
+#[skyline::hook(offset = 0xb36ee0)]
 pub unsafe extern "C" fn jack_damage_callback(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0xb36e80)]
+#[skyline::hook(offset = 0xb36ea0)]
 pub unsafe extern "C" fn jack_damage_callback2(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b2940)]
+#[skyline::hook(offset = 0x21b3420)]
 pub unsafe extern "C" fn jack_damage_callback3(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0xb34430)]
+#[skyline::hook(offset = 0xb34450)]
 pub unsafe extern "C" fn jack_handle_gun_dodge_staling(_vtable: u64, _fighter: &mut Fighter) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b2af0)]
+#[skyline::hook(offset = 0x21b35d0)]
 pub unsafe extern "C" fn jack_call_summon_dispatch(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
@@ -46,15 +46,15 @@ unsafe extern "C" fn jack_on_attack(vtable: u64, fighter: &mut Fighter, log: u64
     jack_on_attack_inner(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0xb33d10)]
+#[skyline::from_offset(0xb33d30)]
 unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
     // Disables passive meter gain
-    skyline::patching::Patch::in_text(0xb31600).data(0x17FFFF6Eu32);
+    skyline::patching::Patch::in_text(0xb31620).data(0x17FFFF6Eu32);
     // Disables automatically summoning Arsene
-    skyline::patching::Patch::in_text(0xb3151c).data(0x14000035u32);
-    skyline::patching::Patch::in_text(0xb30db4).data(0x14000031u32);
+    skyline::patching::Patch::in_text(0xb3153c).data(0x14000035u32);
+    skyline::patching::Patch::in_text(0xb30dd4).data(0x14000031u32);
     skyline::install_hooks!(
         jack_damage_callback,
         jack_damage_callback2,
@@ -62,5 +62,5 @@ pub fn install() {
         jack_handle_gun_dodge_staling,
         jack_call_summon_dispatch
     );
-    MiscModule::patch_vtable_function(0x4fc51b8, jack_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fc71b8, jack_on_attack as u64);
 }

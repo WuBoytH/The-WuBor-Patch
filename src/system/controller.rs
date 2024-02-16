@@ -8,12 +8,12 @@ use {
     wubor_utils::controls::*,
 };
 
-#[skyline::hook(offset = 0x16d948c, inline)]
+#[skyline::hook(offset = 0x16d85dc, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
     *ctx.registers[22].x.as_mut() = 0x2;
 }
 
-#[skyline::hook(offset = 0x16d94c0, inline)]
+#[skyline::hook(offset = 0x16d8610, inline)]
 unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let raw = *ctx.registers[19].x.as_ref();
 
@@ -50,7 +50,7 @@ macro_rules! apply_button_mappings {
     }}
 }
 
-#[skyline::hook(offset = 0x17504a0)]
+#[skyline::hook(offset = 0x1750f70)]
 unsafe fn map_controls_hook(
     mappings: *mut ControllerMapping,
     player_idx: i32,
@@ -144,11 +144,11 @@ static mut LAST_ANALOG: f32 = 0.0;
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c30f0) as *const u64);
+        .add(0x52c50f0) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
-#[skyline::hook(offset = 0x3f7220)]
+#[skyline::hook(offset = 0x3f7240)]
 unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     const NEUTRAL: f32 = 0.2;
     const CLAMP_MAX: f32 = 120.0;
@@ -191,7 +191,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     call_original!(this)
 }
 
-#[skyline::hook(offset = 0x6b9c5c, inline)]
+#[skyline::hook(offset = 0x6b9c7c, inline)]
 unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     let module = *ctx.registers[19].x.as_ref();
     let internal_class = *(module as *const u64).add(0x110 / 0x8);
@@ -200,7 +200,7 @@ unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     *(internal_class as *mut f32).add(0x48 / 0x4) = LAST_ANALOG;
 }
 
-#[skyline::hook(offset = 0x16d7ee4, inline)]
+#[skyline::hook(offset = 0x16d7034, inline)]
 unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let packet = *ctx.registers[15].x.as_ref();
 
@@ -260,7 +260,7 @@ unsafe extern "C" fn isthrowstick(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3665e2c, inline)]
+#[skyline::hook(offset = 0x3666aac, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x100) as *mut _;
@@ -270,7 +270,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x3665c8c, inline)]
+#[skyline::hook(offset = 0x366690c, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -278,7 +278,7 @@ unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS = [0.0, 0.0];
 }
 
-#[skyline::hook(offset = 0x3665e60, inline)]
+#[skyline::hook(offset = 0x3666ae0, inline)]
 unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[9].x.as_ref() & 0x40 != 0 {
         let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
@@ -289,7 +289,7 @@ unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x3665e74, inline)]
+#[skyline::hook(offset = 0x3666af4, inline)]
 unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() & 0x80 != 0 {
         let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
@@ -306,8 +306,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
-    skyline::patching::Patch::in_text(0x3665e5c).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3665e70).data(0xAA0803EAu32);
+    skyline::patching::Patch::in_text(0x3666af4).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3666af0).data(0xAA0803EAu32);
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,

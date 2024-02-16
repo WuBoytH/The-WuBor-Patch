@@ -1,6 +1,7 @@
 use crate::imports::status_imports::*;
+use wubor_utils::app::*;
 
-#[skyline::hook(offset = 0x116a3b0)]
+#[skyline::hook(offset = 0x116a3d0)]
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) -> u64 {
     let module_accessor = (*fighter).battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -73,7 +74,7 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
     ].contains(&status))
 }
 
-#[skyline::hook(offset = 0x116db90)]
+#[skyline::hook(offset = 0x116dbb0)]
 pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log: &mut CollisionLogScuffed) -> u64 {
     let module_accessor = (*fighter).battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -95,39 +96,6 @@ pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log
         }
     }
     original!()(vtable, fighter, log)
-}
-
-#[repr(C)]
-pub struct CollisionLogScuffed {
-    next_log: *const u64,
-    end_log: *const u64,
-    location: smash_rs::cpp::simd::Vector3,
-    x20: u32,
-    opponent_object_id: u32,
-    x28: u8,
-    x29: u8,
-    x2a: u8,
-    x2b: u8,
-    x2c: u8,
-    x2d: u8,
-    x2e: u8,
-    collision_kind: u8,
-    receiver_part_id: u8,
-    collider_part_id: u8,
-    receiver_id: u8,
-    collider_id: u8,
-    x34: u8,
-    x35: bool,
-    x36: u8,
-    x37: u8,
-    x38: u8,
-    x39: u8,
-    x3a: u8,
-    x3b: u8,
-    x3c: u8,
-    x3d: u8,
-    x3e: u8,
-    x3f: u8
 }
 
 #[skyline::hook(offset = 0x1171c90)]

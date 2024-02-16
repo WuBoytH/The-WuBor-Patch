@@ -276,7 +276,7 @@ unsafe extern "C" fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CVa
 //     0.into()
 // }
 
-#[skyline::hook(offset = 0x645bc0)]
+#[skyline::hook(offset = 0x645be0)]
 unsafe extern "C" fn handle_escape_staling(_work: &mut smash_rs::app::WorkModule, _status: i32) {
     // Vanilla code but unused lol
     // if work.is_flag(work_ids::fighter::instance::DISABLE_ESCAPE_PENALTY) {

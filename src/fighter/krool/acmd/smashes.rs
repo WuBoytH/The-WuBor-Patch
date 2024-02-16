@@ -56,7 +56,7 @@ unsafe extern "C" fn krool_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("krool_attacks4", krool_attacks4);
+    agent.acmd("game_attacks4", krool_attacks4);
 
     agent.acmd("game_attacks4hi", krool_attacks4hi);
 

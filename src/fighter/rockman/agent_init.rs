@@ -20,6 +20,12 @@ unsafe extern "C" fn rockman_check_air_escape_uniq(fighter: &mut L2CFighterCommo
     false.into()
 }
 
+unsafe extern "C" fn rockman_check_turn_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let leafshield = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
+    WorkModule::set_flag(fighter.module_accessor, leafshield, *FIGHTER_STATUS_TURN_FLAG_NO_TURN_TO_ESCAPE);
+    false.into()
+}
+
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
     fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
@@ -28,7 +34,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].assign(&false.into());
     fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].assign(&L2CValue::Ptr(rockman_check_air_escape_uniq as *const () as _));
     fighter.global_table[GUARD_CONT_UNIQ].assign(&false.into());
-    fighter.global_table[TURN_UNIQ].assign(&false.into());
+    fighter.global_table[TURN_UNIQ].assign(&L2CValue::Ptr(rockman_check_turn_uniq as *const () as _));
     fighter.global_table[FALL_BRAKE_UNIQ].assign(&false.into());
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
 }

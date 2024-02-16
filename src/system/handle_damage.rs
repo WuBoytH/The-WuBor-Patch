@@ -12,7 +12,7 @@ use {
     wubor_utils::wua_bind::*
 };
 
-#[skyline::hook(offset = 0x6310a0)]
+#[skyline::hook(offset = 0x6310c0)]
 unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) {
     let module_accessor = (*object).module_accessor;
     // let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);

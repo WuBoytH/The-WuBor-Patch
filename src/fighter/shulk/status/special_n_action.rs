@@ -1,6 +1,12 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let start_attr = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {
+        0
+    }
+    else {
+        *FIGHTER_STATUS_ATTR_START_TURN
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -21,7 +27,7 @@ unsafe extern "C" fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) 
         false,
         false,
         *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        start_attr as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0
     );

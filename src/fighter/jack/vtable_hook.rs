@@ -13,7 +13,7 @@ pub unsafe extern "C" fn jack_damage_callback2(_vtable: u64, _fighter: &mut Figh
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b2960)]
+#[skyline::hook(offset = 0x21b3420)]
 pub unsafe extern "C" fn jack_damage_callback3(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
@@ -23,7 +23,7 @@ pub unsafe extern "C" fn jack_handle_gun_dodge_staling(_vtable: u64, _fighter: &
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b2b10)]
+#[skyline::hook(offset = 0x21b35d0)]
 pub unsafe extern "C" fn jack_call_summon_dispatch(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }

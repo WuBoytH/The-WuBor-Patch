@@ -31,5 +31,5 @@ pub fn install() {
         gaogaen_on_attack
     );
     // Skips to the end of the Revenge check after changing statuses
-    skyline::patching::Patch::in_text(0xab9fd0).data(0x140000D1u32);
+    skyline::patching::Patch::in_text(0xab9ff0).data(0x140000D1u32);
 }

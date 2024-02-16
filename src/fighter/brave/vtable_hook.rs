@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[skyline::hook(offset = 0x853cc0)]
+#[skyline::hook(offset = 0x853ce0)]
 unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     if !WorkModule::is_flag(module_accessor, 0x200000ea)
@@ -26,12 +26,12 @@ unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
     remove_psyche_up(fighter);
 }
 
-#[skyline::from_offset(0x853df0)]
+#[skyline::from_offset(0x853e10)]
 extern "C" fn remove_psyche_up(fighter: &mut Fighter);
 
 pub fn install() {
     // Removes a Psyche Up check
-    skyline::patching::Patch::in_text(0x8542cc).data(0x14000010u32);
+    skyline::patching::Patch::in_text(0x8542ec).data(0x14000010u32);
 
     skyline::install_hooks!(
         handle_psyche_up_hit

@@ -130,23 +130,23 @@ pub struct CollisionLogScuffed {
     x3f: u8
 }
 
-#[skyline::hook(offset = 0x1171c70)]
+#[skyline::hook(offset = 0x1171c90)]
 pub unsafe extern "C" fn shulk_shield_art_hit_decrease(_vtable: u64, _fighter: *mut Fighter, _something: u64) {
     // nothing lol
 }
 
 pub fn install() {
     // Disables the Monado Arts wheel by redirecting the instructions to skip the arts wheel check.
-    skyline::patching::Patch::in_text(0x1166164).data(0x1400002Au32);
+    skyline::patching::Patch::in_text(0x1166184).data(0x1400002Au32);
 
     // Disables a check that causes pushing Special to not bring up the Arts switcher.
-    skyline::patching::Patch::in_text(0x1165844).data(0x37000140u32);
+    skyline::patching::Patch::in_text(0x1165864).data(0x37000140u32);
 
     // Disables a weird check that forces you to go into wait/fall while holding Special, probably for the Art Wheel
-    skyline::patching::Patch::in_text(0x1167150).data(0x14000499u32);
+    skyline::patching::Patch::in_text(0x1167170).data(0x14000499u32);
 
     // Disables a check that delays the art being selected by holding Special
-    skyline::patching::Patch::in_text(0x1165db4).data(0x14000004u32);
+    skyline::patching::Patch::in_text(0x1165dd4).data(0x14000004u32);
 
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,

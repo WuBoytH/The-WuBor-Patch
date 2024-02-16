@@ -45,7 +45,7 @@ unsafe extern "C" fn chrom_attackairlw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn chrom_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_chrom_sword1"), Hash40::new("tex_chrom_sword2"), 5, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 90.0, 0.0, 90.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
+        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_chrom_sword1"), Hash40::new("tex_chrom_sword2"), 5, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
     }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -79,10 +79,10 @@ unsafe extern "C" fn chrom_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", chrom_attackairf);
+    agent.acmd("game_attackairf", chrom_attackairf);
 
-    agent.game_acmd("game_attackairlw", chrom_attackairlw);
-    agent.effect_acmd("effect_attackairlw", chrom_attackairlw_eff);
-    agent.sound_acmd("sound_attackairlw", chrom_attackairlw_snd);
-    agent.expression_acmd("expression_attackairlw", chrom_attackairlw_exp);
+    agent.acmd("game_attackairlw", chrom_attackairlw);
+    agent.acmd("effect_attackairlw", chrom_attackairlw_eff);
+    agent.acmd("sound_attackairlw", chrom_attackairlw_snd);
+    agent.acmd("expression_attackairlw", chrom_attackairlw_exp);
 }

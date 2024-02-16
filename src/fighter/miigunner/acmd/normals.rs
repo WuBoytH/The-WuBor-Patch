@@ -57,9 +57,9 @@ unsafe extern "C" fn miigunner_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", miigunner_attack11);
+    agent.acmd("game_attack11", miigunner_attack11);
 
-    agent.game_acmd("game_attack12", miigunner_attack12);
+    agent.acmd("game_attack12", miigunner_attack12);
 
-    agent.game_acmd("game_attack13", miigunner_attack13);
+    agent.acmd("game_attack13", miigunner_attack13);
 }

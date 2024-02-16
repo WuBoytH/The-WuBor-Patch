@@ -40,9 +40,9 @@ unsafe extern "C" fn miigunner_specialhi2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi1", miigunner_specialhi1);
+    agent.acmd("game_specialhi1", miigunner_specialhi1);
 
-    agent.game_acmd("game_specialairhi1", miigunner_specialhi1);
+    agent.acmd("game_specialairhi1", miigunner_specialhi1);
 
-    agent.game_acmd("game_specialhi2", miigunner_specialhi2);
+    agent.acmd("game_specialhi2", miigunner_specialhi2);
 }

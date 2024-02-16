@@ -53,9 +53,9 @@ unsafe extern "C" fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.effect_acmd("effect_ganonspecialn", kirby_ganonspecialn_eff);
-    agent.sound_acmd("sound_ganonspecialn", kirby_ganonspecialn_snd);
+    agent.acmd("effect_ganonspecialn", kirby_ganonspecialn_eff);
+    agent.acmd("sound_ganonspecialn", kirby_ganonspecialn_snd);
 
-    agent.effect_acmd("effect_ganonspecialairn", kirby_ganonspecialn_eff);
-    agent.sound_acmd("sound_ganonspecialairn", kirby_ganonspecialn_snd);
+    agent.acmd("effect_ganonspecialairn", kirby_ganonspecialn_eff);
+    agent.acmd("sound_ganonspecialairn", kirby_ganonspecialn_snd);
 }

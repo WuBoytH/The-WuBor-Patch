@@ -271,27 +271,27 @@ unsafe extern "C" fn samusd_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", samusd_attack11);
+    agent.acmd("game_attack11", samusd_attack11);
 
-    agent.game_acmd("game_attack12", samusd_attack12);
-    agent.effect_acmd("effect_attack12", samusd_attack12_eff);
-    agent.sound_acmd("sound_attack12", samusd_attack12_snd);
-    agent.expression_acmd("expression_attack12", samusd_attack12_exp);
+    agent.acmd("game_attack12", samusd_attack12);
+    agent.acmd("effect_attack12", samusd_attack12_eff);
+    agent.acmd("sound_attack12", samusd_attack12_snd);
+    agent.acmd("expression_attack12", samusd_attack12_exp);
 
-    agent.game_acmd("game_attackdash", samusd_attackdash);
-    agent.effect_acmd("effect_attackdash", samusd_attackdash_eff);
-    agent.expression_acmd("expression_attackdash", samusd_attackdash_exp);
+    agent.acmd("game_attackdash", samusd_attackdash);
+    agent.acmd("effect_attackdash", samusd_attackdash_eff);
+    agent.acmd("expression_attackdash", samusd_attackdash_exp);
 
-    agent.game_acmd("game_attacks3", samusd_attacks3);
+    agent.acmd("game_attacks3", samusd_attacks3);
 
-    agent.game_acmd("game_attacks3hi", samusd_attacks3hi);
+    agent.acmd("game_attacks3hi", samusd_attacks3hi);
 
-    agent.game_acmd("game_attacks3lw", samusd_attacks3lw);
+    agent.acmd("game_attacks3lw", samusd_attacks3lw);
 
-    agent.game_acmd("game_attackhi3", samusd_attackhi3);
-    agent.effect_acmd("effect_attackhi3", samusd_attackhi3_eff);
-    agent.sound_acmd("sound_attackhi3", samusd_attackhi3_snd);
-    agent.expression_acmd("expression_attackhi3", samusd_attackhi3_exp);
+    agent.acmd("game_attackhi3", samusd_attackhi3);
+    agent.acmd("effect_attackhi3", samusd_attackhi3_eff);
+    agent.acmd("sound_attackhi3", samusd_attackhi3_snd);
+    agent.acmd("expression_attackhi3", samusd_attackhi3_exp);
 
-    agent.game_acmd("game_attacklw3", samusd_attacklw3);
+    agent.acmd("game_attacklw3", samusd_attacklw3);
 }

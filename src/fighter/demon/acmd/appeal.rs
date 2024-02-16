@@ -31,7 +31,7 @@ unsafe extern "C" fn demon_appealhir(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_appealhil", demon_appealhil);
+    agent.acmd("game_appealhil", demon_appealhil);
 
-    agent.game_acmd("game_appealhir", demon_appealhir);
+    agent.acmd("game_appealhir", demon_appealhir);
 }

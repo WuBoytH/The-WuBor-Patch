@@ -281,37 +281,37 @@ unsafe extern "C" fn mario_groundpoundland_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specials", mario_specials);
-    agent.effect_acmd("effect_specials", mario_specials_eff);
-    agent.expression_acmd("expression_specials", mario_specials_exp);
+    agent.acmd("game_specials", mario_specials);
+    agent.acmd("effect_specials", mario_specials_eff);
+    agent.acmd("expression_specials", mario_specials_exp);
 
-    agent.game_acmd("game_specialairs", mario_specials);
-    agent.effect_acmd("effect_specialairs", mario_specialairs_eff);
-    agent.expression_acmd("expression_specialairs", mario_specials_exp);
+    agent.acmd("game_specialairs", mario_specials);
+    agent.acmd("effect_specialairs", mario_specialairs_eff);
+    agent.acmd("expression_specialairs", mario_specials_exp);
 
-    agent.game_acmd("game_specialhi", mario_specialhi);
+    agent.acmd("game_specialhi", mario_specialhi);
 
-    agent.game_acmd("game_specialairhi", mario_specialhi);
+    agent.acmd("game_specialairhi", mario_specialhi);
 
-    agent.sound_acmd("sound_speciallwstart", mario_longjumpstart_snd);
+    agent.acmd("sound_speciallwstart", mario_longjumpstart_snd);
 
-    agent.game_acmd("game_speciallwjump", mario_longjump);
-    agent.sound_acmd("sound_speciallwjump", mario_longjump_snd);
-    agent.expression_acmd("expression_speciallwjump", mario_longjump_exp);
+    agent.acmd("game_speciallwjump", mario_longjump);
+    agent.acmd("sound_speciallwjump", mario_longjump_snd);
+    agent.acmd("expression_speciallwjump", mario_longjump_exp);
 
-    agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_snd);
-    agent.effect_acmd("effect_speciallwlanding", mario_longjumpland_eff);
-    agent.expression_acmd("expression_speciallwlanding", mario_longjumpland_exp);
+    agent.acmd("effect_speciallwlanding", mario_longjumpland_snd);
+    agent.acmd("effect_speciallwlanding", mario_longjumpland_eff);
+    agent.acmd("expression_speciallwlanding", mario_longjumpland_exp);
 
-    agent.game_acmd("game_specialairlwstart", mario_groundpoundstart);
-    agent.effect_acmd("effect_specialairlwstart", mario_groundpoundstart_snd);
+    agent.acmd("game_specialairlwstart", mario_groundpoundstart);
+    agent.acmd("effect_specialairlwstart", mario_groundpoundstart_snd);
 
-    agent.game_acmd("game_specialairlwfall", mario_groundpoundfall);
-    agent.effect_acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
-    agent.expression_acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
+    agent.acmd("game_specialairlwfall", mario_groundpoundfall);
+    agent.acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
+    agent.acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
 
-    agent.game_acmd("game_specialairlwlanding", mario_groundpoundland);
-    agent.effect_acmd("effect_specialairlwlanding", mario_groundpoundland_snd);
-    agent.sound_acmd("sound_specialairlwlanding", mario_groundpoundland_eff);
-    agent.expression_acmd("expression_specialairlwlanding", mario_groundpoundland_exp);
+    agent.acmd("game_specialairlwlanding", mario_groundpoundland);
+    agent.acmd("effect_specialairlwlanding", mario_groundpoundland_snd);
+    agent.acmd("sound_specialairlwlanding", mario_groundpoundland_eff);
+    agent.acmd("expression_specialairlwlanding", mario_groundpoundland_exp);
 }

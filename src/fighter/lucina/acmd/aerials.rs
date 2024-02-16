@@ -317,25 +317,25 @@ unsafe extern "C" fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", lucina_attackairn);
-    agent.effect_acmd("effect_attackairn", lucina_attackairn_eff);
-    agent.sound_acmd("sound_attackairn", lucina_attackairn_snd);
-    agent.expression_acmd("expression_attackairn", lucina_attackairn_exp);
+    agent.acmd("game_attackairn", lucina_attackairn);
+    agent.acmd("effect_attackairn", lucina_attackairn_eff);
+    agent.acmd("sound_attackairn", lucina_attackairn_snd);
+    agent.acmd("expression_attackairn", lucina_attackairn_exp);
 
-    agent.game_acmd("game_attackairf", lucina_attackairf);
-    agent.effect_acmd("effect_attackairf", lucina_attackairf_eff);
-    agent.sound_acmd("sound_attackairf", lucina_attackairf_snd);
-    agent.expression_acmd("expression_attackairf", lucina_attackairf_exp);
+    agent.acmd("game_attackairf", lucina_attackairf);
+    agent.acmd("effect_attackairf", lucina_attackairf_eff);
+    agent.acmd("sound_attackairf", lucina_attackairf_snd);
+    agent.acmd("expression_attackairf", lucina_attackairf_exp);
 
-    agent.game_acmd("game_attackairb", lucina_attackairb);
-    agent.effect_acmd("effect_attackairb", lucina_attackairb_eff);
-    agent.sound_acmd("sound_attackairb", lucina_attackairb_snd);
-    agent.expression_acmd("expression_attackairb", lucina_attackairb_exp);
+    agent.acmd("game_attackairb", lucina_attackairb);
+    agent.acmd("effect_attackairb", lucina_attackairb_eff);
+    agent.acmd("sound_attackairb", lucina_attackairb_snd);
+    agent.acmd("expression_attackairb", lucina_attackairb_exp);
 
-    agent.game_acmd("game_attackairhi", lucina_attackairhi);
+    agent.acmd("game_attackairhi", lucina_attackairhi);
 
-    agent.game_acmd("game_attackairlw", lucina_attackairlw);
-    agent.effect_acmd("effect_attackairlw", lucina_attackairlw_eff);
-    agent.sound_acmd("sound_attackairlw", lucina_attackairlw_snd);
-    agent.expression_acmd("expression_attackairlw", lucina_attackairlw_exp);
+    agent.acmd("game_attackairlw", lucina_attackairlw);
+    agent.acmd("effect_attackairlw", lucina_attackairlw_eff);
+    agent.acmd("sound_attackairlw", lucina_attackairlw_snd);
+    agent.acmd("expression_attackairlw", lucina_attackairlw_exp);
 }

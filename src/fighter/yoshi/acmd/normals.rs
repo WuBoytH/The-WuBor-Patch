@@ -76,13 +76,13 @@ unsafe extern "C" fn yoshi_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks3", yoshi_attacks3);
+    agent.acmd("game_attacks3", yoshi_attacks3);
 
-    agent.game_acmd("game_attacks3hi", yoshi_attacks3hi);
+    agent.acmd("game_attacks3hi", yoshi_attacks3hi);
 
-    agent.game_acmd("game_attacks3lw", yoshi_attacks3lw);
+    agent.acmd("game_attacks3lw", yoshi_attacks3lw);
 
-    agent.game_acmd("game_attackhi3", yoshi_attackhi3);
+    agent.acmd("game_attackhi3", yoshi_attackhi3);
 
-    agent.game_acmd("game_attacklw3", yoshi_attacklw3);
+    agent.acmd("game_attacklw3", yoshi_attacklw3);
 }

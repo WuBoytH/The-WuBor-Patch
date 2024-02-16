@@ -134,13 +134,13 @@ unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks4", chrom_attacks4);
-    agent.effect_acmd("effect_attacks4", chrom_attacks4_eff);
-    agent.sound_acmd("sound_attacks4", chrom_attacks4_snd);
-    agent.expression_acmd("expression_attacks4", chrom_attacks4_exp);
+    agent.acmd("game_attacks4", chrom_attacks4);
+    agent.acmd("effect_attacks4", chrom_attacks4_eff);
+    agent.acmd("sound_attacks4", chrom_attacks4_snd);
+    agent.acmd("expression_attacks4", chrom_attacks4_exp);
 
-    agent.game_acmd("game_attackhi4", chrom_attackhi4);
-    agent.effect_acmd("effect_attackhi4", chrom_attackhi4_eff);
-    agent.sound_acmd("sound_attackhi4", chrom_attackhi4_snd);
-    agent.expression_acmd("expression_attackhi4", chrom_attackhi4_exp);
+    agent.acmd("game_attackhi4", chrom_attackhi4);
+    agent.acmd("effect_attackhi4", chrom_attackhi4_eff);
+    agent.acmd("sound_attackhi4", chrom_attackhi4_snd);
+    agent.acmd("expression_attackhi4", chrom_attackhi4_exp);
 }

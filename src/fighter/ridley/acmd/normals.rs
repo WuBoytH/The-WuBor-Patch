@@ -14,5 +14,5 @@ unsafe extern "C" fn ridley_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacklw3", ridley_attacklw3);
+    agent.acmd("game_attacklw3", ridley_attacklw3);
 }

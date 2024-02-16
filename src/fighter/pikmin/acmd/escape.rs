@@ -13,5 +13,5 @@ unsafe extern "C" fn pikmin_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_escapeairslide", pikmin_escapeairslide);
+    agent.acmd("game_escapeairslide", pikmin_escapeairslide);
 }

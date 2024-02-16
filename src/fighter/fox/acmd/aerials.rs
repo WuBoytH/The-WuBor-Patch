@@ -142,11 +142,11 @@ unsafe extern "C" fn fox_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", fox_attackairf);
+    agent.acmd("game_attackairf", fox_attackairf);
 
-    agent.game_acmd("game_landingairf", fox_landingairf);
+    agent.acmd("game_landingairf", fox_landingairf);
 
-    agent.game_acmd("game_attackairb", fox_attackairb);
+    agent.acmd("game_attackairb", fox_attackairb);
 
-    agent.game_acmd("game_attackairhi", fox_attackairhi);
+    agent.acmd("game_attackairhi", fox_attackairhi);
 }

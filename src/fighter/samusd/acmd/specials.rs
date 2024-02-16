@@ -258,25 +258,25 @@ unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnstart", samusd_specialnstart);
+    agent.acmd("game_specialnstart", samusd_specialnstart);
 
-    agent.game_acmd("game_specialairnstart", samusd_specialnstart);
+    agent.acmd("game_specialairnstart", samusd_specialnstart);
 
-    agent.game_acmd("game_special", samusd_special);
+    agent.acmd("game_special", samusd_special);
 
-    agent.game_acmd("game_specialair", samusd_specialair);
+    agent.acmd("game_specialair", samusd_specialair);
 
-    agent.game_acmd("game_specials", samusd_specials);
+    agent.acmd("game_specials", samusd_specials);
 
-    agent.game_acmd("game_specialairs", samusd_specialairs);
+    agent.acmd("game_specialairs", samusd_specialairs);
 
-    agent.game_acmd("game_specialhi", samusd_specialhi);
+    agent.acmd("game_specialhi", samusd_specialhi);
 
-    agent.game_acmd("game_specialairhi", samusd_specialairhi);
+    agent.acmd("game_specialairhi", samusd_specialairhi);
 
-    agent.game_acmd("game_speciallw", samusd_speciallw);
-    agent.effect_acmd("effect_speciallw", samusd_speciallw_eff);
+    agent.acmd("game_speciallw", samusd_speciallw);
+    agent.acmd("effect_speciallw", samusd_speciallw_eff);
 
-    agent.game_acmd("game_specialairlw", samusd_specialairlw);
-    agent.effect_acmd("effect_specialairlw", samusd_speciallw_eff);
+    agent.acmd("game_specialairlw", samusd_specialairlw);
+    agent.acmd("effect_specialairlw", samusd_speciallw_eff);
 }

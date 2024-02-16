@@ -88,7 +88,7 @@ unsafe extern "C" fn robot_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairf", robot_attackairf);
+    agent.acmd("game_attackairf", robot_attackairf);
 
-    agent.game_acmd("game_attackairhi", robot_attackairhi);
+    agent.acmd("game_attackairhi", robot_attackairhi);
 }

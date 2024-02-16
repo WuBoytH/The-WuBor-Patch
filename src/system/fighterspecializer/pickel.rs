@@ -1,11 +1,11 @@
 use crate::imports::status_imports::*;
 
-#[skyline::hook( offset = 0xf10660 )]
+#[skyline::hook( offset = 0xf10680 )]
 pub unsafe fn is_mining_material_table_normal() -> bool {
     false
 }
 
-#[skyline::hook( offset = 0xf106f0 )]
+#[skyline::hook( offset = 0xf10710 )]
 pub unsafe fn get_mining_material_table_result(fighter: &mut Fighter, table: i32, progress: i32) -> i32 {
     let ret = call_original!(fighter, table, progress);
     let module_accessor = fighter.battle_object.module_accessor;

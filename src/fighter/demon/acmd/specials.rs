@@ -507,19 +507,19 @@ unsafe extern "C" fn demon_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi", demon_specialhi);
+    agent.acmd("game_specialhi", demon_specialhi);
 
-    agent.game_acmd("game_specialhiground", demon_specialhigroundair);
-    agent.game_acmd("game_specialhiair", demon_specialhigroundair);
+    agent.acmd("game_specialhiground", demon_specialhigroundair);
+    agent.acmd("game_specialhiair", demon_specialhigroundair);
 
-    agent.game_acmd("game_attackragedrive", demon_attackragedrive);
-    agent.game_acmd("game_attackairragedrive", demon_attackragedrive);
+    agent.acmd("game_attackragedrive", demon_attackragedrive);
+    agent.acmd("game_attackairragedrive", demon_attackragedrive);
 
     agent.game_acmd(0x15cb9d3406, demon_15cb9d3406);
 
     agent.game_acmd(0x15b52c48bb, demon_15b52c48bb);
 
-    agent.game_acmd("game_speciallw", demon_speciallw);
+    agent.acmd("game_speciallw", demon_speciallw);
 
-    agent.game_acmd("game_specialairlw", demon_specialairlw);
+    agent.acmd("game_specialairlw", demon_specialairlw);
 }

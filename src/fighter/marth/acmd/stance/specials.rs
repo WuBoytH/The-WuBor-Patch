@@ -703,48 +703,48 @@ unsafe extern "C" fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_speciallwspecials", marth_speciallwspecials);
-    agent.effect_acmd("effect_speciallwspecials", marth_speciallwspecials_eff);
-    agent.sound_acmd("sound_speciallwspecials", marth_speciallwspecials_snd);
-    agent.expression_acmd("expression_speciallwspecials", marth_speciallwspecials_exp);
+    agent.acmd("game_speciallwspecials", marth_speciallwspecials);
+    agent.acmd("effect_speciallwspecials", marth_speciallwspecials_eff);
+    agent.acmd("sound_speciallwspecials", marth_speciallwspecials_snd);
+    agent.acmd("expression_speciallwspecials", marth_speciallwspecials_exp);
 
-    agent.game_acmd("game_speciallwspecialairs", marth_speciallwspecialairs);
-    agent.effect_acmd("effect_speciallwspecialairs", marth_speciallwspecialairs_eff);
-    agent.sound_acmd("sound_speciallwspecialairs", marth_speciallwspecialairs_snd);
-    agent.expression_acmd("expression_speciallwspecialairs", marth_speciallwspecialairs_exp);
+    agent.acmd("game_speciallwspecialairs", marth_speciallwspecialairs);
+    agent.acmd("effect_speciallwspecialairs", marth_speciallwspecialairs_eff);
+    agent.acmd("sound_speciallwspecialairs", marth_speciallwspecialairs_snd);
+    agent.acmd("expression_speciallwspecialairs", marth_speciallwspecialairs_exp);
 
-    agent.game_acmd("game_speciallwspecials2start", marth_speciallwspecials2start);
-    agent.effect_acmd("effect_speciallwspecials2start", marth_speciallwspecials2start_eff);
-    agent.sound_acmd("sound_speciallwspecials2start", marth_speciallwspecials2start_snd);
-    agent.expression_acmd("expression_speciallwspecials2start", marth_speciallwspecials2start_exp);
+    agent.acmd("game_speciallwspecials2start", marth_speciallwspecials2start);
+    agent.acmd("effect_speciallwspecials2start", marth_speciallwspecials2start_eff);
+    agent.acmd("sound_speciallwspecials2start", marth_speciallwspecials2start_snd);
+    agent.acmd("expression_speciallwspecials2start", marth_speciallwspecials2start_exp);
 
-    agent.game_acmd("game_speciallwspecials2loop", marth_speciallwspecials2loop);
-    agent.effect_acmd("effect_speciallwspecials2loop", marth_speciallwspecials2loop_eff);
-    agent.sound_acmd("sound_speciallwspecials2loop", marth_speciallwspecials2loop_snd);
-    agent.expression_acmd("expression_speciallwspecials2loop", marth_speciallwspecials2loop_exp);
+    agent.acmd("game_speciallwspecials2loop", marth_speciallwspecials2loop);
+    agent.acmd("effect_speciallwspecials2loop", marth_speciallwspecials2loop_eff);
+    agent.acmd("sound_speciallwspecials2loop", marth_speciallwspecials2loop_snd);
+    agent.acmd("expression_speciallwspecials2loop", marth_speciallwspecials2loop_exp);
 
-    agent.game_acmd("game_speciallwspecials2end2", marth_speciallwspecials2end2);
-    agent.effect_acmd("effect_speciallwspecials2end2", marth_speciallwspecials2end2_eff);
-    agent.sound_acmd("sound_speciallwspecials2end2", marth_speciallwspecials2end2_snd);
-    agent.expression_acmd("expression_speciallwspecials2end2", marth_speciallwspecials2end2_exp);
+    agent.acmd("game_speciallwspecials2end2", marth_speciallwspecials2end2);
+    agent.acmd("effect_speciallwspecials2end2", marth_speciallwspecials2end2_eff);
+    agent.acmd("sound_speciallwspecials2end2", marth_speciallwspecials2end2_snd);
+    agent.acmd("expression_speciallwspecials2end2", marth_speciallwspecials2end2_exp);
 
-    agent.game_acmd("game_speciallwspecialairs2start", marth_speciallwspecialairs2start);
-    agent.effect_acmd("effect_speciallwspecialairs2start", marth_speciallwspecialairs2start_eff);
-    agent.sound_acmd("sound_speciallwspecialairs2start", marth_speciallwspecialairs2start_snd);
-    agent.expression_acmd("expression_speciallwspecialairs2start", marth_speciallwspecialairs2start_exp);
+    agent.acmd("game_speciallwspecialairs2start", marth_speciallwspecialairs2start);
+    agent.acmd("effect_speciallwspecialairs2start", marth_speciallwspecialairs2start_eff);
+    agent.acmd("sound_speciallwspecialairs2start", marth_speciallwspecialairs2start_snd);
+    agent.acmd("expression_speciallwspecialairs2start", marth_speciallwspecialairs2start_exp);
 
-    agent.game_acmd("game_speciallwspecialairs2loop", marth_speciallwspecialairs2loop);
-    agent.effect_acmd("effect_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_eff);
-    agent.sound_acmd("sound_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_snd);
-    agent.expression_acmd("expression_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_exp);
+    agent.acmd("game_speciallwspecialairs2loop", marth_speciallwspecialairs2loop);
+    agent.acmd("effect_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_eff);
+    agent.acmd("sound_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_snd);
+    agent.acmd("expression_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_exp);
 
-    agent.game_acmd("game_speciallwspecialairs2end", marth_speciallwspecialairs2end);
-    agent.effect_acmd("effect_speciallwspecialairs2end", marth_speciallwspecialairs2end_eff);
-    agent.sound_acmd("sound_speciallwspecialairs2end", marth_speciallwspecialairs2end_snd);
-    agent.expression_acmd("expression_speciallwspecialairs2end", marth_speciallwspecialairs2end_exp);
+    agent.acmd("game_speciallwspecialairs2end", marth_speciallwspecialairs2end);
+    agent.acmd("effect_speciallwspecialairs2end", marth_speciallwspecialairs2end_eff);
+    agent.acmd("sound_speciallwspecialairs2end", marth_speciallwspecialairs2end_snd);
+    agent.acmd("expression_speciallwspecialairs2end", marth_speciallwspecialairs2end_exp);
 
-    agent.game_acmd("game_speciallwspecialhi", marth_speciallwspecialhi);
-    agent.effect_acmd("effect_speciallwspecialhi", marth_speciallwspecialhi_eff);
-    agent.sound_acmd("sound_speciallwspecialhi", marth_speciallwspecialhi_snd);
-    agent.expression_acmd("expression_speciallwspecialhi", marth_speciallwspecialhi_exp);
+    agent.acmd("game_speciallwspecialhi", marth_speciallwspecialhi);
+    agent.acmd("effect_speciallwspecialhi", marth_speciallwspecialhi_eff);
+    agent.acmd("sound_speciallwspecialhi", marth_speciallwspecialhi_snd);
+    agent.acmd("expression_speciallwspecialhi", marth_speciallwspecialhi_exp);
 }

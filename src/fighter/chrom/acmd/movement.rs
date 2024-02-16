@@ -19,7 +19,7 @@ unsafe extern "C" fn chrom_turndash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_dash", chrom_dash);
+    agent.acmd("game_dash", chrom_dash);
 
-    agent.game_acmd("game_turndash", chrom_turndash);
+    agent.acmd("game_turndash", chrom_turndash);
 }

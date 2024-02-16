@@ -156,29 +156,29 @@ unsafe extern "C" fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialnopenwait", wario_specialnopenwait);
+    agent.acmd("game_specialnopenwait", wario_specialnopenwait);
 
-    agent.game_acmd("game_specialairnopenwait", wario_specialnopenwait);
+    agent.acmd("game_specialairnopenwait", wario_specialnopenwait);
 
-    agent.game_acmd("game_specialnbite", wario_specialnbite);
+    agent.acmd("game_specialnbite", wario_specialnbite);
 
-    agent.game_acmd("game_specialairnbite", wario_specialnbite);
+    agent.acmd("game_specialairnbite", wario_specialnbite);
 
-    agent.game_acmd("game_specialhijump", wario_specialhijump);
+    agent.acmd("game_specialhijump", wario_specialhijump);
 
-    agent.game_acmd("game_speciallwsr", wario_speciallwsr);
+    agent.acmd("game_speciallwsr", wario_speciallwsr);
 
-    agent.game_acmd("game_specialairlwsr", wario_speciallwsr);
+    agent.acmd("game_specialairlwsr", wario_speciallwsr);
 
-    agent.game_acmd("game_speciallwmr", wario_speciallwmr);
+    agent.acmd("game_speciallwmr", wario_speciallwmr);
 
-    agent.game_acmd("game_specialairlwmr", wario_speciallwmr);
+    agent.acmd("game_specialairlwmr", wario_speciallwmr);
 
-    agent.game_acmd("game_speciallwlr", wario_speciallwlr);
+    agent.acmd("game_speciallwlr", wario_speciallwlr);
 
-    agent.game_acmd("game_specialairlwlr", wario_speciallwlr);
+    agent.acmd("game_specialairlwlr", wario_speciallwlr);
 
-    agent.game_acmd("game_speciallwflyr", wario_speciallwflyr);
+    agent.acmd("game_speciallwflyr", wario_speciallwflyr);
 
-    agent.game_acmd("game_specialairlwflyr", wario_speciallwflyr);
+    agent.acmd("game_specialairlwflyr", wario_speciallwflyr);
 }

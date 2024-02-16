@@ -37,11 +37,11 @@ unsafe extern "C" fn fox_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attacks3", fox_attacks3);
+    agent.acmd("game_attacks3", fox_attacks3);
 
-    agent.game_acmd("game_attacks3hi", fox_attacks3);
+    agent.acmd("game_attacks3hi", fox_attacks3);
 
-    agent.game_acmd("game_attacks3lw", fox_attacks3);
+    agent.acmd("game_attacks3lw", fox_attacks3);
 
-    agent.game_acmd("game_attackhi3", fox_attackhi3);
+    agent.acmd("game_attackhi3", fox_attackhi3);
 }

@@ -13,5 +13,5 @@ unsafe extern "C" fn shizue_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_escapeairslide", shizue_escapeairslide);
+    agent.acmd("game_escapeairslide", shizue_escapeairslide);
 }

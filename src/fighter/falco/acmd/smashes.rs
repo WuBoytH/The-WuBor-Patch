@@ -92,7 +92,7 @@ unsafe extern "C" fn falco_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackhi4", falco_attackhi4);
+    agent.acmd("game_attackhi4", falco_attackhi4);
 
-    agent.game_acmd("game_attacklw4", falco_attacklw4);
+    agent.acmd("game_attacklw4", falco_attacklw4);
 }

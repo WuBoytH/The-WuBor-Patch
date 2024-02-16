@@ -157,18 +157,18 @@ unsafe extern "C" fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", marth_attack11);
-    agent.effect_acmd("effect_attack11", marth_attack11_eff);
+    agent.acmd("game_attack11", marth_attack11);
+    agent.acmd("effect_attack11", marth_attack11_eff);
 
-    agent.game_acmd("game_attack12", marth_attack12);
-    agent.effect_acmd("effect_attack12", marth_attack12_eff);
+    agent.acmd("game_attack12", marth_attack12);
+    agent.acmd("effect_attack12", marth_attack12_eff);
 
-    agent.game_acmd("game_attacks3", marth_attacks3);
-    agent.effect_acmd("effect_attacks3", marth_attacks3_eff);
+    agent.acmd("game_attacks3", marth_attacks3);
+    agent.acmd("effect_attacks3", marth_attacks3_eff);
 
-    agent.game_acmd("game_attackhi3", marth_attackhi3);
-    agent.effect_acmd("effect_attackhi3", marth_attackhi3_eff);
+    agent.acmd("game_attackhi3", marth_attackhi3);
+    agent.acmd("effect_attackhi3", marth_attackhi3_eff);
 
-    agent.game_acmd("game_attacklw3", marth_attacklw3);
-    agent.effect_acmd("effect_attacklw3", marth_attacklw3_eff);
+    agent.acmd("game_attacklw3", marth_attacklw3);
+    agent.acmd("effect_attacklw3", marth_attacklw3_eff);
 }

@@ -37,7 +37,7 @@ unsafe extern "C" fn purin_attack12(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", purin_attack11);
+    agent.acmd("game_attack11", purin_attack11);
 
-    agent.game_acmd("game_attack12", purin_attack12);
+    agent.acmd("game_attack12", purin_attack12);
 }

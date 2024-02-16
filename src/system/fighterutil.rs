@@ -20,7 +20,7 @@ unsafe extern "C" fn get_cliff_xlu_frame(module_accessor: *mut BattleObjectModul
     get_motion_data(motion_module, motion.hash, 0)
 }
 
-#[skyline::from_offset(0x6e2420)]
+#[skyline::from_offset(0x6e2440)]
 extern "C" fn get_motion_data(motion_module: u64, motion: u64, param_3: u32) -> f32;
 
 pub fn install() {

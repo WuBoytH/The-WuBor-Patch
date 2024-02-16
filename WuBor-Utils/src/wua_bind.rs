@@ -618,7 +618,7 @@ pub mod MiscModule {
         }
     }
     
-    #[skyline::from_offset(0x3ac540)]
+    #[skyline::from_offset(0x3ac560)]
     pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
 
     pub unsafe fn get_vars_from_pocket(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
@@ -700,7 +700,7 @@ pub mod MiscModule {
         }
     }
     
-    #[skyline::from_offset(0x696700)]
+    #[skyline::from_offset(0x696720)]
     pub fn call_critical(
         module_accessor: *mut BattleObjectModuleAccessor,
         unk: u64,
@@ -724,7 +724,7 @@ pub mod MiscModule {
 
     /// Used to create custom shield boxes that can be called in ACMD. Below is an example of how it would be created.
     /// ```
-    /// #[skyline::hook(offset = 0xcd9880)]
+    /// #[skyline::hook(offset = 0xcd98a0)]
     /// unsafe extern "C" fn marth_lucina_init(vtable: u64, fighter: &mut Fighter) {
     ///     original!()(vtable, fighter);
     ///     if (*fighter).battle_object.kind == *FIGHTER_KIND_LUCINA as u32 {
@@ -775,7 +775,7 @@ pub mod MiscModule {
 
     /// Used to create custom reflector boxes that can be called in ACMD. Below is an example of how it would be created.
     /// ```
-    /// #[skyline::hook(offset = 0xcd9880)]
+    /// #[skyline::hook(offset = 0xcd98a0)]
     /// unsafe extern "C" fn marth_lucina_init(vtable: u64, fighter: &mut Fighter) {
     ///     original!()(vtable, fighter);
     ///     if (*fighter).battle_object.kind == *FIGHTER_KIND_LUCINA as u32 {

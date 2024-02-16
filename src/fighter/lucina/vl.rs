@@ -8,7 +8,7 @@ pub mod param_private {
     pub const sp_super_shadow : f32 = 20.0;
     pub const sp_effect_timer : i32 = 300;
     pub const sp_effect_timer_shadow : i32 = 600;
-    pub const sp_gain_penalty : f32 = 360.0;
+    pub const sp_gain_penalty : i32 = 180;
     pub const awakening_activation_damage : f32 = 100.0;
     pub const awakening_damage_mul : f32 = 0.8;
     pub const awakening_sp_max : f32 = 150.0;

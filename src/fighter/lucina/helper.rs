@@ -17,7 +17,7 @@ pub unsafe extern "C" fn add_sp(module_accessor: *mut BattleObjectModuleAccessor
             if !shadow_id(module_accessor) {
                 amount *= 0.75;
             }
-            if VarModule::get_float(module_accessor, yu::instance::float::SP_GAIN_PENALTY) > 0.0 {
+            if VarModule::get_int(module_accessor, yu::instance::int::SP_GAIN_PENALTY) > 0 {
                 amount *= 0.1;
             }
             FGCModule::update_meter(module_accessor, amount, meter_max, meter_const);
@@ -69,9 +69,9 @@ pub unsafe extern "C" fn spent_meter(module_accessor: *mut BattleObjectModuleAcc
         }
     }
     if spent {
-        VarModule::set_float(
+        VarModule::set_int(
             module_accessor,
-            yu::instance::float::SP_GAIN_PENALTY,
+            yu::instance::int::SP_GAIN_PENALTY,
             vl::param_private::sp_gain_penalty
         );
     }
@@ -110,9 +110,9 @@ pub unsafe extern "C" fn spent_meter_super(module_accessor: *mut BattleObjectMod
         }
     }
     if spent {
-        VarModule::set_float(
+        VarModule::set_int(
             module_accessor,
-            yu::instance::float::SP_GAIN_PENALTY,
+            yu::instance::int::SP_GAIN_PENALTY,
             vl::param_private::sp_gain_penalty
         );
     }
@@ -232,11 +232,13 @@ pub unsafe extern "C" fn handle_slow(
     if VarModule::is_flag(module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
         slow_mul = vl::param_special_lw::onemore_slowdown_mul;
         frames = vl::param_special_lw::onemore_slowdown_frame;
-        SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     else {
         slow_mul = vl::param_special_lw::onemore_slowdown_mul_on_hit;
         frames = vl::param_special_lw::onemore_slowdown_frame_on_hit;
+    }
+    let slow_frame = SlowModule::frame(defender_boma, 0) as i32;
+    if slow_frame <= frames {
         SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

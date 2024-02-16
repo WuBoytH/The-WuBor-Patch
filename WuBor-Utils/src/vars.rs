@@ -510,12 +510,12 @@ pub mod yu { // lucina
             pub const SP_FLASH_TIMER : i32 = 0x0102;
             pub const SP_GLOW_TIMER : i32 = 0x0103;
             pub const SHADOW_EFF_ID : i32 = 0x0104;
+            pub const SP_GAIN_PENALTY : i32 = 0x0105;
         }
         pub mod float {
             pub const SP_GAUGE : i32 = 0x0100;
             pub const SPENT_SP : i32 = 0x0101;
             pub const SP_GAUGE_MAX : i32 = 0x0102;
-            pub const SP_GAIN_PENALTY : i32 = 0x0103;
         }
     }
     pub mod status {

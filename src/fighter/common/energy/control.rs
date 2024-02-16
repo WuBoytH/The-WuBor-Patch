@@ -115,7 +115,7 @@ pub struct Vec4 {
 
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, module_accessor: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
-        #[skyline::from_offset(0x47b4d0)]        
+        #[skyline::from_offset(0x47b4f0)]        
         extern "C" fn adjust_speed_for_ground_normal_internal(speed: Vec2, module_accessor: &mut BattleObjectModuleAccessor) -> Vec2;
 
         unsafe {
@@ -126,7 +126,7 @@ impl KineticEnergy {
 
     pub fn process(&mut self, module_accessor: &mut BattleObjectModuleAccessor) {
         unsafe {
-            #[skyline::from_offset(0x47bf70)]
+            #[skyline::from_offset(0x47bf90)]
             extern "C" fn process_energy(energy: &mut KineticEnergy, module_accessor: &mut BattleObjectModuleAccessor);
 
             process_energy(self, module_accessor)
@@ -289,7 +289,7 @@ impl DerefMut for FighterKineticEnergyControl {
     }
 }
 
-#[skyline::hook(offset = 0x6d3610)]
+#[skyline::hook(offset = 0x6d3630)]
 unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
@@ -549,7 +549,7 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
     energy.speed_brake = backup_brake;
 }
 
-#[skyline::hook(offset = 0x6d4040)]
+#[skyline::hook(offset = 0x6d4060)]
 unsafe extern "C" fn initialize(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     use EnergyControllerResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
@@ -752,7 +752,7 @@ unsafe extern "C" fn initialize(energy: &mut FighterKineticEnergyControl, module
     }
 }
 
-#[skyline::hook(offset = 0x6d4ba0)]
+#[skyline::hook(offset = 0x6d4bc0)]
 unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyControllerResetType, initial_speed: &Vector3f, _unk: u64, module_accessor: &mut BattleObjectModuleAccessor) {
     energy.clear_energy();
 

@@ -5,7 +5,7 @@ use {
     custom_var::*
 };
 
-#[skyline::hook(offset = 0x3af2e0)]
+#[skyline::hook(offset = 0x3af300)]
 pub unsafe fn battleobjectmoduleaccessor__initialize_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: *const u64) {
     original!()(module_accessor, param_1);
     // println!("[CustomVarManager] Initialize");
@@ -19,7 +19,7 @@ pub unsafe fn battleobjectmoduleaccessor__initialize_modules(module_accessor: *m
     // println!("[CustomVarManager] VarModule Count after adding: {}", CustomVarManager::count());
 }
 
-#[skyline::hook(offset = 0x3af9f0)]
+#[skyline::hook(offset = 0x3afa10)]
 pub unsafe fn battleobjectmoduleaccessor__start_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32) {
     original!()(module_accessor, param_1);
     // let object_id = (*module_accessor).battle_object_id;
@@ -28,7 +28,7 @@ pub unsafe fn battleobjectmoduleaccessor__start_modules(module_accessor: *mut Ba
     VarModule::start(module_accessor);
 }
 
-#[skyline::hook(offset = 0x3afde0)]
+#[skyline::hook(offset = 0x3afe00)]
 pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32) {
     // println!("[CustomVarManager] End");
     // let object_id = (*module_accessor).battle_object_id;
@@ -37,7 +37,7 @@ pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut Batt
     original!()(module_accessor, param_1)
 }
 
-#[skyline::hook(offset = 0x3af700)]
+#[skyline::hook(offset = 0x3af720)]
 pub unsafe fn battleobjectmoduleaccessor__finalize_modules(module_accessor: *mut BattleObjectModuleAccessor) {
     // let object_id = (*module_accessor).battle_object_id;
     // println!("[CustomVarManager] Finalize");

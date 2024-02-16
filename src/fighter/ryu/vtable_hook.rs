@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use wubor_utils::app::*;
 
-#[skyline::hook(offset = 0x10d4550)]
+#[skyline::hook(offset = 0x10d4570)]
 unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -17,16 +17,16 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     FGCModule::set_command_input_button(module_accessor, 11, 2);
 }
 
-#[skyline::from_offset(0x646fc0)]
+#[skyline::from_offset(0x646fe0)]
 extern "C" fn what_is_this(fighter: &mut Fighter) -> *const u64;
 
-#[skyline::from_offset(0x6da330)]
+#[skyline::from_offset(0x6da350)]
 extern "C" fn what_is_this_2(param_1: i32, param_2: i32, param_3: u64, module_accessor: *mut BattleObjectModuleAccessor, huh: *const u64);
 
-#[skyline::from_offset(0x69ae20)]
+#[skyline::from_offset(0x69ae40)]
 extern "C" fn ryu_ken_transition_handler(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32, param_2: u32);
 
-#[skyline::hook(offset = 0x10d4dd0)]
+#[skyline::hook(offset = 0x10d4df0)]
 unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -78,7 +78,7 @@ unsafe extern "C" fn ryu_ken_handle_special_strength(object: &mut BattleObject, 
     }
 }
 
-#[skyline::hook(offset = 0x10d5a60)]
+#[skyline::hook(offset = 0x10d5a80)]
 unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_motion: u64, light_motion: u64) {
     let module_accessor = fighter.battle_object.module_accessor;
     let mot = MotionModule::motion_kind(module_accessor);
@@ -143,7 +143,7 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
     }
 }
 
-#[skyline::hook(offset = 0x10d6bf0)]
+#[skyline::hook(offset = 0x10d6c10)]
 unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fighter, log: u64) {
     if *(log as *const u8).add(0xc) == 2 {
         return;
@@ -157,7 +157,7 @@ unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fig
     VarModule::off_flag(module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
 }
 
-#[skyline::hook(offset = 0x10d6c80)]
+#[skyline::hook(offset = 0x10d6ca0)]
 unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -280,7 +280,7 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     original!()(vtable, fighter, log, some_float);
 }
 
-#[skyline::hook(offset = 0x10d7400)]
+#[skyline::hook(offset = 0x10d7420)]
 unsafe extern "C" fn ryu_ken_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     if (*object).kind == 0x3c {
@@ -298,7 +298,7 @@ unsafe extern "C" fn ryu_ken_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u
     original!()(vtable, fighter, log);
 }
 
-#[skyline::hook(offset = 0x10d7b60)]
+#[skyline::hook(offset = 0x10d7b80)]
 unsafe extern "C" fn ryu_ken_on_search(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     if (*object).kind != 0x3c {
@@ -318,7 +318,7 @@ unsafe extern "C" fn ryu_ken_on_search(vtable: u64, fighter: &mut Fighter, log: 
     }
 }
 
-#[skyline::hook(offset = 0x10d7740)]
+#[skyline::hook(offset = 0x10d7760)]
 unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_damage: u64) {
     let object = &mut fighter.battle_object;
     if (*object).kind == 0x3d {

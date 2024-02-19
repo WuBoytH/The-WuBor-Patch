@@ -58,7 +58,7 @@ unsafe fn non_hdr_update_room_hook(_: &skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x188702c, inline)]
+#[skyline::hook(offset = 0x1887afc, inline)]
 unsafe fn non_hdr_set_room_id(ctx: &skyline::hooks::InlineCtx) {
     let panel = *((*((*ctx.registers[0].x.as_ref() + 8) as *const u64) + 0x10) as *const u64);
     CURRENT_PANE_HANDLE = panel as usize;

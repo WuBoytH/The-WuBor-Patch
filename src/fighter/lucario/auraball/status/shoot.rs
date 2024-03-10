@@ -1,9 +1,6 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if VarModule::is_flag(weapon.module_accessor, weapon::instance::flag::FROM_POCKET) {
-        MiscModule::get_vars_from_pocket(weapon.module_accessor);
-    }
     if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         let owner_object = MiscModule::get_battle_object_from_id(owner_id);
@@ -60,6 +57,7 @@ unsafe extern "C" fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -
         lucario_auraball_shoot_substatus(weapon, false.into());
     }
     weapon.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucario_auraball_shoot_substatus as *const () as _));
+
     weapon.fastshift(L2CValue::Ptr(lucario_auraball_shoot_main_fastshift as *const () as _))
 }
 
@@ -199,7 +197,24 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
     0.into()
 }
 
+unsafe extern "C" fn lucario_auraball_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    sv_kinetic_energy!(
+        set_stable_speed,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        -1.0,
+        -1.0
+    );
+    sv_kinetic_energy!(
+        enable,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL
+    );
+    0.into()
+}
+
 pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_pre);
     agent.status(smashline::Main, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_main);
+    agent.status(smashline::Exec, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_exec);
 }

@@ -49,6 +49,11 @@ unsafe extern "C" fn reflet_special_hi_main_loop(fighter: &mut L2CFighterCommon)
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor)
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

@@ -95,6 +95,11 @@ unsafe extern "C" fn brave_special_hi_jump_main_loop(fighter: &mut L2CFighterCom
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
     let hold_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_HI_WORK_INT_HOLD_FRAME);
     let hold_frame_m = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("hold_frame_m"));
     let hold_frame_l = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("hold_frame_l"));

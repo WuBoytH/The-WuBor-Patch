@@ -2,7 +2,8 @@
 
 use {
     smash::app::*,
-    custom_var::*
+    custom_var::*,
+    wubor_utils::wua_bind::*
 };
 
 #[skyline::hook(offset = 0x3af300)]
@@ -26,6 +27,12 @@ pub unsafe fn battleobjectmoduleaccessor__start_modules(module_accessor: *mut Ba
     // println!("[CustomVarManager] Start");
     // println!("[CustomVarManager] Starting VarModule for {:#x}", object_id);
     VarModule::start(module_accessor);
+}
+
+#[skyline::hook(offset = 0x33a0a20)]
+pub unsafe fn weapon_init_hook(weapon: &mut smash::app::Weapon, param_2: u64) {
+    original!()(weapon, param_2);
+    MiscModule::get_vars_from_pocket(weapon.battle_object.module_accessor);
 }
 
 #[skyline::hook(offset = 0x3afe00)]
@@ -52,6 +59,7 @@ pub fn install() {
     skyline::install_hooks!(
         battleobjectmoduleaccessor__initialize_modules,
         battleobjectmoduleaccessor__start_modules,
+        weapon_init_hook,
         battleobjectmoduleaccessor__end_modules,
         battleobjectmoduleaccessor__finalize_modules
     );

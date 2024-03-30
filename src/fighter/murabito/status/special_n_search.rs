@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::helper::*;
 
 unsafe extern "C" fn murabito_special_n_pocket_end(fighter: &mut L2CFighterCommon) -> L2CValue {

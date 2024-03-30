@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);

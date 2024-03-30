@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::frame::common_fighter_frame,
     super::agent_init::*
 };

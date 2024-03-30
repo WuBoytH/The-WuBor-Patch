@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ness_special_hi_reflect_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_DamageFlyReflect_effect(false.into());

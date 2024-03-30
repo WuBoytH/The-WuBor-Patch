@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn rockman_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);

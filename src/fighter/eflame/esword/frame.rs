@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY

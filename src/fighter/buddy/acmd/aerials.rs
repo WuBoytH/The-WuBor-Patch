@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn buddy_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);

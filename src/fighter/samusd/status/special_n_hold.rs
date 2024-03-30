@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn samusd_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {

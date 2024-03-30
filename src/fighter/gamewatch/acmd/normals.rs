@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn gamewatch_attack11(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);

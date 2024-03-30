@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn demon_attacks4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use wubor_utils::controls::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_CliffJump1)]

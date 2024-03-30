@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn toonlink_boomerang_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     WorkModule::off_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_INFLICTION);

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn yoshi_guard_exec_helper(fighter: &mut L2CFighterCommon) {
     let shield_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);

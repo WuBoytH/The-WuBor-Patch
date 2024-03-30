@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn purin_special_n_hit_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(

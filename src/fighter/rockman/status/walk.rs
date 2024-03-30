@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::rockbuster::helper::*;
 
 unsafe extern "C" fn rockman_walk_exec(fighter: &mut L2CFighterCommon) -> L2CValue {

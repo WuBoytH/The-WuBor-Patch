@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook( offset = 0xf10680 )]
 pub unsafe fn is_mining_material_table_normal() -> bool {

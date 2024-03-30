@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn fox_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);

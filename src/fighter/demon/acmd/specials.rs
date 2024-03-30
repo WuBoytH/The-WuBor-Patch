@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn demon_specialhi(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DEMON_STATUS_SPECIAL_HI_FLAG_AIR) {

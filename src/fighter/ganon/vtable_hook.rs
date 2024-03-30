@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(offset = 0xaa6800)]
 pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fighter) {

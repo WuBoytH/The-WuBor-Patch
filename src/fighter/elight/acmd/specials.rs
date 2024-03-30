@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn elight_specialn(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
 unsafe extern "C" fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {

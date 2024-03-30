@@ -1,6 +1,6 @@
 use smash::app::lua_bind;
 
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn sonic_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {

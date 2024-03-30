@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn marth_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attack_type;

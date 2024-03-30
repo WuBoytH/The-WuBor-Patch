@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn eflame_attackairn(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);

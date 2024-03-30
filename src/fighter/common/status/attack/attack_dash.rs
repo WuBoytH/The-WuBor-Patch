@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackDash)]
 unsafe extern "C" fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {

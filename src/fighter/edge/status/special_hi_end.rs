@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 unsafe extern "C" fn edge_special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {

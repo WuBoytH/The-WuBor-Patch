@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_RunBrake)]
 unsafe extern "C" fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {

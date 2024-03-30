@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn rockman_check_special_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE)

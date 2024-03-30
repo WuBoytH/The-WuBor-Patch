@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use wubor_utils::app::*;
 
 #[skyline::hook(offset = 0xb36ee0)]

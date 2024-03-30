@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::ganon::helper::*;
 
 unsafe extern "C" fn kirby_ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {

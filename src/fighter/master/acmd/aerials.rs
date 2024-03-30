@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW) {

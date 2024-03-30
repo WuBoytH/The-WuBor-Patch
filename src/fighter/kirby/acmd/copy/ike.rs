@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 use crate::fighter::ike::vl;
 
 unsafe extern "C" fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {

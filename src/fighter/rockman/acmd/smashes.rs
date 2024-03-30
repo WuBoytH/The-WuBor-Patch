@@ -1,4 +1,4 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn rockman_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);

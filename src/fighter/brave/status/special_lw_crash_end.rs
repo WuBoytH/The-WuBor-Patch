@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

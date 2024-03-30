@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 // use smash_rs::app::work_ids;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_initStatus)]

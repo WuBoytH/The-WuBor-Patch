@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn fox_attack_s4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[PREV_STATUS_KIND].get_i32();

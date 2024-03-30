@@ -51,9 +51,9 @@ unsafe extern "C" fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFig
     let mot = param_1.get_u64();
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(mot));
     let mut rate = end_frame / jump_squat_frame;
-    if rate < 1.0 {
+    // if rate < 1.0 {
         rate += 0.001;
-    }
+    // }
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new_raw(mot),
@@ -189,7 +189,7 @@ unsafe extern "C" fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommo
             let jump_neutral_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y"));
             if stick_y < jump_neutral_y {
                 if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-                && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
                     return;
                 }

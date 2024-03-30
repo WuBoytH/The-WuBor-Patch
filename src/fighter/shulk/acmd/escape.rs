@@ -12,8 +12,6 @@ unsafe extern "C" fn shulk_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-   .acmd_scripts!(
-        shulk_escapeairslide
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_escapeairslide", shulk_escapeairslide);
 }

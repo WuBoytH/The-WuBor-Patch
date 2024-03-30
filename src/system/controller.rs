@@ -306,7 +306,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
-    skyline::patching::Patch::in_text(0x3666af4).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3666adc).data(0xAA0903EAu32);
     skyline::patching::Patch::in_text(0x3666af0).data(0xAA0803EAu32);
     skyline::install_hooks!(
         map_controls_hook,

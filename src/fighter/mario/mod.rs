@@ -12,4 +12,7 @@ pub fn install() {
     status::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4630, smash::hash40("trans"));
+    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4638, smash::hash40("trans"));
 }

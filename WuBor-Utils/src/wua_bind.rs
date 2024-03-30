@@ -623,6 +623,9 @@ pub mod MiscModule {
 
     pub unsafe fn get_vars_from_pocket(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
         // println!("Weapon ID: {:#x}", (*module_accessor).battle_object_id);
+        if (*module_accessor).battle_object_id >> 0x1c != *BATTLE_OBJECT_CATEGORY_WEAPON as u32 {
+            return false;
+        }
         let owner_object_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         // println!("Owner ID: {:#x}", owner_object_id);
         let owner_cat = sv_battle_object::category(owner_object_id);
@@ -650,6 +653,9 @@ pub mod MiscModule {
     }
 
     pub unsafe fn get_vars_from_pocket_by_object_id(object_id: u32, owner_object_id: u32) -> bool {
+        if object_id >> 0x1c != *BATTLE_OBJECT_CATEGORY_WEAPON as u32 {
+            return false;
+        }
         // println!("Owner ID: {:#x}", owner_object_id);
         let owner_cat = sv_battle_object::category(owner_object_id);
         // println!("Owner Category: {:#x}", owner_cat);

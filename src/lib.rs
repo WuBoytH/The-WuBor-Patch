@@ -20,6 +20,9 @@ extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
 
+#[no_mangle]
+pub extern "C" fn is_wubor_patch() {}
+
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };

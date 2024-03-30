@@ -13,7 +13,7 @@ use {
     super::vl
 };
 
-#[skyline::hook(offset = 0xc5ba10)]
+#[skyline::hook(offset = 0xc5c010)]
 pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();

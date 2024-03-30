@@ -44,6 +44,12 @@ unsafe extern "C" fn simon_whip_attackdash(agent: &mut L2CAgentBase) {
             );
         }
     }
+    frame(agent.lua_state_agent, 13.0);
+    macros::FT_MOTION_RATE(agent, 16.0 / 24.0);
+    frame(agent.lua_state_agent, 37.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 39.0);
+    macros::FT_MOTION_RATE(agent, 34.0 / 44.0);
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();

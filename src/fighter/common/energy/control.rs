@@ -411,7 +411,7 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
         },
         Free => {
             energy.accel.y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
-            energy.speed_max.y *= stick.y;
+            energy.speed_max.y *= stick.y.abs();
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         ItemLift => {

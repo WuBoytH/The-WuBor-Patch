@@ -190,10 +190,10 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x6bd6c4).nop();
 
     // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17527fc).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x1752800).nop();
-    skyline::patching::Patch::in_text(0x1752804).nop();
-    skyline::patching::Patch::in_text(0x1752808).nop();
+    skyline::patching::Patch::in_text(0x17532ac).data(0x2A1F03FA);
+    skyline::patching::Patch::in_text(0x17532b0).nop();
+    skyline::patching::Patch::in_text(0x17532b4).nop();
+    skyline::patching::Patch::in_text(0x17532b8).nop();
 
     // Custom buffer-state handling
     // Always uses the hitlag handling that cat4 uses

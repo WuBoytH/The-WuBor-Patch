@@ -182,7 +182,7 @@ unsafe extern "C" fn effect_specialairhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {

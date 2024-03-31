@@ -7,6 +7,7 @@ mod gaogaen;
 mod ike;
 mod jack;
 mod koopa;
+mod lucario;
 
 mod weapon;
 
@@ -20,6 +21,7 @@ pub fn install() {
     ike::install();
     jack::install();
     koopa::install();
+    lucario::install();
 
     weapon::install();
 }

@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::{Hash40, Vector3f},
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::vl
-};
+use crate::imports::*;
 
 pub unsafe extern "C" fn lucario_drain_aura(fighter: &mut L2CAgentBase, drain_all: bool) -> bool {
     let aura_charge = VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL);
@@ -29,7 +19,8 @@ pub unsafe extern "C" fn lucario_drain_aura(fighter: &mut L2CAgentBase, drain_al
 }
 
 pub unsafe extern "C" fn lucario_gain_aura(fighter: &mut L2CAgentBase) -> bool {
-    if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
+    let charge_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_auracharge"), hash40("aura_charge_max"));
+    if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) < charge_max {
         VarModule::inc_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL);
         FighterUtil::flash_eye_info(fighter.module_accessor);
         true

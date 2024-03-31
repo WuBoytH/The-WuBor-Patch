@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pichu_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::FT_ADD_DAMAGE(agent, 0.2);
@@ -28,7 +28,7 @@ unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catchattack", pichu_catchattack);
+    agent.acmd("game_catchattack", game_catchattack);
     agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("expression_catchattack", expression_catchattack);
 }

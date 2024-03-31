@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pit_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -15,7 +15,7 @@ unsafe extern "C" fn pit_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pit_specialairsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -36,11 +36,11 @@ unsafe extern "C" fn pit_specialairsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.83);
 }
 
-unsafe extern "C" fn pit_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 6.0);
 }
 
-unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -57,13 +57,13 @@ unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsend", pit_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialairsend", pit_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend);
 
-    agent.acmd("game_specialhistart", pit_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", pit_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialhi", pit_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 }

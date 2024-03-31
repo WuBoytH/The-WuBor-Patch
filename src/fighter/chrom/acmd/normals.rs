@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn chrom_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 25, 0, 30, 2.0, 0.0, 9.4, 6.2, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -57,7 +57,7 @@ unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 5.0);
@@ -74,7 +74,7 @@ unsafe extern "C" fn chrom_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 70, 40, 0, 57, 2.7, 0.0, 2.7, 16.7, Some(0.0), Some(4.3), Some(9.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -88,12 +88,12 @@ unsafe extern "C" fn chrom_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", chrom_attack11);
+    agent.acmd("game_attack11", game_attack11);
     agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("sound_attack11", sound_attack11);
     agent.acmd("expression_attack11", expression_attack11);
 
-    agent.acmd("game_attacks3", chrom_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacklw3", chrom_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn elight_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
             ArticleModule::add_motion_partial(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
@@ -161,7 +161,7 @@ unsafe extern "C" fn elight_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn elight_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
             ArticleModule::add_motion_partial(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
@@ -328,7 +328,7 @@ unsafe extern "C" fn elight_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_specialn2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
             ArticleModule::add_motion_partial(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
@@ -534,7 +534,7 @@ unsafe extern "C" fn elight_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_specialairn2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn2(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
             ArticleModule::add_motion_partial(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
@@ -732,7 +732,7 @@ unsafe extern "C" fn elight_specialairn2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_speciallwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -869,7 +869,7 @@ unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_specialairlwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -971,20 +971,20 @@ unsafe extern "C" fn expression_specialairlwattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", elight_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", elight_specialairn);
+    agent.acmd("game_specialairn", game_specialairn);
 
-    agent.acmd("game_specialn2", elight_specialn2);
+    agent.acmd("game_specialn2", game_specialn2);
 
-    agent.acmd("game_specialairn2", elight_specialairn2);
+    agent.acmd("game_specialairn2", game_specialairn2);
 
-    agent.acmd("game_speciallwattack", elight_speciallwattack);
+    agent.acmd("game_speciallwattack", game_speciallwattack);
     agent.acmd("effect_speciallwattack", effect_speciallwattack);
     agent.acmd("sound_speciallwattack", sound_speciallwattack);
     agent.acmd("expression_speciallwattack", expression_speciallwattack);
 
-    agent.acmd("game_specialairlwattack", elight_specialairlwattack);
+    agent.acmd("game_specialairlwattack", game_specialairlwattack);
     agent.acmd("effect_specialairlwattack", effect_specialairlwattack);
     agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
     agent.acmd("expression_specialairlwattack", expression_specialairlwattack);

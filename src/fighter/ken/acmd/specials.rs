@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn ken_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_DECIDE_STRENGTH);
@@ -47,7 +47,7 @@ unsafe extern "C" fn ken_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 7.0 / 12.0);
     frame(agent.lua_state_agent, 16.0);
@@ -134,7 +134,7 @@ unsafe extern "C" fn expression_specialn2start(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 75, 50, 0, 40, 2.8, 0.0, 8.0, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
@@ -186,7 +186,7 @@ unsafe extern "C" fn expression_specialn2lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("footr"), 10.0, 361, 60, 0, 60, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
@@ -245,7 +245,7 @@ unsafe extern "C" fn expression_specialn2hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 6.0 / 4.0);
     frame(agent.lua_state_agent, 6.0);
@@ -308,7 +308,7 @@ unsafe extern "C" fn expression_specialn2s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairn2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if VarModule::is_flag(agent.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
         macros::FT_MOTION_RATE(agent, 8.0 / 14.0);
@@ -481,7 +481,7 @@ unsafe extern "C" fn sound_specialairn2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 1.0, 3.5, 8.5, 8.5);
@@ -584,7 +584,7 @@ unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -636,7 +636,7 @@ unsafe extern "C" fn expression_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
@@ -685,7 +685,7 @@ unsafe extern "C" fn expression_specialairsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairs2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.6);
     if macros::is_excute(agent) {
@@ -739,7 +739,7 @@ unsafe extern "C" fn expression_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairs2end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 50, 30, 50, 40, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
     }
@@ -802,7 +802,7 @@ unsafe extern "C" fn expression_specialairs2end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -982,7 +982,7 @@ unsafe extern "C" fn expression_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -1160,7 +1160,7 @@ unsafe extern "C" fn expression_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -1353,7 +1353,7 @@ unsafe extern "C" fn expression_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -1543,7 +1543,7 @@ unsafe extern "C" fn expression_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_ENABLE_ACTION);
@@ -1606,7 +1606,7 @@ unsafe extern "C" fn expression_specialairlwstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
@@ -1654,7 +1654,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallwstepf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstepf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
     }
@@ -1685,124 +1685,124 @@ unsafe extern "C" fn expression_speciallwstepf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", ken_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", ken_specialn);
+    agent.acmd("game_specialairn", game_specialn);
 
-    agent.acmd("game_specialn2start", ken_specialn2start);
+    agent.acmd("game_specialn2start", game_specialn2start);
     agent.acmd("effect_specialn2start", effect_specialn2start);
     agent.acmd("sound_specialn2start", sound_specialn2start);
     agent.acmd("expression_specialn2start", expression_specialn2start);
 
-    agent.acmd("game_specialn2lw", ken_specialn2lw);
+    agent.acmd("game_specialn2lw", game_specialn2lw);
     agent.acmd("effect_specialn2lw", effect_specialn2lw);
     agent.acmd("sound_specialn2lw", sound_specialn2lw);
     agent.acmd("expression_specialn2lw", expression_specialn2lw);
 
-    agent.acmd("game_specialn2hi", ken_specialn2hi);
+    agent.acmd("game_specialn2hi", game_specialn2hi);
     agent.acmd("effect_specialn2hi", effect_specialn2hi);
     agent.acmd("sound_specialn2hi", sound_specialn2hi);
     agent.acmd("expression_specialn2hi", expression_specialn2hi);
 
-    agent.acmd("game_specialn2s", ken_specialn2s);
+    agent.acmd("game_specialn2s", game_specialn2s);
     agent.acmd("effect_specialn2s", effect_specialn2s);
     agent.acmd("sound_specialn2s", sound_specialn2s);
     agent.acmd("expression_specialn2s", expression_specialn2s);
 
-    agent.acmd("game_specialairn2", ken_specialairn2);
+    agent.acmd("game_specialairn2", game_specialairn2);
     agent.acmd("effect_specialairn2", effect_specialairn2);
     agent.acmd("sound_specialairn2", sound_specialairn2);
 
-    agent.acmd("game_specialsstart", ken_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
     agent.acmd("effect_specialsstart", effect_specialsstart);
     agent.acmd("sound_specialsstart", sound_specialsstart);
 
-    agent.acmd("game_specialairsstart", ken_specialsstart);
+    agent.acmd("game_specialairsstart", game_specialsstart);
     agent.acmd("effect_specialairsstart", effect_specialsstart);
     agent.acmd("sound_specialairsstart", sound_specialairsstart);
 
-    agent.acmd("game_specialsend", ken_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
     agent.acmd("expression_specialsend", expression_specialsend);
 
-    agent.acmd("game_specialairsend", ken_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend);
     agent.acmd("expression_specialairsend", expression_specialairsend);
 
-    agent.acmd("game_specialairs2", ken_specialairs2);
+    agent.acmd("game_specialairs2", game_specialairs2);
     agent.acmd("effect_specialairs2", effect_specialairs2);
     agent.acmd("sound_specialairs2", sound_specialairs2);
     agent.acmd("expression_specialairs2", expression_specialairs2);
 
-    agent.acmd("game_specialairs2end", ken_specialairs2end);
+    agent.acmd("game_specialairs2end", game_specialairs2end);
     agent.acmd("effect_specialairs2end", effect_specialairs2end);
     agent.acmd("sound_specialairs2end", sound_specialairs2end);
     agent.acmd("expression_specialairs2end", expression_specialairs2end);
 
-    agent.acmd("game_specialhi", ken_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("effect_specialhi", effect_specialhi);
     agent.acmd("sound_specialhi", sound_specialhi);
     agent.acmd("expression_specialhi", expression_specialhi);
 
-    agent.acmd("game_specialhicommand", ken_specialhi);
+    agent.acmd("game_specialhicommand", game_specialhi);
     agent.acmd("effect_specialhicommand", effect_specialhicommand);
     agent.acmd("sound_specialhicommand", sound_specialhicommand);
     agent.acmd("expression_specialhicommand", expression_specialhi);
 
-    agent.acmd("game_specialairhi", ken_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
     agent.acmd("effect_specialairhi", effect_specialairhi);
     agent.acmd("sound_specialairhi", sound_specialairhi);
     agent.acmd("expression_specialairhi", expression_specialairhi);
 
-    agent.acmd("game_specialairhicommand", ken_specialairhi);
+    agent.acmd("game_specialairhicommand", game_specialairhi);
     agent.acmd("effect_specialairhicommand", effect_specialairhicommand);
     agent.acmd("sound_specialairhicommand", sound_specialairhicommand);
     agent.acmd("expression_specialairhicommand", expression_specialairhi);
 
-    agent.acmd("game_specialhi2", ken_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2);
     agent.acmd("effect_specialhi2", effect_specialhi2);
     agent.acmd("sound_specialhi2", sound_specialhi2);
     agent.acmd("expression_specialhi2", expression_specialhi2);
 
-    agent.acmd("game_specialhi2command", ken_specialhi2);
+    agent.acmd("game_specialhi2command", game_specialhi2);
     agent.acmd("effect_specialhi2command", effect_specialhi2command);
     agent.acmd("sound_specialhi2command", sound_specialhi2command);
     agent.acmd("expression_specialhi2command", expression_specialhi2);
 
-    agent.acmd("game_specialairhi2", ken_specialairhi2);
+    agent.acmd("game_specialairhi2", game_specialairhi2);
     agent.acmd("effect_specialairhi2", effect_specialairhi2);
     agent.acmd("sound_specialairhi2", sound_specialairhi2);
     agent.acmd("expression_specialairhi2", expression_specialairhi2);
 
-    agent.acmd("game_specialairhi2command", ken_specialairhi2);
+    agent.acmd("game_specialairhi2command", game_specialairhi2);
     agent.acmd("effect_specialairhi2command", effect_specialairhi2command);
     agent.acmd("sound_specialairhi2command", sound_specialairhi2command);
     agent.acmd("expression_specialairhi2command", expression_specialairhi2);
 
-    agent.acmd("game_speciallwstart", ken_speciallwstart);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
     agent.acmd("effect_speciallwstart", effect_speciallwstart);
     agent.acmd("sound_speciallwstart", sound_speciallwstart);
     agent.acmd("expression_speciallwstart", expression_speciallwstart);
 
-    agent.acmd("game_specialairlwstart", ken_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_speciallwstart);
     agent.acmd("effect_specialairlwstart", effect_speciallwstart);
     agent.acmd("sound_specialairlwstart", sound_speciallwstart);
     agent.acmd("expression_specialairlwstart", expression_specialairlwstart);
 
-    agent.acmd("game_speciallw", ken_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", expression_speciallw);
 
-    agent.acmd("game_specialairlw", ken_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_specialairlw", effect_speciallw);
     agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", expression_speciallw);
 
-    agent.acmd("game_speciallwstepf", ken_speciallwstepf);
+    agent.acmd("game_speciallwstepf", game_speciallwstepf);
     agent.acmd("effect_speciallwstepf", effect_speciallwstepf);
     agent.acmd("sound_speciallwstepf", sound_speciallwstepf);
     agent.acmd("expression_speciallwstepf", expression_speciallwstepf);
 
-    agent.acmd("game_specialairlwstepf", ken_speciallwstepf);
+    agent.acmd("game_specialairlwstepf", game_speciallwstepf);
     agent.acmd("effect_specialairlwstepf", effect_speciallwstepf);
     agent.acmd("sound_specialairlwstepf", sound_speciallwstepf);
     agent.acmd("expression_specialairlwstepf", expression_speciallwstepf);

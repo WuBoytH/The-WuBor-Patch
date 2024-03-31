@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn mewtwo_escapeair(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MEWTWO_GENERATE_ARTICLE_ESCAPEAIRDUMMY, false, -1);
@@ -19,7 +19,7 @@ unsafe extern "C" fn effect_escapeair(_agent: &mut L2CAgentBase) {
     // }
 }
 
-unsafe extern "C" fn mewtwo_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -32,8 +32,8 @@ unsafe extern "C" fn mewtwo_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_escapeair", mewtwo_escapeair);
+    agent.acmd("game_escapeair", game_escapeair);
     agent.acmd("effect_escapeair", effect_escapeair);
 
-    agent.acmd("game_escapeairslide", mewtwo_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn dedede_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.5, 361, 100, 30, 0, 5.3, 0.0, 10.0, 12.3, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
@@ -35,7 +35,7 @@ unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catchattack", dedede_catchattack);
+    agent.acmd("game_catchattack", game_catchattack);
     agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("expression_catchattack", expression_catchattack);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn brave_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -19,7 +19,7 @@ unsafe extern "C" fn brave_specialhi1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -38,7 +38,7 @@ unsafe extern "C" fn brave_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_specialhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -65,7 +65,7 @@ unsafe extern "C" fn sound_speciallw9(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_speciallw9end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw9end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::FT_ADD_DAMAGE(agent, 999.0);
@@ -101,7 +101,7 @@ unsafe extern "C" fn expression_speciallw9end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_speciallw17(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw17(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 7.0);
@@ -161,7 +161,7 @@ unsafe extern "C" fn brave_speciallw17(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn brave_speciallw18(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw18(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 7.0);
@@ -235,7 +235,7 @@ unsafe extern "C" fn brave_speciallw18(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn brave_speciallw19(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw19(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -268,7 +268,7 @@ unsafe extern "C" fn brave_speciallw19(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_speciallw20(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw20(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -308,45 +308,45 @@ unsafe extern "C" fn brave_speciallw20(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi1", brave_specialhi1);
+    agent.acmd("game_specialhi1", game_specialhi1);
 
-    agent.acmd("game_specialairhi1", brave_specialhi1);
+    agent.acmd("game_specialairhi1", game_specialhi1);
 
-    agent.acmd("game_specialhi2", brave_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2);
 
-    agent.acmd("game_specialairhi2", brave_specialhi2);
+    agent.acmd("game_specialairhi2", game_specialhi2);
 
-    agent.acmd("game_specialhi3", brave_specialhi3);
+    agent.acmd("game_specialhi3", game_specialhi3);
 
-    agent.acmd("game_specialairhi3", brave_specialhi3);
+    agent.acmd("game_specialairhi3", game_specialhi3);
 
     agent.acmd("sound_speciallw9", sound_speciallw9);
 
     agent.acmd("sound_specialairlw9", sound_speciallw9);
 
-    agent.acmd("game_speciallw9end", brave_speciallw9end);
+    agent.acmd("game_speciallw9end", game_speciallw9end);
     agent.acmd("effect_speciallw9end", effect_speciallw9end);
     agent.acmd("sound_speciallw9end", sound_speciallw9end);
     agent.acmd("expression_speciallw9end", expression_speciallw9end);
 
-    agent.acmd("game_specialairlw9end", brave_speciallw9end);
+    agent.acmd("game_specialairlw9end", game_speciallw9end);
     agent.acmd("effect_specialairlw9end", effect_speciallw9end);
     agent.acmd("sound_specialairlw9end", sound_speciallw9end);
     agent.acmd("expression_specialairlw9end", expression_speciallw9end);
 
-    agent.acmd("game_speciallw17", brave_speciallw17);
+    agent.acmd("game_speciallw17", game_speciallw17);
 
-    agent.acmd("game_specialairlw17", brave_speciallw17);
+    agent.acmd("game_specialairlw17", game_speciallw17);
 
-    agent.acmd("game_speciallw18", brave_speciallw18);
+    agent.acmd("game_speciallw18", game_speciallw18);
 
-    agent.acmd("game_specialairlw18", brave_speciallw18);
+    agent.acmd("game_specialairlw18", game_speciallw18);
 
-    agent.acmd("game_speciallw19", brave_speciallw19);
+    agent.acmd("game_speciallw19", game_speciallw19);
 
-    agent.acmd("game_specialairlw19", brave_speciallw19);
+    agent.acmd("game_specialairlw19", game_speciallw19);
 
-    agent.acmd("game_speciallw20", brave_speciallw20);
+    agent.acmd("game_speciallw20", game_speciallw20);
 
-    agent.acmd("game_specialairlw20", brave_speciallw20);
+    agent.acmd("game_specialairlw20", game_speciallw20);
 }

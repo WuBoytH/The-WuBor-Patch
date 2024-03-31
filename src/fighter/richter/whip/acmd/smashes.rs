@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
     }
@@ -60,9 +60,9 @@ unsafe extern "C" fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", richter_whip_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 
-    agent.acmd("game_attacks4hi", richter_whip_attacks4);
+    agent.acmd("game_attacks4hi", game_attacks4);
 
-    agent.acmd("game_attacks4lw", richter_whip_attacks4);
+    agent.acmd("game_attacks4lw", game_attacks4);
 }

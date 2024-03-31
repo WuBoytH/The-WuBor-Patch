@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn shizue_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_SLINGSHOT, true, -1);
     }
@@ -17,7 +17,7 @@ unsafe extern "C" fn shizue_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_SLINGSHOT, true, -1);
     }
@@ -35,7 +35,7 @@ unsafe extern "C" fn shizue_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", shizue_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", shizue_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 }

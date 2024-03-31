@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn fox_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -18,7 +18,7 @@ unsafe extern "C" fn fox_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn fox_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -29,7 +29,7 @@ unsafe extern "C" fn fox_speciallwstart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", fox_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_speciallwstart", fox_speciallwstart);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
 }

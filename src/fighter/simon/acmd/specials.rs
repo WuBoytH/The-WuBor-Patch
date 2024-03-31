@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn simon_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, simon::status::flag::SPECIAL_N_SHOOT);
@@ -23,7 +23,7 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -58,7 +58,7 @@ unsafe extern "C" fn simon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -94,7 +94,7 @@ unsafe extern "C" fn simon_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
@@ -155,22 +155,22 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", simon_specialn);
+    agent.acmd("game_specialn", game_specialn);
     agent.acmd("expression_specialn", expression_specialn);
 
-    agent.acmd("game_specialairn", simon_specialn);
+    agent.acmd("game_specialairn", game_specialn);
     agent.acmd("expression_specialairn", expression_specialn);
 
-    agent.acmd("game_specialhi", simon_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", simon_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", simon_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", expression_speciallw);
 
-    agent.acmd("game_specialairlw", simon_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_specialairlw", effect_specialairlw);
     agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", expression_speciallw);

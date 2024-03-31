@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn simon_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
@@ -56,7 +56,7 @@ unsafe extern "C" fn simon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairfhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairfhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
@@ -112,7 +112,7 @@ unsafe extern "C" fn simon_attackairfhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairflw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairflw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
@@ -187,7 +187,7 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 8.0);
@@ -236,7 +236,7 @@ unsafe extern "C" fn simon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -346,18 +346,18 @@ unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", simon_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("sound_attackairf", sound_attackairf);
 
-    agent.acmd("game_attackairfhi", simon_attackairfhi);
+    agent.acmd("game_attackairfhi", game_attackairfhi);
     agent.acmd("sound_attackairfhi", sound_attackairf);
 
-    agent.acmd("game_attackairflw", simon_attackairflw);
+    agent.acmd("game_attackairflw", game_attackairflw);
     agent.acmd("sound_attackairflw", sound_attackairf);
 
-    agent.acmd("game_attackairhi", simon_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", simon_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
     agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", expression_attackairlw);

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn elight_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -75,11 +75,11 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairn(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairn(_agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn elight_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -142,7 +142,7 @@ unsafe extern "C" fn elight_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 6.0);
@@ -206,7 +206,7 @@ unsafe extern "C" fn elight_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -268,7 +268,7 @@ unsafe extern "C" fn elight_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -401,7 +401,7 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, attack_air::flag::ENABLE_LANDING_ATTACK) {
         if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
             if macros::is_excute(agent) {
@@ -505,25 +505,25 @@ unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", elight_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
 
-    agent.acmd("game_landingairn", elight_landingairn);
+    agent.acmd("game_landingairn", game_landingairn);
 
-    agent.acmd("game_attackairf", elight_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", elight_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", elight_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", elight_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
     agent.acmd("effect_attackairlw", effect_attackairlw);
     agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", expression_attackairlw);
 
-    agent.acmd("game_landingairlw", elight_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
     agent.acmd("effect_landingairlw", effect_landingairlw);
     agent.acmd("sound_landingairlw", sound_landingairlw);
     agent.acmd("expression_landingairlw", expression_landingairlw);

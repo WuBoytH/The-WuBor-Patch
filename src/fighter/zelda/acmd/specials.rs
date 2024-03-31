@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn zelda_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 12.0);
@@ -11,7 +11,7 @@ unsafe extern "C" fn zelda_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn zelda_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 13.0);
@@ -23,11 +23,11 @@ unsafe extern "C" fn zelda_specialsend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsstart", zelda_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
 
-    agent.acmd("game_specialairsstart", zelda_specialsstart);
+    agent.acmd("game_specialairsstart", game_specialsstart);
 
-    agent.acmd("game_specialsend", zelda_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialairsend", zelda_specialsend);
+    agent.acmd("game_specialairsend", game_specialsend);
 }

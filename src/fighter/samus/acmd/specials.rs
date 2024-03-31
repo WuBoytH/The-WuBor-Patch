@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn samus_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -54,7 +54,7 @@ unsafe extern "C" fn samus_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -95,7 +95,7 @@ unsafe extern "C" fn samus_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", samus_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", samus_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 }

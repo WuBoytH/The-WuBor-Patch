@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn gamewatch_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, 0, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, -1);
@@ -68,7 +68,7 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_landingairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON) {
         if macros::is_excute(agent) {
             ArticleModule::change_motion(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, Hash40::new("landing_air_f"), false, -1.0);
@@ -98,7 +98,7 @@ unsafe extern "C" fn expression_landingairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_TURTLE, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, -1);
@@ -138,7 +138,7 @@ if macros::is_excute(agent) {
 }
 }
 
-unsafe extern "C" fn gamewatch_landingairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairb(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON) {
         if macros::is_excute(agent) {
             ArticleModule::change_motion(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, Hash40::new("landing_air_b"), false, -1.0);
@@ -154,7 +154,7 @@ unsafe extern "C" fn gamewatch_landingairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -171,19 +171,19 @@ unsafe extern "C" fn gamewatch_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", gamewatch_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
     agent.acmd("effect_attackairf", effect_attackairf);
     agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", expression_attackairf);
 
-    agent.acmd("game_landingairf", gamewatch_landingairf);
+    agent.acmd("game_landingairf", game_landingairf);
     agent.acmd("effect_landingairf", effect_landingairf);
     agent.acmd("sound_landingairf", sound_landingairf);
     agent.acmd("expression_landingairf", expression_landingairf);
 
-    agent.acmd("game_attackairb", gamewatch_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_landingairb", gamewatch_landingairb);
+    agent.acmd("game_landingairb", game_landingairb);
 
-    agent.acmd("game_attackairhi", gamewatch_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn brave_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -34,7 +34,7 @@ unsafe extern "C" fn brave_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -68,7 +68,7 @@ unsafe extern "C" fn brave_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -102,7 +102,7 @@ unsafe extern "C" fn brave_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 2.0, 3.0, 3.0, 5.0);
     }
@@ -132,7 +132,7 @@ unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 7.0, 3.0);
     }
@@ -183,14 +183,14 @@ unsafe extern "C" fn brave_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", brave_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairf", brave_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", brave_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", brave_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
     agent.acmd("effect_attackairhi", effect_attackairhi);
 
-    agent.acmd("game_attackairlw", brave_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

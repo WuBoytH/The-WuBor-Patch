@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pacman_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_TRAMPOLINE_JUMP) {
         if macros::is_excute(agent) {
@@ -13,5 +13,5 @@ unsafe extern "C" fn pacman_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", pacman_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 }

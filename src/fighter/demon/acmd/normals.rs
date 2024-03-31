@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn demon_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
@@ -26,7 +26,7 @@ unsafe extern "C" fn demon_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3cancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
     }
@@ -37,7 +37,7 @@ unsafe extern "C" fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacklw3", demon_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 
-    agent.acmd("game_attacklw3cancel", demon_attacklw3cancel);
+    agent.acmd("game_attacklw3cancel", game_attacklw3cancel);
 }

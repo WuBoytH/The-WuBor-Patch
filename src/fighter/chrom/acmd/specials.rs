@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn chrom_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
@@ -44,7 +44,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 65, 115, 0, 65, 10.0, 0.0, 6.0, 11.0, Some(0.0), Some(11.0), Some(11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
     }
@@ -118,12 +118,12 @@ unsafe extern "C" fn expression_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairlw", chrom_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_specialairlw", effect_speciallw);
     agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", expression_speciallw);
 
-    agent.acmd("game_speciallwhit", chrom_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit);
     agent.acmd("effect_speciallwhit", effect_speciallwhit);
     agent.acmd("sound_speciallwhit", sound_speciallwhit);
     agent.acmd("expression_speciallwhit", expression_speciallwhit);

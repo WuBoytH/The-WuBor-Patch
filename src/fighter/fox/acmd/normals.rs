@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn fox_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 7.0, 361, 80, 0, 40, 3.4, 4.6, -0.7, 0.0, Some(-3.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -11,7 +11,7 @@ unsafe extern "C" fn fox_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn fox_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 3.0);
@@ -37,11 +37,11 @@ unsafe extern "C" fn fox_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks3", fox_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", fox_attacks3);
+    agent.acmd("game_attacks3hi", game_attacks3);
 
-    agent.acmd("game_attacks3lw", fox_attacks3);
+    agent.acmd("game_attacks3lw", game_attacks3);
 
-    agent.acmd("game_attackhi3", fox_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

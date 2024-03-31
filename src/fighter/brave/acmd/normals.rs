@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn brave_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
@@ -63,7 +63,7 @@ unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
@@ -126,7 +126,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 6.0, 2.0);
     }
@@ -189,7 +189,7 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -224,7 +224,7 @@ unsafe extern "C" fn brave_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attacks3s2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -250,7 +250,7 @@ unsafe extern "C" fn brave_attacks3s2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -290,21 +290,21 @@ unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", brave_attack11);
+    agent.acmd("game_attack11", game_attack11);
     agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("expression_attack11", expression_attack11);
 
-    agent.acmd("game_attack12", brave_attack12);
+    agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("expression_attack12", expression_attack12);
 
-    agent.acmd("game_attack13", brave_attack13);
+    agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
     agent.acmd("expression_attack13", expression_attack13);
 
-    agent.acmd("game_attackdash", brave_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3s2", brave_attacks3s2);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
 
-    agent.acmd("game_attackhi3", brave_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

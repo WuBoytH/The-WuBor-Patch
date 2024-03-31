@@ -1,7 +1,7 @@
 use crate::imports::*;
 use super::super::helper::*;
 
-unsafe extern "C" fn dolly_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -28,7 +28,7 @@ unsafe extern "C" fn dolly_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -101,7 +101,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 60, 20, 0, 97, 4.0, 0.0, 4.0, 4.0, Some(0.0), Some(15.0), Some(10.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -112,7 +112,7 @@ unsafe extern "C" fn dolly_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if !VarModule::is_flag(agent.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
@@ -179,7 +179,7 @@ unsafe extern "C" fn dolly_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -215,7 +215,7 @@ unsafe extern "C" fn dolly_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -287,7 +287,7 @@ unsafe extern "C" fn expression_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -374,7 +374,7 @@ unsafe extern "C" fn expression_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -407,7 +407,7 @@ unsafe extern "C" fn dolly_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -436,7 +436,7 @@ unsafe extern "C" fn dolly_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacklw32(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -501,34 +501,34 @@ unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", dolly_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", dolly_attack12);
+    agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", expression_attack12);
 
-    agent.acmd("game_attack13", dolly_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attackdash", dolly_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", dolly_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", dolly_attacks3hi);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
     agent.acmd("effect_attacks3hi", effect_attacks3hi);
     agent.acmd("sound_attacks3hi", sound_attacks3hi);
     agent.acmd("expression_attacks3hi", expression_attacks3hi);
 
-    agent.acmd("game_attacks3lw", dolly_attacks3lw);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
     agent.acmd("effect_attacks3lw", effect_attacks3lw);
     agent.acmd("sound_attacks3lw", sound_attacks3lw);
     agent.acmd("expression_attacks3lw", expression_attacks3lw);
 
-    agent.acmd("game_attackhi3", dolly_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", dolly_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 
-    agent.acmd("game_attacklw32", dolly_attacklw32);
+    agent.acmd("game_attacklw32", game_attacklw32);
     agent.acmd("effect_attacklw32", effect_attacklw32);
     agent.acmd("sound_attacklw32", sound_attacklw32);
     agent.acmd("expression_attacklw32", expression_attacklw32);

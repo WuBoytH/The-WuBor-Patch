@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn eflame_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -142,7 +142,7 @@ unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -213,7 +213,7 @@ unsafe extern "C" fn eflame_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -278,7 +278,7 @@ unsafe extern "C" fn eflame_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -337,7 +337,7 @@ unsafe extern "C" fn eflame_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.333);
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -409,16 +409,16 @@ unsafe extern "C" fn eflame_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", eflame_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
     agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", expression_attackairn);
 
-    agent.acmd("game_attackairf", eflame_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", eflame_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", eflame_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", eflame_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

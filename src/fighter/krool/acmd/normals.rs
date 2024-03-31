@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn krool_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -28,7 +28,7 @@ unsafe extern "C" fn krool_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0 / 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -53,7 +53,7 @@ unsafe extern "C" fn krool_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn krool_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 4.0);
     frame(agent.lua_state_agent, 4.0);
@@ -74,9 +74,9 @@ unsafe extern "C" fn krool_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", krool_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", krool_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", krool_attack13);
+    agent.acmd("game_attack13", game_attack13);
 }

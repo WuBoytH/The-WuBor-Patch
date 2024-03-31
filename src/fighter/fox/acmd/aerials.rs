@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn fox_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -75,7 +75,7 @@ unsafe extern "C" fn fox_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn fox_landingairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_FOX_STATUS_ATTACK_AIR_FLAG_LANDING_DISABLE_ATTACK) {
         if macros::is_excute(agent) {
             AttackModule::clear_all(agent.module_accessor);
@@ -93,7 +93,7 @@ if macros::is_excute(agent) {
 }
 }
 
-unsafe extern "C" fn fox_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -113,7 +113,7 @@ unsafe extern "C" fn fox_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn fox_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -142,11 +142,11 @@ unsafe extern "C" fn fox_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", fox_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_landingairf", fox_landingairf);
+    agent.acmd("game_landingairf", game_landingairf);
 
-    agent.acmd("game_attackairb", fox_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", fox_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 }

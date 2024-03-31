@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn demon_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -55,7 +55,7 @@ unsafe extern "C" fn demon_attacks4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-unsafe extern "C" fn demon_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -105,7 +105,7 @@ unsafe extern "C" fn demon_attackhi4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-unsafe extern "C" fn demon_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -200,12 +200,12 @@ unsafe extern "C" fn demon_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", demon_attacks4);
-    agent.acmd("game_attacks4transform", demon_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
+    agent.acmd("game_attacks4transform", game_attacks4);
 
-    agent.acmd("game_attackhi4", demon_attackhi4);
-    agent.acmd("game_attackhi4transform", demon_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("game_attackhi4transform", game_attackhi4);
 
-    agent.acmd("game_attacklw4", demon_attacklw4);
-    agent.acmd("game_attacklw4transform", demon_attacklw4);
+    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("game_attacklw4transform", game_attacklw4);
 }

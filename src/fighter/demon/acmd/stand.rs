@@ -2,7 +2,7 @@ use crate::imports::*;
 
 // Spinning Demon Finisher
 
-unsafe extern "C" fn demon_attackstand24(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackstand24(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.5, 53, 50, 0, 83, 2.0, 0.0, 13.0, 12.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -18,7 +18,7 @@ unsafe extern "C" fn demon_attackstand24(agent: &mut L2CAgentBase) {
 
 // Spinning Demon 1 Finisher
 
-unsafe extern "C" fn demon_attackstand2f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackstand2f(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -84,7 +84,7 @@ unsafe extern "C" fn expression_attackstand2f(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attackstand32(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackstand32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_XLU);
@@ -128,12 +128,12 @@ unsafe extern "C" fn demon_attackstand32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackstand24", demon_attackstand24);
+    agent.acmd("game_attackstand24", game_attackstand24);
 
-    agent.acmd("game_attackstand2f", demon_attackstand2f);
+    agent.acmd("game_attackstand2f", game_attackstand2f);
     agent.acmd("effect_attackstand2f", effect_attackstand2f);
     agent.acmd("sound_attackstand2f", sound_attackstand2f);
     agent.acmd("expression_attackstand2f", expression_attackstand2f);
 
-    agent.acmd("game_attackstand32", demon_attackstand32);
+    agent.acmd("game_attackstand32", game_attackstand32);
 }

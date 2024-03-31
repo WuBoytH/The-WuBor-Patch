@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn palutena_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -44,7 +44,7 @@ unsafe extern "C" fn palutena_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn palutena_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     if macros::is_excute(agent) {
@@ -100,7 +100,7 @@ unsafe extern "C" fn palutena_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", palutena_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairb", palutena_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 }

@@ -1,7 +1,7 @@
 use crate::imports::*;
 use super::super::helper::*;
 
-unsafe extern "C" fn dolly_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -28,7 +28,7 @@ unsafe extern "C" fn dolly_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -51,7 +51,7 @@ unsafe extern "C" fn dolly_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -121,7 +121,7 @@ unsafe extern "C" fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialsbattackw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsbattackw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -155,7 +155,7 @@ unsafe extern "C" fn dolly_specialsbattackw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialsbattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsbattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -276,7 +276,7 @@ unsafe extern "C" fn expression_specialsbattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
@@ -401,7 +401,7 @@ unsafe extern "C" fn dolly_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialhicommand(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhicommand(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
     }
@@ -619,7 +619,7 @@ unsafe extern "C" fn dolly_specialhicommand(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -707,7 +707,7 @@ unsafe extern "C" fn expression_speciallwstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialairlwrisew(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwrisew(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -747,7 +747,7 @@ unsafe extern "C" fn dolly_specialairlwrisew(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialairlwrise(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlwrise(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -787,7 +787,7 @@ unsafe extern "C" fn dolly_specialairlwrise(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
@@ -1025,7 +1025,7 @@ unsafe extern "C" fn dolly_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_superspecial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_superspecial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(agent.module_accessor, -100.0, 200.0, dolly::instance::float::GO_METER);
@@ -1094,7 +1094,7 @@ unsafe extern "C" fn sound_superspecial(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_superspecial2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_superspecial2start(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(agent.module_accessor, -100.0, 200.0, dolly::instance::float::GO_METER);
@@ -1185,7 +1185,7 @@ unsafe extern "C" fn sound_superspecial2start(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_superspecial2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_superspecial2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         VarModule::off_flag(agent.module_accessor, dolly::instance::flag::RISING_FORCE);
@@ -1219,45 +1219,45 @@ unsafe extern "C" fn dolly_superspecial2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", dolly_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", dolly_specialairn);
+    agent.acmd("game_specialairn", game_specialairn);
 
-    agent.acmd("game_specialsfattack", dolly_specialsfattack);
+    agent.acmd("game_specialsfattack", game_specialsfattack);
 
-    agent.acmd("game_specialsbattackw", dolly_specialsbattackw);
+    agent.acmd("game_specialsbattackw", game_specialsbattackw);
 
-    agent.acmd("game_specialsbattack", dolly_specialsbattack);
+    agent.acmd("game_specialsbattack", game_specialsbattack);
     agent.acmd("effect_specialsbattack", effect_specialsbattack);
     agent.acmd("sound_specialsbattack", sound_specialsbattack);
     agent.acmd("expression_specialsbattack", expression_specialsbattack);
 
-    agent.acmd("game_specialhi1", dolly_specialhi);
+    agent.acmd("game_specialhi1", game_specialhi);
 
-    agent.acmd("game_specialairhi1", dolly_specialhi);
+    agent.acmd("game_specialairhi1", game_specialhi);
 
-    agent.acmd("game_specialhicommand", dolly_specialhicommand);
+    agent.acmd("game_specialhicommand", game_specialhicommand);
 
-    agent.acmd("game_specialairhicommand", dolly_specialhicommand);
+    agent.acmd("game_specialairhicommand", game_specialhicommand);
 
-    agent.acmd("game_speciallwstart", dolly_speciallwstart);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
     agent.acmd("effect_speciallwstart", effect_speciallwstart);
     agent.acmd("sound_speciallwstart", sound_speciallwstart);
     agent.acmd("expression_speciallwstart", expression_speciallwstart);
 
-    agent.acmd("game_specialairlwrisew", dolly_specialairlwrisew);
+    agent.acmd("game_specialairlwrisew", game_specialairlwrisew);
 
-    agent.acmd("game_specialairlwrise", dolly_specialairlwrise);
+    agent.acmd("game_specialairlwrise", game_specialairlwrise);
 
-    agent.acmd("game_specialairlw", dolly_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw);
 
-    agent.acmd("game_superspecial", dolly_superspecial);
+    agent.acmd("game_superspecial", game_superspecial);
     agent.acmd("effect_superspecial", effect_superspecial);
     agent.acmd("sound_superspecial", sound_superspecial);
 
-    agent.acmd("game_superspecial2start", dolly_superspecial2start);
+    agent.acmd("game_superspecial2start", game_superspecial2start);
     agent.acmd("effect_superspecial2start", effect_superspecial2start);
     agent.acmd("sound_superspecial2start", sound_superspecial2start);
 
-    agent.acmd("game_superspecial2", dolly_superspecial2);
+    agent.acmd("game_superspecial2", game_superspecial2);
 }

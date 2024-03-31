@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pikachu_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     frame(agent.lua_state_agent, 13.0);
@@ -106,18 +106,18 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
 
 // Actually Side Speceial Lmao
 
-unsafe extern "C" fn pikachu_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 4.0);
 }
 
-unsafe extern "C" fn pikachu_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("neck"), 2.0, 70, 50, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         JostleModule::set_status(agent.module_accessor, false);
     }
 }
 
-unsafe extern "C" fn pikachu_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("neck"), 3.0, 70, 95, 0, 75, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         JostleModule::set_status(agent.module_accessor, false);
@@ -126,7 +126,7 @@ unsafe extern "C" fn pikachu_specialhi2(agent: &mut L2CAgentBase) {
 
 // Actually Up Special Lmao
 
-unsafe extern "C" fn pikachu_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 10.0 / 6.0);
     frame(agent.lua_state_agent, 7.0);
@@ -242,7 +242,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
 
 // Down Special For Real Lmao
 
-unsafe extern "C" fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
@@ -342,39 +342,39 @@ unsafe extern "C" fn expression_speciallwstrike(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", pikachu_specialn);
+    agent.acmd("game_specialn", game_specialn);
     agent.acmd("effect_specialn", effect_specialn);
     agent.acmd("sound_specialn", sound_specialn);
     agent.acmd("expression_specialn", expression_specialn);
 
-    agent.acmd("game_specialairn", pikachu_specialn);
+    agent.acmd("game_specialairn", game_specialn);
     agent.acmd("effect_specialairn", effect_specialairn);
     agent.acmd("sound_specialairn", sound_specialn);
     agent.acmd("expression_specialairn", expression_specialn);
 
-    agent.acmd("game_specialhistart", pikachu_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", pikachu_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialhi1", pikachu_specialhi1);
+    agent.acmd("game_specialhi1", game_specialhi1);
 
-    agent.acmd("game_specialairhi1", pikachu_specialhi1);
+    agent.acmd("game_specialairhi1", game_specialhi1);
 
-    agent.acmd("game_specialhi2", pikachu_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2);
 
-    agent.acmd("game_specialairhi2", pikachu_specialhi2);
+    agent.acmd("game_specialairhi2", game_specialhi2);
 
-    agent.acmd("game_speciallw", pikachu_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", expression_speciallw);
 
-    agent.acmd("game_specialairlw", pikachu_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_specialairlw", effect_speciallw);
     agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", expression_speciallw);
 
-    agent.acmd("game_speciallwstrike", pikachu_speciallwstrike);
+    agent.acmd("game_speciallwstrike", game_speciallwstrike);
     agent.acmd("effect_speciallwstrike", effect_speciallwstrike);
     agent.acmd("sound_speciallwstrike", sound_speciallwstrike);
     agent.acmd("expression_speciallwstrike", expression_speciallwstrike);

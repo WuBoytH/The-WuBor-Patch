@@ -1,11 +1,11 @@
 use crate::imports::*;
 
-unsafe extern "C" fn cloud_appeals(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_loop"));
         let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, hold_button);
+        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, game_button);
         VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
         VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
     }
@@ -16,7 +16,7 @@ unsafe extern "C" fn cloud_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_appealsloop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::set_int(agent.module_accessor, appeal::int::ACTION_FRAME, 12);
         VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
@@ -61,10 +61,10 @@ unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_appealhil(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
+    if ControlModule::check_button_on(agent.module_accessor, game_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,
@@ -76,10 +76,10 @@ unsafe extern "C" fn cloud_appealhil(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_appealhir(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
+    if ControlModule::check_button_on(agent.module_accessor, game_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,
@@ -91,10 +91,10 @@ unsafe extern "C" fn cloud_appealhir(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_appeallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 60.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
+    if ControlModule::check_button_on(agent.module_accessor, game_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,
@@ -107,16 +107,16 @@ unsafe extern "C" fn cloud_appeallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_appealsl", cloud_appeals);
-    agent.acmd("game_appealsr", cloud_appeals);
+    agent.acmd("game_appealsl", game_appeals);
+    agent.acmd("game_appealsr", game_appeals);
 
-    agent.acmd("game_appealsloop", cloud_appealsloop);
+    agent.acmd("game_appealsloop", game_appealsloop);
     agent.acmd("sound_appealsloop", sound_appealsloop);
     agent.acmd("expression_appealsloop", expression_appealsloop);
 
-    agent.acmd("game_appealhil", cloud_appealhil);
-    agent.acmd("game_appealhir", cloud_appealhir);
+    agent.acmd("game_appealhil", game_appealhil);
+    agent.acmd("game_appealhir", game_appealhir);
 
-    agent.acmd("game_appeallwl", cloud_appeallw);
-    agent.acmd("game_appeallwr", cloud_appeallw);
+    agent.acmd("game_appeallwl", game_appeallw);
+    agent.acmd("game_appeallwr", game_appeallw);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_float(agent.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
         WorkModule::set_float(agent.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
@@ -20,5 +20,5 @@ unsafe extern "C" fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacklw3", master_sword_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

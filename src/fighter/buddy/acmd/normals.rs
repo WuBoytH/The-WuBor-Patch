@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn buddy_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 361, 26, 0, 45, 2.4, 0.0, 6.0, 4.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -17,7 +17,7 @@ unsafe extern "C" fn buddy_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.75, y: 0.0, z: 0.0});
@@ -43,7 +43,7 @@ unsafe extern "C" fn buddy_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -61,30 +61,30 @@ unsafe extern "C" fn buddy_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attack100(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 1.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 3.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 5.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 7.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 9.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 11.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 13.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 15.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         macros::wait_loop_clear(agent);
     }
 }
 
 #[inline(always)]
-unsafe extern "C" fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100_inner(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.4, 361, 10, 0, 16, 3.8, 0.0, 6.8, 4.0, None, None, None, 0.6, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.4, 361, 10, 0, 12, 3.8, 0.0, 6.8, 10.0, None, None, None, 0.6, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
@@ -103,7 +103,7 @@ unsafe extern "C" fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
@@ -122,7 +122,7 @@ unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_s"), false, -1.0);
@@ -152,7 +152,7 @@ unsafe extern "C" fn buddy_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_hi"), false, -1.0);
@@ -182,7 +182,7 @@ unsafe extern "C" fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_lw"), false, -1.0);
@@ -212,7 +212,7 @@ unsafe extern "C" fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NO(agent, 12, *HIT_STATUS_NORMAL);
         macros::HIT_NO(agent, 13, *HIT_STATUS_NORMAL);
@@ -252,7 +252,7 @@ unsafe extern "C" fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn buddy_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 32, 74, 0, 64, 3.6, 0.0, 3.6, 4.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -266,23 +266,23 @@ unsafe extern "C" fn buddy_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", buddy_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", buddy_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", buddy_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attack100", buddy_attack100);
+    agent.acmd("game_attack100", game_attack100);
 
-    agent.acmd("game_attackdash", buddy_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", buddy_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", buddy_attacks3hi);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
 
-    agent.acmd("game_attacks3lw", buddy_attacks3lw);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
 
-    agent.acmd("game_attackhi3", buddy_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", buddy_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn captain_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     // frame(agent.lua_state_agent, 1.0);
     // macros::FT_MOTION_RATE(agent, 0.75);
     frame(agent.lua_state_agent, 9.0);
@@ -24,7 +24,7 @@ unsafe extern "C" fn captain_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     // macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
@@ -49,7 +49,7 @@ unsafe extern "C" fn captain_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_specialairsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
@@ -75,7 +75,7 @@ unsafe extern "C" fn captain_specialairsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_specialairsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
     }
@@ -103,7 +103,7 @@ unsafe extern "C" fn captain_specialairsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn captain_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
@@ -140,15 +140,15 @@ unsafe extern "C" fn captain_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsstart", captain_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
 
-    agent.acmd("game_specialsend", captain_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialairsstart", captain_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart);
 
-    agent.acmd("game_specialairsend", captain_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend);
 
-    agent.acmd("game_specialhi", captain_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", captain_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 }

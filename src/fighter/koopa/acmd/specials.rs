@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn koopa_specialscatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialscatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
@@ -20,7 +20,7 @@ unsafe extern "C" fn koopa_specialscatch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_specialsaircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsaircatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
@@ -38,7 +38,7 @@ unsafe extern "C" fn koopa_specialsaircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -75,9 +75,9 @@ unsafe extern "C" fn koopa_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialscatch", koopa_specialscatch);
+    agent.acmd("game_specialscatch", game_specialscatch);
 
-    agent.acmd("game_specialairscatch", koopa_specialsaircatch);
+    agent.acmd("game_specialairscatch", game_specialsaircatch);
 
-    agent.acmd("game_specialairhi", koopa_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 }

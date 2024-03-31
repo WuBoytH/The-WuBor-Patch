@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn kirby_koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     kirby_koopa_special_n_mtrans_reset(fighter);

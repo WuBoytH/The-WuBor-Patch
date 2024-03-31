@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn mariod_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     mariod_special_lw_mot_helper(fighter);

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 pub unsafe extern "C" fn belmont_special_lw_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {

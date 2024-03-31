@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = 0x406824, inline)]

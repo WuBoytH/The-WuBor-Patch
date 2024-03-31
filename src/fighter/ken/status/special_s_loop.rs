@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let current_sit = fighter.global_table[SITUATION_KIND].get_i32();

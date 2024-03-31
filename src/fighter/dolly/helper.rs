@@ -1,23 +1,20 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, L2CAgentBase},
-        hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::vtable_hook::*
-};
+use crate::imports::*;
 
-pub unsafe extern "C" fn add_go(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
-    if !VarModule::is_flag(module_accessor, dolly::status::flag::DISABLE_METER_GAIN) {
-        let meter_max = 200.0;
-        let meter_const = dolly::instance::float::GO_METER;
-        amount /= 1.0;
-        FGCModule::update_meter(module_accessor, amount, meter_max, meter_const);
-        let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-        dolly_check_super_special_pre(module_accessor, is_superspecial as u8);
+#[skyline::from_offset(0x970ff0)]
+pub unsafe extern "C" fn dolly_check_super_special_pre(module_accessor: *mut BattleObjectModuleAccessor, param_2: u8);
+
+#[no_mangle]
+extern "C" fn add_go(module_accessor: *mut BattleObjectModuleAccessor, amount: f32) {
+    unsafe{
+        if !VarModule::is_flag(module_accessor, dolly::status::flag::DISABLE_METER_GAIN) {
+            let meter_max = 200.0;
+            let meter_const = dolly::instance::float::GO_METER;
+            let mut add_amount = amount;
+            add_amount /= 1.0;
+            FGCModule::update_meter(module_accessor, add_amount, meter_max, meter_const);
+            let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+            dolly_check_super_special_pre(module_accessor, is_superspecial as u8);
+        }
     }
 }
 

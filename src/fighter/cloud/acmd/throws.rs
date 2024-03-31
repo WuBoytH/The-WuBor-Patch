@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn cloud_catch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, true);
@@ -20,5 +20,5 @@ unsafe extern "C" fn cloud_catch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catch", cloud_catch);
+    agent.acmd("game_catch", game_catch);
 }

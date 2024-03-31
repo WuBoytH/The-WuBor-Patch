@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::add_reset_statuses(

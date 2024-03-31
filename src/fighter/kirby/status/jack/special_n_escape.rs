@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 pub unsafe extern "C" fn kirby_jack_special_n_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {

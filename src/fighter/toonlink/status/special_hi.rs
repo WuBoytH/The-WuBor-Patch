@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::vl;
 
 unsafe extern "C" fn toonlink_special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {

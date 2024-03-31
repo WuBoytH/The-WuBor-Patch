@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn toonlink_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 8.0);
     macros::FT_MOTION_RATE(agent, 1.1);
@@ -19,5 +19,5 @@ unsafe extern "C" fn toonlink_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackdash", toonlink_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 }

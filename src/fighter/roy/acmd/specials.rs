@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn roy_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -45,7 +45,7 @@ unsafe extern "C" fn roy_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn roy_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_ROY_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
@@ -86,7 +86,7 @@ unsafe extern "C" fn roy_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", roy_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", roy_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 }

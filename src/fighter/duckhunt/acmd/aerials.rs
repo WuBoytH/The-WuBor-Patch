@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn duckhunt_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -26,7 +26,7 @@ unsafe extern "C" fn duckhunt_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn duckhunt_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -53,7 +53,7 @@ unsafe extern "C" fn duckhunt_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn duckhunt_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -88,7 +88,7 @@ unsafe extern "C" fn duckhunt_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -117,11 +117,11 @@ unsafe extern "C" fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", duckhunt_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairf", duckhunt_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairhi", duckhunt_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", duckhunt_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

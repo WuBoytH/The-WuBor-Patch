@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn pikmin_landing_light_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_init_inner(fighter)

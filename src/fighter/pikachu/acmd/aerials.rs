@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn pikachu_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -31,7 +31,7 @@ unsafe extern "C" fn pikachu_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -59,7 +59,7 @@ unsafe extern "C" fn pikachu_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_elec"), Hash40::new("footr"), 1.5, 0, 0, 0, 0, 0, 0.3, true);
@@ -71,7 +71,7 @@ unsafe extern "C" fn pikachu_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_pikachu_rnd_attack"));
@@ -80,7 +80,7 @@ unsafe extern "C" fn pikachu_attackairb_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -101,10 +101,10 @@ unsafe extern "C" fn pikachu_attackairb_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_landingairb(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairb(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn pikachu_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -123,14 +123,14 @@ unsafe extern "C" fn pikachu_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", pikachu_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairb", pikachu_attackairb);
-    agent.acmd("effect_attackairb", pikachu_attackairb_eff);
-    agent.acmd("sound_attackairb", pikachu_attackairb_snd);
-    agent.acmd("expression_attackairb", pikachu_attackairb_exp);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+    agent.acmd("sound_attackairb", sound_attackairb);
+    agent.acmd("expression_attackairb", expression_attackairb);
 
-    agent.acmd("game_landingairb", pikachu_landingairb);
+    agent.acmd("game_landingairb", game_landingairb);
 
-    agent.acmd("game_attackairhi", pikachu_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 }

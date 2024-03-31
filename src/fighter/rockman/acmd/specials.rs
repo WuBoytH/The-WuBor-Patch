@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 7.0);
     frame(agent.lua_state_agent, 18.0);
@@ -11,7 +11,7 @@ unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -29,14 +29,14 @@ unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_rockman_smash_s02"));
     }
 }
 
-unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_ROCKBUSTER, 5);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
@@ -58,14 +58,14 @@ unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
     }
 }
 
-unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -74,7 +74,7 @@ unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -84,21 +84,21 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_busterchargeshot", rockman_specialn);
-    agent.acmd("effect_busterchargeshot", rockman_specialn_eff);
-    agent.acmd("sound_busterchargeshot", rockman_specialn_snd);
-    agent.acmd("expression_busterchargeshot", rockman_specialn_exp);
+    agent.acmd("game_busterchargeshot", game_specialn);
+    agent.acmd("effect_busterchargeshot", effect_specialn);
+    agent.acmd("sound_busterchargeshot", sound_specialn);
+    agent.acmd("expression_busterchargeshot", expression_specialn);
 
-    agent.acmd("game_busterairchargeshot", rockman_specialn);
-    agent.acmd("effect_busterairchargeshot", rockman_specialn_eff);
-    agent.acmd("sound_busterairchargeshot", rockman_specialn_snd);
-    agent.acmd("expression_busterairchargeshot", rockman_specialn_exp);
+    agent.acmd("game_busterairchargeshot", game_specialn);
+    agent.acmd("effect_busterairchargeshot", effect_specialn);
+    agent.acmd("sound_busterairchargeshot", sound_specialn);
+    agent.acmd("expression_busterairchargeshot", expression_specialn);
 
-    agent.acmd("game_specialhi", rockman_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", rockman_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 
-    agent.acmd("game_speciallw", rockman_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", rockman_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw);
 }

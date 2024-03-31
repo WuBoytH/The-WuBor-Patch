@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();

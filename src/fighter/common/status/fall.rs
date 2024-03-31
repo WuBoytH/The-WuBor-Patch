@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_pre_Fall)]
 unsafe extern "C" fn bind_address_call_status_pre_fall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {

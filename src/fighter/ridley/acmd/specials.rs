@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn ridley_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -48,7 +48,7 @@ unsafe extern "C" fn ridley_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhichargef(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -62,7 +62,7 @@ unsafe extern "C" fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhichargeb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -77,7 +77,7 @@ unsafe extern "C" fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhichargehi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -92,7 +92,7 @@ unsafe extern "C" fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhichargelw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         JostleModule::set_status(agent.module_accessor, false);
@@ -106,15 +106,15 @@ unsafe extern "C" fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsstart", ridley_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
 
-    agent.acmd("game_specialairsstart", ridley_specialsstart);
+    agent.acmd("game_specialairsstart", game_specialsstart);
 
-    agent.acmd("game_specialairhichargef", ridley_specialairhichargef);
+    agent.acmd("game_specialairhichargef", game_specialairhichargef);
 
-    agent.acmd("game_specialairhichargeb", ridley_specialairhichargeb);
+    agent.acmd("game_specialairhichargeb", game_specialairhichargeb);
 
-    agent.acmd("game_specialairhichargehi", ridley_specialairhichargehi);
+    agent.acmd("game_specialairhichargehi", game_specialairhichargehi);
 
-    agent.acmd("game_specialairhichargelw", ridley_specialairhichargelw);
+    agent.acmd("game_specialairhichargelw", game_specialairhichargelw);
 }

@@ -1,23 +1,47 @@
-use {
-    smash::{
-        app::*,
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::vars::*
-};
+mod brave;
+mod dolly;
+mod eflame;
+mod elight;
+mod ganon;
+mod gaogaen;
+mod ike;
+mod jack;
+mod koopa;
+mod lucario;
+mod lucina;
+mod luigi;
+mod pickel;
+mod reflet;
+mod rockman;
+mod shotos;
+mod shulk;
+mod wario;
 
-// Used for when generic weapons hit something else.
-#[skyline::hook(offset = 0x33a8260)]
-unsafe extern "C" fn weapon_attack_callback(weapon: *mut BattleObject, arg: u64) {
-    if (*weapon).kind == *WEAPON_KIND_LUCARIO_AURABALL as u32 {
-        *(weapon as *mut bool).add(0x90) = VarModule::is_flag((*weapon).module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB);
-    }
-    call_original!(weapon, arg)
-}
+mod weapon;
+mod mariod_drcapsule;
+mod belmont_cross;
 
 pub fn install() {
-    skyline::install_hooks!(
-        weapon_attack_callback
-    );
+    brave::install();
+    dolly::install();
+    eflame::install();
+    elight::install();
+    ganon::install();
+    gaogaen::install();
+    ike::install();
+    jack::install();
+    koopa::install();
+    lucario::install();
+    lucina::install();
+    luigi::install();
+    pickel::install();
+    reflet::install();
+    rockman::install();
+    shotos::install();
+    shulk::install();
+    wario::install();
+
+    weapon::install();
+    mariod_drcapsule::install();
+    belmont_cross::install();
 }

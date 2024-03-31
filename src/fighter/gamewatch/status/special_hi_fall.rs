@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn gamewatch_special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attack_air_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_WORK_INT_ATTACK_AIR_KIND);

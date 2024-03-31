@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_pre_fall().get_bool() {

@@ -1,7 +1,7 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 use super::super::vl;
 
-unsafe extern "C" fn samusd_specialnstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 23.0 / 14.0);
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -22,7 +22,7 @@ unsafe extern "C" fn samusd_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_special(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_special(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
     frame(agent.lua_state_agent, 18.0);
@@ -32,7 +32,7 @@ unsafe extern "C" fn samusd_special(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_specialair(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialair(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
     frame(agent.lua_state_agent, 18.0);
@@ -46,7 +46,7 @@ unsafe extern "C" fn samusd_specialair(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
     frame(agent.lua_state_agent, 21.0);
@@ -56,7 +56,7 @@ unsafe extern "C" fn samusd_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_specialairs(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
     frame(agent.lua_state_agent, 21.0);
@@ -70,7 +70,7 @@ unsafe extern "C" fn samusd_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -124,7 +124,7 @@ unsafe extern "C" fn samusd_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -164,7 +164,7 @@ unsafe extern "C" fn samusd_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_JUMP);
@@ -209,7 +209,7 @@ unsafe extern "C" fn samusd_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-unsafe extern "C" fn samusd_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_samusd_special_l01"));
@@ -246,7 +246,7 @@ unsafe extern "C" fn samusd_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_bomb_jump"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.48, true);
@@ -258,25 +258,25 @@ unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnstart", samusd_specialnstart);
+    agent.acmd("game_specialnstart", game_specialnstart);
 
-    agent.acmd("game_specialairnstart", samusd_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
 
-    agent.acmd("game_special", samusd_special);
+    agent.acmd("game_special", game_special);
 
-    agent.acmd("game_specialair", samusd_specialair);
+    agent.acmd("game_specialair", game_specialair);
 
-    agent.acmd("game_specials", samusd_specials);
+    agent.acmd("game_specials", game_specials);
 
-    agent.acmd("game_specialairs", samusd_specialairs);
+    agent.acmd("game_specialairs", game_specialairs);
 
-    agent.acmd("game_specialhi", samusd_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", samusd_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", samusd_speciallw);
-    agent.acmd("effect_speciallw", samusd_speciallw_eff);
+    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("effect_speciallw", effect_speciallw);
 
-    agent.acmd("game_specialairlw", samusd_specialairlw);
-    agent.acmd("effect_specialairlw", samusd_speciallw_eff);
+    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("effect_specialairlw", effect_speciallw);
 }

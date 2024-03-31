@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
@@ -25,7 +25,7 @@ unsafe extern "C" fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
@@ -84,7 +84,7 @@ unsafe extern "C" fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks3", richter_whip_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", richter_whip_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

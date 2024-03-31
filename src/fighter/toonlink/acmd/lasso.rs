@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn toonlink_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_HOOKSHOT, false, -1);
@@ -47,5 +47,5 @@ unsafe extern "C" fn toonlink_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_aircatch", toonlink_aircatch);
+    agent.acmd("game_aircatch", game_aircatch);
 }

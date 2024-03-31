@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn kirby_purin_specialn_hit_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     FighterMotionModuleImpl::change_motion_kirby_copy(

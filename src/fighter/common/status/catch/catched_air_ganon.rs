@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchedAirGanon)]
 pub unsafe extern "C" fn status_catchedairganon(fighter: &mut L2CFighterCommon) -> L2CValue {

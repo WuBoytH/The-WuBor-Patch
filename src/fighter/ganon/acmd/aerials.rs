@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn ganon_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -41,7 +41,7 @@ unsafe extern "C" fn ganon_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 8, 14, 0, 0, 0, 1.5, true, 0.8);
@@ -54,7 +54,7 @@ unsafe extern "C" fn ganon_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -74,7 +74,7 @@ unsafe extern "C" fn ganon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-// // unsafe extern "C" fn ganon_landingairf(agent: &mut L2CAgentBase) {
+// // unsafe extern "C" fn game_landingairf(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 1.0);
 //     if macros::is_excute(agent) {
 //         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 80, 100, 0, 80, 4.5, 0.0, 3.2, 9.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -86,7 +86,7 @@ unsafe extern "C" fn ganon_attackairf(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-unsafe extern "C" fn ganon_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -107,7 +107,7 @@ unsafe extern "C" fn ganon_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -140,7 +140,7 @@ unsafe extern "C" fn ganon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 4.5, 4.5, 12.5, 0.0);
@@ -166,16 +166,16 @@ unsafe extern "C" fn ganon_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", ganon_attackairn);
-    agent.acmd("effect_attackairn", ganon_attackairn_eff);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
 
-    agent.acmd("game_attackairf", ganon_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    // agent.acmd("game_landingairf", ganon_landingairf);
+    // agent.acmd("game_landingairf", game_landingairf);
 
-    agent.acmd("game_attackairb", ganon_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", ganon_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", ganon_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

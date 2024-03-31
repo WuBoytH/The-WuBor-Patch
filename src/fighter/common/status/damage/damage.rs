@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Damage)]

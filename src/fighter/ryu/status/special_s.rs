@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ryu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_special_s_init_inner(fighter)

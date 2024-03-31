@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::ike::status::special_n_end::*;
 
 unsafe extern "C" fn kirby_ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {

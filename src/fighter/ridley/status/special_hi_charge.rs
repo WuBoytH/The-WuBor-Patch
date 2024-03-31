@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ridley_special_hi_charge_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_pre_inner(fighter)

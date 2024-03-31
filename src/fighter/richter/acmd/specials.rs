@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn richter_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -9,7 +9,7 @@ unsafe extern "C" fn richter_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -25,13 +25,13 @@ unsafe extern "C" fn richter_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_specialnblank(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnblank(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn richter_specials1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.2);
     if macros::is_excute(agent) {
@@ -52,7 +52,7 @@ unsafe extern "C" fn richter_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -98,7 +98,7 @@ unsafe extern "C" fn richter_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -147,7 +147,7 @@ unsafe extern "C" fn richter_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.3);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
@@ -160,25 +160,25 @@ unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", richter_specialn);
-    agent.acmd("expression_specialn", richter_specialn_exp);
+    agent.acmd("game_specialn", game_specialn);
+    agent.acmd("expression_specialn", expression_specialn);
 
-    agent.acmd("game_specialairn", richter_specialn);
-    agent.acmd("expression_specialairn", richter_specialn_exp);
+    agent.acmd("game_specialairn", game_specialn);
+    agent.acmd("expression_specialairn", expression_specialn);
 
-    agent.acmd("game_specialnblank", richter_specialnblank);
+    agent.acmd("game_specialnblank", game_specialnblank);
 
-    agent.acmd("game_specialairnblank", richter_specialnblank);
+    agent.acmd("game_specialairnblank", game_specialnblank);
 
-    agent.acmd("game_specials1", richter_specials1);
+    agent.acmd("game_specials1", game_specials1);
 
-    agent.acmd("game_specialairs1", richter_specials1);
+    agent.acmd("game_specialairs1", game_specials1);
 
-    agent.acmd("game_specialhi", richter_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", richter_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", richter_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", richter_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Pass_common)]
 unsafe extern "C" fn status_pass_common(fighter: &mut L2CFighterCommon) {

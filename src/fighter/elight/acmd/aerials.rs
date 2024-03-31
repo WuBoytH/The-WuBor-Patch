@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn elight_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -35,7 +35,7 @@ unsafe extern "C" fn elight_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_attack100_hand"), Hash40::new("handl"), 1, 0.7, -0.2, 0, 0, 0, 0.37, true);
     }
@@ -52,14 +52,14 @@ unsafe extern "C" fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_swing_s01"));
     }
 }
 
-unsafe extern "C" fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
@@ -75,11 +75,11 @@ unsafe extern "C" fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairn(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairn(_agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn elight_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -142,7 +142,7 @@ unsafe extern "C" fn elight_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 6.0);
@@ -206,7 +206,7 @@ unsafe extern "C" fn elight_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -268,7 +268,7 @@ unsafe extern "C" fn elight_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -333,7 +333,7 @@ unsafe extern "C" fn elight_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
@@ -363,7 +363,7 @@ unsafe extern "C" fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_attackair_l01"));
@@ -376,7 +376,7 @@ unsafe extern "C" fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_79_lightairslash"), 0);
@@ -401,7 +401,7 @@ unsafe extern "C" fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, attack_air::flag::ENABLE_LANDING_ATTACK) {
         if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
             if macros::is_excute(agent) {
@@ -440,7 +440,7 @@ unsafe extern "C" fn elight_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -474,7 +474,7 @@ unsafe extern "C" fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_landing02"));
@@ -487,7 +487,7 @@ unsafe extern "C" fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_79_lands_light"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -505,26 +505,26 @@ unsafe extern "C" fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", elight_attackairn);
-    agent.acmd("effect_attackairn", elight_attackairn_eff);
-    agent.acmd("sound_attackairn", elight_attackairn_snd);
-    agent.acmd("expression_attackairn", elight_attackairn_exp);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
-    agent.acmd("game_landingairn", elight_landingairn);
+    agent.acmd("game_landingairn", game_landingairn);
 
-    agent.acmd("game_attackairf", elight_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", elight_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", elight_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", elight_attackairlw);
-    agent.acmd("effect_attackairlw", elight_attackairlw_eff);
-    agent.acmd("sound_attackairlw", elight_attackairlw_snd);
-    agent.acmd("expression_attackairlw", elight_attackairlw_exp);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
 
-    agent.acmd("game_landingairlw", elight_landingairlw);
-    agent.acmd("effect_landingairlw", elight_landingairlw_eff);
-    agent.acmd("sound_landingairlw", elight_landingairlw_snd);
-    agent.acmd("expression_landingairlw", elight_landingairlw_exp);
+    agent.acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("effect_landingairlw", effect_landingairlw);
+    agent.acmd("sound_landingairlw", sound_landingairlw);
+    agent.acmd("expression_landingairlw", expression_landingairlw);
 }

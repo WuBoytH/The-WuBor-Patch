@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::frame::common_fighter_frame
 };
 
@@ -38,7 +38,7 @@ unsafe extern "C" fn kirby_taunt_movement(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn kirby_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     kirby_gaogaen_lariat_jump_cancel(fighter);
     kirby_ganon_special_n_reset(fighter);
@@ -46,5 +46,5 @@ unsafe extern "C" fn kirby_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, kirby_frame);
+    agent.on_line(smashline::Main, on_main);
 }

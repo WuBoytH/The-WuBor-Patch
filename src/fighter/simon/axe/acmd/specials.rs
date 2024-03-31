@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn simon_axe_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id) {
         let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
@@ -13,5 +13,5 @@ unsafe extern "C" fn simon_axe_fly(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_fly", simon_axe_fly);
+    agent.acmd("game_fly", game_fly);
 }

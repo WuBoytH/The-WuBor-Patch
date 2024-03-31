@@ -3,3 +3,4 @@
 **/.zed
 Cargo.lock
 .DS_Store
+.cargo/

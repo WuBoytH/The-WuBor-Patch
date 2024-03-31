@@ -206,7 +206,7 @@ unsafe extern "C" fn effect_specialn2(agent: &mut L2CAgentBase) {
     else {
         22.0
     };
-    frame(agent.lua_state_agent, game_frame);
+    frame(agent.lua_state_agent, shot_frame);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_shot"), Hash40::new("top"), 0, 11.5, 8, 0, 0, 0, 1, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.6);
@@ -561,7 +561,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         let eff_handle = VarModule::get_int(agent.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
-        if EffectModule::is_exist_effect(agent.module_accessor, game_handle) {
+        if EffectModule::is_exist_effect(agent.module_accessor, eff_handle) {
             EffectModule::kill(agent.module_accessor, eff_handle, true, true);
         }
         EffectModule::req_follow(
@@ -687,7 +687,7 @@ unsafe extern "C" fn sound_speciallwimpact(agent: &mut L2CAgentBase) {
             if vc_type > 2 {
                 vc_type = 0;
             }
-            VarModule::set_int(agent.module_accessor, ryu::instance::int::IMPACT_PUNISH_VC_TYPE, game_type);
+            VarModule::set_int(agent.module_accessor, ryu::instance::int::IMPACT_PUNISH_VC_TYPE, vc_type);
             macros::PLAY_SE(agent, Hash40::new_raw(vc));
         }
     }
@@ -816,7 +816,7 @@ unsafe extern "C" fn sound_speciallwrush(agent: &mut L2CAgentBase) {
         if vc_type > 1 {
             vc_type = 0;
         }
-        VarModule::set_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE, game_type);
+        VarModule::set_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE, vc_type);
         macros::PLAY_SE(agent, Hash40::new_raw(vc));
     }
 }

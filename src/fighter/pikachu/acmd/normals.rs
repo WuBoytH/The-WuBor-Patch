@@ -14,7 +14,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(agent.module_accessor, Hash40::new("attack_11"), true);
-    frame(agent.lua_state_agent, game_frame);
+    frame(agent.lua_state_agent, cancel_frame);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }

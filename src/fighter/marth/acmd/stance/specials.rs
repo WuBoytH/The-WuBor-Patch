@@ -267,10 +267,10 @@ unsafe extern "C" fn game_speciallwspecials2loop(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 3, 0, Hash40::new("top"), 1.0, 350, 12, 100, 60, 2.0, 0.0, 13.0, 6.0, Some(0.0), Some(13.0), Some(20.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         let loop_count = VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) - 1;
         let setoff_mul = 10.0 - (loop_count as f32 * 2.5);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, game_mul);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 1, game_mul);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 2, game_mul);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 3, game_mul);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, setoff_mul);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 1, setoff_mul);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 2, setoff_mul);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 3, setoff_mul);
     }
     wait(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

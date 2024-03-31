@@ -4,7 +4,7 @@ use super::super::vl;
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, game_button)
+    if ControlModule::check_button_on(agent.module_accessor, hold_button)
     && !VarModule::is_flag(agent.module_accessor, appeal::flag::LOOP) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(

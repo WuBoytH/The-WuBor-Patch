@@ -71,7 +71,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackll"), 0);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("expression_nohitlosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {

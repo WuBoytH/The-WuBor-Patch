@@ -5,7 +5,7 @@ unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_loop"));
         let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, game_button);
+        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, hold_button);
         VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
         VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
     }
@@ -64,7 +64,7 @@ unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, game_button) {
+    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,
@@ -79,7 +79,7 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, game_button) {
+    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,
@@ -94,7 +94,7 @@ unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 60.0);
     let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
-    if ControlModule::check_button_on(agent.module_accessor, game_button) {
+    if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
                 agent.module_accessor,

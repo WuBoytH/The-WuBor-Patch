@@ -237,7 +237,7 @@ unsafe extern "C" fn game_special_n_end_ray_check(agent: &mut L2CAgentBase) {
     if counter > 0 {
         VarModule::on_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION);
         let eruption_pos = vl::special_n::ray_check_x_offset + (counter as f32 * vl::special_n::eruption_distance_add);
-        VarModule::set_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION, game_pos);
+        VarModule::set_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION, eruption_pos);
     }
 }
 
@@ -336,7 +336,7 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -8.0);
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(agent.module_accessor, Hash40::new("special_s_end"), true);
-    frame(agent.lua_state_agent, game_frame);
+    frame(agent.lua_state_agent, cancel_frame);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 

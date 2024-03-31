@@ -1,5 +1,4 @@
 use crate::imports::*;
-// use wubor_utils::app::*;
 
 #[skyline::hook(offset = 0x116a3d0)]
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) -> u64 {

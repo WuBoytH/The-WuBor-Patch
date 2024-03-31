@@ -1,5 +1,4 @@
 use crate::imports::*;
-use wubor_utils::app::*;
 
 #[skyline::hook(offset = 0x10d4570)]
 unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {

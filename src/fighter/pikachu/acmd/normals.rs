@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pikachu_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -14,13 +14,13 @@ unsafe extern "C" fn pikachu_attack11(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(agent.module_accessor, Hash40::new("attack_11"), true);
-    frame(agent.lua_state_agent, cancel_frame);
+    frame(agent.lua_state_agent, game_frame);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
     }
 }
 
-unsafe extern "C" fn pikachu_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("tail1"), 5.0, 107, 120, 0, 45, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_TAIL);
@@ -33,7 +33,7 @@ unsafe extern "C" fn pikachu_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -69,9 +69,9 @@ unsafe extern "C" fn pikachu_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", pikachu_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attackhi3", pikachu_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacks4", pikachu_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 }

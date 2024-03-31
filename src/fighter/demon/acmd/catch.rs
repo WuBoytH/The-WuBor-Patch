@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.4, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_CATCHATTACK, *ATTACK_REGION_PUNCH);
@@ -40,7 +40,7 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchcommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, false);
@@ -66,9 +66,9 @@ unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catchattack", demon_catchattack);
+    agent.acmd("game_catchattack", game_catchattack);
     agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 
-    agent.acmd("game_catchcommand", demon_catchcommand);
+    agent.acmd("game_catchcommand", game_catchcommand);
 }

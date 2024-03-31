@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOW, false, 0);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOWARROW, false, 0);
@@ -13,7 +13,7 @@ unsafe extern "C" fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE);
     }
@@ -56,7 +56,7 @@ unsafe extern "C" fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 367, 100, 90, 0, 6.0, 0.0, 7.5, 13.5, Some(0.0), Some(7.5), Some(7.5), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
@@ -151,7 +151,7 @@ unsafe extern "C" fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LINK_STATUS_WORK_ID_FLAG_BOMB_GENERATE_LINKBOMB);
@@ -166,15 +166,15 @@ unsafe extern "C" fn toonlink_speciallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnstart", toonlink_specialnstart);
+    agent.acmd("game_specialnstart", game_specialnstart);
 
-    agent.acmd("game_specialairnstart", toonlink_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
 
-    agent.acmd("game_specialhi", toonlink_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", toonlink_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", toonlink_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", toonlink_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn packun_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 5.0);
@@ -28,7 +28,7 @@ unsafe extern "C" fn packun_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -51,7 +51,7 @@ unsafe extern "C" fn packun_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -80,7 +80,7 @@ unsafe extern "C" fn packun_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn packun_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 5.0, 3.0, 8.0, 1.0);
@@ -110,11 +110,11 @@ unsafe extern "C" fn packun_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairlw", packun_attackairn);
+    agent.acmd("game_attackairlw", game_attackairn);
 
-    agent.acmd("game_attackairf", packun_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairhi", packun_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", packun_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

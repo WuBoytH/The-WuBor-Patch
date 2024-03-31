@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn richter_whip_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -21,7 +21,7 @@ unsafe extern "C" fn richter_whip_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_whip_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -42,7 +42,7 @@ unsafe extern "C" fn richter_whip_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.7);
     if macros::is_excute(agent) {
@@ -64,17 +64,17 @@ unsafe extern "C" fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", richter_whip_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairfhi", richter_whip_attackairf);
+    agent.acmd("game_attackairfhi", game_attackairf);
 
-    agent.acmd("game_attackairflw", richter_whip_attackairf);
+    agent.acmd("game_attackairflw", game_attackairf);
 
-    agent.acmd("game_attackairb", richter_whip_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairbhi", richter_whip_attackairb);
+    agent.acmd("game_attackairbhi", game_attackairb);
 
-    agent.acmd("game_attackairblw", richter_whip_attackairb);
+    agent.acmd("game_attackairblw", game_attackairb);
 
-    agent.acmd("game_attackairhi", richter_whip_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 }

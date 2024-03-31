@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn szerosuit_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
@@ -27,7 +27,7 @@ unsafe extern "C" fn szerosuit_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -51,7 +51,7 @@ unsafe extern "C" fn szerosuit_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn szerosuit_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -76,7 +76,7 @@ unsafe extern "C" fn szerosuit_attacks3hi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn szerosuit_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -101,7 +101,7 @@ unsafe extern "C" fn szerosuit_attacks3lw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -118,13 +118,13 @@ unsafe extern "C" fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", szerosuit_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attacks3", szerosuit_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", szerosuit_attacks3hi);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
 
-    agent.acmd("game_attacks3lw", szerosuit_attacks3lw);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
 
-    agent.acmd("game_attacklw3", szerosuit_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

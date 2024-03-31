@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwdashf(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -36,7 +36,7 @@ unsafe extern "C" fn expression_speciallwdashf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwdashb(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -73,12 +73,12 @@ unsafe extern "C" fn expression_speciallwdashb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwdashf", marth_speciallwdashf);
+    agent.acmd("game_speciallwdashf", game_speciallwdashf);
     agent.acmd("effect_speciallwdashf", effect_speciallwdashf);
     agent.acmd("sound_speciallwdashf", sound_speciallwdashf);
     agent.acmd("expression_speciallwdashf", expression_speciallwdashf);
 
-    agent.acmd("game_speciallwdashb", marth_speciallwdashb);
+    agent.acmd("game_speciallwdashb", game_speciallwdashb);
     agent.acmd("effect_speciallwdashb", effect_speciallwdashb);
     agent.acmd("sound_speciallwdashb", sound_speciallwdashb);
     agent.acmd("expression_speciallwdashb", expression_speciallwdashb);

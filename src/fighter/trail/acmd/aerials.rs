@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn trail_attackairn3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -23,7 +23,7 @@ unsafe extern "C" fn trail_attackairn3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn trail_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     if macros::is_excute(agent) {
@@ -51,7 +51,7 @@ unsafe extern "C" fn trail_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn trail_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -91,7 +91,7 @@ unsafe extern "C" fn trail_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.5, 38, 82, 0, 54, 3.2, 0.0, 2.6, -7.2, Some(0.0), Some(2.6), Some(11.2), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
@@ -104,11 +104,11 @@ unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn3", trail_attackairn3);
+    agent.acmd("game_attackairn3", game_attackairn3);
 
-    agent.acmd("game_attackairf", trail_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairlw", trail_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 
-    agent.acmd("game_landingairlw", trail_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
 }

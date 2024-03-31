@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn jack_specialn1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
@@ -59,7 +59,7 @@ unsafe extern "C" fn jack_specialn1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairn1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
@@ -128,7 +128,7 @@ unsafe extern "C" fn jack_specialairn1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
@@ -210,7 +210,7 @@ unsafe extern "C" fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
@@ -299,7 +299,7 @@ unsafe extern "C" fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialnjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.375);
     if macros::is_excute(agent) {
@@ -327,7 +327,7 @@ unsafe extern "C" fn sound_specialnjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairnshoot(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnshoot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("gunl"), 3.0, 361, 75, 0, 5, 9.5, 0.0, 0.0, 6.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 12, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
@@ -540,7 +540,7 @@ unsafe extern "C" fn jack_specialairnshoot(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specials1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -651,7 +651,7 @@ unsafe extern "C" fn expression_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairs1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -727,7 +727,7 @@ unsafe extern "C" fn expression_specialairs1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
     }
@@ -798,7 +798,7 @@ unsafe extern "C" fn jack_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialhithrow(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhithrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
         ArticleModule::change_motion(
@@ -820,7 +820,7 @@ unsafe extern "C" fn jack_specialhithrow(agent: &mut L2CAgentBase) {
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
-        macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, game_no);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -898,35 +898,35 @@ unsafe extern "C" fn effect_wait5(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn1", jack_specialn1);
+    agent.acmd("game_specialn1", game_specialn1);
 
-    agent.acmd("game_specialairn1", jack_specialairn1);
+    agent.acmd("game_specialairn1", game_specialairn1);
 
-    agent.acmd("game_specialn1_ex", jack_specialn1_ex);
+    agent.acmd("game_specialn1_ex", game_specialn1_ex);
 
-    agent.acmd("game_specialairn1_ex", jack_specialairn1_ex);
+    agent.acmd("game_specialairn1_ex", game_specialairn1_ex);
 
-    agent.acmd("game_specialnjump", jack_specialnjump);
+    agent.acmd("game_specialnjump", game_specialnjump);
     agent.acmd("effect_specialnjump", effect_specialnjump);
     agent.acmd("sound_specialnjump", sound_specialnjump);
 
-    agent.acmd("game_specialairnshoot", jack_specialairnshoot);
+    agent.acmd("game_specialairnshoot", game_specialairnshoot);
 
-    agent.acmd("game_specials1", jack_specials1);
+    agent.acmd("game_specials1", game_specials1);
     agent.acmd("effect_specials1", effect_specials1);
     agent.acmd("sound_specials1", sound_specials1);
     agent.acmd("expression_specials1", expression_specials1);
 
-    agent.acmd("game_specialairs1", jack_specialairs1);
+    agent.acmd("game_specialairs1", game_specialairs1);
     agent.acmd("effect_specialairs1", effect_specialairs1);
     agent.acmd("sound_specialairs1", sound_specialairs1);
     agent.acmd("expression_specialairs1", expression_specialairs1);
 
-    agent.acmd("game_specialairhi", jack_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_specialhithrow", jack_specialhithrow);
+    agent.acmd("game_specialhithrow", game_specialhithrow);
 
-    agent.acmd("game_specialairhithrow", jack_specialhithrow);
+    agent.acmd("game_specialairhithrow", game_specialhithrow);
 
     agent.acmd("effect_wait4", effect_wait4);
 

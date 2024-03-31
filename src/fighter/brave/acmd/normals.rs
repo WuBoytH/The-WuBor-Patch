@@ -290,21 +290,21 @@ unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", brave_attack11);
+    agent.acmd("game_attack11", game_attack11);
     agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("expression_attack11", expression_attack11);
 
-    agent.acmd("game_attack12", brave_attack12);
+    agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("expression_attack12", expression_attack12);
 
-    agent.acmd("game_attack13", brave_attack13);
+    agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
     agent.acmd("expression_attack13", expression_attack13);
 
-    agent.acmd("game_attackdash", brave_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3s2", brave_attacks3s2);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
 
-    agent.acmd("game_attackhi3", brave_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

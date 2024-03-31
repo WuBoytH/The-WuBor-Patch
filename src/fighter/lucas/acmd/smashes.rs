@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn lucas_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
@@ -73,5 +73,5 @@ unsafe extern "C" fn lucas_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackhi4", lucas_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
 }

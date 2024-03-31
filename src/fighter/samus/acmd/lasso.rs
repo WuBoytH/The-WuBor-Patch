@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn samus_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
@@ -63,6 +63,6 @@ unsafe extern "C" fn expression_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_aircatch", samus_aircatch);
+    agent.acmd("game_aircatch", game_aircatch);
     agent.acmd("expression_aircatch", expression_aircatch);
 }

@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn ken_attack11w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -68,7 +68,7 @@ unsafe extern "C" fn expression_attack11w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 75, 100, 60, 0, 2.5, 0.0, 4.0, 4.0, Some(0.0), Some(15.0), Some(8.8), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
@@ -115,7 +115,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 45, 60, 0, 70, 3.0, 0.0, 12.5, 3.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
@@ -158,7 +158,7 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack11s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11s(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -184,7 +184,7 @@ unsafe extern "C" fn ken_attack11s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacks3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -242,7 +242,7 @@ unsafe extern "C" fn expression_attacks3w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacks3s2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::reset_trigger(agent.module_accessor);
         AttackModule::clear_all(agent.module_accessor);
@@ -295,7 +295,7 @@ unsafe extern "C" fn expression_attacks3s2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacks3s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -328,7 +328,7 @@ unsafe extern "C" fn effect_attacks3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attackhi3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         // WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -392,7 +392,7 @@ unsafe extern "C" fn sound_attackhi3w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attackhi3s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -440,7 +440,7 @@ unsafe extern "C" fn ken_attackhi3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacklw3w(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 5.0);
@@ -511,44 +511,44 @@ unsafe extern "C" fn expression_attacklw3w(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11w", ken_attack11w);
+    agent.acmd("game_attack11w", game_attack11w);
     agent.acmd("effect_attack11w", effect_attack11w);
     agent.acmd("sound_attack11w", sound_attack11w);
     agent.acmd("expression_attack11w", expression_attack11w);
 
-    agent.acmd("game_attack12", ken_attack12);
+    agent.acmd("game_attack12", game_attack12);
     agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", expression_attack12);
 
-    agent.acmd("game_attack13", ken_attack13);
+    agent.acmd("game_attack13", game_attack13);
     agent.acmd("effect_attack13", effect_attack13);
     agent.acmd("sound_attack13", sound_attack13);
     agent.acmd("expression_attack13", expression_attack13);
 
-    agent.acmd("game_attack11s", ken_attack11s);
+    agent.acmd("game_attack11s", game_attack11s);
 
-    agent.acmd("game_attacks3w", ken_attacks3w);
+    agent.acmd("game_attacks3w", game_attacks3w);
     agent.acmd("effect_attacks3w", effect_attacks3w);
     agent.acmd("sound_attacks3w", sound_attacks3w);
     agent.acmd("expression_attacks3w", expression_attacks3w);
 
-    agent.acmd("game_attacks3s2", ken_attacks3s2);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
     agent.acmd("effect_attacks3s2", effect_attacks3s2);
     agent.acmd("sound_attacks3s2", sound_attacks3s2);
     agent.acmd("expression_attacks3s2", expression_attacks3s2);
 
-    agent.acmd("game_attacks3s", ken_attacks3s);
+    agent.acmd("game_attacks3s", game_attacks3s);
     agent.acmd("effect_attacks3s", effect_attacks3s);
 
-    agent.acmd("game_attackhi3w", ken_attackhi3w);
+    agent.acmd("game_attackhi3w", game_attackhi3w);
     agent.acmd("effect_attackhi3w", effect_attackhi3w);
     agent.acmd("sound_attackhi3w", sound_attackhi3w);
     agent.acmd("expression_attackhi3w", expression_attackhi3w);
 
-    agent.acmd("game_attackhi3s", ken_attackhi3s);
+    agent.acmd("game_attackhi3s", game_attackhi3s);
 
-    agent.acmd("game_attacklw3w", ken_attacklw3w);
+    agent.acmd("game_attacklw3w", game_attacklw3w);
     agent.acmd("effect_attacklw3w", effect_attacklw3w);
     agent.acmd("sound_attacklw3w", sound_attacklw3w);
     agent.acmd("expression_attacklw3w", expression_attacklw3w);

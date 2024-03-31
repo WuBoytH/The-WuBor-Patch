@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsu(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -76,7 +76,7 @@ unsafe extern "C" fn effect_specialairsu(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -114,7 +114,7 @@ unsafe extern "C" fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -196,12 +196,12 @@ unsafe extern "C" fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairsu", bayonetta_specialairsu);
+    agent.acmd("game_specialairsu", game_specialairsu);
     agent.acmd("effect_specialairsu", effect_specialairsu);
 
-    agent.acmd("game_specialairsd", bayonetta_specialairsd);
+    agent.acmd("game_specialairsd", game_specialairsd);
 
-    agent.acmd("game_specialhi", bayonetta_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", bayonetta_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 }

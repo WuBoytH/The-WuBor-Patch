@@ -2,7 +2,7 @@ use crate::imports::*;
 
 // Crouch Jab
 
-unsafe extern "C" fn demon_attacksquat2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacksquat2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -29,7 +29,7 @@ unsafe extern "C" fn demon_attacksquat2(agent: &mut L2CAgentBase) {
 
 // Tombstone Crusher
 
-unsafe extern "C" fn demon_attacksquat1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacksquat1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
@@ -79,7 +79,7 @@ unsafe extern "C" fn demon_attacksquat1(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacksquat2", demon_attacksquat2);
+    agent.acmd("game_attacksquat2", game_attacksquat2);
 
-    agent.acmd("game_attacksquat1", demon_attacksquat1);
+    agent.acmd("game_attacksquat1", game_attacksquat1);
 }

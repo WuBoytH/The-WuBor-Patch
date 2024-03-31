@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwmax(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 14);
     }
@@ -20,5 +20,5 @@ unsafe extern "C" fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwmax", dedede_speciallwmax);
+    agent.acmd("game_speciallwmax", game_speciallwmax);
 }

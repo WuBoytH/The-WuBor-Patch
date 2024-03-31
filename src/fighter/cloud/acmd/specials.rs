@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn cloud_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_CLOUD_STATUS_WORK_ID_SPECIAL_N_FLAG_SPECIAL_FALL);
@@ -116,7 +116,7 @@ unsafe extern "C" fn expression_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -180,7 +180,7 @@ unsafe extern "C" fn cloud_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
@@ -192,7 +192,7 @@ unsafe extern "C" fn cloud_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_specialhi2fall(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2fall(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
@@ -208,7 +208,7 @@ unsafe extern "C" fn cloud_specialhi2fall(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi_lb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -281,19 +281,19 @@ unsafe extern "C" fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", cloud_specialn);
+    agent.acmd("game_specialn", game_specialn);
     agent.acmd("effect_specialn", effect_specialn);
     agent.acmd("expression_specialn", expression_specialn);
 
-    agent.acmd("game_specialairn", cloud_specialn);
+    agent.acmd("game_specialairn", game_specialn);
     agent.acmd("effect_specialairn", effect_specialairn);
     agent.acmd("expression_specialairn", expression_specialairn);
 
-    agent.acmd("game_specialhi", cloud_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialhi2", cloud_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2);
 
-    agent.acmd("game_specialhi2fall", cloud_specialhi2fall);
+    agent.acmd("game_specialhi2fall", game_specialhi2fall);
 
-    agent.acmd("game_specialhi_lb", cloud_specialhi_lb);
+    agent.acmd("game_specialhi_lb", game_specialhi_lb);
 }

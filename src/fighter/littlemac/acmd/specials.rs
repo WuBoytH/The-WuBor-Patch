@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn littlemac_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     //frame(agent.lua_state_agent, 1.0);
     //macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -15,7 +15,7 @@ unsafe extern "C" fn littlemac_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn littlemac_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -44,7 +44,7 @@ unsafe extern "C" fn littlemac_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", littlemac_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialhi", littlemac_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 }

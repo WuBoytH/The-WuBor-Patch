@@ -64,21 +64,21 @@ unsafe extern "C" fn buddy_attack13(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn buddy_attack100(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 1.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 3.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 5.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 7.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 9.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 11.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 13.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         frame(agent.lua_state_agent, 15.0);
-        buddy_attack100_inner(agent);
+        game_attack100_inner(agent);
         macros::wait_loop_clear(agent);
     }
 }
@@ -266,23 +266,23 @@ unsafe extern "C" fn buddy_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", buddy_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", buddy_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", buddy_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attack100", buddy_attack100);
+    agent.acmd("game_attack100", game_attack100);
 
-    agent.acmd("game_attackdash", buddy_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", buddy_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", buddy_attacks3hi);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
 
-    agent.acmd("game_attacks3lw", buddy_attacks3lw);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
 
-    agent.acmd("game_attackhi3", buddy_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", buddy_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

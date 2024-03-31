@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn gaogaen_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
@@ -166,7 +166,7 @@ unsafe extern "C" fn gaogaen_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
@@ -306,7 +306,7 @@ unsafe extern "C" fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_MOVE_START);
@@ -351,7 +351,7 @@ unsafe extern "C" fn gaogaen_specialsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn gaogaen_specialairsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_MOVE_START);
@@ -397,7 +397,7 @@ unsafe extern "C" fn gaogaen_specialairsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn gaogaen_specialsshoulder(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsshoulder(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -441,7 +441,7 @@ unsafe extern "C" fn gaogaen_specialsshoulder(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialairsshoulder(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsshoulder(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -485,7 +485,7 @@ unsafe extern "C" fn gaogaen_specialairsshoulder(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialslariat(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialslariat(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 145, 454, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -519,7 +519,7 @@ unsafe extern "C" fn gaogaen_specialslariat(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -581,7 +581,7 @@ unsafe extern "C" fn gaogaen_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialairhifall(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhifall(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -614,7 +614,7 @@ unsafe extern "C" fn gaogaen_specialairhifall(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_specialairhifall2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhifall2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -647,7 +647,7 @@ unsafe extern "C" fn gaogaen_specialairhifall2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_LW_FLAG_STANCE_START);
@@ -698,7 +698,7 @@ unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, gaogaen::status::flag::REVENGE_AUTO) {
         if macros::is_excute(agent) {
@@ -746,7 +746,7 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_speciallwturn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, gaogaen::status::flag::REVENGE_AUTO) {
         if macros::is_excute(agent) {
@@ -799,45 +799,45 @@ unsafe extern "C" fn effect_speciallwturn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", gaogaen_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", gaogaen_specialairn);
+    agent.acmd("game_specialairn", game_specialairn);
 
-    agent.acmd("game_specialsstart", gaogaen_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
 
-    agent.acmd("game_specialairsstart", gaogaen_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart);
 
-    agent.acmd("game_specialsshoulder", gaogaen_specialsshoulder);
+    agent.acmd("game_specialsshoulder", game_specialsshoulder);
 
-    agent.acmd("game_specialairsshoulder", gaogaen_specialairsshoulder);
+    agent.acmd("game_specialairsshoulder", game_specialairsshoulder);
 
-    agent.acmd("game_specialslariat", gaogaen_specialslariat);
+    agent.acmd("game_specialslariat", game_specialslariat);
 
-    agent.acmd("game_specialairslariat", gaogaen_specialslariat);
+    agent.acmd("game_specialairslariat", game_specialslariat);
 
-    agent.acmd("game_specialhistart", gaogaen_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", gaogaen_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhifall", gaogaen_specialairhifall);
+    agent.acmd("game_specialairhifall", game_specialairhifall);
 
-    agent.acmd("game_specialairhifall2", gaogaen_specialairhifall2);
+    agent.acmd("game_specialairhifall2", game_specialairhifall2);
 
-    agent.acmd("game_speciallwstart", gaogaen_speciallwstart);
+    agent.acmd("game_speciallwstart", game_speciallwstart);
     agent.acmd("effect_speciallwstart", effect_speciallwstart);
 
-    agent.acmd("game_specialairlwstart", gaogaen_speciallwstart);
+    agent.acmd("game_specialairlwstart", game_speciallwstart);
     agent.acmd("effect_specialairlwstart", effect_speciallwstart);
 
-    agent.acmd("game_speciallw", gaogaen_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
     agent.acmd("effect_speciallw", effect_speciallw);
 
-    agent.acmd("game_specialairlw", gaogaen_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
     agent.acmd("effect_specialairlw", effect_speciallw);
 
-    agent.acmd("game_speciallwturn", gaogaen_speciallwturn);
+    agent.acmd("game_speciallwturn", game_speciallwturn);
     agent.acmd("effect_speciallwturn", effect_speciallwturn);
 
-    agent.acmd("game_specialairlwturn", gaogaen_speciallwturn);
+    agent.acmd("game_specialairlwturn", game_speciallwturn);
     agent.acmd("effect_specialairlwturn", effect_speciallwturn);
 }

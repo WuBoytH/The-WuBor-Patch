@@ -1,7 +1,7 @@
 use crate::imports::*;
 use super::super::helper::*;
 
-unsafe extern "C" fn inkling_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     inkling_generate_squid_helper(agent);
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -31,5 +31,5 @@ unsafe extern "C" fn inkling_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_escapeairslide", inkling_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }

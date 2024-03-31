@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn donkey_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         ItemModule::have_item(agent.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
@@ -10,7 +10,7 @@ unsafe extern "C" fn donkey_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn donkey_specialairs(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 30.0/19.0);
     frame(agent.lua_state_agent, 20.0);
@@ -25,7 +25,7 @@ unsafe extern "C" fn donkey_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn donkey_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME);
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -78,9 +78,9 @@ unsafe extern "C" fn donkey_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials", donkey_specials);
+    agent.acmd("game_specials", game_specials);
 
-    agent.acmd("game_specialairs", donkey_specialairs);
+    agent.acmd("game_specialairs", game_specialairs);
 
-    agent.acmd("game_specialairhi", donkey_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 }

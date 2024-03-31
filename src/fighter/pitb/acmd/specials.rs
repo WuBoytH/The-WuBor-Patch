@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pitb_specialnstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, false, 0);
@@ -30,7 +30,7 @@ unsafe extern "C" fn effect_specialnhold(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialairnhold(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn pitb_specialnfire(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -92,7 +92,7 @@ unsafe extern "C" fn expression_specialnfires(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -107,7 +107,7 @@ unsafe extern "C" fn pitb_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialairsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -128,14 +128,14 @@ unsafe extern "C" fn pitb_specialairsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.83);
 }
 
-unsafe extern "C" fn pitb_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
     frame(agent.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn pitb_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
         macros::ATTACK(agent, 0, 1, Hash40::new("rot"), 1.4, 100, 100, 150, 0, 4.0, 0.0, 0.0, 6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
@@ -164,13 +164,13 @@ unsafe extern "C" fn pitb_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialhiend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
-unsafe extern "C" fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_dspecialhold(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 1, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
@@ -184,10 +184,10 @@ unsafe extern "C" fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnstart", pitb_specialnstart);
+    agent.acmd("game_specialnstart", game_specialnstart);
     agent.acmd("expression_specialnstart", expression_specialnstart);
 
-    agent.acmd("game_specialairnstart", pitb_specialnstart);
+    agent.acmd("game_specialairnstart", game_specialnstart);
     agent.acmd("expression_specialairnstart", expression_specialnstart);
 
     agent.acmd("effect_specialnholds", effect_specialnhold);
@@ -214,33 +214,33 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("effect_specialairnhitos", effect_specialairnhold);
 
-    agent.acmd("game_specialnfires", pitb_specialnfire);
+    agent.acmd("game_specialnfires", game_specialnfire);
     agent.acmd("expression_specialnfires", expression_specialnfires);
 
-    agent.acmd("game_specialairnfires", pitb_specialnfire);
+    agent.acmd("game_specialairnfires", game_specialnfire);
     agent.acmd("expression_specialairnfires", expression_specialnfires);
 
-    agent.acmd("game_specialnfirehi", pitb_specialnfire);
+    agent.acmd("game_specialnfirehi", game_specialnfire);
     agent.acmd("effect_specialnfirehi", effect_specialnfirehi);
     agent.acmd("expression_specialnfirehi", expression_specialnfires);
 
-    agent.acmd("game_specialairnfirehi", pitb_specialnfire);
+    agent.acmd("game_specialairnfirehi", game_specialnfire);
     agent.acmd("effect_specialairnfirehi", effect_specialnairfirehi);
     agent.acmd("expression_specialairnfirehi", expression_specialnfires);
 
-    agent.acmd("game_specialsend", pitb_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialairsend", pitb_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend);
 
-    agent.acmd("game_specialhistart", pitb_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", pitb_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialhi", pitb_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhiend", pitb_specialhiend);
+    agent.acmd("game_specialairhiend", game_specialhiend);
 
-    agent.acmd("game_speciallwhold", pitb_dspecialhold);
+    agent.acmd("game_speciallwhold", game_dspecialhold);
 
-    agent.acmd("game_specialairlwhold", pitb_dspecialhold);
+    agent.acmd("game_specialairlwhold", game_dspecialhold);
 }

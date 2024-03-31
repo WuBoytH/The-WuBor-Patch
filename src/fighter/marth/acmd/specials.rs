@@ -1,7 +1,7 @@
 use crate::imports::*;
 use super::super::helper::*;
 
-unsafe extern "C" fn marth_specialnend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -61,7 +61,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialnendhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnendhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -123,7 +123,7 @@ unsafe extern "C" fn effect_specialnendhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialnendlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnendlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -185,7 +185,7 @@ unsafe extern "C" fn effect_specialnendlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialnendmax(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnendmax(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -253,7 +253,7 @@ unsafe extern "C" fn effect_specialnendmax(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialnendmaxhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnendmaxhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -323,7 +323,7 @@ unsafe extern "C" fn effect_specialnendmaxhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialnendmaxlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnendmaxlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -393,7 +393,7 @@ unsafe extern "C" fn effect_specialnendmaxlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
     if macros::is_excute(agent) {
@@ -497,7 +497,7 @@ unsafe extern "C" fn effect_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SHIELD);
@@ -516,56 +516,56 @@ unsafe extern "C" fn marth_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwenter(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-unsafe extern "C" fn marth_speciallwairenter(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwairenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-unsafe extern "C" fn marth_speciallwexit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-unsafe extern "C" fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwairexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnend", marth_specialnend);
+    agent.acmd("game_specialnend", game_specialnend);
     agent.acmd("effect_specialnend", effect_specialnend);
 
-    agent.acmd("game_specialnendhi", marth_specialnendhi);
+    agent.acmd("game_specialnendhi", game_specialnendhi);
     agent.acmd("effect_specialnendhi", effect_specialnendhi);
 
-    agent.acmd("game_specialnendlw", marth_specialnendlw);
+    agent.acmd("game_specialnendlw", game_specialnendlw);
     agent.acmd("effect_specialnendlw", effect_specialnendlw);
 
-    agent.acmd("game_specialnendmax", marth_specialnendmax);
+    agent.acmd("game_specialnendmax", game_specialnendmax);
     agent.acmd("effect_specialnendmax", effect_specialnendmax);
 
-    agent.acmd("game_specialnendmaxhi", marth_specialnendmaxhi);
+    agent.acmd("game_specialnendmaxhi", game_specialnendmaxhi);
     agent.acmd("effect_specialnendmaxhi", effect_specialnendmaxhi);
 
-    agent.acmd("game_specialnendmaxlw", marth_specialnendmaxlw);
+    agent.acmd("game_specialnendmaxlw", game_specialnendmaxlw);
     agent.acmd("effect_specialnendmaxlw", effect_specialnendmaxlw);
 
-    agent.acmd("game_specialhi", marth_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
     agent.acmd("effect_specialhi", effect_specialhi);
 
-    agent.acmd("game_specialairhi", marth_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
     agent.acmd("effect_specialairhi", effect_specialairhi);
 
-    agent.acmd("game_speciallw", marth_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", marth_speciallw);
+    agent.acmd("game_specialairlw", game_speciallw);
 
-    agent.acmd("game_speciallwenter", marth_speciallwenter);
+    agent.acmd("game_speciallwenter", game_speciallwenter);
 
-    agent.acmd("game_speciallwairenter", marth_speciallwairenter);
+    agent.acmd("game_speciallwairenter", game_speciallwairenter);
 
-    agent.acmd("game_speciallwexit", marth_speciallwexit);
+    agent.acmd("game_speciallwexit", game_speciallwexit);
 
-    agent.acmd("game_speciallwairexit", marth_speciallwairexit);
+    agent.acmd("game_speciallwairexit", game_speciallwairexit);
 }

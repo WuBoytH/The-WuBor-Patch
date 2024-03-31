@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn mariod_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
@@ -19,7 +19,7 @@ unsafe extern "C" fn mariod_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
@@ -42,7 +42,7 @@ unsafe extern "C" fn mariod_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         damage!(agent, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10);
@@ -88,7 +88,7 @@ unsafe extern "C" fn mariod_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE);
@@ -131,11 +131,11 @@ unsafe extern "C" fn mariod_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", mariod_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", mariod_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", mariod_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", mariod_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw);
 }

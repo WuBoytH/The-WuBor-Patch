@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn pikachu_cloud_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *WEAPON_PIKACHU_CLOUD_INSTANCE_WORK_ID_FLAG_ACTIVATE_KAMINARI);
@@ -14,6 +14,6 @@ unsafe extern "C" fn effect_regular(_agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_regular", pikachu_cloud_regular);
+    agent.acmd("game_regular", game_regular);
     agent.acmd("effect_regular", effect_regular);
 }

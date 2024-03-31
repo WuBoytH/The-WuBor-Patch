@@ -243,7 +243,7 @@ unsafe extern "C" fn dolly_specialsbattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_specialsbattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsbattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
@@ -667,7 +667,7 @@ unsafe extern "C" fn dolly_speciallwstart_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_speciallwstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwstart(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_dolly_command_success"));
@@ -1075,7 +1075,7 @@ unsafe extern "C" fn dolly_superspecial_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_superspecial_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_superspecial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_super_kof"));
     }
@@ -1162,7 +1162,7 @@ unsafe extern "C" fn dolly_superspecial2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_superspecial2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_superspecial2start(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_super_kof"));
     }
@@ -1229,7 +1229,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialsbattack", dolly_specialsbattack);
     agent.acmd("effect_specialsbattack", dolly_specialsbattack_eff);
-    agent.acmd("sound_specialsbattack", dolly_specialsbattack_snd);
+    agent.acmd("sound_specialsbattack", sound_specialsbattack);
     agent.acmd("expression_specialsbattack", dolly_specialsbattack_exp);
 
     agent.acmd("game_specialhi1", dolly_specialhi);
@@ -1242,7 +1242,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallwstart", dolly_speciallwstart);
     agent.acmd("effect_speciallwstart", dolly_speciallwstart_eff);
-    agent.acmd("sound_speciallwstart", dolly_speciallwstart_snd);
+    agent.acmd("sound_speciallwstart", sound_speciallwstart);
     agent.acmd("expression_speciallwstart", dolly_speciallwstart_exp);
 
     agent.acmd("game_specialairlwrisew", dolly_specialairlwrisew);
@@ -1253,11 +1253,11 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_superspecial", dolly_superspecial);
     agent.acmd("effect_superspecial", dolly_superspecial_eff);
-    agent.acmd("sound_superspecial", dolly_superspecial_snd);
+    agent.acmd("sound_superspecial", sound_superspecial);
 
     agent.acmd("game_superspecial2start", dolly_superspecial2start);
     agent.acmd("effect_superspecial2start", dolly_superspecial2start_eff);
-    agent.acmd("sound_superspecial2start", dolly_superspecial2start_snd);
+    agent.acmd("sound_superspecial2start", sound_superspecial2start);
 
     agent.acmd("game_superspecial2", dolly_superspecial2);
 }

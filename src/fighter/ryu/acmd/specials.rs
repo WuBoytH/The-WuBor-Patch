@@ -48,7 +48,7 @@ unsafe extern "C" fn ryu_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         wait(agent.lua_state_agent, 10.0);
@@ -213,7 +213,7 @@ unsafe extern "C" fn ryu_specialn2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_specialn2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_hashogeki_start"));
@@ -316,7 +316,7 @@ unsafe extern "C" fn ryu_specialairs2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_specialairs2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
         wait(agent.lua_state_agent, 7.0);
@@ -399,7 +399,7 @@ unsafe extern "C" fn ryu_specialairs2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_specialairs2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairs2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_special_s01"));
@@ -594,7 +594,7 @@ unsafe extern "C" fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_denjin_charge"));
@@ -662,7 +662,7 @@ unsafe extern "C" fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwimpact(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_impact"));
     }
@@ -743,7 +743,7 @@ unsafe extern "C" fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_speciallwreversal_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwreversal(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_reversal"));
     }
@@ -802,7 +802,7 @@ unsafe extern "C" fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwrush(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_rush01"));
         let mut vc_type = VarModule::get_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE);
@@ -823,19 +823,19 @@ unsafe extern "C" fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", ryu_specialn);
-    agent.acmd("sound_specialn", ryu_specialn_snd);
+    agent.acmd("sound_specialn", sound_specialn);
 
     agent.acmd("game_specialairn", ryu_specialn);
-    agent.acmd("sound_specialairn", ryu_specialn_snd);
+    agent.acmd("sound_specialairn", sound_specialn);
 
     agent.acmd("game_specialn2", ryu_specialn2);
     agent.acmd("effect_specialn2", ryu_specialn2_eff);
-    agent.acmd("sound_specialn2", ryu_specialn2_snd);
+    agent.acmd("sound_specialn2", sound_specialn2);
     agent.acmd("expression_specialn2", ryu_specialn2_exp);
 
     agent.acmd("game_specialairn2", ryu_specialn2);
     agent.acmd("effect_specialairn2", ryu_specialn2_eff);
-    agent.acmd("sound_specialairn2", ryu_specialn2_snd);
+    agent.acmd("sound_specialairn2", sound_specialn2);
     agent.acmd("expression_specialairn2", ryu_specialn2_exp);
 
     agent.acmd("game_specialsstart", ryu_specialsstart);
@@ -844,12 +844,12 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialairs2start", ryu_specialairs2start);
     agent.acmd("effect_specialairs2start", ryu_specialairs2start_eff);
-    agent.acmd("sound_specialairs2start", ryu_specialairs2start_snd);
+    agent.acmd("sound_specialairs2start", sound_specialairs2start);
     agent.acmd("expression_specialairs2start", ryu_specialairs2start_exp);
 
     agent.acmd("game_specialairs2", ryu_specialairs2);
     agent.acmd("effect_specialairs2", ryu_specialairs2_eff);
-    agent.acmd("sound_specialairs2", ryu_specialairs2_snd);
+    agent.acmd("sound_specialairs2", sound_specialairs2);
     agent.acmd("expression_specialairs2", ryu_specialairs2_exp);
 
     agent.acmd("game_specialairs2end", ryu_specialairs2end);
@@ -865,17 +865,17 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallw", ryu_speciallw);
     agent.acmd("effect_speciallw", ryu_speciallw_eff);
-    agent.acmd("sound_speciallw", ryu_speciallw_snd);
+    agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", ryu_speciallw_exp);
 
     agent.acmd("game_specialairlw", ryu_speciallw);
     agent.acmd("effect_specialairlw", ryu_speciallw_eff);
-    agent.acmd("sound_specialairlw", ryu_speciallw_snd);
+    agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", ryu_speciallw_exp);
 
     agent.acmd("game_speciallwimpact", ryu_speciallwimpact);
     agent.acmd("effect_speciallwimpact", ryu_speciallwimpact_eff);
-    agent.acmd("sound_speciallwimpact", ryu_speciallwimpact_snd);
+    agent.acmd("sound_speciallwimpact", sound_speciallwimpact);
     agent.acmd("expression_speciallwimpact", ryu_speciallwimpact_exp);
 
     agent.acmd("effect_speciallwimpactarmor", ryu_speciallwimpactarmor_eff);
@@ -884,14 +884,14 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallwreversal", ryu_speciallwreversal);
     agent.acmd("effect_speciallwreversal", ryu_speciallwreversal_eff);
-    agent.acmd("sound_speciallwreversal", ryu_speciallwreversal_snd);
+    agent.acmd("sound_speciallwreversal", sound_speciallwreversal);
     agent.acmd("expression_speciallwreversal", ryu_speciallwreversal_exp);
 
     agent.acmd("game_speciallwrush", ryu_speciallwrush);
     agent.acmd("effect_speciallwrush", ryu_speciallwrush_eff);
-    agent.acmd("sound_speciallwrush", ryu_speciallwrush_snd);
+    agent.acmd("sound_speciallwrush", sound_speciallwrush);
 
     agent.acmd("game_specialairlwrush", ryu_speciallwrush);
     agent.acmd("effect_specialairlwrush", ryu_speciallwrush_eff);
-    agent.acmd("sound_specialairlwrush", ryu_speciallwrush_snd);
+    agent.acmd("sound_specialairlwrush", sound_speciallwrush);
 }

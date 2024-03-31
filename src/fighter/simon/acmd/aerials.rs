@@ -168,7 +168,7 @@ unsafe extern "C" fn simon_attackairflw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -283,7 +283,7 @@ unsafe extern "C" fn simon_attackairlw_eff(_agent: &mut L2CAgentBase) {
     
 }
 
-unsafe extern "C" fn simon_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -325,7 +325,7 @@ unsafe extern "C" fn simon_landingairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_landingairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_LANDING_SE(agent, Hash40::new("se_simon_landing02"));
@@ -347,22 +347,22 @@ unsafe extern "C" fn simon_landingairlw_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairf", simon_attackairf);
-    agent.acmd("sound_attackairf", simon_attackairf_snd);
+    agent.acmd("sound_attackairf", sound_attackairf);
 
     agent.acmd("game_attackairfhi", simon_attackairfhi);
-    agent.acmd("sound_attackairfhi", simon_attackairf_snd);
+    agent.acmd("sound_attackairfhi", sound_attackairf);
 
     agent.acmd("game_attackairflw", simon_attackairflw);
-    agent.acmd("sound_attackairflw", simon_attackairf_snd);
+    agent.acmd("sound_attackairflw", sound_attackairf);
 
     agent.acmd("game_attackairhi", simon_attackairhi);
 
     agent.acmd("game_attackairlw", simon_attackairlw);
     agent.acmd("effect_attackairlw", simon_attackairlw_eff);
-    agent.acmd("sound_attackairlw", simon_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", simon_attackairlw_exp);
 
     agent.acmd("effect_landingairlw", simon_landingairlw_eff);
-    agent.acmd("sound_landingairlw", simon_landingairlw_snd);
+    agent.acmd("sound_landingairlw", sound_landingairlw);
     agent.acmd("expression_landingairlw", simon_landingairlw_exp);
 }

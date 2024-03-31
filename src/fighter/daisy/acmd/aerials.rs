@@ -67,7 +67,7 @@ unsafe extern "C" fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
@@ -107,6 +107,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairlw", daisy_attackairlw);
     agent.acmd("effect_attackairlw", daisy_attackairlw_eff);
-    agent.acmd("sound_attackairlw", daisy_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", daisy_attackairlw_exp);
 }

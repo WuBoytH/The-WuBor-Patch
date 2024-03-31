@@ -29,7 +29,7 @@ unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_rockman_smash_s02"));
@@ -86,12 +86,12 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_busterchargeshot", rockman_specialn);
     agent.acmd("effect_busterchargeshot", rockman_specialn_eff);
-    agent.acmd("sound_busterchargeshot", rockman_specialn_snd);
+    agent.acmd("sound_busterchargeshot", sound_specialn);
     agent.acmd("expression_busterchargeshot", rockman_specialn_exp);
 
     agent.acmd("game_busterairchargeshot", rockman_specialn);
     agent.acmd("effect_busterairchargeshot", rockman_specialn_eff);
-    agent.acmd("sound_busterairchargeshot", rockman_specialn_snd);
+    agent.acmd("sound_busterairchargeshot", sound_specialn);
     agent.acmd("expression_busterairchargeshot", rockman_specialn_exp);
 
     agent.acmd("game_specialhi", rockman_specialhi);

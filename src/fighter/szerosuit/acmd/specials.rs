@@ -167,7 +167,7 @@ unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_szerosuit_special_h02"));
@@ -252,7 +252,7 @@ unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_szerosuit_special_h02"));
@@ -287,11 +287,11 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialhi2", szerosuit_specialhi2);
     agent.acmd("effect_specialhi2", szerosuit_specialhi2_eff);
-    agent.acmd("sound_specialhi2", szerosuit_specialhi2_snd);
+    agent.acmd("sound_specialhi2", sound_specialhi2);
     agent.acmd("expression_specialhi2", szerosuit_specialhi2_exp);
 
     agent.acmd("game_specialairhi2", szerosuit_specialairhi2);
     agent.acmd("effect_specialairhi2", szerosuit_specialairhi2_eff);
-    agent.acmd("sound_specialairhi2", szerosuit_specialairhi2_snd);
+    agent.acmd("sound_specialairhi2", sound_specialairhi2);
     agent.acmd("expression_specialairhi2", szerosuit_specialairhi2_exp);
 }

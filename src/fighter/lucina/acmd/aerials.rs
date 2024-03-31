@@ -36,7 +36,7 @@ unsafe extern "C" fn lucina_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
@@ -111,7 +111,7 @@ unsafe extern "C" fn lucina_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -193,7 +193,7 @@ unsafe extern "C" fn lucina_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_09"));
@@ -297,7 +297,7 @@ unsafe extern "C" fn lucina_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -319,23 +319,23 @@ unsafe extern "C" fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", lucina_attackairn);
     agent.acmd("effect_attackairn", lucina_attackairn_eff);
-    agent.acmd("sound_attackairn", lucina_attackairn_snd);
+    agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", lucina_attackairn_exp);
 
     agent.acmd("game_attackairf", lucina_attackairf);
     agent.acmd("effect_attackairf", lucina_attackairf_eff);
-    agent.acmd("sound_attackairf", lucina_attackairf_snd);
+    agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", lucina_attackairf_exp);
 
     agent.acmd("game_attackairb", lucina_attackairb);
     agent.acmd("effect_attackairb", lucina_attackairb_eff);
-    agent.acmd("sound_attackairb", lucina_attackairb_snd);
+    agent.acmd("sound_attackairb", sound_attackairb);
     agent.acmd("expression_attackairb", lucina_attackairb_exp);
 
     agent.acmd("game_attackairhi", lucina_attackairhi);
 
     agent.acmd("game_attackairlw", lucina_attackairlw);
     agent.acmd("effect_attackairlw", lucina_attackairlw_eff);
-    agent.acmd("sound_attackairlw", lucina_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", lucina_attackairlw_exp);
 }

@@ -66,7 +66,7 @@ unsafe extern "C" fn kirby_appeals_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appeals_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_02"));
@@ -140,7 +140,7 @@ unsafe extern "C" fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appealsloop_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appealsloop(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 4.0);
         let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
@@ -212,15 +212,15 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_appealsl", kirby_appeals);
     agent.acmd("effect_appealsl", kirby_appeals_eff);
-    agent.acmd("sound_appealsl", kirby_appeals_snd);
+    agent.acmd("sound_appealsl", sound_appeals);
     agent.acmd("expression_appealsl", kirby_appeals_exp);
 
     agent.acmd("game_appealsr", kirby_appeals);
     agent.acmd("effect_appealsr", kirby_appeals_eff);
-    agent.acmd("sound_appealsr", kirby_appeals_snd);
+    agent.acmd("sound_appealsr", sound_appeals);
     agent.acmd("expression_appealsr", kirby_appeals_exp);
 
     agent.acmd("effect_appealsloop", kirby_appealsloop_eff);
-    agent.acmd("sound_appealsloop", kirby_appealsloop_snd);
+    agent.acmd("sound_appealsloop", sound_appealsloop);
     agent.acmd("expression_appealsloop", kirby_appealsloop_exp);
 }

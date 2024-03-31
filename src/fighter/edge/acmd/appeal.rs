@@ -63,7 +63,7 @@ unsafe extern "C" fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsloop_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appealsloop(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 116.0);
         if macros::is_excute(agent) {
@@ -165,7 +165,7 @@ unsafe extern "C" fn edge_appealsattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appealsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_edge_smash_s01"));
     }
@@ -294,7 +294,7 @@ unsafe extern "C" fn edge_appealsattackjust_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattackjust_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_appealsattackjust(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_edge_smash_s01"));
         macros::PLAY_SE(agent, Hash40::new("vc_edge_win03"));
@@ -411,17 +411,17 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_appealsr", edge_appeals);
 
     agent.acmd("effect_appealsloop", edge_appealsloop_eff);
-    agent.acmd("sound_appealsloop", edge_appealsloop_snd);
+    agent.acmd("sound_appealsloop", sound_appealsloop);
     agent.acmd("expression_appealsloop", edge_appealsloop_exp);
 
     agent.acmd("game_appealsattack", edge_appealsattack);
     agent.acmd("effect_appealsattack", edge_appealsattack_eff);
-    agent.acmd("sound_appealsattack", edge_appealsattack_snd);
+    agent.acmd("sound_appealsattack", sound_appealsattack);
     agent.acmd("expression_appealsattack", edge_appealsattack_exp);
 
     agent.acmd("game_appealsattackjust", edge_appealsattackjust);
     agent.acmd("effect_appealsattackjust", edge_appealsattackjust_eff);
-    agent.acmd("sound_appealsattackjust", edge_appealsattackjust_snd);
+    agent.acmd("sound_appealsattackjust", sound_appealsattackjust);
     agent.acmd("expression_appealsattackjust", edge_appealsattackjust_exp);
 
     agent.acmd("game_appeallwl", edge_appeallw);

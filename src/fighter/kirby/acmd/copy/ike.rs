@@ -39,7 +39,7 @@ unsafe extern "C" fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_ikespecialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -150,7 +150,7 @@ unsafe extern "C" fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_ikespecialairnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -193,10 +193,10 @@ unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
-    agent.acmd("sound_ikespecialnend", kirby_ikespecialnend_snd);
+    agent.acmd("sound_ikespecialnend", sound_ikespecialnend);
     agent.acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);
 
     agent.acmd("effect_ikespecialairnend", kirby_ikespecialairnend_eff);
-    agent.acmd("sound_ikespecialairnend", kirby_ikespecialairnend_snd);
+    agent.acmd("sound_ikespecialairnend", sound_ikespecialairnend);
     agent.acmd("expression_ikespecialairnend", kirby_ikespecialairnend_exp);
 }

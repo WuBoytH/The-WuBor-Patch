@@ -19,7 +19,7 @@ unsafe extern "C" fn pikmin_catchattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_catchattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -29,5 +29,5 @@ unsafe extern "C" fn pikmin_catchattack_snd(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", pikmin_catchattack);
     agent.acmd("effect_catchattack", pikmin_catchattack_eff);
-    agent.acmd("sound_catchattack", pikmin_catchattack_snd);
+    agent.acmd("sound_catchattack", sound_catchattack);
 }

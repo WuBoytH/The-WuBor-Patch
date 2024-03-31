@@ -35,7 +35,7 @@ unsafe extern "C" fn kirby_ganonspecialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_ganonspecialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ganon_appear01"));
@@ -54,8 +54,8 @@ unsafe extern "C" fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("effect_ganonspecialn", kirby_ganonspecialn_eff);
-    agent.acmd("sound_ganonspecialn", kirby_ganonspecialn_snd);
+    agent.acmd("sound_ganonspecialn", sound_ganonspecialn);
 
     agent.acmd("effect_ganonspecialairn", kirby_ganonspecialn_eff);
-    agent.acmd("sound_ganonspecialairn", kirby_ganonspecialn_snd);
+    agent.acmd("sound_ganonspecialairn", sound_ganonspecialn);
 }

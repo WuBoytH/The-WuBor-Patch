@@ -130,7 +130,7 @@ unsafe extern "C" fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_simon_special_l01"));
@@ -167,11 +167,11 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallw", simon_speciallw);
     agent.acmd("effect_speciallw", simon_speciallw_eff);
-    agent.acmd("sound_speciallw", simon_speciallw_snd);
+    agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", simon_speciallw_exp);
 
     agent.acmd("game_specialairlw", simon_speciallw);
     agent.acmd("effect_specialairlw", simon_specialairlw_eff);
-    agent.acmd("sound_specialairlw", simon_speciallw_snd);
+    agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", simon_speciallw_exp);
 }

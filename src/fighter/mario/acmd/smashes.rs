@@ -111,7 +111,7 @@ unsafe extern "C" fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_common_smash_start"));
@@ -181,17 +181,17 @@ unsafe extern "C" fn mario_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks4", mario_attacks4);
     agent.acmd("effect_attacks4", mario_attacks4_eff);
-    agent.acmd("sound_attacks4", mario_attacks4_snd);
+    agent.acmd("sound_attacks4", sound_attacks4);
     agent.acmd("expression_attacks4", mario_attacks4_exp);
 
     agent.acmd("game_attacks4hi", mario_attacks4hi);
     agent.acmd("effect_attacks4hi", mario_attacks4hi_eff);
-    agent.acmd("sound_attacks4hi", mario_attacks4_snd);
+    agent.acmd("sound_attacks4hi", sound_attacks4);
     agent.acmd("expression_attacks4hi", mario_attacks4_exp);
 
     agent.acmd("game_attacks4lw", mario_attacks4lw);
     agent.acmd("effect_attacks4lw", mario_attacks4lw_eff);
-    agent.acmd("sound_attacks4lw", mario_attacks4_snd);
+    agent.acmd("sound_attacks4lw", sound_attacks4);
     agent.acmd("expression_attacks4lw", mario_attacks4_exp);
 
     agent.acmd("game_attacklw4", mario_attacklw4);

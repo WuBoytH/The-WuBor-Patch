@@ -42,7 +42,7 @@ unsafe extern "C" fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -191,7 +191,7 @@ unsafe extern "C" fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_mario_002"));
@@ -216,7 +216,7 @@ unsafe extern "C" fn mario_landingairlw(_agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairf", mario_attackairf);
     agent.acmd("effect_attackairf", mario_attackairf_eff);
-    agent.acmd("sound_attackairf", mario_attackairf_snd);
+    agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", mario_attackairf_exp);
 
     agent.acmd("game_landingairf", mario_landingairf);
@@ -227,7 +227,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairlw", mario_attackairlw);
     agent.acmd("effect_attackairlw", mario_attackairlw_eff);
-    agent.acmd("sound_attackairlw", mario_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", mario_attackairlw_exp);
 
     agent.acmd("game_landingairlw", mario_landingairlw);

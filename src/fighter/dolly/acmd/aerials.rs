@@ -152,7 +152,7 @@ unsafe extern "C" fn dolly_attackairhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_STATUS(agent, Hash40::new("se_dolly_attackair_h01"));
@@ -217,7 +217,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairhi", dolly_attackairhi);
     agent.acmd("effect_attackairhi", dolly_attackairhi_eff);
-    agent.acmd("sound_attackairhi", dolly_attackairhi_snd);
+    agent.acmd("sound_attackairhi", sound_attackairhi);
     agent.acmd("expression_attackairhi", dolly_attackairhi_exp);
 
     agent.acmd("game_attackairlw", dolly_attackairlw);

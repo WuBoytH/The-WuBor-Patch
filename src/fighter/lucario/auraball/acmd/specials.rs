@@ -8,7 +8,7 @@ unsafe extern "C" fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_charge(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
@@ -35,7 +35,7 @@ unsafe extern "C" fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_shoot(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
         macros::STOP_SE(agent, Hash40::new_raw(0x16b0e86b15));
@@ -106,10 +106,10 @@ unsafe extern "C" fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_charge", lucario_auraball_charge);
-    agent.acmd("sound_charge", lucario_auraball_charge_snd);
+    agent.acmd("sound_charge", sound_charge);
 
     agent.acmd("game_shoot", lucario_auraball_shoot);
-    agent.acmd("sound_shoot", lucario_auraball_shoot_snd);
+    agent.acmd("sound_shoot", sound_shoot);
 
     agent.acmd("game_explosion", lucario_auraball_explosion);
     agent.acmd("effect_explosion", lucario_auraball_explosion_eff);

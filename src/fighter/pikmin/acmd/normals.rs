@@ -84,7 +84,7 @@ unsafe extern "C" fn pikmin_attacks3(_agent: &mut L2CAgentBase) {
     // Blank
 }
 
-unsafe extern "C" fn pikmin_attacks3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_s01"));
@@ -97,7 +97,7 @@ unsafe extern "C" fn pikmin_attacks3loop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3loop_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_s01"));
     }
@@ -157,7 +157,7 @@ unsafe extern "C" fn pikmin_attacks3end_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3end_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_s02"));
     }
@@ -225,7 +225,7 @@ unsafe extern "C" fn pikmin_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_h01"));
@@ -263,20 +263,20 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("expression_attack_dash", pikmin_attackdash_exp);
 
     agent.acmd("game_attacks3", pikmin_attacks3);
-    agent.acmd("sound_attacks3", pikmin_attacks3_snd);
+    agent.acmd("sound_attacks3", sound_attacks3);
 
     agent.acmd("effect_attacks3loop", pikmin_attacks3loop_eff);
-    agent.acmd("sound_attacks3loop", pikmin_attacks3loop_snd);
+    agent.acmd("sound_attacks3loop", sound_attacks3loop);
     agent.acmd("expression_attacks3loop", pikmin_attacks3loop_exp);
 
     agent.acmd("game_attacks3end", pikmin_attacks3end);
     agent.acmd("effect_attacks3end", pikmin_attacks3end_eff);
-    agent.acmd("sound_attacks3end", pikmin_attacks3end_snd);
+    agent.acmd("sound_attacks3end", sound_attacks3end);
     agent.acmd("expression_attacks3end", pikmin_attacks3end_exp);
 
     agent.acmd("game_attackhi3", pikmin_attackhi3);
     agent.acmd("effect_attackhi3", pikmin_attackhi3_eff);
-    agent.acmd("sound_attackhi3", pikmin_attackhi3_snd);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
 
     agent.acmd("game_attacklw3", pikmin_attacklw3);
 }

@@ -95,7 +95,7 @@ unsafe extern "C" fn ken_specialn2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_jinrai_kick"));
@@ -159,7 +159,7 @@ unsafe extern "C" fn ken_specialn2lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2lw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn2lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_jinrai_kick_l"));
@@ -211,7 +211,7 @@ unsafe extern "C" fn ken_specialn2hi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2hi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn2hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_jinrai_kick_m"));
@@ -274,7 +274,7 @@ unsafe extern "C" fn ken_specialn2s_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialn2s_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_kick_l"));
@@ -444,7 +444,7 @@ unsafe extern "C" fn ken_specialairn2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairn2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if VarModule::is_flag(agent.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
@@ -524,7 +524,7 @@ unsafe extern "C" fn ken_specialsstart_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialsstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if VarModule::is_flag(agent.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
         if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
@@ -554,7 +554,7 @@ unsafe extern "C" fn ken_specialsstart_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairsstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if VarModule::is_flag(agent.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
         if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
@@ -720,7 +720,7 @@ unsafe extern "C" fn ken_specialairs2_eff(_agent: &mut L2CAgentBase) {
     // }
 }
 
-unsafe extern "C" fn ken_specialairs2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairs2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_special_s01"));
@@ -777,7 +777,7 @@ unsafe extern "C" fn ken_specialairs2end_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairs2end_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairs2end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_special_s01"));
@@ -908,7 +908,7 @@ unsafe extern "C" fn ken_specialhicommand_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_special_h01"));
@@ -919,7 +919,7 @@ unsafe extern "C" fn ken_specialhi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhicommand_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhicommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
@@ -1086,7 +1086,7 @@ unsafe extern "C" fn ken_specialairhicommand_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_special_h01"));
@@ -1097,7 +1097,7 @@ unsafe extern "C" fn ken_specialairhi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhicommand_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhicommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
@@ -1268,7 +1268,7 @@ unsafe extern "C" fn ken_specialhi2command_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_shoryuken_step"));
@@ -1283,7 +1283,7 @@ unsafe extern "C" fn ken_specialhi2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialhi2command_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi2command(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
@@ -1458,7 +1458,7 @@ unsafe extern "C" fn ken_specialairhi2command_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_shoryuken_step"));
@@ -1473,7 +1473,7 @@ unsafe extern "C" fn ken_specialairhi2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_specialairhi2command_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhi2command(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_command_success"));
@@ -1571,7 +1571,7 @@ unsafe extern "C" fn ken_speciallwstart_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallwstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step"));
@@ -1629,7 +1629,7 @@ unsafe extern "C" fn ken_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step_kick"));
@@ -1667,7 +1667,7 @@ unsafe extern "C" fn ken_speciallwstepf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_speciallwstepf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwstepf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step_stop"));
@@ -1691,35 +1691,35 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialn2start", ken_specialn2start);
     agent.acmd("effect_specialn2start", ken_specialn2start_eff);
-    agent.acmd("sound_specialn2start", ken_specialn2start_snd);
+    agent.acmd("sound_specialn2start", sound_specialn2start);
     agent.acmd("expression_specialn2start", ken_specialn2start_exp);
 
     agent.acmd("game_specialn2lw", ken_specialn2lw);
     agent.acmd("effect_specialn2lw", ken_specialn2lw_eff);
-    agent.acmd("sound_specialn2lw", ken_specialn2lw_snd);
+    agent.acmd("sound_specialn2lw", sound_specialn2lw);
     agent.acmd("expression_specialn2lw", ken_specialn2lw_exp);
 
     agent.acmd("game_specialn2hi", ken_specialn2hi);
     agent.acmd("effect_specialn2hi", ken_specialn2hi_eff);
-    agent.acmd("sound_specialn2hi", ken_specialn2hi_snd);
+    agent.acmd("sound_specialn2hi", sound_specialn2hi);
     agent.acmd("expression_specialn2hi", ken_specialn2hi_exp);
 
     agent.acmd("game_specialn2s", ken_specialn2s);
     agent.acmd("effect_specialn2s", ken_specialn2s_eff);
-    agent.acmd("sound_specialn2s", ken_specialn2s_snd);
+    agent.acmd("sound_specialn2s", sound_specialn2s);
     agent.acmd("expression_specialn2s", ken_specialn2s_exp);
 
     agent.acmd("game_specialairn2", ken_specialairn2);
     agent.acmd("effect_specialairn2", ken_specialairn2_eff);
-    agent.acmd("sound_specialairn2", ken_specialairn2_snd);
+    agent.acmd("sound_specialairn2", sound_specialairn2);
 
     agent.acmd("game_specialsstart", ken_specialsstart);
     agent.acmd("effect_specialsstart", ken_specialsstart_eff);
-    agent.acmd("sound_specialsstart", ken_specialsstart_snd);
+    agent.acmd("sound_specialsstart", sound_specialsstart);
 
     agent.acmd("game_specialairsstart", ken_specialsstart);
     agent.acmd("effect_specialairsstart", ken_specialsstart_eff);
-    agent.acmd("sound_specialairsstart", ken_specialairsstart_snd);
+    agent.acmd("sound_specialairsstart", sound_specialairsstart);
 
     agent.acmd("game_specialsend", ken_specialsend);
     agent.acmd("expression_specialsend", ken_specialsend_exp);
@@ -1729,81 +1729,81 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialairs2", ken_specialairs2);
     agent.acmd("effect_specialairs2", ken_specialairs2_eff);
-    agent.acmd("sound_specialairs2", ken_specialairs2_snd);
+    agent.acmd("sound_specialairs2", sound_specialairs2);
     agent.acmd("expression_specialairs2", ken_specialairs2_exp);
 
     agent.acmd("game_specialairs2end", ken_specialairs2end);
     agent.acmd("effect_specialairs2end", ken_specialairs2end_eff);
-    agent.acmd("sound_specialairs2end", ken_specialairs2end_snd);
+    agent.acmd("sound_specialairs2end", sound_specialairs2end);
     agent.acmd("expression_specialairs2end", ken_specialairs2end_exp);
 
     agent.acmd("game_specialhi", ken_specialhi);
     agent.acmd("effect_specialhi", ken_specialhi_eff);
-    agent.acmd("sound_specialhi", ken_specialhi_snd);
+    agent.acmd("sound_specialhi", sound_specialhi);
     agent.acmd("expression_specialhi", ken_specialhi_exp);
 
     agent.acmd("game_specialhicommand", ken_specialhi);
     agent.acmd("effect_specialhicommand", ken_specialhicommand_eff);
-    agent.acmd("sound_specialhicommand", ken_specialhicommand_snd);
+    agent.acmd("sound_specialhicommand", sound_specialhicommand);
     agent.acmd("expression_specialhicommand", ken_specialhi_exp);
 
     agent.acmd("game_specialairhi", ken_specialairhi);
     agent.acmd("effect_specialairhi", ken_specialairhi_eff);
-    agent.acmd("sound_specialairhi", ken_specialairhi_snd);
+    agent.acmd("sound_specialairhi", sound_specialairhi);
     agent.acmd("expression_specialairhi", ken_specialairhi_exp);
 
     agent.acmd("game_specialairhicommand", ken_specialairhi);
     agent.acmd("effect_specialairhicommand", ken_specialairhicommand_eff);
-    agent.acmd("sound_specialairhicommand", ken_specialairhicommand_snd);
+    agent.acmd("sound_specialairhicommand", sound_specialairhicommand);
     agent.acmd("expression_specialairhicommand", ken_specialairhi_exp);
 
     agent.acmd("game_specialhi2", ken_specialhi2);
     agent.acmd("effect_specialhi2", ken_specialhi2_eff);
-    agent.acmd("sound_specialhi2", ken_specialhi2_snd);
+    agent.acmd("sound_specialhi2", sound_specialhi2);
     agent.acmd("expression_specialhi2", ken_specialhi2_exp);
 
     agent.acmd("game_specialhi2command", ken_specialhi2);
     agent.acmd("effect_specialhi2command", ken_specialhi2command_eff);
-    agent.acmd("sound_specialhi2command", ken_specialhi2command_snd);
+    agent.acmd("sound_specialhi2command", sound_specialhi2command);
     agent.acmd("expression_specialhi2command", ken_specialhi2_exp);
 
     agent.acmd("game_specialairhi2", ken_specialairhi2);
     agent.acmd("effect_specialairhi2", ken_specialairhi2_eff);
-    agent.acmd("sound_specialairhi2", ken_specialairhi2_snd);
+    agent.acmd("sound_specialairhi2", sound_specialairhi2);
     agent.acmd("expression_specialairhi2", ken_specialairhi2_exp);
 
     agent.acmd("game_specialairhi2command", ken_specialairhi2);
     agent.acmd("effect_specialairhi2command", ken_specialairhi2command_eff);
-    agent.acmd("sound_specialairhi2command", ken_specialairhi2command_snd);
+    agent.acmd("sound_specialairhi2command", sound_specialairhi2command);
     agent.acmd("expression_specialairhi2command", ken_specialairhi2_exp);
 
     agent.acmd("game_speciallwstart", ken_speciallwstart);
     agent.acmd("effect_speciallwstart", ken_speciallwstart_eff);
-    agent.acmd("sound_speciallwstart", ken_speciallwstart_snd);
+    agent.acmd("sound_speciallwstart", sound_speciallwstart);
     agent.acmd("expression_speciallwstart", ken_speciallwstart_exp);
 
     agent.acmd("game_specialairlwstart", ken_speciallwstart);
     agent.acmd("effect_specialairlwstart", ken_speciallwstart_eff);
-    agent.acmd("sound_specialairlwstart", ken_speciallwstart_snd);
+    agent.acmd("sound_specialairlwstart", sound_speciallwstart);
     agent.acmd("expression_specialairlwstart", ken_specialairlwstart_exp);
 
     agent.acmd("game_speciallw", ken_speciallw);
     agent.acmd("effect_speciallw", ken_speciallw_eff);
-    agent.acmd("sound_speciallw", ken_speciallw_snd);
+    agent.acmd("sound_speciallw", sound_speciallw);
     agent.acmd("expression_speciallw", ken_speciallw_exp);
 
     agent.acmd("game_specialairlw", ken_speciallw);
     agent.acmd("effect_specialairlw", ken_speciallw_eff);
-    agent.acmd("sound_specialairlw", ken_speciallw_snd);
+    agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", ken_speciallw_exp);
 
     agent.acmd("game_speciallwstepf", ken_speciallwstepf);
     agent.acmd("effect_speciallwstepf", ken_speciallwstepf_eff);
-    agent.acmd("sound_speciallwstepf", ken_speciallwstepf_snd);
+    agent.acmd("sound_speciallwstepf", sound_speciallwstepf);
     agent.acmd("expression_speciallwstepf", ken_speciallwstepf_exp);
 
     agent.acmd("game_specialairlwstepf", ken_speciallwstepf);
     agent.acmd("effect_specialairlwstepf", ken_speciallwstepf_eff);
-    agent.acmd("sound_specialairlwstepf", ken_speciallwstepf_snd);
+    agent.acmd("sound_specialairlwstepf", sound_speciallwstepf);
     agent.acmd("expression_specialairlwstepf", ken_speciallwstepf_exp);
 }

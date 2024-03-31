@@ -187,7 +187,7 @@ unsafe extern "C" fn metaknight_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_metaknight_attackhard_l01"));
@@ -247,7 +247,7 @@ unsafe extern "C" fn metaknight_landingairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_landingairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_metaknight_special_s02_02"));
@@ -265,10 +265,10 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairlw", metaknight_attackairlw);
     agent.acmd("effect_attackairlw", metaknight_attackairlw_eff);
-    agent.acmd("sound_attackairlw", metaknight_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", metaknight_attackairlw_exp);
 
     agent.acmd("game_landingairlw", metaknight_landingairlw);
     agent.acmd("effect_landingairlw", metaknight_landingairlw_eff);
-    agent.acmd("sound_landingairlw", metaknight_landingairlw_snd);
+    agent.acmd("sound_landingairlw", sound_landingairlw);
 }

@@ -23,7 +23,7 @@ unsafe extern "C" fn marth_speciallwdashf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwdashf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwdashf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_escape"));
@@ -59,7 +59,7 @@ unsafe extern "C" fn marth_speciallwdashb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwdashb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwdashb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_escape"));
@@ -75,11 +75,11 @@ unsafe extern "C" fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_speciallwdashf", marth_speciallwdashf);
     agent.acmd("effect_speciallwdashf", marth_speciallwdashf_eff);
-    agent.acmd("sound_speciallwdashf", marth_speciallwdashf_snd);
+    agent.acmd("sound_speciallwdashf", sound_speciallwdashf);
     agent.acmd("expression_speciallwdashf", marth_speciallwdashf_exp);
 
     agent.acmd("game_speciallwdashb", marth_speciallwdashb);
     agent.acmd("effect_speciallwdashb", marth_speciallwdashb_eff);
-    agent.acmd("sound_speciallwdashb", marth_speciallwdashb_snd);
+    agent.acmd("sound_speciallwdashb", sound_speciallwdashb);
     agent.acmd("expression_speciallwdashb", marth_speciallwdashb_exp);
 }

@@ -136,7 +136,7 @@ unsafe extern "C" fn lucina_attackdash_eff(agent: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 8, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
-unsafe extern "C" fn lucina_attackdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -221,7 +221,7 @@ unsafe extern "C" fn lucina_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -291,14 +291,14 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackdash", lucina_attackdash);
     agent.acmd("effect_attackdash", lucina_attackdash_eff);
-    agent.acmd("sound_attackdash", lucina_attackdash_snd);
+    agent.acmd("sound_attackdash", sound_attackdash);
     agent.acmd("expression_attackdash", lucina_attackdash_exp);
 
     agent.acmd("game_attacks3", lucina_attacks3);
 
     agent.acmd("game_attackhi3", lucina_attackhi3);
     agent.acmd("effect_attackhi3", lucina_attackhi3_eff);
-    agent.acmd("sound_attackhi3", lucina_attackhi3_snd);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
     agent.acmd("expression_attackhi3", lucina_attackhi3_exp);
 
     agent.acmd("game_attacklw3", lucina_attacklw3);

@@ -101,7 +101,7 @@ unsafe extern "C" fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_specialsend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_luigi_special_s04"));
     }
@@ -279,12 +279,12 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialsend", luigi_specialsend);
     agent.acmd("effect_specialsend", luigi_specialsend_eff);
-    agent.acmd("sound_specialsend", luigi_specialsend_snd);
+    agent.acmd("sound_specialsend", sound_specialsend);
     agent.acmd("expression_specialsend", luigi_specialsend_exp);
 
     agent.acmd("game_specialairsend", luigi_specialsend);
     agent.acmd("effect_specialairsend", luigi_specialsend_eff);
-    agent.acmd("sound_specialairsend", luigi_specialsend_snd);
+    agent.acmd("sound_specialairsend", sound_specialsend);
     agent.acmd("expression_specialairsend", luigi_specialsend_exp);
 
     agent.acmd("game_specialhi", luigi_specialhi);

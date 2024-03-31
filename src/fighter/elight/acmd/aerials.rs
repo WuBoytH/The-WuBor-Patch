@@ -52,7 +52,7 @@ unsafe extern "C" fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_swing_s01"));
@@ -363,7 +363,7 @@ unsafe extern "C" fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_attackair_l01"));
@@ -474,7 +474,7 @@ unsafe extern "C" fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_landing02"));
@@ -507,7 +507,7 @@ unsafe extern "C" fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", elight_attackairn);
     agent.acmd("effect_attackairn", elight_attackairn_eff);
-    agent.acmd("sound_attackairn", elight_attackairn_snd);
+    agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", elight_attackairn_exp);
 
     agent.acmd("game_landingairn", elight_landingairn);
@@ -520,11 +520,11 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairlw", elight_attackairlw);
     agent.acmd("effect_attackairlw", elight_attackairlw_eff);
-    agent.acmd("sound_attackairlw", elight_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", elight_attackairlw_exp);
 
     agent.acmd("game_landingairlw", elight_landingairlw);
     agent.acmd("effect_landingairlw", elight_landingairlw_eff);
-    agent.acmd("sound_landingairlw", elight_landingairlw_snd);
+    agent.acmd("sound_landingairlw", sound_landingairlw);
     agent.acmd("expression_landingairlw", elight_landingairlw_exp);
 }

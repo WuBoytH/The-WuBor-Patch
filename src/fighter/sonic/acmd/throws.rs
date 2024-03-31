@@ -35,7 +35,7 @@ unsafe extern "C" fn sonic_throwf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sonic_throwf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -94,7 +94,7 @@ unsafe extern "C" fn sonic_throwlw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_throwf", sonic_throwf);
     agent.acmd("effect_throwf", sonic_throwf_eff);
-    agent.acmd("sound_throwf", sonic_throwf_snd);
+    agent.acmd("sound_throwf", sound_throwf);
     agent.acmd("expression_throwf", sonic_throwf_exp);
 
     agent.acmd("game_throwlw", sonic_throwlw);

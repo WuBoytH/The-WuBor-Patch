@@ -50,7 +50,7 @@ unsafe extern "C" fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackstand2f(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_demon_swing_long02"));
@@ -132,7 +132,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackstand2f", demon_attackstand2f);
     agent.acmd("effect_attackstand2f", demon_attackstand2f_eff);
-    agent.acmd("sound_attackstand2f", demon_attackstand2f_snd);
+    agent.acmd("sound_attackstand2f", sound_attackstand2f);
     agent.acmd("expression_attackstand2f", demon_attackstand2f_exp);
 
     agent.acmd("game_attackstand32", demon_attackstand32);

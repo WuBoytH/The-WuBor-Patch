@@ -53,7 +53,7 @@ unsafe extern "C" fn chrom_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_chrom_rnd_attack"));
@@ -83,6 +83,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairlw", chrom_attackairlw);
     agent.acmd("effect_attackairlw", chrom_attackairlw_eff);
-    agent.acmd("sound_attackairlw", chrom_attackairlw_snd);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
     agent.acmd("expression_attackairlw", chrom_attackairlw_exp);
 }

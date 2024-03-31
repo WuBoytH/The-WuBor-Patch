@@ -146,7 +146,7 @@ unsafe extern "C" fn mario_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_longjumpstart_snd(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_longjumpstart(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn mario_longjump(agent: &mut L2CAgentBase) {
@@ -177,7 +177,7 @@ unsafe extern "C" fn mario_longjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_longjump_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_longjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_mario_009"));
     }
@@ -189,7 +189,7 @@ unsafe extern "C" fn mario_longjump_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_longjumpland_snd(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_longjumpland(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn mario_longjumpland_eff(agent: &mut L2CAgentBase) {
@@ -211,7 +211,7 @@ unsafe extern "C" fn mario_groundpoundstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_groundpoundstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_groundpoundstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_mario_special_l04"));
@@ -255,7 +255,7 @@ unsafe extern "C" fn mario_groundpoundland(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_groundpoundland_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_groundpoundland(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_mario_special_l03"));
     }
@@ -293,25 +293,25 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialairhi", mario_specialhi);
 
-    agent.acmd("sound_speciallwstart", mario_longjumpstart_snd);
+    agent.acmd("sound_speciallwstart", sound_longjumpstart);
 
     agent.acmd("game_speciallwjump", mario_longjump);
-    agent.acmd("sound_speciallwjump", mario_longjump_snd);
+    agent.acmd("sound_speciallwjump", sound_longjump);
     agent.acmd("expression_speciallwjump", mario_longjump_exp);
 
-    agent.acmd("effect_speciallwlanding", mario_longjumpland_snd);
+    agent.acmd("effect_speciallwlanding", sound_longjumpland);
     agent.acmd("effect_speciallwlanding", mario_longjumpland_eff);
     agent.acmd("expression_speciallwlanding", mario_longjumpland_exp);
 
     agent.acmd("game_specialairlwstart", mario_groundpoundstart);
-    agent.acmd("effect_specialairlwstart", mario_groundpoundstart_snd);
+    agent.acmd("effect_specialairlwstart", sound_groundpoundstart);
 
     agent.acmd("game_specialairlwfall", mario_groundpoundfall);
     agent.acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
     agent.acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
 
     agent.acmd("game_specialairlwlanding", mario_groundpoundland);
-    agent.acmd("effect_specialairlwlanding", mario_groundpoundland_snd);
+    agent.acmd("effect_specialairlwlanding", sound_groundpoundland);
     agent.acmd("sound_specialairlwlanding", mario_groundpoundland_eff);
     agent.acmd("expression_specialairlwlanding", mario_groundpoundland_exp);
 }

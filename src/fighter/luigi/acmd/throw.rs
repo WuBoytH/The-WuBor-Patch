@@ -37,7 +37,7 @@ unsafe extern "C" fn luigi_throwf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_throwf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -127,7 +127,7 @@ unsafe extern "C" fn luigi_throwb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_throwb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -205,7 +205,7 @@ unsafe extern "C" fn luigi_throwhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_throwhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -271,7 +271,7 @@ unsafe extern "C" fn luigi_throwlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_throwlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_throwlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -313,21 +313,21 @@ unsafe extern "C" fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_throwf", luigi_throwf);
     agent.acmd("effect_throwf", luigi_throwf_eff);
-    agent.acmd("sound_throwf", luigi_throwf_snd);
+    agent.acmd("sound_throwf", sound_throwf);
     agent.acmd("expression_throwf", luigi_throwf_exp);
 
     agent.acmd("game_throwb", luigi_throwb);
     agent.acmd("effect_throwb", luigi_throwb_eff);
-    agent.acmd("sound_throwb", luigi_throwb_snd);
+    agent.acmd("sound_throwb", sound_throwb);
     agent.acmd("expression_throwb", luigi_throwb_exp);
 
     agent.acmd("game_throwhi", luigi_throwhi);
     agent.acmd("effect_throwhi", luigi_throwhi_eff);
-    agent.acmd("sound_throwhi", luigi_throwhi_snd);
+    agent.acmd("sound_throwhi", sound_throwhi);
     agent.acmd("expression_throwhi", luigi_throwhi_exp);
 
     agent.acmd("game_throwlw", luigi_throwlw);
     agent.acmd("effect_throwlw", luigi_throwlw_eff);
-    agent.acmd("sound_throwlw", luigi_throwlw_snd);
+    agent.acmd("sound_throwlw", sound_throwlw);
     agent.acmd("expression_throwlw", luigi_throwlw_exp);
 }

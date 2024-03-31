@@ -23,7 +23,7 @@ unsafe extern "C" fn chrom_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_chrom_special_l01"));
@@ -83,7 +83,7 @@ unsafe extern "C" fn chrom_speciallwhit_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_kick_hit_l"));
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_chrom_rnd_special_l"));
@@ -120,11 +120,11 @@ unsafe extern "C" fn chrom_speciallwhit_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairlw", chrom_speciallw);
     agent.acmd("effect_specialairlw", chrom_speciallw_eff);
-    agent.acmd("sound_specialairlw", chrom_speciallw_snd);
+    agent.acmd("sound_specialairlw", sound_speciallw);
     agent.acmd("expression_specialairlw", chrom_speciallw_exp);
 
     agent.acmd("game_speciallwhit", chrom_speciallwhit);
     agent.acmd("effect_speciallwhit", chrom_speciallwhit_eff);
-    agent.acmd("sound_speciallwhit", chrom_speciallwhit_snd);
+    agent.acmd("sound_speciallwhit", sound_speciallwhit);
     agent.acmd("expression_speciallwhit", chrom_speciallwhit_exp);
 }

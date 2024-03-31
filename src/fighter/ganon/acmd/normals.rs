@@ -23,7 +23,7 @@ unsafe extern "C" fn ganon_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack11_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ganon_swing_s"));
@@ -165,7 +165,7 @@ unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ganon_appeal_l01"));
@@ -225,7 +225,7 @@ unsafe extern "C" fn ganon_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_ganon_rnd_attack"));
@@ -275,7 +275,7 @@ unsafe extern "C" fn ganon_attacklw32_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw32_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_ganon_rnd_attack"));
@@ -309,7 +309,7 @@ unsafe extern "C" fn ganon_attacklw32_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", ganon_attack11);
     agent.acmd("effect_attack11", ganon_attack11_eff);
-    agent.acmd("sound_attack11", ganon_attack11_snd);
+    agent.acmd("sound_attack11", sound_attack11);
     agent.acmd("expression_attack11", ganon_attack11_exp);
 
     agent.acmd("game_attackdash", ganon_attackdash);
@@ -318,16 +318,16 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackhi3", ganon_attackhi3);
     agent.acmd("effect_attackhi3", ganon_attackhi3_eff);
-    agent.acmd("sound_attackhi3", ganon_attackhi3_snd);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
     agent.acmd("expression_attackhi3", ganon_attackhi3_exp);
 
     agent.acmd("game_attacklw3", ganon_attacklw3);
     agent.acmd("effect_attacklw3", ganon_attacklw3_eff);
-    agent.acmd("sound_attacklw3", ganon_attacklw3_snd);
+    agent.acmd("sound_attacklw3", sound_attacklw3);
     agent.acmd("expression_attacklw3", ganon_attacklw3_exp);
 
     agent.acmd("game_attacklw32", ganon_attacklw32);
     agent.acmd("effect_attacklw32", ganon_attacklw32_eff);
-    agent.acmd("sound_attacklw32", ganon_attacklw32_snd);
+    agent.acmd("sound_attacklw32", sound_attacklw32);
     agent.acmd("expression_attacklw32", ganon_attacklw32_exp);
 }

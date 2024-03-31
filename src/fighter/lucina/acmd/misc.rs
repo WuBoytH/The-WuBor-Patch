@@ -24,7 +24,7 @@ unsafe extern "C" fn lucina_run_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_run_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_run(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
@@ -77,6 +77,6 @@ unsafe extern "C" fn lucina_run_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("effect_run", lucina_run_eff);
-    agent.acmd("sound_run", lucina_run_snd);
+    agent.acmd("sound_run", sound_run);
     agent.acmd("expression_run", lucina_run_exp);
 }

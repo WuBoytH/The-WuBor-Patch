@@ -34,7 +34,7 @@ unsafe extern "C" fn rockman_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack11_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -88,7 +88,7 @@ unsafe extern "C" fn rockman_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
@@ -151,7 +151,7 @@ unsafe extern "C" fn rockman_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attack13_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_l"));
@@ -216,7 +216,7 @@ unsafe extern "C" fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_rockman_jump01"));
@@ -255,21 +255,21 @@ unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11melee", rockman_attack11);
     agent.acmd("effect_attack11melee", rockman_attack11_eff);
-    agent.acmd("sound_attack11melee", rockman_attack11_snd);
+    agent.acmd("sound_attack11melee", sound_attack11);
     agent.acmd("expression_attack11melee", rockman_attack11_exp);
 
     agent.acmd("game_attack12", rockman_attack12);
     agent.acmd("effect_attack12", rockman_attack12_eff);
-    agent.acmd("sound_attack12", rockman_attack12_snd);
+    agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", rockman_attack12_exp);
 
     agent.acmd("game_attack13", rockman_attack13);
     agent.acmd("effect_attack13", rockman_attack13_eff);
-    agent.acmd("sound_attack13", rockman_attack13_snd);
+    agent.acmd("sound_attack13", sound_attack13);
     agent.acmd("expression_attack13", rockman_attack13_exp);
 
     agent.acmd("game_attacks3melee", rockman_attacks3);
     agent.acmd("effect_attacks3melee", rockman_attacks3_eff);
-    agent.acmd("sound_attacks3melee", rockman_attacks3_snd);
+    agent.acmd("sound_attacks3melee", sound_attacks3);
     agent.acmd("expression_attacks3melee", rockman_attacks3_exp);
 }

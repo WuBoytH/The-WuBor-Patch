@@ -49,7 +49,7 @@ unsafe extern "C" fn samus_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_samus_smash_h01"));
@@ -88,6 +88,6 @@ unsafe extern "C" fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackhi3", samus_attackhi3);
     agent.acmd("effect_attackhi3", samus_attackhi3_eff);
-    agent.acmd("sound_attackhi3", samus_attackhi3_snd);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
     agent.acmd("expression_attackhi3", samus_attackhi3_exp);
 }

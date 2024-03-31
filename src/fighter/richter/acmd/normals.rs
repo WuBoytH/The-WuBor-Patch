@@ -40,7 +40,7 @@ unsafe extern "C" fn richter_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack11_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -95,7 +95,7 @@ unsafe extern "C" fn richter_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
@@ -152,7 +152,7 @@ unsafe extern "C" fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack12f(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_l"));
@@ -356,17 +356,17 @@ unsafe extern "C" fn richter_attacklw32(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", richter_attack11);
     agent.acmd("effect_attack11", richter_attack11_eff);
-    agent.acmd("sound_attack11", richter_attack11_snd);
+    agent.acmd("sound_attack11", sound_attack11);
     agent.acmd("expression_attack11", richter_attack11_exp);
 
     agent.acmd("game_attack12", richter_attack12);
     agent.acmd("effect_attack12", richter_attack12_eff);
-    agent.acmd("sound_attack12", richter_attack12_snd);
+    agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", richter_attack12_exp);
 
     agent.acmd("game_attack12f", richter_attack12f);
     agent.acmd("effect_attack12f", richter_attack12f_eff);
-    agent.acmd("sound_attack12f", richter_attack12f_snd);
+    agent.acmd("sound_attack12f", sound_attack12f);
     agent.acmd("expression_attack12f", richter_attack12f_exp);
 
     agent.acmd("game_attackdash", richter_attackdash);

@@ -31,7 +31,7 @@ unsafe extern "C" fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_chrom_rnd_attack"));
@@ -98,7 +98,7 @@ unsafe extern "C" fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_chrom_special_s04h"));
@@ -136,11 +136,11 @@ unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks4", chrom_attacks4);
     agent.acmd("effect_attacks4", chrom_attacks4_eff);
-    agent.acmd("sound_attacks4", chrom_attacks4_snd);
+    agent.acmd("sound_attacks4", sound_attacks4);
     agent.acmd("expression_attacks4", chrom_attacks4_exp);
 
     agent.acmd("game_attackhi4", chrom_attackhi4);
     agent.acmd("effect_attackhi4", chrom_attackhi4_eff);
-    agent.acmd("sound_attackhi4", chrom_attackhi4_snd);
+    agent.acmd("sound_attackhi4", sound_attackhi4);
     agent.acmd("expression_attackhi4", chrom_attackhi4_exp);
 }

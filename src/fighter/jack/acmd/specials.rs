@@ -317,7 +317,7 @@ unsafe extern "C" fn jack_specialnjump(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn jack_specialnjump_eff(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn jack_specialnjump_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     for _ in 0..4 {
         if macros::is_excute(agent) {
@@ -623,7 +623,7 @@ unsafe extern "C" fn jack_specials1_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specials1_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_jack_attackhard_l01"));
@@ -699,7 +699,7 @@ unsafe extern "C" fn jack_specialairs1_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairs1_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairs1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_jack_attackhard_l01"));
@@ -908,18 +908,18 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialnjump", jack_specialnjump);
     agent.acmd("effect_specialnjump", jack_specialnjump_eff);
-    agent.acmd("sound_specialnjump", jack_specialnjump_snd);
+    agent.acmd("sound_specialnjump", sound_specialnjump);
 
     agent.acmd("game_specialairnshoot", jack_specialairnshoot);
 
     agent.acmd("game_specials1", jack_specials1);
     agent.acmd("effect_specials1", jack_specials1_eff);
-    agent.acmd("sound_specials1", jack_specials1_snd);
+    agent.acmd("sound_specials1", sound_specials1);
     agent.acmd("expression_specials1", jack_specials1_exp);
 
     agent.acmd("game_specialairs1", jack_specialairs1);
     agent.acmd("effect_specialairs1", jack_specialairs1_eff);
-    agent.acmd("sound_specialairs1", jack_specialairs1_snd);
+    agent.acmd("sound_specialairs1", sound_specialairs1);
     agent.acmd("expression_specialairs1", jack_specialairs1_exp);
 
     agent.acmd("game_specialairhi", jack_specialairhi);

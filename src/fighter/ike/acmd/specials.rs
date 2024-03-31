@@ -110,7 +110,7 @@ unsafe extern "C" fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -279,7 +279,7 @@ unsafe extern "C" fn ike_specialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialairnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -322,7 +322,7 @@ unsafe extern "C" fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
 
 // Special S
 
-unsafe extern "C" fn ike_specialsdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsdash(agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));
     // }
@@ -393,7 +393,7 @@ unsafe extern "C" fn ike_specialsattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));
         macros::PLAY_SE(agent, Hash40::new("se_ike_special_s02"));
@@ -404,23 +404,23 @@ unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialnend", ike_specialnend);
     agent.acmd("effect_specialnend", ike_specialnend_eff);
-    agent.acmd("sound_specialnend", ike_specialnend_snd);
+    agent.acmd("sound_specialnend", sound_specialnend);
     agent.acmd("expression_specialnend", ike_specialnend_exp);
 
     agent.acmd("game_specialairnend", ike_specialairnend);
     agent.acmd("effect_specialairnend", ike_specialairnend_eff);
-    agent.acmd("sound_specialairnend", ike_specialairnend_snd);
+    agent.acmd("sound_specialairnend", sound_specialairnend);
     agent.acmd("expression_specialairnend", ike_specialairnend_exp);
 
-    agent.acmd("sound_specialsdash", ike_specialsdash_snd);
+    agent.acmd("sound_specialsdash", sound_specialsdash);
 
     agent.acmd("game_specialsend", ike_specialsend);
 
     agent.acmd("game_specialsattack", ike_specialsattack);
     agent.acmd("effect_specialsattack", ike_specialsattack_eff);
-    agent.acmd("sound_specialsattack", ike_specialsattack_snd);
+    agent.acmd("sound_specialsattack", sound_specialsattack);
 
     agent.acmd("game_specialairsattack", ike_specialsattack);
     agent.acmd("effect_specialairsattack", ike_specialsattack_eff);
-    agent.acmd("sound_specialairsattack", ike_specialsattack_snd);
+    agent.acmd("sound_specialairsattack", sound_specialsattack);
 }

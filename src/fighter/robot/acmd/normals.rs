@@ -132,7 +132,7 @@ unsafe extern "C" fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_robot_rnd_attack"));
@@ -179,6 +179,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attacklw3", robot_attacklw3);
     agent.acmd("effect_attacklw3", robot_attacklw3_eff);
-    agent.acmd("sound_attacklw3", robot_attacklw3_snd);
+    agent.acmd("sound_attacklw3", sound_attacklw3);
     agent.acmd("expression_attacklw3", robot_attacklw3_exp);
 }

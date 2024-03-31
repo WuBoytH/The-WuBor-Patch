@@ -39,7 +39,7 @@ unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
@@ -157,7 +157,7 @@ unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairnmelee", rockman_attackairn);
     agent.acmd("effect_attackairnmelee", rockman_attackairn_eff);
-    agent.acmd("sound_attackairnmelee", rockman_attackairn_snd);
+    agent.acmd("sound_attackairnmelee", sound_attackairn);
     agent.acmd("expression_attackairnmelee", rockman_attackairn_exp);
 
     agent.acmd("game_attackairf", rockman_attackairf);

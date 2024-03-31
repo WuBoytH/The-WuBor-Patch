@@ -87,7 +87,7 @@ unsafe extern "C" fn ganon_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ganon_appeal_h01"));
@@ -299,11 +299,11 @@ unsafe extern "C" fn ganon_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", ganon_specialn);
     agent.acmd("effect_specialn", ganon_specialn_eff);
-    agent.acmd("sound_specialn", ganon_specialn_snd);
+    agent.acmd("sound_specialn", sound_specialn);
 
     agent.acmd("game_specialairn", ganon_specialn);
     agent.acmd("effect_specialairn", ganon_specialn_eff);
-    agent.acmd("sound_specialairn", ganon_specialn_snd);
+    agent.acmd("sound_specialairn", sound_specialn);
 
     agent.acmd("game_specialsstart", ganon_specialsstart);
 

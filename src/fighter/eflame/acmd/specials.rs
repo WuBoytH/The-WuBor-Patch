@@ -226,7 +226,7 @@ unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -249,7 +249,7 @@ unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairlwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -322,11 +322,11 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallwattack", eflame_speciallwattack);
     agent.acmd("effect_speciallwattack", eflame_speciallwattack_eff);
-    agent.acmd("sound_speciallwattack", eflame_speciallwattack_snd);
+    agent.acmd("sound_speciallwattack", sound_speciallwattack);
     agent.acmd("expression_speciallwattack", eflame_speciallwattack_exp);
 
     agent.acmd("game_specialairlwattack", eflame_speciallwattack);
     agent.acmd("effect_specialairlwattack", eflame_speciallwattack_eff);
-    agent.acmd("sound_specialairlwattack", eflame_specialairlwattack_snd);
+    agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
     agent.acmd("expression_specialairlwattack", eflame_speciallwattack_exp);
 }

@@ -71,7 +71,7 @@ unsafe extern "C" fn pikachu_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_pikachu_rnd_attack"));
@@ -127,7 +127,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairb", pikachu_attackairb);
     agent.acmd("effect_attackairb", pikachu_attackairb_eff);
-    agent.acmd("sound_attackairb", pikachu_attackairb_snd);
+    agent.acmd("sound_attackairb", sound_attackairb);
     agent.acmd("expression_attackairb", pikachu_attackairb_exp);
 
     agent.acmd("game_landingairb", pikachu_landingairb);

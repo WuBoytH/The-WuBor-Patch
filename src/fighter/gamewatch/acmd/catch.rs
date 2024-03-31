@@ -12,7 +12,7 @@ unsafe extern "C" fn gamewatch_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_catchattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_gamewatch_wave02_lo"));
@@ -21,5 +21,5 @@ unsafe extern "C" fn gamewatch_catchattack_snd(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", gamewatch_catchattack);
-    agent.acmd("sound_catchattack", gamewatch_catchattack_snd);
+    agent.acmd("sound_catchattack", sound_catchattack);
 }

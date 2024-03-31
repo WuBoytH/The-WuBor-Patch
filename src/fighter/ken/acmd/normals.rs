@@ -42,7 +42,7 @@ unsafe extern "C" fn ken_attack11w_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack11w_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack11w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_kick_s"));
@@ -93,7 +93,7 @@ unsafe extern "C" fn ken_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_kick_m"));
@@ -136,7 +136,7 @@ unsafe extern "C" fn ken_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attack13_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_kick_l"));
@@ -220,7 +220,7 @@ unsafe extern "C" fn ken_attacks3w_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacks3w_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_punch_m"));
@@ -273,7 +273,7 @@ unsafe extern "C" fn ken_attacks3s2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacks3s2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3s2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_punch_m"));
@@ -384,7 +384,7 @@ unsafe extern "C" fn ken_attackhi3w_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attackhi3w_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_punch_s"));
@@ -484,7 +484,7 @@ unsafe extern "C" fn ken_attacklw3w_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ken_attacklw3w_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ken_swing_kick_s"));
@@ -513,29 +513,29 @@ unsafe extern "C" fn ken_attacklw3w_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11w", ken_attack11w);
     agent.acmd("effect_attack11w", ken_attack11w_eff);
-    agent.acmd("sound_attack11w", ken_attack11w_snd);
+    agent.acmd("sound_attack11w", sound_attack11w);
     agent.acmd("expression_attack11w", ken_attack11w_exp);
 
     agent.acmd("game_attack12", ken_attack12);
     agent.acmd("effect_attack12", ken_attack12_eff);
-    agent.acmd("sound_attack12", ken_attack12_snd);
+    agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", ken_attack12_exp);
 
     agent.acmd("game_attack13", ken_attack13);
     agent.acmd("effect_attack13", ken_attack13_eff);
-    agent.acmd("sound_attack13", ken_attack13_snd);
+    agent.acmd("sound_attack13", sound_attack13);
     agent.acmd("expression_attack13", ken_attack13_exp);
 
     agent.acmd("game_attack11s", ken_attack11s);
 
     agent.acmd("game_attacks3w", ken_attacks3w);
     agent.acmd("effect_attacks3w", ken_attacks3w_eff);
-    agent.acmd("sound_attacks3w", ken_attacks3w_snd);
+    agent.acmd("sound_attacks3w", sound_attacks3w);
     agent.acmd("expression_attacks3w", ken_attacks3w_exp);
 
     agent.acmd("game_attacks3s2", ken_attacks3s2);
     agent.acmd("effect_attacks3s2", ken_attacks3s2_eff);
-    agent.acmd("sound_attacks3s2", ken_attacks3s2_snd);
+    agent.acmd("sound_attacks3s2", sound_attacks3s2);
     agent.acmd("expression_attacks3s2", ken_attacks3s2_exp);
 
     agent.acmd("game_attacks3s", ken_attacks3s);
@@ -543,13 +543,13 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackhi3w", ken_attackhi3w);
     agent.acmd("effect_attackhi3w", ken_attackhi3w_eff);
-    agent.acmd("sound_attackhi3w", ken_attackhi3w_snd);
+    agent.acmd("sound_attackhi3w", sound_attackhi3w);
     agent.acmd("expression_attackhi3w", ken_attackhi3w_exp);
 
     agent.acmd("game_attackhi3s", ken_attackhi3s);
 
     agent.acmd("game_attacklw3w", ken_attacklw3w);
     agent.acmd("effect_attacklw3w", ken_attacklw3w_eff);
-    agent.acmd("sound_attacklw3w", ken_attacklw3w_snd);
+    agent.acmd("sound_attacklw3w", sound_attacklw3w);
     agent.acmd("expression_attacklw3w", ken_attacklw3w_exp);
 }

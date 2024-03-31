@@ -259,7 +259,7 @@ unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack142(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_demon_swing_short02"));
@@ -311,6 +311,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attack142", demon_attack142);
     agent.acmd("effect_attack142", demon_attack142_eff);
-    agent.acmd("sound_attack142", demon_attack142_snd);
+    agent.acmd("sound_attack142", sound_attack142);
     agent.acmd("expression_attack142", demon_attack142_exp);
 }

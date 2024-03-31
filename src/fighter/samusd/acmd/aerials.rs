@@ -62,7 +62,7 @@ unsafe extern "C" fn samusd_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_STATUS(agent, Hash40::new("se_samusd_special_n01"));
@@ -134,7 +134,7 @@ unsafe extern "C" fn samusd_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s01"));
@@ -287,12 +287,12 @@ unsafe extern "C" fn samusd_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", samusd_attackairn);
     agent.acmd("effect_attackairn", samusd_attackairn_eff);
-    agent.acmd("sound_attackairn", samusd_attackairn_snd);
+    agent.acmd("sound_attackairn", sound_attackairn);
     agent.acmd("expression_attackairn", samusd_attackairn_exp);
 
     agent.acmd("game_attackairf", samusd_attackairf);
     agent.acmd("effect_attackairf", samusd_attackairf_eff);
-    agent.acmd("sound_attackairf", samusd_attackairf_snd);
+    agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", samusd_attackairf_exp);
 
     agent.acmd("game_attackairb", samusd_attackairb);

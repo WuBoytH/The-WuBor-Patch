@@ -80,7 +80,7 @@ unsafe extern "C" fn dolly_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_swing_m"));
@@ -258,7 +258,7 @@ unsafe extern "C" fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_s01"));
@@ -341,7 +341,7 @@ unsafe extern "C" fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_s01"));
@@ -470,7 +470,7 @@ unsafe extern "C" fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_l01"));
@@ -505,7 +505,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attack12", dolly_attack12);
     agent.acmd("effect_attack12", dolly_attack12_eff);
-    agent.acmd("sound_attack12", dolly_attack12_snd);
+    agent.acmd("sound_attack12", sound_attack12);
     agent.acmd("expression_attack12", dolly_attack12_exp);
 
     agent.acmd("game_attack13", dolly_attack13);
@@ -516,12 +516,12 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attacks3hi", dolly_attacks3hi);
     agent.acmd("effect_attacks3hi", dolly_attacks3hi_eff);
-    agent.acmd("sound_attacks3hi", dolly_attacks3hi_snd);
+    agent.acmd("sound_attacks3hi", sound_attacks3hi);
     agent.acmd("expression_attacks3hi", dolly_attacks3hi_exp);
 
     agent.acmd("game_attacks3lw", dolly_attacks3lw);
     agent.acmd("effect_attacks3lw", dolly_attacks3lw_eff);
-    agent.acmd("sound_attacks3lw", dolly_attacks3lw_snd);
+    agent.acmd("sound_attacks3lw", sound_attacks3lw);
     agent.acmd("expression_attacks3lw", dolly_attacks3lw_exp);
 
     agent.acmd("game_attackhi3", dolly_attackhi3);
@@ -530,6 +530,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attacklw32", dolly_attacklw32);
     agent.acmd("effect_attacklw32", dolly_attacklw32_eff);
-    agent.acmd("sound_attacklw32", dolly_attacklw32_snd);
+    agent.acmd("sound_attacklw32", sound_attacklw32);
     agent.acmd("expression_attacklw32", dolly_attacklw32_exp);
 }

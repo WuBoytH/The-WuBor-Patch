@@ -122,7 +122,7 @@ unsafe extern "C" fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_swing_kick_l"));
@@ -297,7 +297,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackairf", ryu_attackairf);
     agent.acmd("effect_attackairf", ryu_attackairf_eff);
-    agent.acmd("sound_attackairf", ryu_attackairf_snd);
+    agent.acmd("sound_attackairf", sound_attackairf);
     agent.acmd("expression_attackairf", ryu_attackairf_exp);
 
     agent.acmd("game_attackairb", ryu_attackairb);

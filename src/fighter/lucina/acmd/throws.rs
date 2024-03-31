@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn lucina_throwhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.module_accessor, yu::instance::flag::HEROIC_GRAB) {
             macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 60, 40, 20, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -35,5 +35,5 @@ unsafe extern "C" fn lucina_throwhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_throwhi", lucina_throwhi);
+    agent.acmd("game_throwhi", game_throwhi);
 }

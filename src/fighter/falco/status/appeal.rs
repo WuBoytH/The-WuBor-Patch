@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn falco_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = fighter.status_Appeal();

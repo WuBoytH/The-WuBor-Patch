@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::change_helper::*;
 
 pub unsafe extern "C" fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kamui_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_SPEARHAND, Hash40::new("attack_11"), false, -1.0);
@@ -25,7 +25,7 @@ unsafe extern "C" fn kamui_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     let mut rehit = 0;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         rehit = 1;
@@ -55,7 +55,7 @@ unsafe extern "C" fn kamui_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -91,7 +91,7 @@ unsafe extern "C" fn kamui_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -124,7 +124,7 @@ unsafe extern "C" fn kamui_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.87);
 }
 
-unsafe extern "C" fn kamui_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -169,7 +169,7 @@ unsafe extern "C" fn kamui_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -201,15 +201,15 @@ unsafe extern "C" fn kamui_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", kamui_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", kamui_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", kamui_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attacks3", kamui_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", kamui_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", kamui_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

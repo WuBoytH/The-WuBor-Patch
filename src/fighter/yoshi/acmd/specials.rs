@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn yoshi_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.1);
     frame(agent.lua_state_agent, 15.0);
@@ -34,7 +34,7 @@ unsafe extern "C" fn yoshi_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_specialsloop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 43, 5.5, 0.0, 5.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 32, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         JostleModule::set_status(agent.module_accessor, false);
@@ -42,9 +42,9 @@ unsafe extern "C" fn yoshi_specialsloop(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", yoshi_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", yoshi_specialn);
+    agent.acmd("game_specialairn", game_specialn);
 
-    agent.acmd("game_specialsloop", yoshi_specialsloop);
+    agent.acmd("game_specialsloop", game_specialsloop);
 }

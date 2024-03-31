@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn szerosuit_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, false, -1);
         ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -39,5 +39,5 @@ unsafe extern "C" fn szerosuit_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_aircatch", szerosuit_aircatch);
+    agent.acmd("game_aircatch", game_aircatch);
 }

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn shizue_slingshot_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *WEAPON_SHIZUE_SLINGSHOT_GENERATE_ARTICLE_BULLET, false, -1);
     }
@@ -13,7 +13,7 @@ unsafe extern "C" fn shizue_slingshot_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_slingshot_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *WEAPON_SHIZUE_SLINGSHOT_GENERATE_ARTICLE_BULLET, false, -1);
     }
@@ -27,7 +27,7 @@ unsafe extern "C" fn shizue_slingshot_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", shizue_slingshot_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", shizue_slingshot_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 }

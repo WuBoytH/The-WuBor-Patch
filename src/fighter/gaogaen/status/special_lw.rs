@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 unsafe extern "C" fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {

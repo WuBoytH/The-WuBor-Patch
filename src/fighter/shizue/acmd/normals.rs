@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn shizue_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_PICOPICOHAMMER, false, -1);
     }
@@ -27,7 +27,7 @@ unsafe extern "C" fn shizue_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_UMBRELLA, false, -1);
     }
@@ -51,7 +51,7 @@ unsafe extern "C" fn shizue_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shizue_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 4.0);
@@ -75,9 +75,9 @@ unsafe extern "C" fn shizue_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", shizue_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attacks3", shizue_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacklw3", shizue_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn rockman_attack_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS4()

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 pub unsafe extern "C" fn jack_doyle_entry_main(weapon: &mut L2CWeaponCommon) -> L2CValue {

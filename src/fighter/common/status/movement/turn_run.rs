@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnRun_Sub)]
 unsafe extern "C" fn status_turnrun_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, _param_2: L2CValue) {

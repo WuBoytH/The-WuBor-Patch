@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kamui_specialsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsjump(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -23,7 +23,7 @@ unsafe extern "C" fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -83,7 +83,7 @@ unsafe extern "C" fn kamui_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-unsafe extern "C" fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
         ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -101,13 +101,13 @@ unsafe extern "C" fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsjump", kamui_specialsjump);
+    agent.acmd("game_specialsjump", game_specialsjump);
 
-    agent.acmd("game_specialhi", kamui_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", kamui_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 
-    agent.acmd("game_speciallwhit", kamui_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit);
 
-    agent.acmd("game_specialairlwhit", kamui_speciallwhit);
+    agent.acmd("game_specialairlwhit", game_speciallwhit);
 }

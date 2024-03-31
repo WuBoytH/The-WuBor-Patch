@@ -1,8 +1,8 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn samusd_supermissile_ready(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_ready(_agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_ready", samusd_supermissile_ready);
+    agent.acmd("game_ready", game_ready);
 }

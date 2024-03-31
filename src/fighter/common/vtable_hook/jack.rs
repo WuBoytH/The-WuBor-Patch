@@ -1,7 +1,6 @@
 #![allow(non_snake_case)]
 
-use crate::imports::status_imports::*;
-use wubor_utils::app::*;
+use crate::imports::*;
 
 #[skyline::hook(offset = 0xb36ee0)]
 pub unsafe extern "C" fn jack_damage_callback(_vtable: u64, _fighter: &mut Fighter, _event: u64) {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn koopa_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
@@ -19,7 +19,7 @@ unsafe extern "C" fn koopa_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -34,7 +34,7 @@ unsafe extern "C" fn koopa_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 42, 50, 0, 85, 7.0, 0.0, 9.0, 12.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -52,9 +52,9 @@ unsafe extern "C" fn koopa_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", koopa_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", koopa_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attackdash", koopa_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 }

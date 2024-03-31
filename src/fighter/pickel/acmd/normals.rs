@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn pickel_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -63,7 +63,7 @@ unsafe extern "C" fn pickel_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pickel_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -153,7 +153,7 @@ unsafe extern "C" fn pickel_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pickel_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -229,9 +229,9 @@ unsafe extern "C" fn pickel_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackdash", pickel_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", pickel_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", pickel_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

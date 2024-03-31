@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ryu_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE);

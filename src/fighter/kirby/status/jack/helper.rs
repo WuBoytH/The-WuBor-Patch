@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn kirby_jack_special_n_substatus_stick_check(fighter: &mut L2CFighterCommon) {
     let stick_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_STICK_FRAME);

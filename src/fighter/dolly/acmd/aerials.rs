@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn dolly_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -29,7 +29,7 @@ unsafe extern "C" fn dolly_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -68,7 +68,7 @@ unsafe extern "C" fn dolly_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -109,7 +109,7 @@ unsafe extern "C" fn dolly_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -145,14 +145,14 @@ unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 16, 5, 0, 0, 0, 1.0, true, *EF_FLIP_YZ, 0.5);
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_STATUS(agent, Hash40::new("se_dolly_attackair_h01"));
@@ -160,7 +160,7 @@ unsafe extern "C" fn dolly_attackairhi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -178,7 +178,7 @@ unsafe extern "C" fn dolly_attackairhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -209,16 +209,16 @@ unsafe extern "C" fn dolly_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", dolly_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairf", dolly_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", dolly_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", dolly_attackairhi);
-    agent.acmd("effect_attackairhi", dolly_attackairhi_eff);
-    agent.acmd("sound_attackairhi", dolly_attackairhi_snd);
-    agent.acmd("expression_attackairhi", dolly_attackairhi_exp);
+    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
+    agent.acmd("sound_attackairhi", sound_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
 
-    agent.acmd("game_attackairlw", dolly_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

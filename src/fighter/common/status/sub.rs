@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use wubor_utils::controls::*;
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_is_dive)]

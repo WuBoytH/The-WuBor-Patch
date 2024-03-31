@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn sonic_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::shoot_exist(agent.module_accessor, *FIGHTER_SONIC_GENERATE_ARTICLE_GIMMICKJUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
@@ -11,5 +11,5 @@ unsafe extern "C" fn sonic_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", sonic_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 }

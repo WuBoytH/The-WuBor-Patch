@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn edge_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);
@@ -8,7 +8,7 @@ unsafe extern "C" fn edge_specialhistart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 22.0 / 17.0);
 }
 
-unsafe extern "C" fn edge_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -26,7 +26,7 @@ unsafe extern "C" fn edge_specialhi1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_specialairhi2end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 4.0, 3.0);
     }
@@ -68,10 +68,10 @@ unsafe extern "C" fn edge_specialairhi2end(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", edge_specialhistart);
-    agent.acmd("game_specialairhistart", edge_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialhi1", edge_specialhi1);
+    agent.acmd("game_specialhi1", game_specialhi1);
 
-    agent.acmd("game_specialairhi2end", edge_specialairhi2end);
+    agent.acmd("game_specialairhi2end", game_specialairhi2end);
 }

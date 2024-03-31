@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn gekkouga_special_hi_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()

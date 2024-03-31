@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::frame::common_fighter_frame,
     super::agent_init::*
 };
@@ -85,7 +85,7 @@ unsafe extern "C" fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn dolly_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     // dolly_reset_vars(fighter);
     common_fighter_frame(fighter);
     dolly_super_special_aura(fighter);
@@ -93,5 +93,5 @@ unsafe extern "C" fn dolly_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, dolly_frame);
+    agent.on_line(smashline::Main, on_main);
 }

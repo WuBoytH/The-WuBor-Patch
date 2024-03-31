@@ -1,26 +1,22 @@
-use {
-    smash::{
-        phx::{Hash40, Vector3f},
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    super::vl
-};
+use crate::imports::*;
+use super::vl;
 
-pub unsafe extern "C" fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
-    let meter_max = VarModule::get_float(module_accessor, yu::instance::float::SP_GAUGE_MAX);
-    let meter_const = yu::instance::float::SP_GAUGE;
-    if !VarModule::is_flag(module_accessor, yu::instance::flag::SHADOW_FRENZY) {
-        if !VarModule::is_flag(module_accessor, yu::status::flag::IS_EX) {
-            if !shadow_id(module_accessor) {
-                amount *= 0.75;
+#[no_mangle]
+pub extern "C" fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, amount: f32) {
+    unsafe {
+        let meter_max = VarModule::get_float(module_accessor, yu::instance::float::SP_GAUGE_MAX);
+        let meter_const = yu::instance::float::SP_GAUGE;
+        if !VarModule::is_flag(module_accessor, yu::instance::flag::SHADOW_FRENZY) {
+            if !VarModule::is_flag(module_accessor, yu::status::flag::IS_EX) {
+                let mut amount_add = amount;
+                if !shadow_id(module_accessor) {
+                    amount_add *= 0.75;
+                }
+                if VarModule::get_int(module_accessor, yu::instance::int::SP_GAIN_PENALTY) > 0 {
+                    amount_add *= 0.1;
+                }
+                FGCModule::update_meter(module_accessor, amount_add, meter_max, meter_const);
             }
-            if VarModule::get_int(module_accessor, yu::instance::int::SP_GAIN_PENALTY) > 0 {
-                amount *= 0.1;
-            }
-            FGCModule::update_meter(module_accessor, amount, meter_max, meter_const);
         }
     }
 }
@@ -223,22 +219,25 @@ pub unsafe extern "C" fn sp_diff_checker(module_accessor: *mut BattleObjectModul
     }
 }
 
-pub unsafe extern "C" fn handle_slow(
+#[no_mangle]
+pub extern "C" fn handle_slow(
     module_accessor: *mut BattleObjectModuleAccessor,
     defender_boma: *mut BattleObjectModuleAccessor
 ) {
-    let slow_mul;
-    let frames;
-    if VarModule::is_flag(module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
-        slow_mul = vl::param_special_lw::onemore_slowdown_mul;
-        frames = vl::param_special_lw::onemore_slowdown_frame;
-    }
-    else {
-        slow_mul = vl::param_special_lw::onemore_slowdown_mul_on_hit;
-        frames = vl::param_special_lw::onemore_slowdown_frame_on_hit;
-    }
-    let slow_frame = SlowModule::frame(defender_boma, 0) as i32;
-    if slow_frame <= frames {
-        SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    unsafe {
+        let slow_mul;
+        let frames;
+        if VarModule::is_flag(module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
+            slow_mul = vl::param_special_lw::onemore_slowdown_mul;
+            frames = vl::param_special_lw::onemore_slowdown_frame;
+        }
+        else {
+            slow_mul = vl::param_special_lw::onemore_slowdown_mul_on_hit;
+            frames = vl::param_special_lw::onemore_slowdown_frame_on_hit;
+        }
+        let slow_frame = SlowModule::frame(defender_boma, 0) as i32;
+        if slow_frame <= frames {
+            SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
     }
 }

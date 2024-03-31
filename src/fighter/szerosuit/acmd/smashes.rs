@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn szerosuit_attacks4hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 2.0, 7.0, 5.5, 6.0);
@@ -23,7 +23,7 @@ unsafe extern "C" fn szerosuit_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("footl"), 8.0, 13, 106, 0, 28, 3.2, 3.5, -0.2, -0.2, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
@@ -39,7 +39,7 @@ unsafe extern "C" fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4hi", szerosuit_attacks4hi);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
 
-    agent.acmd("game_attacks4lw", szerosuit_attacks4lw);
+    agent.acmd("game_attacks4lw", game_attacks4lw);
 }

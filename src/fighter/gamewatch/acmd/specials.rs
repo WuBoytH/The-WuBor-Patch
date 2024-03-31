@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn gamewatch_specials2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -16,7 +16,7 @@ unsafe extern "C" fn gamewatch_specials2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -32,7 +32,7 @@ unsafe extern "C" fn gamewatch_specials3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -48,7 +48,7 @@ unsafe extern "C" fn gamewatch_specials4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials5(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials5(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -74,7 +74,7 @@ unsafe extern "C" fn gamewatch_specials5(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials7(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials7(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -90,7 +90,7 @@ unsafe extern "C" fn gamewatch_specials7(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials8(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials8(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -106,7 +106,7 @@ unsafe extern "C" fn gamewatch_specials8(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specials9(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials9(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_S_FLAG_FIX_PANEL);
@@ -122,7 +122,7 @@ unsafe extern "C" fn gamewatch_specials9(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.25);
     frame(agent.lua_state_agent, 5.0);
@@ -166,33 +166,33 @@ unsafe extern "C" fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials2", gamewatch_specials2);
+    agent.acmd("game_specials2", game_specials2);
 
-    agent.acmd("game_specialairs2", gamewatch_specials2);
+    agent.acmd("game_specialairs2", game_specials2);
 
-    agent.acmd("game_specials3", gamewatch_specials3);
+    agent.acmd("game_specials3", game_specials3);
 
-    agent.acmd("game_specialairs3", gamewatch_specials3);
+    agent.acmd("game_specialairs3", game_specials3);
 
-    agent.acmd("game_specials4", gamewatch_specials4);
+    agent.acmd("game_specials4", game_specials4);
 
-    agent.acmd("game_specialairs4", gamewatch_specials4);
+    agent.acmd("game_specialairs4", game_specials4);
 
-    agent.acmd("game_specials5", gamewatch_specials5);
+    agent.acmd("game_specials5", game_specials5);
 
-    agent.acmd("game_specialairs5", gamewatch_specials5);
+    agent.acmd("game_specialairs5", game_specials5);
 
-    agent.acmd("game_specials7", gamewatch_specials7);
+    agent.acmd("game_specials7", game_specials7);
 
-    agent.acmd("game_specialairs7", gamewatch_specials7);
+    agent.acmd("game_specialairs7", game_specials7);
 
-    agent.acmd("game_specials8", gamewatch_specials8);
+    agent.acmd("game_specials8", game_specials8);
 
-    agent.acmd("game_specialairs8", gamewatch_specials8);
+    agent.acmd("game_specialairs8", game_specials8);
 
-    agent.acmd("game_specials9", gamewatch_specials9);
+    agent.acmd("game_specials9", game_specials9);
 
-    agent.acmd("game_specialairs9", gamewatch_specials9);
+    agent.acmd("game_specialairs9", game_specials9);
 
-    agent.acmd("game_specialhi", gamewatch_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 }

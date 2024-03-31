@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn luigi_catch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, true);
@@ -18,10 +18,10 @@ unsafe extern "C" fn luigi_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catch_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catch(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn luigi_catch_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_05"));
@@ -32,7 +32,7 @@ unsafe extern "C" fn luigi_catch_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catch_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -42,7 +42,7 @@ unsafe extern "C" fn luigi_catch_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, true);
@@ -60,7 +60,7 @@ unsafe extern "C" fn luigi_catchdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catchdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_05"));
@@ -79,7 +79,7 @@ unsafe extern "C" fn luigi_catchdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -89,7 +89,7 @@ unsafe extern "C" fn luigi_catchdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchturn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, true);
@@ -107,7 +107,7 @@ unsafe extern "C" fn luigi_catchturn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchturn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_catchturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_05"));
@@ -118,7 +118,7 @@ unsafe extern "C" fn luigi_catchturn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchturn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchturn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
     }
@@ -128,7 +128,7 @@ unsafe extern "C" fn luigi_catchturn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("head"), 3.2, 361, 100, 40, 0, 4.5, 3.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HEAD);
@@ -140,14 +140,14 @@ unsafe extern "C" fn luigi_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("head"), 3, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, 0.7);
     }
 }
 
-unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
@@ -155,20 +155,20 @@ unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catch", luigi_catch);
-    agent.acmd("effect_catch", luigi_catch_eff);
-    agent.acmd("sound_catch", luigi_catch_snd);
-    agent.acmd("expression_catch", luigi_catch_exp);
+    agent.acmd("game_catch", game_catch);
+    agent.acmd("effect_catch", effect_catch);
+    agent.acmd("sound_catch", sound_catch);
+    agent.acmd("expression_catch", expression_catch);
 
-    agent.acmd("game_catchdash", luigi_catchdash);
-    agent.acmd("sound_catchdash", luigi_catchdash_snd);
-    agent.acmd("expression_catchdash", luigi_catchdash_exp);
+    agent.acmd("game_catchdash", game_catchdash);
+    agent.acmd("sound_catchdash", sound_catchdash);
+    agent.acmd("expression_catchdash", expression_catchdash);
 
-    agent.acmd("game_catchturn", luigi_catchturn);
-    agent.acmd("sound_catchturn", luigi_catchturn_snd);
-    agent.acmd("expression_catchturn", luigi_catchturn_exp);
+    agent.acmd("game_catchturn", game_catchturn);
+    agent.acmd("sound_catchturn", sound_catchturn);
+    agent.acmd("expression_catchturn", expression_catchturn);
 
-    agent.acmd("game_catchattack", luigi_catchattack);
-    agent.acmd("effect_catchattack", luigi_catchattack_eff);
-    agent.acmd("expression_catchattack", luigi_catchattack_exp);
+    agent.acmd("game_catchattack", game_catchattack);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

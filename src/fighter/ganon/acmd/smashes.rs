@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn ganon_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -27,7 +27,7 @@ unsafe extern "C" fn ganon_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -48,7 +48,7 @@ unsafe extern "C" fn ganon_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -81,9 +81,9 @@ unsafe extern "C" fn ganon_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", ganon_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 
-    agent.acmd("game_attackhi4", ganon_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
 
-    agent.acmd("game_attacklw4", ganon_attacklw4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn ryu_guard_damage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_GuardDamage_common(true.into());

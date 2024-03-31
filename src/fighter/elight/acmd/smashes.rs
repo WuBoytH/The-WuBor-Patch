@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn elight_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -64,7 +64,7 @@ unsafe extern "C" fn elight_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.91);
 }
 
-unsafe extern "C" fn elight_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -157,7 +157,7 @@ unsafe extern "C" fn elight_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", elight_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 
-    agent.acmd("game_attackhi4", elight_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
 }

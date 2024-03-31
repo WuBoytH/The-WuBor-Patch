@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::frame::common_fighter_frame,
     wubor_utils::cancels::*
 };
@@ -33,12 +33,12 @@ unsafe extern "C" fn jack_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn jack_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     jack_throw_cancel(fighter);
     jack_training_tools(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, jack_frame);
+    agent.on_line(smashline::Main, on_main);
 }

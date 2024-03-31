@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR);

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]

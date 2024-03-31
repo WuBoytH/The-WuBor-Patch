@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn eflame_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -35,7 +35,7 @@ unsafe extern "C" fn eflame_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack100end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::status::flag::SPECIAL_CANCEL);
@@ -51,7 +51,7 @@ unsafe extern "C" fn eflame_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -106,7 +106,7 @@ unsafe extern "C" fn eflame_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -188,11 +188,11 @@ unsafe extern "C" fn eflame_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", eflame_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack100end", eflame_attack100end);
+    agent.acmd("game_attack100end", game_attack100end);
 
-    agent.acmd("game_attacks3", eflame_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", eflame_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn luigi_remove_thunderhand_eff(fighter: &mut L2CFighterCommon) {
     if ![

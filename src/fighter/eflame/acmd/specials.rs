@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn eflame_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -27,7 +27,7 @@ unsafe extern "C" fn eflame_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 85, 100, 64, 16, 2.5, 0.0, 18.0, 5.0, Some(0.0), Some(2.5), Some(5.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -109,7 +109,7 @@ unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -162,7 +162,7 @@ unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
     }
@@ -226,7 +226,7 @@ unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -249,7 +249,7 @@ unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairlwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -268,7 +268,7 @@ unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ControlModule::set_rumble(
@@ -310,23 +310,23 @@ unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials", eflame_specials);
+    agent.acmd("game_specials", game_specials);
 
-    agent.acmd("game_specialairs", eflame_specials);
+    agent.acmd("game_specialairs", game_specials);
 
-    agent.acmd("game_specialsflick", eflame_specials);
+    agent.acmd("game_specialsflick", game_specials);
 
-    agent.acmd("game_specialairsflick", eflame_specials);
+    agent.acmd("game_specialairsflick", game_specials);
 
-    agent.acmd("game_specialairhijump", eflame_specialairhijump);
+    agent.acmd("game_specialairhijump", game_specialairhijump);
 
-    agent.acmd("game_speciallwattack", eflame_speciallwattack);
-    agent.acmd("effect_speciallwattack", eflame_speciallwattack_eff);
-    agent.acmd("sound_speciallwattack", eflame_speciallwattack_snd);
-    agent.acmd("expression_speciallwattack", eflame_speciallwattack_exp);
+    agent.acmd("game_speciallwattack", game_speciallwattack);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack);
+    agent.acmd("sound_speciallwattack", sound_speciallwattack);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack);
 
-    agent.acmd("game_specialairlwattack", eflame_speciallwattack);
-    agent.acmd("effect_specialairlwattack", eflame_speciallwattack_eff);
-    agent.acmd("sound_specialairlwattack", eflame_specialairlwattack_snd);
-    agent.acmd("expression_specialairlwattack", eflame_speciallwattack_exp);
+    agent.acmd("game_specialairlwattack", game_speciallwattack);
+    agent.acmd("effect_specialairlwattack", effect_speciallwattack);
+    agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
+    agent.acmd("expression_specialairlwattack", expression_speciallwattack);
 }

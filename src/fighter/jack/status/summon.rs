@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

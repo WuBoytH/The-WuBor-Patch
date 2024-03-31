@@ -1,12 +1,4 @@
-use {
-    smash::{
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    wubor_utils::vars::*
-};
+use crate::imports::*;
 
 #[skyline::hook(offset = 0x1286ae0)]
 pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {

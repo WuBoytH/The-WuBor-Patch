@@ -1,7 +1,7 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 use super::super::helper::*;
 
-unsafe extern "C" fn lucina_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -25,7 +25,7 @@ unsafe extern "C" fn lucina_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_line"), Hash40::new("top"), -5.0, 6.0, -3.5, 10, 10, 0, 1, true);
@@ -36,14 +36,14 @@ unsafe extern "C" fn lucina_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
     }
 }
 
-unsafe extern "C" fn lucina_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -60,7 +60,7 @@ unsafe extern "C" fn lucina_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -100,7 +100,7 @@ unsafe extern "C" fn lucina_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_lucina_sword1"), Hash40::new("tex_lucina_sword2"), 9, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("lucina_sword"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
@@ -111,7 +111,7 @@ unsafe extern "C" fn lucina_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -119,7 +119,7 @@ unsafe extern "C" fn lucina_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -137,7 +137,7 @@ unsafe extern "C" fn lucina_attackairf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -182,7 +182,7 @@ unsafe extern "C" fn lucina_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_lucina_sword1"), Hash40::new("tex_lucina_sword2"), 8, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 15.3, true, Hash40::new("lucina_sword"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.3, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
@@ -193,7 +193,7 @@ unsafe extern "C" fn lucina_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_09"));
@@ -205,7 +205,7 @@ unsafe extern "C" fn lucina_attackairb_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairb_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -223,7 +223,7 @@ unsafe extern "C" fn lucina_attackairb_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 2.0);
@@ -258,7 +258,7 @@ unsafe extern "C" fn lucina_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -290,14 +290,14 @@ unsafe extern "C" fn lucina_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 6.0, 8.0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
-unsafe extern "C" fn lucina_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_lucina_rnd_attack"));
@@ -305,7 +305,7 @@ unsafe extern "C" fn lucina_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("toel"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
     }
@@ -317,25 +317,25 @@ unsafe extern "C" fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", lucina_attackairn);
-    agent.acmd("effect_attackairn", lucina_attackairn_eff);
-    agent.acmd("sound_attackairn", lucina_attackairn_snd);
-    agent.acmd("expression_attackairn", lucina_attackairn_exp);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
-    agent.acmd("game_attackairf", lucina_attackairf);
-    agent.acmd("effect_attackairf", lucina_attackairf_eff);
-    agent.acmd("sound_attackairf", lucina_attackairf_snd);
-    agent.acmd("expression_attackairf", lucina_attackairf_exp);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
+    agent.acmd("sound_attackairf", sound_attackairf);
+    agent.acmd("expression_attackairf", expression_attackairf);
 
-    agent.acmd("game_attackairb", lucina_attackairb);
-    agent.acmd("effect_attackairb", lucina_attackairb_eff);
-    agent.acmd("sound_attackairb", lucina_attackairb_snd);
-    agent.acmd("expression_attackairb", lucina_attackairb_exp);
+    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("effect_attackairb", effect_attackairb);
+    agent.acmd("sound_attackairb", sound_attackairb);
+    agent.acmd("expression_attackairb", expression_attackairb);
 
-    agent.acmd("game_attackairhi", lucina_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", lucina_attackairlw);
-    agent.acmd("effect_attackairlw", lucina_attackairlw_eff);
-    agent.acmd("sound_attackairlw", lucina_attackairlw_snd);
-    agent.acmd("expression_attackairlw", lucina_attackairlw_exp);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("sound_attackairlw", sound_attackairlw);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
 }

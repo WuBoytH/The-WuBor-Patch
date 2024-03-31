@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn koopajr_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 5.0, 5.0);
@@ -21,7 +21,7 @@ unsafe extern "C" fn koopajr_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 5.0, 5.0);
@@ -50,7 +50,7 @@ unsafe extern "C" fn koopajr_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -67,9 +67,9 @@ unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", koopajr_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", koopajr_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attackhi3", koopajr_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

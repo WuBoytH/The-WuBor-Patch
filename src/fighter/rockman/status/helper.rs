@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn rockman_special_motion_helper(
     fighter: &mut L2CFighterCommon,

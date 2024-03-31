@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kirby_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -10,14 +10,14 @@ unsafe extern "C" fn kirby_specialsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn kirby_specialairsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
     macros::FT_MOTION_RATE(agent, 9.0 / 17.0);
 }
 
-unsafe extern "C" fn kirby_specialairs(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 19.0, 50, 78, 0, 60, 5.4, 0.0, 4.3, 11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HAMMER);
@@ -43,7 +43,7 @@ unsafe extern "C" fn kirby_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_specialairss(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairss(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 19.0, 50, 78, 0, 60, 5.4, 0.0, 4.3, 11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HAMMER);
@@ -69,7 +69,7 @@ unsafe extern "C" fn kirby_specialairss(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40::new("special_hi"), false, 0.0);
@@ -81,15 +81,15 @@ unsafe extern "C" fn kirby_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsstart", kirby_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart);
 
-    agent.acmd("game_specialairsstart", kirby_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart);
 
-    agent.acmd("game_specialairs", kirby_specialairs);
+    agent.acmd("game_specialairs", game_specialairs);
 
-    agent.acmd("game_specialairss", kirby_specialairss);
+    agent.acmd("game_specialairss", game_specialairss);
 
-    agent.acmd("game_specialhi", kirby_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", kirby_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 }

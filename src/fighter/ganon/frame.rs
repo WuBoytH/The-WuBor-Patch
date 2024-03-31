@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::frame::common_fighter_frame
 };
 
@@ -19,12 +19,12 @@ unsafe extern "C" fn ganon_throw_cancel_teleport(fighter: &mut L2CFighterCommon)
     }
 }
 
-unsafe extern "C" fn ganon_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     ganon_reset_special_n(fighter);
     ganon_throw_cancel_teleport(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, ganon_frame);
+    agent.on_line(smashline::Main, on_main);
 }

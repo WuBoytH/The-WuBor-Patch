@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_rebirth_common_pre)]
 unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {

@@ -1,6 +1,11 @@
 use crate::imports::*;
-use wubor_utils::app::*;
-use super::helper::*;
+
+extern "C" {
+    #[link_name = "add_sp"]
+    fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, amount: f32);
+    #[link_name = "handle_slow"]
+    fn handle_slow(module_accessor: *mut BattleObjectModuleAccessor, defender_boma: *mut BattleObjectModuleAccessor);
+}
 
 unsafe extern "C" fn lucina_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;

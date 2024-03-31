@@ -8,6 +8,7 @@ mod ike;
 mod jack;
 mod koopa;
 mod lucario;
+mod lucina;
 
 mod weapon;
 
@@ -22,6 +23,7 @@ pub fn install() {
     jack::install();
     koopa::install();
     lucario::install();
+    lucina::install();
 
     weapon::install();
 }

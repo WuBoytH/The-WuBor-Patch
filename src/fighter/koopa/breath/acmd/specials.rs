@@ -7,7 +7,7 @@ unsafe extern "C" fn koopa_breath_move(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn koopa_breath_move_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_move(agent: &mut L2CAgentBase) {
     loop {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
@@ -29,6 +29,6 @@ unsafe extern "C" fn sound_move(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_move", koopa_breath_move);
-    agent.acmd("effect_move", koopa_breath_move_eff);
+    agent.acmd("effect_move", effect_move);
     agent.acmd("sound_move", sound_move);
 }

@@ -21,7 +21,7 @@ unsafe extern "C" fn shulk_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -51,7 +51,7 @@ unsafe extern "C" fn shulk_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -75,7 +75,7 @@ unsafe extern "C" fn shulk_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_attack13_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -97,11 +97,11 @@ unsafe extern "C" fn shulk_attack13_eff(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", shulk_attack11);
-    agent.effect_acmd("effect_attack11", shulk_attack11_eff);
+    agent.effect_acmd("effect_attack11", effect_attack11);
 
     agent.game_acmd("game_attack12", shulk_attack12);
-    agent.effect_acmd("effect_attack12", shulk_attack12_eff);
+    agent.effect_acmd("effect_attack12", effect_attack12);
 
     agent.game_acmd("game_attack13", shulk_attack13);
-    agent.effect_acmd("effect_attack13", shulk_attack13_eff);
+    agent.effect_acmd("effect_attack13", effect_attack13);
 }

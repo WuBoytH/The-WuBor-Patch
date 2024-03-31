@@ -18,7 +18,7 @@ unsafe extern "C" fn donkey_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn donkey_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("donkey_attack_arc"), Hash40::new("donkey_attack_arc"), Hash40::new("top"), -3, 10, 9, -16, -2, -160, 1.3, true, *EF_FLIP_YZ);
@@ -164,7 +164,7 @@ unsafe extern "C" fn donkey_attacklw3(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", donkey_attack11);
-    agent.acmd("effect_attack11", donkey_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
 
     agent.acmd("game_attack12", donkey_attack12);
 

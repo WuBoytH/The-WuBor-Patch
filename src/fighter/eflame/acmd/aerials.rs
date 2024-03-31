@@ -62,7 +62,7 @@ unsafe extern "C" fn eflame_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 6.0);
     if has_sword {
@@ -111,7 +111,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -410,9 +410,9 @@ unsafe extern "C" fn eflame_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", eflame_attackairn);
-    agent.acmd("effect_attackairn", eflame_attackairn_eff);
+    agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", eflame_attackairn_exp);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
     agent.acmd("game_attackairf", eflame_attackairf);
 

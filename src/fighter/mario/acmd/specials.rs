@@ -40,7 +40,7 @@ unsafe extern "C" fn mario_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_specials_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("mario_supermant_wind_r"), Hash40::new("mario_supermant_wind_l"), Hash40::new("top"), 2.5, 5, -2.0, 22, 0, 0, 1.2, true, *EF_FLIP_NONE);
@@ -52,7 +52,7 @@ unsafe extern "C" fn mario_specials_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_specialairs_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("mario_supermant_wind_r"), Hash40::new("mario_supermant_wind_l"), Hash40::new("top"), 2.5, 5, -2.0, 22, 0, 0, 1.2, true, *EF_FLIP_NONE);
@@ -64,7 +64,7 @@ unsafe extern "C" fn mario_specialairs_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_specials_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_R);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -183,7 +183,7 @@ unsafe extern "C" fn sound_longjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_longjump_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_longjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
@@ -192,13 +192,13 @@ unsafe extern "C" fn mario_longjump_exp(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_longjumpland(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn mario_longjumpland_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_longjumpland(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-unsafe extern "C" fn mario_longjumpland_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_longjumpland(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
@@ -224,7 +224,7 @@ unsafe extern "C" fn mario_groundpoundfall(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_groundpoundfall_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_groundpoundfall(agent: &mut L2CAgentBase) {
     loop {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 6, 1, -90, 0, 0, 1, true);
@@ -233,7 +233,7 @@ unsafe extern "C" fn mario_groundpoundfall_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_groundpoundfall_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_groundpoundfall(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
     }
@@ -261,14 +261,14 @@ unsafe extern "C" fn sound_groundpoundland(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_groundpoundland_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_groundpoundland(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.7, 0, 0, 0, 0, 0, 0, false)
     }
 }
 
-unsafe extern "C" fn mario_groundpoundland_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_groundpoundland(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         macros::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
@@ -282,12 +282,12 @@ unsafe extern "C" fn mario_groundpoundland_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specials", mario_specials);
-    agent.acmd("effect_specials", mario_specials_eff);
-    agent.acmd("expression_specials", mario_specials_exp);
+    agent.acmd("effect_specials", effect_specials);
+    agent.acmd("expression_specials", expression_specials);
 
     agent.acmd("game_specialairs", mario_specials);
-    agent.acmd("effect_specialairs", mario_specialairs_eff);
-    agent.acmd("expression_specialairs", mario_specials_exp);
+    agent.acmd("effect_specialairs", effect_specialairs);
+    agent.acmd("expression_specialairs", expression_specials);
 
     agent.acmd("game_specialhi", mario_specialhi);
 
@@ -297,21 +297,21 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_speciallwjump", mario_longjump);
     agent.acmd("sound_speciallwjump", sound_longjump);
-    agent.acmd("expression_speciallwjump", mario_longjump_exp);
+    agent.acmd("expression_speciallwjump", expression_longjump);
 
     agent.acmd("effect_speciallwlanding", sound_longjumpland);
-    agent.acmd("effect_speciallwlanding", mario_longjumpland_eff);
-    agent.acmd("expression_speciallwlanding", mario_longjumpland_exp);
+    agent.acmd("effect_speciallwlanding", effect_longjumpland);
+    agent.acmd("expression_speciallwlanding", expression_longjumpland);
 
     agent.acmd("game_specialairlwstart", mario_groundpoundstart);
     agent.acmd("effect_specialairlwstart", sound_groundpoundstart);
 
     agent.acmd("game_specialairlwfall", mario_groundpoundfall);
-    agent.acmd("effect_specialairlwfall", mario_groundpoundfall_eff);
-    agent.acmd("expression_specialairlwfall", mario_groundpoundfall_exp);
+    agent.acmd("effect_specialairlwfall", effect_groundpoundfall);
+    agent.acmd("expression_specialairlwfall", expression_groundpoundfall);
 
     agent.acmd("game_specialairlwlanding", mario_groundpoundland);
     agent.acmd("effect_specialairlwlanding", sound_groundpoundland);
-    agent.acmd("sound_specialairlwlanding", mario_groundpoundland_eff);
-    agent.acmd("expression_specialairlwlanding", mario_groundpoundland_exp);
+    agent.acmd("sound_specialairlwlanding", effect_groundpoundland);
+    agent.acmd("expression_specialairlwlanding", expression_groundpoundland);
 }

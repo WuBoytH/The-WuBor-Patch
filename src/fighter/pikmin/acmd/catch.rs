@@ -12,7 +12,7 @@ unsafe extern "C" fn pikmin_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 3, 1, -24, 0, 0, 0.6, false);
@@ -28,6 +28,6 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", pikmin_catchattack);
-    agent.acmd("effect_catchattack", pikmin_catchattack_eff);
+    agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 }

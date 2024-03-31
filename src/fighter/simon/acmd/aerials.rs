@@ -279,7 +279,7 @@ unsafe extern "C" fn simon_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairlw_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(_agent: &mut L2CAgentBase) {
     
 }
 
@@ -302,7 +302,7 @@ unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -319,7 +319,7 @@ unsafe extern "C" fn simon_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_landingairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -332,7 +332,7 @@ unsafe extern "C" fn sound_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_landingairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ControlModule::set_rumble(
@@ -358,11 +358,11 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairhi", simon_attackairhi);
 
     agent.acmd("game_attackairlw", simon_attackairlw);
-    agent.acmd("effect_attackairlw", simon_attackairlw_eff);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
     agent.acmd("sound_attackairlw", sound_attackairlw);
-    agent.acmd("expression_attackairlw", simon_attackairlw_exp);
+    agent.acmd("expression_attackairlw", expression_attackairlw);
 
-    agent.acmd("effect_landingairlw", simon_landingairlw_eff);
+    agent.acmd("effect_landingairlw", effect_landingairlw);
     agent.acmd("sound_landingairlw", sound_landingairlw);
-    agent.acmd("expression_landingairlw", simon_landingairlw_exp);
+    agent.acmd("expression_landingairlw", expression_landingairlw);
 }

@@ -33,7 +33,7 @@ unsafe extern "C" fn samusd_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("clavicler"), 2, 0, 0.5, 0, 0, 0, 2, true);
@@ -74,7 +74,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 8);
@@ -111,7 +111,7 @@ unsafe extern "C" fn samusd_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     let mut effect = 0;
     if macros::is_excute(agent) {
@@ -145,7 +145,7 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -156,7 +156,7 @@ unsafe extern "C" fn samusd_attackairf_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attack11"), 0);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("expression_nohitlosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
@@ -220,7 +220,7 @@ unsafe extern "C" fn samusd_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 2.0, true);
@@ -241,7 +241,7 @@ unsafe extern "C" fn samusd_attackairhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samusd_attackairhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 8);
     }
@@ -286,20 +286,20 @@ unsafe extern "C" fn samusd_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", samusd_attackairn);
-    agent.acmd("effect_attackairn", samusd_attackairn_eff);
+    agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", samusd_attackairn_exp);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
     agent.acmd("game_attackairf", samusd_attackairf);
-    agent.acmd("effect_attackairf", samusd_attackairf_eff);
+    agent.acmd("effect_attackairf", effect_attackairf);
     agent.acmd("sound_attackairf", sound_attackairf);
-    agent.acmd("expression_attackairf", samusd_attackairf_exp);
+    agent.acmd("expression_attackairf", expression_attackairf);
 
     agent.acmd("game_attackairb", samusd_attackairb);
 
     agent.acmd("game_attackairhi", samusd_attackairhi);
-    agent.acmd("effect_attackairhi", samusd_attackairhi_eff);
-    agent.acmd("expression_attackairhi", samusd_attackairhi_exp);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
 
     agent.acmd("game_attackairlw", samusd_attackairlw);
 }

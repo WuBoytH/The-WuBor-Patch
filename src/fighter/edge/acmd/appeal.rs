@@ -30,7 +30,7 @@ unsafe extern "C" fn edge_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appealsloop(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 120.0);
         if macros::is_excute(agent) {
@@ -75,7 +75,7 @@ unsafe extern "C" fn sound_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsloop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -131,7 +131,7 @@ unsafe extern "C" fn edge_appealsattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appealsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 9, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -197,7 +197,7 @@ unsafe extern "C" fn sound_appealsattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appealsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -259,7 +259,7 @@ unsafe extern "C" fn edge_appealsattackjust(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattackjust_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appealsattackjust(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 9, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("edge_aura"), Hash40::new("hip"), -2, -2, 0, 80, 90, 0, 1, true);
@@ -323,7 +323,7 @@ unsafe extern "C" fn sound_appealsattackjust(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appealsattackjust_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appealsattackjust(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -369,7 +369,7 @@ unsafe extern "C" fn edge_appeallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appeallwloop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appeallwloop(agent: &mut L2CAgentBase) {
     loop {
         frame(agent.lua_state_agent, 1.0);
         if macros::is_excute(agent) {
@@ -385,7 +385,7 @@ unsafe extern "C" fn edge_appeallwloop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appeallwloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -410,23 +410,23 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_appealsl", edge_appeals);
     agent.acmd("game_appealsr", edge_appeals);
 
-    agent.acmd("effect_appealsloop", edge_appealsloop_eff);
+    agent.acmd("effect_appealsloop", effect_appealsloop);
     agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", edge_appealsloop_exp);
+    agent.acmd("expression_appealsloop", expression_appealsloop);
 
     agent.acmd("game_appealsattack", edge_appealsattack);
-    agent.acmd("effect_appealsattack", edge_appealsattack_eff);
+    agent.acmd("effect_appealsattack", effect_appealsattack);
     agent.acmd("sound_appealsattack", sound_appealsattack);
-    agent.acmd("expression_appealsattack", edge_appealsattack_exp);
+    agent.acmd("expression_appealsattack", expression_appealsattack);
 
     agent.acmd("game_appealsattackjust", edge_appealsattackjust);
-    agent.acmd("effect_appealsattackjust", edge_appealsattackjust_eff);
+    agent.acmd("effect_appealsattackjust", effect_appealsattackjust);
     agent.acmd("sound_appealsattackjust", sound_appealsattackjust);
-    agent.acmd("expression_appealsattackjust", edge_appealsattackjust_exp);
+    agent.acmd("expression_appealsattackjust", expression_appealsattackjust);
 
     agent.acmd("game_appeallwl", edge_appeallw);
     agent.acmd("game_appeallwr", edge_appeallw);
 
-    agent.acmd("effect_appeallwloop", edge_appeallwloop_eff);
-    agent.acmd("expression_appeallwloop", edge_appeallwloop_exp);
+    agent.acmd("effect_appeallwloop", effect_appeallwloop);
+    agent.acmd("expression_appeallwloop", expression_appeallwloop);
 }

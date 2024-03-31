@@ -27,7 +27,7 @@ unsafe extern "C" fn rockman_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 6, 1, 30, 0, 0, 0.6, true, *EF_FLIP_YZ, 1);
@@ -46,7 +46,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
@@ -156,9 +156,9 @@ unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairnmelee", rockman_attackairn);
-    agent.acmd("effect_attackairnmelee", rockman_attackairn_eff);
+    agent.acmd("effect_attackairnmelee", effect_attackairn);
     agent.acmd("sound_attackairnmelee", sound_attackairn);
-    agent.acmd("expression_attackairnmelee", rockman_attackairn_exp);
+    agent.acmd("expression_attackairnmelee", expression_attackairn);
 
     agent.acmd("game_attackairf", rockman_attackairf);
 

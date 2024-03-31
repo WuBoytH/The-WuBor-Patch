@@ -51,7 +51,7 @@ unsafe extern "C" fn kirby_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appeals_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 0, false);
@@ -89,7 +89,7 @@ unsafe extern "C" fn sound_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appeals_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appeals(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -125,7 +125,7 @@ unsafe extern "C" fn kirby_appeals_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appealsloop(agent: &mut L2CAgentBase) {
     loop {
         if macros::is_excute(agent) {
             VarModule::inc_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
@@ -163,7 +163,7 @@ unsafe extern "C" fn sound_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -211,16 +211,16 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_appealsl", kirby_appeals);
-    agent.acmd("effect_appealsl", kirby_appeals_eff);
+    agent.acmd("effect_appealsl", effect_appeals);
     agent.acmd("sound_appealsl", sound_appeals);
-    agent.acmd("expression_appealsl", kirby_appeals_exp);
+    agent.acmd("expression_appealsl", expression_appeals);
 
     agent.acmd("game_appealsr", kirby_appeals);
-    agent.acmd("effect_appealsr", kirby_appeals_eff);
+    agent.acmd("effect_appealsr", effect_appeals);
     agent.acmd("sound_appealsr", sound_appeals);
-    agent.acmd("expression_appealsr", kirby_appeals_exp);
+    agent.acmd("expression_appealsr", expression_appeals);
 
-    agent.acmd("effect_appealsloop", kirby_appealsloop_eff);
+    agent.acmd("effect_appealsloop", effect_appealsloop);
     agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", kirby_appealsloop_exp);
+    agent.acmd("expression_appealsloop", expression_appealsloop);
 }

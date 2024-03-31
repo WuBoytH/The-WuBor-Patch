@@ -521,7 +521,7 @@ unsafe extern "C" fn pickel_attackairlw2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pickel_attackairlw2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairlw2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
             agent.module_accessor,
@@ -549,5 +549,5 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairlw", pickel_attackairlw);
 
     agent.acmd("game_attackairlw2", pickel_attackairlw2);
-    agent.acmd("expression_attackairlw2", pickel_attackairlw2_exp);
+    agent.acmd("expression_attackairlw2", expression_attackairlw2);
 }

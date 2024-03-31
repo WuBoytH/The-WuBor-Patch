@@ -56,7 +56,7 @@ unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }
@@ -136,7 +136,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_attackdash", gamewatch_attackdash);
     agent.acmd("sound_attackdash", sound_attackdash);
-    agent.acmd("expression_attackdash", gamewatch_attackdash_exp);
+    agent.acmd("expression_attackdash", expression_attackdash);
 
     agent.acmd("game_attackhi3", gamewatch_attackhi3);
 

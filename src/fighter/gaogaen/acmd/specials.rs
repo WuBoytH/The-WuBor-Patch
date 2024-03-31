@@ -672,7 +672,7 @@ unsafe extern "C" fn gaogaen_speciallwstart(agent: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn gaogaen_speciallwstart_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("gaogaen_revenge_pose"), Hash40::new("top"), 0, 11, 3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -733,7 +733,7 @@ unsafe extern "C" fn gaogaen_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -785,7 +785,7 @@ unsafe extern "C" fn gaogaen_speciallwturn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gaogaen_speciallwturn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -824,20 +824,20 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhifall2", gaogaen_specialairhifall2);
 
     agent.acmd("game_speciallwstart", gaogaen_speciallwstart);
-    agent.acmd("effect_speciallwstart", gaogaen_speciallwstart_eff);
+    agent.acmd("effect_speciallwstart", effect_speciallwstart);
 
     agent.acmd("game_specialairlwstart", gaogaen_speciallwstart);
-    agent.acmd("effect_specialairlwstart", gaogaen_speciallwstart_eff);
+    agent.acmd("effect_specialairlwstart", effect_speciallwstart);
 
     agent.acmd("game_speciallw", gaogaen_speciallw);
-    agent.acmd("effect_speciallw", gaogaen_speciallw_eff);
+    agent.acmd("effect_speciallw", effect_speciallw);
 
     agent.acmd("game_specialairlw", gaogaen_speciallw);
-    agent.acmd("effect_specialairlw", gaogaen_speciallw_eff);
+    agent.acmd("effect_specialairlw", effect_speciallw);
 
     agent.acmd("game_speciallwturn", gaogaen_speciallwturn);
-    agent.acmd("effect_speciallwturn", gaogaen_speciallwturn_eff);
+    agent.acmd("effect_speciallwturn", effect_speciallwturn);
 
     agent.acmd("game_specialairlwturn", gaogaen_speciallwturn);
-    agent.acmd("effect_specialairlwturn", gaogaen_speciallwturn_eff);
+    agent.acmd("effect_specialairlwturn", effect_speciallwturn);
 }

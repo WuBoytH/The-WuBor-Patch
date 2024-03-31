@@ -246,7 +246,7 @@ unsafe extern "C" fn samusd_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_bomb_jump"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 0.48, true);
@@ -275,8 +275,8 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhi", samusd_specialairhi);
 
     agent.acmd("game_speciallw", samusd_speciallw);
-    agent.acmd("effect_speciallw", samusd_speciallw_eff);
+    agent.acmd("effect_speciallw", effect_speciallw);
 
     agent.acmd("game_specialairlw", samusd_specialairlw);
-    agent.acmd("effect_specialairlw", samusd_speciallw_eff);
+    agent.acmd("effect_specialairlw", effect_speciallw);
 }

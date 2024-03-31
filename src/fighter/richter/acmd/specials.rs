@@ -9,7 +9,7 @@ unsafe extern "C" fn richter_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -161,10 +161,10 @@ unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", richter_specialn);
-    agent.acmd("expression_specialn", richter_specialn_exp);
+    agent.acmd("expression_specialn", expression_specialn);
 
     agent.acmd("game_specialairn", richter_specialn);
-    agent.acmd("expression_specialairn", richter_specialn_exp);
+    agent.acmd("expression_specialairn", expression_specialn);
 
     agent.acmd("game_specialnblank", richter_specialnblank);
 

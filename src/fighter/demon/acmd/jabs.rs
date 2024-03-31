@@ -243,7 +243,7 @@ unsafe extern "C" fn demon_attack142(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack142(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -267,7 +267,7 @@ unsafe extern "C" fn sound_attack142(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack142(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_80_attackm2"), 0);
@@ -310,7 +310,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack19", demon_attack19);
 
     agent.acmd("game_attack142", demon_attack142);
-    agent.acmd("effect_attack142", demon_attack142_eff);
+    agent.acmd("effect_attack142", effect_attack142);
     agent.acmd("sound_attack142", sound_attack142);
-    agent.acmd("expression_attack142", demon_attack142_exp);
+    agent.acmd("expression_attack142", expression_attack142);
 }

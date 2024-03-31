@@ -27,7 +27,7 @@ unsafe extern "C" fn richter_attack11(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -4.0);
 }
 
-unsafe extern "C" fn richter_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     // frame(agent.lua_state_agent, 4.0);
     // if macros::is_excute(agent) {
     //     macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
@@ -52,7 +52,7 @@ unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -86,7 +86,7 @@ unsafe extern "C" fn richter_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 4, 20, -90, 0, 1.1, true);
@@ -106,7 +106,7 @@ unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -140,7 +140,7 @@ unsafe extern "C" fn richter_attack12f(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12f(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -163,7 +163,7 @@ unsafe extern "C" fn sound_attack12f(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12f(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -264,7 +264,7 @@ unsafe extern "C" fn richter_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -355,24 +355,24 @@ unsafe extern "C" fn richter_attacklw32(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", richter_attack11);
-    agent.acmd("effect_attack11", richter_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("sound_attack11", sound_attack11);
-    agent.acmd("expression_attack11", richter_attack11_exp);
+    agent.acmd("expression_attack11", expression_attack11);
 
     agent.acmd("game_attack12", richter_attack12);
-    agent.acmd("effect_attack12", richter_attack12_eff);
+    agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("sound_attack12", sound_attack12);
-    agent.acmd("expression_attack12", richter_attack12_exp);
+    agent.acmd("expression_attack12", expression_attack12);
 
     agent.acmd("game_attack12f", richter_attack12f);
-    agent.acmd("effect_attack12f", richter_attack12f_eff);
+    agent.acmd("effect_attack12f", effect_attack12f);
     agent.acmd("sound_attack12f", sound_attack12f);
-    agent.acmd("expression_attack12f", richter_attack12f_exp);
+    agent.acmd("expression_attack12f", expression_attack12f);
 
     agent.acmd("game_attackdash", richter_attackdash);
 
     agent.acmd("game_attacks3", richter_attacks3);
-    agent.acmd("effect_attacks3", richter_attacks3_eff);
+    agent.acmd("effect_attacks3", effect_attacks3);
 
     agent.acmd("game_attackhi3", richter_attackhi3);
 

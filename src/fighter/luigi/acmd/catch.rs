@@ -18,7 +18,7 @@ unsafe extern "C" fn luigi_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catch_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catch(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
@@ -32,7 +32,7 @@ unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catch_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -79,7 +79,7 @@ unsafe extern "C" fn sound_catchdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -118,7 +118,7 @@ unsafe extern "C" fn sound_catchturn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchturn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchturn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
     }
@@ -140,14 +140,14 @@ unsafe extern "C" fn luigi_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("head"), 3, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, 0.7);
     }
 }
 
-unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
@@ -156,19 +156,19 @@ unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catch", luigi_catch);
-    agent.acmd("effect_catch", luigi_catch_eff);
+    agent.acmd("effect_catch", effect_catch);
     agent.acmd("sound_catch", sound_catch);
-    agent.acmd("expression_catch", luigi_catch_exp);
+    agent.acmd("expression_catch", expression_catch);
 
     agent.acmd("game_catchdash", luigi_catchdash);
     agent.acmd("sound_catchdash", sound_catchdash);
-    agent.acmd("expression_catchdash", luigi_catchdash_exp);
+    agent.acmd("expression_catchdash", expression_catchdash);
 
     agent.acmd("game_catchturn", luigi_catchturn);
     agent.acmd("sound_catchturn", sound_catchturn);
-    agent.acmd("expression_catchturn", luigi_catchturn_exp);
+    agent.acmd("expression_catchturn", expression_catchturn);
 
     agent.acmd("game_catchattack", luigi_catchattack);
-    agent.acmd("effect_catchattack", luigi_catchattack_eff);
-    agent.acmd("expression_catchattack", luigi_catchattack_exp);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

@@ -41,7 +41,7 @@ unsafe extern "C" fn ryu_attack11w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attack11w_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11w(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -67,7 +67,7 @@ unsafe extern "C" fn sound_attack11w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attack11w_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -129,7 +129,7 @@ unsafe extern "C" fn ryu_attack11s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attack11s_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11s(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -182,7 +182,7 @@ unsafe extern "C" fn ryu_attacks3w(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-unsafe extern "C" fn ryu_attacks3w_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3w(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -244,7 +244,7 @@ unsafe extern "C" fn ryu_attacks3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attacks3s_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3s(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -302,7 +302,7 @@ unsafe extern "C" fn ryu_attackhi3w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attackhi3w_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3w(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -324,7 +324,7 @@ unsafe extern "C" fn ryu_attackhi3w_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attackhi3w_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -406,7 +406,7 @@ unsafe extern "C" fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attackhi3s_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3s(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -473,7 +473,7 @@ unsafe extern "C" fn ryu_attacklw3w(agent: &mut L2CAgentBase) {
     // }
 }
 
-unsafe extern "C" fn ryu_attacklw3w_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3w(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -502,7 +502,7 @@ unsafe extern "C" fn sound_attacklw3w(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attacklw3w_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -548,7 +548,7 @@ unsafe extern "C" fn ryu_attacklw3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attacklw3s_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3s(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -580,7 +580,7 @@ unsafe extern "C" fn sound_attacklw3s(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ryu_attacklw3s_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3s(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -604,36 +604,36 @@ unsafe extern "C" fn ryu_attacklw3s_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11w", ryu_attack11w);
-    agent.acmd("effect_attack11w", ryu_attack11w_eff);
+    agent.acmd("effect_attack11w", effect_attack11w);
     agent.acmd("sound_attack11w", sound_attack11w);
-    agent.acmd("expression_attack11w", ryu_attack11w_exp);
+    agent.acmd("expression_attack11w", expression_attack11w);
 
     agent.acmd("game_attack12", ryu_attack12);
 
     agent.acmd("game_attack11s", ryu_attack11s);
-    agent.acmd("effect_attack11s", ryu_attack11s_eff);
+    agent.acmd("effect_attack11s", effect_attack11s);
 
     agent.acmd("game_attacks3w", ryu_attacks3w);
-    agent.acmd("effect_attacks3w", ryu_attacks3w_eff);
+    agent.acmd("effect_attacks3w", effect_attacks3w);
 
     agent.acmd("game_attacks3s", ryu_attacks3s);
-    agent.acmd("effect_attacks3s", ryu_attacks3s_eff);
+    agent.acmd("effect_attacks3s", effect_attacks3s);
 
     agent.acmd("game_attackhi3w", ryu_attackhi3w);
-    agent.acmd("effect_attackhi3w", ryu_attackhi3w_eff);
+    agent.acmd("effect_attackhi3w", effect_attackhi3w);
     agent.acmd("sound_attackhi3w", sound_attackhi3w);
-    agent.acmd("expression_attackhi3w", ryu_attackhi3w_exp);
+    agent.acmd("expression_attackhi3w", expression_attackhi3w);
 
     agent.acmd("game_attackhi3s", ryu_attackhi3s);
-    agent.acmd("effect_attackhi3s", ryu_attackhi3s_eff);
+    agent.acmd("effect_attackhi3s", effect_attackhi3s);
 
     agent.acmd("game_attacklw3w", ryu_attacklw3w);
-    agent.acmd("effect_attacklw3w", ryu_attacklw3w_eff);
+    agent.acmd("effect_attacklw3w", effect_attacklw3w);
     agent.acmd("sound_attacklw3w", sound_attacklw3w);
-    agent.acmd("expression_attacklw3w", ryu_attacklw3w_exp);
+    agent.acmd("expression_attacklw3w", expression_attacklw3w);
 
     agent.acmd("game_attacklw3s", ryu_attacklw3s);
-    agent.acmd("effect_attacklw3s", ryu_attacklw3s_eff);
+    agent.acmd("effect_attacklw3s", effect_attacklw3s);
     agent.acmd("sound_attacklw3s", sound_attacklw3s);
-    agent.acmd("expression_attacklw3s", ryu_attacklw3s_exp);
+    agent.acmd("expression_attacklw3s", expression_attacklw3s);
 }

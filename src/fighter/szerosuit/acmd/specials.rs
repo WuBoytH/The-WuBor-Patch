@@ -148,7 +148,7 @@ unsafe extern "C" fn szerosuit_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("szero_boost_line_02"), false, false);
@@ -174,7 +174,7 @@ unsafe extern "C" fn sound_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 4);
@@ -233,7 +233,7 @@ unsafe extern "C" fn szerosuit_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("szero_boost_line_02"), false, false);
@@ -259,7 +259,7 @@ unsafe extern "C" fn sound_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 4);
@@ -286,12 +286,12 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhi", szerosuit_specialairhi);
 
     agent.acmd("game_specialhi2", szerosuit_specialhi2);
-    agent.acmd("effect_specialhi2", szerosuit_specialhi2_eff);
+    agent.acmd("effect_specialhi2", effect_specialhi2);
     agent.acmd("sound_specialhi2", sound_specialhi2);
-    agent.acmd("expression_specialhi2", szerosuit_specialhi2_exp);
+    agent.acmd("expression_specialhi2", expression_specialhi2);
 
     agent.acmd("game_specialairhi2", szerosuit_specialairhi2);
-    agent.acmd("effect_specialairhi2", szerosuit_specialairhi2_eff);
+    agent.acmd("effect_specialairhi2", effect_specialairhi2);
     agent.acmd("sound_specialairhi2", sound_specialairhi2);
-    agent.acmd("expression_specialairhi2", szerosuit_specialairhi2_exp);
+    agent.acmd("expression_specialairhi2", expression_specialairhi2);
 }

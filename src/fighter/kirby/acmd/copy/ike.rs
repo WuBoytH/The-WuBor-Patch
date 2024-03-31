@@ -1,7 +1,7 @@
 use crate::imports::*;
 use crate::fighter::ike::vl;
 
-unsafe extern "C" fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_ikespecialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -85,7 +85,7 @@ unsafe extern "C" fn sound_ikespecialnend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_ikespecialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -138,7 +138,7 @@ unsafe extern "C" fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_ikespecialairnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -169,7 +169,7 @@ unsafe extern "C" fn sound_ikespecialairnend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_ikespecialairnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -192,11 +192,11 @@ unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
+    agent.acmd("effect_ikespecialnend", effect_ikespecialnend);
     agent.acmd("sound_ikespecialnend", sound_ikespecialnend);
-    agent.acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);
+    agent.acmd("expression_ikespecialnend", expression_ikespecialnend);
 
-    agent.acmd("effect_ikespecialairnend", kirby_ikespecialairnend_eff);
+    agent.acmd("effect_ikespecialairnend", effect_ikespecialairnend);
     agent.acmd("sound_ikespecialairnend", sound_ikespecialairnend);
-    agent.acmd("expression_ikespecialairnend", kirby_ikespecialairnend_exp);
+    agent.acmd("expression_ikespecialairnend", expression_ikespecialairnend);
 }

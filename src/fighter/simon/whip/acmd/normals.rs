@@ -91,7 +91,7 @@ unsafe extern "C" fn simon_whip_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_whip_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -141,7 +141,7 @@ unsafe extern "C" fn simon_whip_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -173,14 +173,14 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackdash", simon_whip_attackdash);
 
     agent.acmd("game_attacks3", simon_whip_attacks3);
-    agent.acmd("effect_attacks3", simon_whip_attacks3_eff);
+    agent.acmd("effect_attacks3", effect_attacks3);
 
     agent.acmd("game_attacks3hi", simon_whip_attacks3);
-    agent.acmd("effect_attacks3hi", simon_whip_attacks3_eff);
+    agent.acmd("effect_attacks3hi", effect_attacks3);
 
     agent.acmd("game_attacks3lw", simon_whip_attacks3);
-    agent.acmd("effect_attacks3lw", simon_whip_attacks3_eff);
+    agent.acmd("effect_attacks3lw", effect_attacks3);
 
     agent.acmd("game_attacklw3", simon_whip_attacklw3);
-    agent.acmd("effect_attacklw3", simon_whip_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
 }

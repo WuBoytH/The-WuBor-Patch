@@ -23,7 +23,7 @@ unsafe extern "C" fn shulk_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("shulk_monad_sword2"), Hash40::new("haver"), 0, 2.5, 0, 0, 0, 0, 0.95, true);
@@ -53,7 +53,7 @@ unsafe extern "C" fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
@@ -77,6 +77,6 @@ unsafe extern "C" fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairb", shulk_attackairb);
-    agent.effect_acmd("effect_attackairb", shulk_attackairb_eff);
-    agent.expression_acmd("expression_attackairb", shulk_attackairb_exp);
+    agent.effect_acmd("effect_attackairb", effect_attackairb);
+    agent.expression_acmd("expression_attackairb", expression_attackairb);
 }

@@ -23,7 +23,7 @@ unsafe extern "C" fn marth_speciallwattack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -42,7 +42,7 @@ unsafe extern "C" fn sound_speciallwattack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -91,7 +91,7 @@ unsafe extern "C" fn marth_speciallwattacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -110,7 +110,7 @@ unsafe extern "C" fn sound_speciallwattacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -222,7 +222,7 @@ unsafe extern "C" fn marth_speciallwattacklw4b(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattacklw4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
@@ -256,7 +256,7 @@ unsafe extern "C" fn sound_speciallwattacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattacklw4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattacklw4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -304,7 +304,7 @@ unsafe extern "C" fn marth_speciallwattackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -323,7 +323,7 @@ unsafe extern "C" fn sound_speciallwattackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackhi3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -363,7 +363,7 @@ unsafe extern "C" fn marth_speciallwattackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackhi4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_marth_stance_sword1"), Hash40::new("tex_marth_stance_sword2"), 6, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
@@ -385,7 +385,7 @@ unsafe extern "C" fn sound_speciallwattackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackhi4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattackhi4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -482,7 +482,7 @@ unsafe extern "C" fn marth_speciallwattackf3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.2);
 }
 
-unsafe extern "C" fn marth_speciallwattackf3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattackf3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
@@ -529,7 +529,7 @@ unsafe extern "C" fn sound_speciallwattackf3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackf3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattackf3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -570,7 +570,7 @@ unsafe extern "C" fn marth_speciallwattackb3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackb3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattackb3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 3, 0, 180, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -589,7 +589,7 @@ unsafe extern "C" fn sound_speciallwattackb3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwattackb3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattackb3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -612,47 +612,47 @@ unsafe extern "C" fn marth_speciallwattackb3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_speciallwattack11", marth_speciallwattack11);
-    agent.acmd("effect_speciallwattack11", marth_speciallwattack11_eff);
+    agent.acmd("effect_speciallwattack11", effect_speciallwattack11);
     agent.acmd("sound_speciallwattack11", sound_speciallwattack11);
-    agent.acmd("expression_speciallwattack11", marth_speciallwattack11_exp);
+    agent.acmd("expression_speciallwattack11", expression_speciallwattack11);
 
     agent.acmd("game_speciallwattacklw3", marth_speciallwattacklw3);
-    agent.acmd("effect_speciallwattacklw3", marth_speciallwattacklw3_eff);
+    agent.acmd("effect_speciallwattacklw3", effect_speciallwattacklw3);
     agent.acmd("sound_speciallwattacklw3", sound_speciallwattacklw3);
-    agent.acmd("expression_speciallwattacklw3", marth_speciallwattacklw3_exp);
+    agent.acmd("expression_speciallwattacklw3", expression_speciallwattacklw3);
 
     agent.acmd("game_speciallwattacklw4", marth_speciallwattacklw4);
-    agent.acmd("effect_speciallwattacklw4", marth_speciallwattacklw4_eff);
+    agent.acmd("effect_speciallwattacklw4", effect_speciallwattacklw4);
     agent.acmd("sound_speciallwattacklw4", sound_speciallwattacklw4);
-    agent.acmd("expression_speciallwattacklw4", marth_speciallwattacklw4_exp);
+    agent.acmd("expression_speciallwattacklw4", expression_speciallwattacklw4);
 
     agent.acmd("game_speciallwattacklw4f", marth_speciallwattacklw4f);
-    agent.acmd("effect_speciallwattacklw4f", marth_speciallwattacklw4_eff);
+    agent.acmd("effect_speciallwattacklw4f", effect_speciallwattacklw4);
     agent.acmd("sound_speciallwattacklw4f", sound_speciallwattacklw4);
-    agent.acmd("expression_speciallwattacklw4f", marth_speciallwattacklw4_exp);
+    agent.acmd("expression_speciallwattacklw4f", expression_speciallwattacklw4);
 
     agent.acmd("game_speciallwattacklw4b", marth_speciallwattacklw4b);
-    agent.acmd("effect_speciallwattacklw4b", marth_speciallwattacklw4_eff);
+    agent.acmd("effect_speciallwattacklw4b", effect_speciallwattacklw4);
     agent.acmd("sound_speciallwattacklw4b", sound_speciallwattacklw4);
-    agent.acmd("expression_speciallwattacklw4b", marth_speciallwattacklw4_exp);
+    agent.acmd("expression_speciallwattacklw4b", expression_speciallwattacklw4);
 
     agent.acmd("game_speciallwattackhi3", marth_speciallwattackhi3);
-    agent.acmd("effect_speciallwattackhi3", marth_speciallwattackhi3_eff);
+    agent.acmd("effect_speciallwattackhi3", effect_speciallwattackhi3);
     agent.acmd("sound_speciallwattackhi3", sound_speciallwattackhi3);
-    agent.acmd("expression_speciallwattackhi3", marth_speciallwattackhi3_exp);
+    agent.acmd("expression_speciallwattackhi3", expression_speciallwattackhi3);
 
     agent.acmd("game_speciallwattackhi4", marth_speciallwattackhi4);
-    agent.acmd("effect_speciallwattackhi4", marth_speciallwattackhi4_eff);
+    agent.acmd("effect_speciallwattackhi4", effect_speciallwattackhi4);
     agent.acmd("sound_speciallwattackhi4", sound_speciallwattackhi4);
-    agent.acmd("expression_speciallwattackhi4", marth_speciallwattackhi4_exp);
+    agent.acmd("expression_speciallwattackhi4", expression_speciallwattackhi4);
 
     agent.acmd("game_speciallwattackf3", marth_speciallwattackf3);
-    agent.acmd("effect_speciallwattackf3", marth_speciallwattackf3_eff);
+    agent.acmd("effect_speciallwattackf3", effect_speciallwattackf3);
     agent.acmd("sound_speciallwattackf3", sound_speciallwattackf3);
-    agent.acmd("expression_speciallwattackf3", marth_speciallwattackf3_exp);
+    agent.acmd("expression_speciallwattackf3", expression_speciallwattackf3);
 
     agent.acmd("game_speciallwattackb3", marth_speciallwattackb3);
-    agent.acmd("effect_speciallwattackb3", marth_speciallwattackb3_eff);
+    agent.acmd("effect_speciallwattackb3", effect_speciallwattackb3);
     agent.acmd("sound_speciallwattackb3", sound_speciallwattackb3);
-    agent.acmd("expression_speciallwattackb3", marth_speciallwattackb3_exp);
+    agent.acmd("expression_speciallwattackb3", expression_speciallwattackb3);
 }

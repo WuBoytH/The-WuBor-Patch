@@ -16,7 +16,7 @@ unsafe extern "C" fn ganon_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 18, 4, 0, 25, 40, 1.0, true);
@@ -30,7 +30,7 @@ unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_R);
     }
@@ -103,7 +103,7 @@ unsafe extern "C" fn ganon_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -177,7 +177,7 @@ unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackhi3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_TOP);
@@ -217,7 +217,7 @@ unsafe extern "C" fn ganon_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -233,7 +233,7 @@ unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -267,7 +267,7 @@ unsafe extern "C" fn ganon_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw32_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 9.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -283,7 +283,7 @@ unsafe extern "C" fn sound_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attacklw32_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -308,26 +308,26 @@ unsafe extern "C" fn ganon_attacklw32_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", ganon_attack11);
-    agent.acmd("effect_attack11", ganon_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("sound_attack11", sound_attack11);
-    agent.acmd("expression_attack11", ganon_attack11_exp);
+    agent.acmd("expression_attack11", expression_attack11);
 
     agent.acmd("game_attackdash", ganon_attackdash);
 
     agent.acmd("game_attacks3", ganon_attacks3);
 
     agent.acmd("game_attackhi3", ganon_attackhi3);
-    agent.acmd("effect_attackhi3", ganon_attackhi3_eff);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
     agent.acmd("sound_attackhi3", sound_attackhi3);
-    agent.acmd("expression_attackhi3", ganon_attackhi3_exp);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
 
     agent.acmd("game_attacklw3", ganon_attacklw3);
-    agent.acmd("effect_attacklw3", ganon_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
     agent.acmd("sound_attacklw3", sound_attacklw3);
-    agent.acmd("expression_attacklw3", ganon_attacklw3_exp);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 
     agent.acmd("game_attacklw32", ganon_attacklw32);
-    agent.acmd("effect_attacklw32", ganon_attacklw32_eff);
+    agent.acmd("effect_attacklw32", effect_attacklw32);
     agent.acmd("sound_attacklw32", sound_attacklw32);
-    agent.acmd("expression_attacklw32", ganon_attacklw32_exp);
+    agent.acmd("expression_attacklw32", expression_attacklw32);
 }

@@ -57,7 +57,7 @@ unsafe extern "C" fn brave_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_speciallw9_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw9(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_brave_special_l03"));
@@ -73,14 +73,14 @@ unsafe extern "C" fn brave_speciallw9end(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 1.0, 15.0);
 }
 
-unsafe extern "C" fn brave_speciallw9end_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw9end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_dead2"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, true);
     }
 }
 
-unsafe extern "C" fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw9end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_brave_final02"));
@@ -88,7 +88,7 @@ unsafe extern "C" fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_speciallw9end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallw9end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -320,19 +320,19 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialairhi3", brave_specialhi3);
 
-    agent.acmd("sound_speciallw9", brave_speciallw9_snd);
+    agent.acmd("sound_speciallw9", sound_speciallw9);
 
-    agent.acmd("sound_specialairlw9", brave_speciallw9_snd);
+    agent.acmd("sound_specialairlw9", sound_speciallw9);
 
     agent.acmd("game_speciallw9end", brave_speciallw9end);
-    agent.acmd("effect_speciallw9end", brave_speciallw9end_eff);
-    agent.acmd("sound_speciallw9end", brave_speciallw9end_snd);
-    agent.acmd("expression_speciallw9end", brave_speciallw9end_exp);
+    agent.acmd("effect_speciallw9end", effect_speciallw9end);
+    agent.acmd("sound_speciallw9end", sound_speciallw9end);
+    agent.acmd("expression_speciallw9end", expression_speciallw9end);
 
     agent.acmd("game_specialairlw9end", brave_speciallw9end);
-    agent.acmd("effect_specialairlw9end", brave_speciallw9end_eff);
-    agent.acmd("sound_specialairlw9end", brave_speciallw9end_snd);
-    agent.acmd("expression_specialairlw9end", brave_speciallw9end_exp);
+    agent.acmd("effect_specialairlw9end", effect_speciallw9end);
+    agent.acmd("sound_specialairlw9end", sound_speciallw9end);
+    agent.acmd("expression_specialairlw9end", expression_speciallw9end);
 
     agent.acmd("game_speciallw17", brave_speciallw17);
 

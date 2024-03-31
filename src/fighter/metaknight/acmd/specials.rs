@@ -7,7 +7,7 @@ unsafe extern "C" fn metaknight_specialnstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn metaknight_specialnstart_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnstart(agent: &mut L2CAgentBase) {
     WorkModule::set_int(agent.module_accessor, 8, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_N_SPIN_WORK_INT_EFFECT_START_FRAME);
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -110,10 +110,10 @@ unsafe extern "C" fn metaknight_specialhiloop(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialnstart", metaknight_specialnstart);
-    agent.acmd("effect_specialnstart", metaknight_specialnstart_eff);
+    agent.acmd("effect_specialnstart", effect_specialnstart);
 
     agent.acmd("game_specialairnstart", metaknight_specialnstart);
-    agent.acmd("effect_specialairnstart", metaknight_specialnstart_eff);
+    agent.acmd("effect_specialairnstart", effect_specialnstart);
 
     agent.acmd("game_specialnspin", metaknight_specialnspin);
 

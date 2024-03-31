@@ -7,7 +7,7 @@ unsafe extern "C" fn simon_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -104,7 +104,7 @@ unsafe extern "C" fn simon_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -119,7 +119,7 @@ unsafe extern "C" fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -138,7 +138,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -156,22 +156,22 @@ unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", simon_specialn);
-    agent.acmd("expression_specialn", simon_specialn_exp);
+    agent.acmd("expression_specialn", expression_specialn);
 
     agent.acmd("game_specialairn", simon_specialn);
-    agent.acmd("expression_specialairn", simon_specialn_exp);
+    agent.acmd("expression_specialairn", expression_specialn);
 
     agent.acmd("game_specialhi", simon_specialhi);
 
     agent.acmd("game_specialairhi", simon_specialairhi);
 
     agent.acmd("game_speciallw", simon_speciallw);
-    agent.acmd("effect_speciallw", simon_speciallw_eff);
+    agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
-    agent.acmd("expression_speciallw", simon_speciallw_exp);
+    agent.acmd("expression_speciallw", expression_speciallw);
 
     agent.acmd("game_specialairlw", simon_speciallw);
-    agent.acmd("effect_specialairlw", simon_specialairlw_eff);
+    agent.acmd("effect_specialairlw", effect_specialairlw);
     agent.acmd("sound_specialairlw", sound_speciallw);
-    agent.acmd("expression_specialairlw", simon_speciallw_exp);
+    agent.acmd("expression_specialairlw", expression_speciallw);
 }

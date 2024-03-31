@@ -12,7 +12,7 @@ unsafe extern "C" fn dolly_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP_FLIP(agent, Hash40::new("dolly_attack_arc2"), Hash40::new("dolly_attack_arc2"), Hash40::new("top"), -2, 11.5, 0.3, -69, -97, 106, 0.63, true, *EF_FLIP_YZ);
@@ -30,6 +30,6 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", dolly_catchattack);
-    agent.acmd("effect_catchattack", dolly_catchattack_eff);
+    agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 }

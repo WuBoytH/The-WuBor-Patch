@@ -12,7 +12,7 @@ unsafe extern "C" fn pfushigisou_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pfushigisou_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -21,7 +21,7 @@ unsafe extern "C" fn pfushigisou_catchattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pfushigisou_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         VisibilityModule::set_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
@@ -31,6 +31,6 @@ unsafe extern "C" fn pfushigisou_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", pfushigisou_catchattack);
-    agent.acmd("effect_catchattack", pfushigisou_catchattack_eff);
-    agent.acmd("expression_catchattack", pfushigisou_catchattack_exp);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

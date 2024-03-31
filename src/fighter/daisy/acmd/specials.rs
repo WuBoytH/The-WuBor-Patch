@@ -173,7 +173,7 @@ unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("daisy_bomber_jamp"), Hash40::new("top"), 0, 12, -6, 0, 0, 0, 0.8, true);
@@ -189,7 +189,7 @@ unsafe extern "C" fn sound_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -210,7 +210,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhistart", daisy_specialairhistart);
 
     agent.acmd("game_fuwafuwastart", daisy_specialairlw);
-    agent.acmd("effect_fuwafuwastart", daisy_specialairlw_eff);
+    agent.acmd("effect_fuwafuwastart", effect_specialairlw);
     agent.acmd("sound_fuwafuwastart", sound_specialairlw);
-    agent.acmd("expression_fuwafuwastart", daisy_specialairlw_exp);
+    agent.acmd("expression_fuwafuwastart", expression_specialairlw);
 }

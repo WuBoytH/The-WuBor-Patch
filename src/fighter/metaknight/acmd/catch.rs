@@ -12,7 +12,7 @@ unsafe extern "C" fn metaknight_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
         if macros::is_excute(agent) {
@@ -38,7 +38,7 @@ unsafe extern "C" fn metaknight_catchattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_wing") as i64);
@@ -52,6 +52,6 @@ unsafe extern "C" fn metaknight_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", metaknight_catchattack);
-    agent.acmd("effect_catchattack", metaknight_catchattack_eff);
-    agent.acmd("expression_catchattack", metaknight_catchattack_exp);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

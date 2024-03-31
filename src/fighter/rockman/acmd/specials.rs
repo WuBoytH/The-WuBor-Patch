@@ -11,7 +11,7 @@ unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -36,7 +36,7 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_ROCKBUSTER, 5);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
@@ -85,14 +85,14 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_busterchargeshot", rockman_specialn);
-    agent.acmd("effect_busterchargeshot", rockman_specialn_eff);
+    agent.acmd("effect_busterchargeshot", effect_specialn);
     agent.acmd("sound_busterchargeshot", sound_specialn);
-    agent.acmd("expression_busterchargeshot", rockman_specialn_exp);
+    agent.acmd("expression_busterchargeshot", expression_specialn);
 
     agent.acmd("game_busterairchargeshot", rockman_specialn);
-    agent.acmd("effect_busterairchargeshot", rockman_specialn_eff);
+    agent.acmd("effect_busterairchargeshot", effect_specialn);
     agent.acmd("sound_busterairchargeshot", sound_specialn);
-    agent.acmd("expression_busterairchargeshot", rockman_specialn_exp);
+    agent.acmd("expression_busterairchargeshot", expression_specialn);
 
     agent.acmd("game_specialhi", rockman_specialhi);
 

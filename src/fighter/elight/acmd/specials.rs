@@ -778,7 +778,7 @@ unsafe extern "C" fn elight_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_speciallwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
     }
@@ -832,7 +832,7 @@ unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_speciallwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -907,7 +907,7 @@ unsafe extern "C" fn elight_specialairlwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_specialairlwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
     }
@@ -953,7 +953,7 @@ unsafe extern "C" fn sound_specialairlwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairlwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -980,12 +980,12 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairn2", elight_specialairn2);
 
     agent.acmd("game_speciallwattack", elight_speciallwattack);
-    agent.acmd("effect_speciallwattack", elight_speciallwattack_eff);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack);
     agent.acmd("sound_speciallwattack", sound_speciallwattack);
-    agent.acmd("expression_speciallwattack", elight_speciallwattack_exp);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack);
 
     agent.acmd("game_specialairlwattack", elight_specialairlwattack);
-    agent.acmd("effect_specialairlwattack", elight_specialairlwattack_eff);
+    agent.acmd("effect_specialairlwattack", effect_specialairlwattack);
     agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
-    agent.acmd("expression_specialairlwattack", elight_specialairlwattack_exp);
+    agent.acmd("expression_specialairlwattack", expression_specialairlwattack);
 }

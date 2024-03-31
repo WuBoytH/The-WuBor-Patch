@@ -139,7 +139,7 @@ unsafe extern "C" fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_rotate(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_blazeend_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.8);
@@ -190,7 +190,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_flyflickr", eflame_esword_flyflick);
 
     agent.acmd("game_rotate", eflame_esword_rotate);
-    agent.acmd("effect_rotate", eflame_esword_rotate_eff);
+    agent.acmd("effect_rotate", effect_rotate);
 
     agent.acmd("game_reflected", eflame_esword_reflected);
 }

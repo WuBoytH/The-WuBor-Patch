@@ -12,7 +12,7 @@ unsafe extern "C" fn ridley_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ridley_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FLIP(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 5, -2, -7, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
@@ -29,6 +29,6 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", ridley_catchattack);
-    agent.acmd("effect_catchattack", ridley_catchattack_eff);
+    agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 }

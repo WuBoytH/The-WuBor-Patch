@@ -16,7 +16,7 @@ unsafe extern "C" fn chrom_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_chrom_sword1"), Hash40::new("tex_chrom_sword2"), 5, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
@@ -42,7 +42,7 @@ unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -81,7 +81,7 @@ unsafe extern "C" fn chrom_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -109,7 +109,7 @@ unsafe extern "C" fn sound_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -135,12 +135,12 @@ unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks4", chrom_attacks4);
-    agent.acmd("effect_attacks4", chrom_attacks4_eff);
+    agent.acmd("effect_attacks4", effect_attacks4);
     agent.acmd("sound_attacks4", sound_attacks4);
-    agent.acmd("expression_attacks4", chrom_attacks4_exp);
+    agent.acmd("expression_attacks4", expression_attacks4);
 
     agent.acmd("game_attackhi4", chrom_attackhi4);
-    agent.acmd("effect_attackhi4", chrom_attackhi4_eff);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
     agent.acmd("sound_attackhi4", sound_attackhi4);
-    agent.acmd("expression_attackhi4", chrom_attackhi4_exp);
+    agent.acmd("expression_attackhi4", expression_attackhi4);
 }

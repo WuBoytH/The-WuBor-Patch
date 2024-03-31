@@ -21,7 +21,7 @@ unsafe extern "C" fn metaknight_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, false);
@@ -46,7 +46,7 @@ unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -91,7 +91,7 @@ unsafe extern "C" fn metaknight_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 2, 0, 0, 0, 0, 0, false);
@@ -115,7 +115,7 @@ unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -171,7 +171,7 @@ unsafe extern "C" fn metaknight_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack13_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -6, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -195,7 +195,7 @@ unsafe extern "C" fn sound_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack13_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -223,7 +223,7 @@ unsafe extern "C" fn metaknight_attack13_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack100start_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack100start(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -292,7 +292,7 @@ unsafe extern "C" fn metaknight_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack100end_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack100end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_OFF_KIND(agent, Hash40::new("metaknight_attack"), false, false);
@@ -316,7 +316,7 @@ unsafe extern "C" fn sound_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attack100end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack100end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -373,7 +373,7 @@ unsafe extern "C" fn metaknight_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -400,7 +400,7 @@ unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attacks3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -485,7 +485,7 @@ unsafe extern "C" fn metaknight_attacklw3(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 28.0, 13.0);
 }
 
-unsafe extern "C" fn metaknight_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -519,7 +519,7 @@ unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn metaknight_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(
@@ -575,41 +575,41 @@ unsafe extern "C" fn metaknight_attacklw3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", metaknight_attack11);
-    agent.acmd("effect_attack11", metaknight_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("sound_attack11", sound_attack11);
-    agent.acmd("expression_attack11", metaknight_attack11_exp);
+    agent.acmd("expression_attack11", expression_attack11);
 
     agent.acmd("game_attack12", metaknight_attack12);
-    agent.acmd("effect_attack12", metaknight_attack12_eff);
+    agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("sound_attack12", sound_attack12);
-    agent.acmd("expression_attack12", metaknight_attack12_exp);
+    agent.acmd("expression_attack12", expression_attack12);
 
     agent.acmd("game_attack13", metaknight_attack13);
-    agent.acmd("effect_attack13", metaknight_attack13_eff);
+    agent.acmd("effect_attack13", effect_attack13);
     agent.acmd("sound_attack13", sound_attack13);
-    agent.acmd("expression_attack13", metaknight_attack13_exp);
+    agent.acmd("expression_attack13", expression_attack13);
 
-    agent.acmd("effect_attack100start", metaknight_attack100start_eff);
+    agent.acmd("effect_attack100start", effect_attack100start);
     agent.acmd("sound_attack100start", sound_attack100start);
 
     agent.acmd("game_attack100", metaknight_attack100);
 
     agent.acmd("game_attack100end", metaknight_attack100end);
-    agent.acmd("effect_attack100end", metaknight_attack100end_eff);
+    agent.acmd("effect_attack100end", effect_attack100end);
     agent.acmd("sound_attack100end", sound_attack100end);
-    agent.acmd("expression_attack100end", metaknight_attack100end_exp);
+    agent.acmd("expression_attack100end", expression_attack100end);
 
     agent.acmd("game_attackdash", metaknight_attackdash);
 
     agent.acmd("game_attacks3", metaknight_attacks3);
-    agent.acmd("effect_attacks3", metaknight_attacks3_eff);
+    agent.acmd("effect_attacks3", effect_attacks3);
     agent.acmd("sound_attacks3", sound_attacks3);
-    agent.acmd("expression_attacks3", metaknight_attacks3_exp);
+    agent.acmd("expression_attacks3", expression_attacks3);
 
     agent.acmd("game_attackhi3", metaknight_attackhi3);
 
     agent.acmd("game_attacklw3", metaknight_attacklw3);
-    agent.acmd("effect_attacklw3", metaknight_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
     agent.acmd("sound_attacklw3", sound_attacklw3);
-    agent.acmd("expression_attacklw3", metaknight_attacklw3_exp);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 }

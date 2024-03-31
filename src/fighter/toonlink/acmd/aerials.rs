@@ -112,7 +112,7 @@ unsafe extern "C" fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, -8, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -140,5 +140,5 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairhi", toonlink_attackairhi);
 
     agent.acmd("game_attackairlw", toonlink_attackairlw);
-    agent.acmd("effect_attackairlw", toonlink_attackairlw_eff);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
 }

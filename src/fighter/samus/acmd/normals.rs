@@ -30,7 +30,7 @@ unsafe extern "C" fn samus_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn samus_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("samus_atk_bomb"), Hash40::new("top"), 0.0, 21.0, 10.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -64,30 +64,30 @@ unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 8);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("expression_nohitlosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 8);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("expression_nohitlosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 8);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohit_explosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("expression_nohitlosion"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackhi3", samus_attackhi3);
-    agent.acmd("effect_attackhi3", samus_attackhi3_eff);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
     agent.acmd("sound_attackhi3", sound_attackhi3);
-    agent.acmd("expression_attackhi3", samus_attackhi3_exp);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
 }

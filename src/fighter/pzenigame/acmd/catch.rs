@@ -12,7 +12,7 @@ unsafe extern "C" fn pzenigame_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pzenigame_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FLIP(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 3, 10.5, -7, 30, 0, 0, 0.75, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
@@ -20,7 +20,7 @@ unsafe extern "C" fn pzenigame_catchattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pzenigame_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
@@ -29,6 +29,6 @@ unsafe extern "C" fn pzenigame_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", pzenigame_catchattack);
-    agent.acmd("effect_catchattack", pzenigame_catchattack_eff);
-    agent.acmd("expression_catchattack", pzenigame_catchattack_exp);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

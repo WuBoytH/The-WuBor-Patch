@@ -31,7 +31,7 @@ unsafe extern "C" fn mariod_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, 0.5, 9, -5, 9, 1.1, true);
@@ -56,7 +56,7 @@ unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -183,9 +183,9 @@ unsafe extern "C" fn mariod_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", mariod_attackairn);
-    agent.acmd("effect_attackairn", mariod_attackairn_eff);
+    agent.acmd("effect_attackairn", effect_attackairn);
     agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", mariod_attackairn_exp);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
     agent.acmd("game_attackairf", mariod_attackairf);
 

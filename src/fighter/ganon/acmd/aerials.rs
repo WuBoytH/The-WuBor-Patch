@@ -41,7 +41,7 @@ unsafe extern "C" fn ganon_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 8, 14, 0, 0, 0, 1.5, true, 0.8);
@@ -167,7 +167,7 @@ unsafe extern "C" fn ganon_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", ganon_attackairn);
-    agent.acmd("effect_attackairn", ganon_attackairn_eff);
+    agent.acmd("effect_attackairn", effect_attackairn);
 
     agent.acmd("game_attackairf", ganon_attackairf);
 

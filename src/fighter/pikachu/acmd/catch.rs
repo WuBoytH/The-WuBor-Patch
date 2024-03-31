@@ -12,14 +12,14 @@ unsafe extern "C" fn pikachu_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_elec_impact"), Hash40::new("top"), 0, 9, 9, 0, 90, 0, 0.7, true);
     }
 }
 
-unsafe extern "C" fn pikachu_catchattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
@@ -28,6 +28,6 @@ unsafe extern "C" fn pikachu_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", pikachu_catchattack);
-    agent.acmd("effect_catchattack", pikachu_catchattack_eff);
-    agent.acmd("expression_catchattack", pikachu_catchattack_exp);
+    agent.acmd("effect_catchattack", effect_catchattack);
+    agent.acmd("expression_catchattack", expression_catchattack);
 }

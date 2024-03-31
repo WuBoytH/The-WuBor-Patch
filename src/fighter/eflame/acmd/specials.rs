@@ -162,7 +162,7 @@ unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
     }
@@ -268,7 +268,7 @@ unsafe extern "C" fn sound_specialairlwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ControlModule::set_rumble(
@@ -321,12 +321,12 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhijump", eflame_specialairhijump);
 
     agent.acmd("game_speciallwattack", eflame_speciallwattack);
-    agent.acmd("effect_speciallwattack", eflame_speciallwattack_eff);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack);
     agent.acmd("sound_speciallwattack", sound_speciallwattack);
-    agent.acmd("expression_speciallwattack", eflame_speciallwattack_exp);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack);
 
     agent.acmd("game_specialairlwattack", eflame_speciallwattack);
-    agent.acmd("effect_specialairlwattack", eflame_speciallwattack_eff);
+    agent.acmd("effect_specialairlwattack", effect_speciallwattack);
     agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
-    agent.acmd("expression_specialairlwattack", eflame_speciallwattack_exp);
+    agent.acmd("expression_specialairlwattack", expression_speciallwattack);
 }

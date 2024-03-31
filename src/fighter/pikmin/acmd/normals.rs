@@ -56,7 +56,7 @@ unsafe extern "C" fn pikmin_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 3, true);
     }
@@ -91,7 +91,7 @@ unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3loop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("pikmin_punch_spin"), Hash40::new("top"), -3, 6, -2, -192, 4, 68, 0.85, true);
     }
@@ -103,7 +103,7 @@ unsafe extern "C" fn sound_attacks3loop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3loop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R);
         ControlModule::set_rumble(
@@ -141,7 +141,7 @@ unsafe extern "C" fn pikmin_attacks3end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3end_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -163,7 +163,7 @@ unsafe extern "C" fn sound_attacks3end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attacks3end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R, 5);
     }
@@ -212,7 +212,7 @@ unsafe extern "C" fn pikmin_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikmin_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
@@ -260,22 +260,22 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack12", pikmin_attack12);
 
     agent.acmd("game_attackdash", pikmin_attackdash);
-    agent.acmd("expression_attack_dash", pikmin_attackdash_exp);
+    agent.acmd("expression_attack_dash", expression_attackdash);
 
     agent.acmd("game_attacks3", pikmin_attacks3);
     agent.acmd("sound_attacks3", sound_attacks3);
 
-    agent.acmd("effect_attacks3loop", pikmin_attacks3loop_eff);
+    agent.acmd("effect_attacks3loop", effect_attacks3loop);
     agent.acmd("sound_attacks3loop", sound_attacks3loop);
-    agent.acmd("expression_attacks3loop", pikmin_attacks3loop_exp);
+    agent.acmd("expression_attacks3loop", expression_attacks3loop);
 
     agent.acmd("game_attacks3end", pikmin_attacks3end);
-    agent.acmd("effect_attacks3end", pikmin_attacks3end_eff);
+    agent.acmd("effect_attacks3end", effect_attacks3end);
     agent.acmd("sound_attacks3end", sound_attacks3end);
-    agent.acmd("expression_attacks3end", pikmin_attacks3end_exp);
+    agent.acmd("expression_attacks3end", expression_attacks3end);
 
     agent.acmd("game_attackhi3", pikmin_attackhi3);
-    agent.acmd("effect_attackhi3", pikmin_attackhi3_eff);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
     agent.acmd("sound_attackhi3", sound_attackhi3);
 
     agent.acmd("game_attacklw3", pikmin_attacklw3);

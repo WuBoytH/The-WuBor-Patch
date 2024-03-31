@@ -21,7 +21,7 @@ unsafe extern "C" fn mario_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -58,7 +58,7 @@ unsafe extern "C" fn mario_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -95,7 +95,7 @@ unsafe extern "C" fn mario_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -119,7 +119,7 @@ unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -180,19 +180,19 @@ unsafe extern "C" fn mario_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks4", mario_attacks4);
-    agent.acmd("effect_attacks4", mario_attacks4_eff);
+    agent.acmd("effect_attacks4", effect_attacks4);
     agent.acmd("sound_attacks4", sound_attacks4);
-    agent.acmd("expression_attacks4", mario_attacks4_exp);
+    agent.acmd("expression_attacks4", expression_attacks4);
 
     agent.acmd("game_attacks4hi", mario_attacks4hi);
-    agent.acmd("effect_attacks4hi", mario_attacks4hi_eff);
+    agent.acmd("effect_attacks4hi", effect_attacks4hi);
     agent.acmd("sound_attacks4hi", sound_attacks4);
-    agent.acmd("expression_attacks4hi", mario_attacks4_exp);
+    agent.acmd("expression_attacks4hi", expression_attacks4);
 
     agent.acmd("game_attacks4lw", mario_attacks4lw);
-    agent.acmd("effect_attacks4lw", mario_attacks4lw_eff);
+    agent.acmd("effect_attacks4lw", effect_attacks4lw);
     agent.acmd("sound_attacks4lw", sound_attacks4);
-    agent.acmd("expression_attacks4lw", mario_attacks4_exp);
+    agent.acmd("expression_attacks4lw", expression_attacks4);
 
     agent.acmd("game_attacklw4", mario_attacklw4);
 }

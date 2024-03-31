@@ -53,7 +53,7 @@ unsafe extern "C" fn cloud_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -71,5 +71,5 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairb", cloud_attackairb);
 
     agent.acmd("game_attackairhi", cloud_attackairhi);
-    agent.acmd("expression_attackairhi", cloud_attackairhi_exp);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
 }

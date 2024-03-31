@@ -12,7 +12,7 @@ unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("demon_attack_arc"), Hash40::new("top"), 2.5, 10.7, 4.2, 16, -24, -70, 0.45, true, 1);
@@ -67,7 +67,7 @@ unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", demon_catchattack);
-    agent.acmd("effect_catchattack", demon_catchattack_eff);
+    agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 
     agent.acmd("game_catchcommand", demon_catchcommand);

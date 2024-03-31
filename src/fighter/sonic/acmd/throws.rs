@@ -24,7 +24,7 @@ unsafe extern "C" fn sonic_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sonic_throwf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_throwf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 1, 7.8, -2, 0, 0, 0, 0.9, true, *EF_FLIP_YZ);
@@ -47,7 +47,7 @@ unsafe extern "C" fn sound_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sonic_throwf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
@@ -93,9 +93,9 @@ unsafe extern "C" fn sonic_throwlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_throwf", sonic_throwf);
-    agent.acmd("effect_throwf", sonic_throwf_eff);
+    agent.acmd("effect_throwf", effect_throwf);
     agent.acmd("sound_throwf", sound_throwf);
-    agent.acmd("expression_throwf", sonic_throwf_exp);
+    agent.acmd("expression_throwf", expression_throwf);
 
     agent.acmd("game_throwlw", sonic_throwlw);
 }

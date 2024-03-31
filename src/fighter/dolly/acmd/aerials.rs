@@ -145,7 +145,7 @@ unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 16, 5, 0, 0, 0, 1.0, true, *EF_FLIP_YZ, 0.5);
@@ -160,7 +160,7 @@ unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attackairhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -216,9 +216,9 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairb", dolly_attackairb);
 
     agent.acmd("game_attackairhi", dolly_attackairhi);
-    agent.acmd("effect_attackairhi", dolly_attackairhi_eff);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
     agent.acmd("sound_attackairhi", sound_attackairhi);
-    agent.acmd("expression_attackairhi", dolly_attackairhi_exp);
+    agent.acmd("expression_attackairhi", expression_attackairhi);
 
     agent.acmd("game_attackairlw", dolly_attackairlw);
 }

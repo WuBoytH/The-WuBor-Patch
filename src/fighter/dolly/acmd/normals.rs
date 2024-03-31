@@ -58,7 +58,7 @@ unsafe extern "C" fn dolly_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -87,7 +87,7 @@ unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -244,7 +244,7 @@ unsafe extern "C" fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -269,7 +269,7 @@ unsafe extern "C" fn sound_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -328,7 +328,7 @@ unsafe extern "C" fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("dolly_attack_arc"), Hash40::new("dolly_attack_arc"), Hash40::new("top"), 0, 4, 1.5, -5.3, -51.7, 42.2, 0.4, true, *EF_FLIP_YZ, 1);
@@ -352,7 +352,7 @@ unsafe extern "C" fn sound_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -459,7 +459,7 @@ unsafe extern "C" fn dolly_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false)
@@ -482,7 +482,7 @@ unsafe extern "C" fn sound_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw32(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 2);
     }
@@ -504,9 +504,9 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", dolly_attack11);
 
     agent.acmd("game_attack12", dolly_attack12);
-    agent.acmd("effect_attack12", dolly_attack12_eff);
+    agent.acmd("effect_attack12", effect_attack12);
     agent.acmd("sound_attack12", sound_attack12);
-    agent.acmd("expression_attack12", dolly_attack12_exp);
+    agent.acmd("expression_attack12", expression_attack12);
 
     agent.acmd("game_attack13", dolly_attack13);
 
@@ -515,21 +515,21 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks3", dolly_attacks3);
 
     agent.acmd("game_attacks3hi", dolly_attacks3hi);
-    agent.acmd("effect_attacks3hi", dolly_attacks3hi_eff);
+    agent.acmd("effect_attacks3hi", effect_attacks3hi);
     agent.acmd("sound_attacks3hi", sound_attacks3hi);
-    agent.acmd("expression_attacks3hi", dolly_attacks3hi_exp);
+    agent.acmd("expression_attacks3hi", expression_attacks3hi);
 
     agent.acmd("game_attacks3lw", dolly_attacks3lw);
-    agent.acmd("effect_attacks3lw", dolly_attacks3lw_eff);
+    agent.acmd("effect_attacks3lw", effect_attacks3lw);
     agent.acmd("sound_attacks3lw", sound_attacks3lw);
-    agent.acmd("expression_attacks3lw", dolly_attacks3lw_exp);
+    agent.acmd("expression_attacks3lw", expression_attacks3lw);
 
     agent.acmd("game_attackhi3", dolly_attackhi3);
 
     agent.acmd("game_attacklw3", dolly_attacklw3);
 
     agent.acmd("game_attacklw32", dolly_attacklw32);
-    agent.acmd("effect_attacklw32", dolly_attacklw32_eff);
+    agent.acmd("effect_attacklw32", effect_attacklw32);
     agent.acmd("sound_attacklw32", sound_attacklw32);
-    agent.acmd("expression_attacklw32", dolly_attacklw32_exp);
+    agent.acmd("expression_attacklw32", expression_attacklw32);
 }

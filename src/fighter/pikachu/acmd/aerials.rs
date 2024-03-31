@@ -59,7 +59,7 @@ unsafe extern "C" fn pikachu_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_elec"), Hash40::new("footr"), 1.5, 0, 0, 0, 0, 0, 0.3, true);
@@ -80,7 +80,7 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_attackairb_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -126,9 +126,9 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairn", pikachu_attackairn);
 
     agent.acmd("game_attackairb", pikachu_attackairb);
-    agent.acmd("effect_attackairb", pikachu_attackairb_eff);
+    agent.acmd("effect_attackairb", effect_attackairb);
     agent.acmd("sound_attackairb", sound_attackairb);
-    agent.acmd("expression_attackairb", pikachu_attackairb_exp);
+    agent.acmd("expression_attackairb", expression_attackairb);
 
     agent.acmd("game_landingairb", pikachu_landingairb);
 

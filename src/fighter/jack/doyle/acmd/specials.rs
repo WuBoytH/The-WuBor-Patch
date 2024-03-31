@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_appear(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
@@ -19,7 +19,7 @@ unsafe extern "C" fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_return(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
         macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
@@ -40,7 +40,7 @@ unsafe extern "C" fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_appear", jack_doyle_appear_eff);
+    agent.acmd("effect_appear", effect_appear);
 
-    agent.acmd("effect_return", jack_doyle_return_eff);
+    agent.acmd("effect_return", effect_return);
 }

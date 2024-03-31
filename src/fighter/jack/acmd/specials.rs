@@ -314,7 +314,7 @@ unsafe extern "C" fn jack_specialnjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialnjump_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnjump(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_specialnjump(agent: &mut L2CAgentBase) {
@@ -594,7 +594,7 @@ unsafe extern "C" fn jack_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specials1_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
@@ -634,7 +634,7 @@ unsafe extern "C" fn sound_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specials1_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specials1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -687,7 +687,7 @@ unsafe extern "C" fn jack_specialairs1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-unsafe extern "C" fn jack_specialairs1_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
@@ -710,7 +710,7 @@ unsafe extern "C" fn sound_specialairs1(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_specialairs1_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairs1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -828,7 +828,7 @@ unsafe extern "C" fn jack_specialhithrow(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_wait4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_wait4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
         EFFECT_STENCIL_ON(agent.lua_state_agent);
@@ -874,7 +874,7 @@ unsafe extern "C" fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_wait5(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear2"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
@@ -907,20 +907,20 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairn1_ex", jack_specialairn1_ex);
 
     agent.acmd("game_specialnjump", jack_specialnjump);
-    agent.acmd("effect_specialnjump", jack_specialnjump_eff);
+    agent.acmd("effect_specialnjump", effect_specialnjump);
     agent.acmd("sound_specialnjump", sound_specialnjump);
 
     agent.acmd("game_specialairnshoot", jack_specialairnshoot);
 
     agent.acmd("game_specials1", jack_specials1);
-    agent.acmd("effect_specials1", jack_specials1_eff);
+    agent.acmd("effect_specials1", effect_specials1);
     agent.acmd("sound_specials1", sound_specials1);
-    agent.acmd("expression_specials1", jack_specials1_exp);
+    agent.acmd("expression_specials1", expression_specials1);
 
     agent.acmd("game_specialairs1", jack_specialairs1);
-    agent.acmd("effect_specialairs1", jack_specialairs1_eff);
+    agent.acmd("effect_specialairs1", effect_specialairs1);
     agent.acmd("sound_specialairs1", sound_specialairs1);
-    agent.acmd("expression_specialairs1", jack_specialairs1_exp);
+    agent.acmd("expression_specialairs1", expression_specialairs1);
 
     agent.acmd("game_specialairhi", jack_specialairhi);
 
@@ -928,7 +928,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_specialairhithrow", jack_specialhithrow);
 
-    agent.acmd("effect_wait4", jack_wait4_eff);
+    agent.acmd("effect_wait4", effect_wait4);
 
-    agent.acmd("effect_wait5", jack_wait5_eff);
+    agent.acmd("effect_wait5", effect_wait5);
 }

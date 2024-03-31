@@ -12,7 +12,7 @@ unsafe extern "C" fn ness_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ness_catchattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("ness_psi_rush"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
@@ -28,6 +28,6 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_catchattack", ness_catchattack);
-    agent.acmd("effect_catchattack", ness_catchattack_eff);
+    agent.acmd("effect_catchattack", effect_catchattack);
     agent.acmd("sound_catchattack", sound_catchattack);
 }

@@ -8,7 +8,7 @@ unsafe extern "C" fn pitb_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialnstart_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -18,7 +18,7 @@ unsafe extern "C" fn pitb_specialnstart_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialnhold_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnhold(agent: &mut L2CAgentBase) {
     for _ in 0..10 {
         if macros::is_excute(agent) {
             macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 15, 0, 4, 0, 0, 0, false);
@@ -27,7 +27,7 @@ unsafe extern "C" fn pitb_specialnhold_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialairnhold_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairnhold(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn pitb_specialnfire(agent: &mut L2CAgentBase) {
@@ -38,7 +38,7 @@ unsafe extern "C" fn pitb_specialnfire(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialnfirehi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnfirehi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -50,7 +50,7 @@ unsafe extern "C" fn pitb_specialnfirehi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialnairfirehi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnairfirehi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -61,7 +61,7 @@ unsafe extern "C" fn pitb_specialnairfirehi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pitb_specialnfires_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnfires(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -185,48 +185,48 @@ unsafe extern "C" fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialnstart", pitb_specialnstart);
-    agent.acmd("expression_specialnstart", pitb_specialnstart_exp);
+    agent.acmd("expression_specialnstart", expression_specialnstart);
 
     agent.acmd("game_specialairnstart", pitb_specialnstart);
-    agent.acmd("expression_specialairnstart", pitb_specialnstart_exp);
+    agent.acmd("expression_specialairnstart", expression_specialnstart);
 
-    agent.acmd("effect_specialnholds", pitb_specialnhold_eff);
+    agent.acmd("effect_specialnholds", effect_specialnhold);
 
-    agent.acmd("effect_specialnholdhi", pitb_specialnhold_eff);
+    agent.acmd("effect_specialnholdhi", effect_specialnhold);
 
-    agent.acmd("effect_specialnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstos", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstos", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnholds", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnholds", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnholdhi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnholdhi", effect_specialairnhold);
 
-    agent.acmd("effect_specialnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstos", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnstos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstos", effect_specialairnhold);
 
-    agent.acmd("effect_specialnstohi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnstohi", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnstohi", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnstohi", effect_specialairnhold);
 
-    agent.acmd("effect_specialnhitos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialnhitos", effect_specialairnhold);
 
-    agent.acmd("effect_specialairnhitos", pitb_specialairnhold_eff);
+    agent.acmd("effect_specialairnhitos", effect_specialairnhold);
 
     agent.acmd("game_specialnfires", pitb_specialnfire);
-    agent.acmd("expression_specialnfires", pitb_specialnfires_exp);
+    agent.acmd("expression_specialnfires", expression_specialnfires);
 
     agent.acmd("game_specialairnfires", pitb_specialnfire);
-    agent.acmd("expression_specialairnfires", pitb_specialnfires_exp);
+    agent.acmd("expression_specialairnfires", expression_specialnfires);
 
     agent.acmd("game_specialnfirehi", pitb_specialnfire);
-    agent.acmd("effect_specialnfirehi", pitb_specialnfirehi_eff);
-    agent.acmd("expression_specialnfirehi", pitb_specialnfires_exp);
+    agent.acmd("effect_specialnfirehi", effect_specialnfirehi);
+    agent.acmd("expression_specialnfirehi", expression_specialnfires);
 
     agent.acmd("game_specialairnfirehi", pitb_specialnfire);
-    agent.acmd("effect_specialairnfirehi", pitb_specialnairfirehi_eff);
-    agent.acmd("expression_specialairnfirehi", pitb_specialnfires_exp);
+    agent.acmd("effect_specialairnfirehi", effect_specialnairfirehi);
+    agent.acmd("expression_specialairnfirehi", expression_specialnfires);
 
     agent.acmd("game_specialsend", pitb_specialsend);
 

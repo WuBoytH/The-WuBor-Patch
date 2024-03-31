@@ -71,7 +71,7 @@ unsafe extern "C" fn kirby_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_attackdash_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -142,7 +142,7 @@ unsafe extern "C" fn kirby_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 2, 2, 0, 0, 0, 0.8, true);
@@ -165,10 +165,10 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack12", kirby_attack12);
 
     agent.acmd("game_attackdash", kirby_attackdash);
-    agent.acmd("effect_attackdash", kirby_attackdash_eff);
+    agent.acmd("effect_attackdash", effect_attackdash);
 
     agent.acmd("game_attackhi3", kirby_attackhi3);
 
     agent.acmd("game_attacklw3", kirby_attacklw3);
-    agent.acmd("effect_attacklw3", kirby_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
 }

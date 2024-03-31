@@ -17,7 +17,7 @@ unsafe extern "C" fn pikachu_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -48,7 +48,7 @@ unsafe extern "C" fn pikachu_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_specialairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -86,7 +86,7 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 3);
@@ -178,7 +178,7 @@ unsafe extern "C" fn pikachu_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -227,7 +227,7 @@ unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -266,7 +266,7 @@ unsafe extern "C" fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_speciallwstrike_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, -90, 0.6, true, *EF_FLIP_YZ);
@@ -304,7 +304,7 @@ unsafe extern "C" fn sound_speciallwstrike(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -343,14 +343,14 @@ unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", pikachu_specialn);
-    agent.acmd("effect_specialn", pikachu_specialn_eff);
+    agent.acmd("effect_specialn", effect_specialn);
     agent.acmd("sound_specialn", sound_specialn);
-    agent.acmd("expression_specialn", pikachu_specialn_exp);
+    agent.acmd("expression_specialn", expression_specialn);
 
     agent.acmd("game_specialairn", pikachu_specialn);
-    agent.acmd("effect_specialairn", pikachu_specialairn_eff);
+    agent.acmd("effect_specialairn", effect_specialairn);
     agent.acmd("sound_specialairn", sound_specialn);
-    agent.acmd("expression_specialairn", pikachu_specialn_exp);
+    agent.acmd("expression_specialairn", expression_specialn);
 
     agent.acmd("game_specialhistart", pikachu_specialhistart);
 
@@ -365,17 +365,17 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhi2", pikachu_specialhi2);
 
     agent.acmd("game_speciallw", pikachu_speciallw);
-    agent.acmd("effect_speciallw", pikachu_speciallw_eff);
+    agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
-    agent.acmd("expression_speciallw", pikachu_speciallw_exp);
+    agent.acmd("expression_speciallw", expression_speciallw);
 
     agent.acmd("game_specialairlw", pikachu_speciallw);
-    agent.acmd("effect_specialairlw", pikachu_speciallw_eff);
+    agent.acmd("effect_specialairlw", effect_speciallw);
     agent.acmd("sound_specialairlw", sound_speciallw);
-    agent.acmd("expression_specialairlw", pikachu_speciallw_exp);
+    agent.acmd("expression_specialairlw", expression_speciallw);
 
     agent.acmd("game_speciallwstrike", pikachu_speciallwstrike);
-    agent.acmd("effect_speciallwstrike", pikachu_speciallwstrike_eff);
+    agent.acmd("effect_speciallwstrike", effect_speciallwstrike);
     agent.acmd("sound_speciallwstrike", sound_speciallwstrike);
-    agent.acmd("expression_speciallwstrike", pikachu_speciallwstrike_exp);
+    agent.acmd("expression_speciallwstrike", expression_speciallwstrike);
 }

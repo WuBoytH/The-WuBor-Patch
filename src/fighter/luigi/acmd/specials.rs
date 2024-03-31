@@ -25,7 +25,7 @@ unsafe extern "C" fn luigi_specialshold(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_specialshold_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialshold(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);
@@ -87,7 +87,7 @@ unsafe extern "C" fn luigi_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);
     }
@@ -112,7 +112,7 @@ unsafe extern "C" fn sound_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn luigi_specialsend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -272,20 +272,20 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairsstart", luigi_specialsstart);
 
     agent.acmd("game_specialshold", luigi_specialshold);
-    agent.acmd("effect_specialshold", luigi_specialshold_eff);
+    agent.acmd("effect_specialshold", effect_specialshold);
 
     agent.acmd("game_specialairshold", luigi_specialshold);
-    agent.acmd("effect_specialairshold", luigi_specialshold_eff);
+    agent.acmd("effect_specialairshold", effect_specialshold);
 
     agent.acmd("game_specialsend", luigi_specialsend);
-    agent.acmd("effect_specialsend", luigi_specialsend_eff);
+    agent.acmd("effect_specialsend", effect_specialsend);
     agent.acmd("sound_specialsend", sound_specialsend);
-    agent.acmd("expression_specialsend", luigi_specialsend_exp);
+    agent.acmd("expression_specialsend", expression_specialsend);
 
     agent.acmd("game_specialairsend", luigi_specialsend);
-    agent.acmd("effect_specialairsend", luigi_specialsend_eff);
+    agent.acmd("effect_specialairsend", effect_specialsend);
     agent.acmd("sound_specialairsend", sound_specialsend);
-    agent.acmd("expression_specialairsend", luigi_specialsend_exp);
+    agent.acmd("expression_specialairsend", expression_specialsend);
 
     agent.acmd("game_specialhi", luigi_specialhi);
 

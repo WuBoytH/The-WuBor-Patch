@@ -21,7 +21,7 @@ unsafe extern "C" fn marth_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -69,7 +69,7 @@ unsafe extern "C" fn marth_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -132,7 +132,7 @@ unsafe extern "C" fn marth_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -182,11 +182,11 @@ unsafe extern "C" fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attacks4", marth_attacks4);
-    agent.acmd("effect_attacks4", marth_attacks4_eff);
+    agent.acmd("effect_attacks4", effect_attacks4);
 
     agent.acmd("game_attackhi4", marth_attackhi4);
-    agent.acmd("effect_attackhi4", marth_attackhi4_eff);
+    agent.acmd("effect_attackhi4", effect_attackhi4);
 
     agent.acmd("game_attacklw4", marth_attacklw4);
-    agent.acmd("effect_attacklw4", marth_attacklw4_eff);
+    agent.acmd("effect_attacklw4", effect_attacklw4);
 }

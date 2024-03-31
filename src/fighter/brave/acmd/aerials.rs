@@ -125,7 +125,7 @@ unsafe extern "C" fn brave_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1, 11, 1, 0, 25, 90, 1.0, true);
@@ -190,7 +190,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairb", brave_attackairb);
 
     agent.acmd("game_attackairhi", brave_attackairhi);
-    agent.acmd("effect_attackairhi", brave_attackairhi_eff);
+    agent.acmd("effect_attackairhi", effect_attackairhi);
 
     agent.acmd("game_attackairlw", brave_attackairlw);
 }

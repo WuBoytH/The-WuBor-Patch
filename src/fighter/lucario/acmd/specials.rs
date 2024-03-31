@@ -21,7 +21,7 @@ unsafe extern "C" fn lucario_specialnshoot(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, 6.0);
 }
 
-unsafe extern "C" fn lucario_specialnshoot_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnshoot(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -38,7 +38,7 @@ unsafe extern "C" fn lucario_specialnshoot_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairnshoot_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairnshoot(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -54,7 +54,7 @@ unsafe extern "C" fn lucario_specialairnshoot_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialnhold2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnhold2(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     loop {
         if macros::is_excute(agent) {
@@ -82,7 +82,7 @@ unsafe extern "C" fn lucario_specialnshoot2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialnshoot2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnshoot2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false)
@@ -95,7 +95,7 @@ unsafe extern "C" fn sound_specialnshoot2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialnshoot2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnshoot2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -151,7 +151,7 @@ unsafe extern "C" fn lucario_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specials_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_aura"), Hash40::new("havel"), 0, 0, 0.5, 0, 0, 0, 1, true);
@@ -168,7 +168,7 @@ unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specials_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -214,7 +214,7 @@ unsafe extern "C" fn lucario_specials2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specials2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_aura"), Hash40::new("havel"), 0, 0, 0.5, 0, 0, 0, 1, true);
@@ -242,7 +242,7 @@ unsafe extern "C" fn sound_specials2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specials2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specials2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -292,7 +292,7 @@ unsafe extern "C" fn lucario_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairs_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_aura"), Hash40::new("havel"), 0, 0, 0.5, 0, 0, 0, 1, true);
@@ -309,7 +309,7 @@ unsafe extern "C" fn sound_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairs_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -355,7 +355,7 @@ unsafe extern "C" fn lucario_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairs2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairs2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_aura"), Hash40::new("havel"), 0, 0, 0.5, 0, 0, 0, 1, true);
@@ -379,7 +379,7 @@ unsafe extern "C" fn sound_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairs2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairs2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -411,7 +411,7 @@ unsafe extern "C" fn lucario_specialsthrow(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 27.0, -5.0);
 }
 
-unsafe extern "C" fn lucario_specialsthrow_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -456,7 +456,7 @@ unsafe extern "C" fn sound_specialsthrow(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialsthrow_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -510,7 +510,7 @@ unsafe extern "C" fn lucario_specialsthrow2(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.25);
 }
 
-unsafe extern "C" fn lucario_specialsthrow2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -574,7 +574,7 @@ unsafe extern "C" fn sound_specialsthrow2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialsthrow2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -635,7 +635,7 @@ unsafe extern "C" fn lucario_specialairsthrow(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairsthrow_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -672,7 +672,7 @@ unsafe extern "C" fn sound_specialairsthrow(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairsthrow_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -724,7 +724,7 @@ unsafe extern "C" fn lucario_specialairsthrow2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairsthrow2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairsthrow2(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -765,7 +765,7 @@ unsafe extern "C" fn sound_specialairsthrow2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairsthrow2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -823,7 +823,7 @@ unsafe extern "C" fn lucario_specialhimove(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialhimove_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhimove(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_sinsoku_hadou2"), Hash40::new("havel"), 0, 0, 0, 0, -30, 180, 1, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
@@ -907,7 +907,7 @@ unsafe extern "C" fn lucario_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_kagebunshin"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -952,7 +952,7 @@ unsafe extern "C" fn lucario_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_kagebunshin"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -982,7 +982,7 @@ unsafe extern "C" fn lucario_speciallwend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_speciallwend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
     }
@@ -995,7 +995,7 @@ unsafe extern "C" fn lucario_speciallwcancel(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_speciallwcancel_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwcancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
     }
@@ -1028,7 +1028,7 @@ unsafe extern "C" fn lucario_speciallwattack(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 44.0, 5.0);
 }
 
-unsafe extern "C" fn lucario_speciallwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_kagebunshin"), false, true);
@@ -1065,7 +1065,7 @@ unsafe extern "C" fn sound_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_speciallwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -1118,7 +1118,7 @@ unsafe extern "C" fn lucario_specialairlwattack(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 44.0, 5.0);
 }
 
-unsafe extern "C" fn lucario_specialairlwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_kagebunshin"), false, true);
@@ -1145,7 +1145,7 @@ unsafe extern "C" fn sound_specialairlwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_specialairlwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairlwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -1175,72 +1175,72 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairnstart", lucario_specialnstart);
 
     agent.acmd("game_specialnshoot", lucario_specialnshoot);
-    agent.acmd("expression_specialnshoot", lucario_specialnshoot_exp);
+    agent.acmd("expression_specialnshoot", expression_specialnshoot);
 
     agent.acmd("game_specialairnshoot", lucario_specialnshoot);
-    agent.acmd("expression_specialairnshoot", lucario_specialairnshoot_exp);
+    agent.acmd("expression_specialairnshoot", expression_specialairnshoot);
 
-    agent.acmd("effect_specialnhold2", lucario_specialnhold2_eff);
+    agent.acmd("effect_specialnhold2", effect_specialnhold2);
     agent.acmd("sound_specialnhold2", sound_specialnhold2);
 
-    agent.acmd("effect_specialairnhold2", lucario_specialnhold2_eff);
+    agent.acmd("effect_specialairnhold2", effect_specialnhold2);
     agent.acmd("sound_specialairnhold2", sound_specialnhold2);
 
     agent.acmd("game_specialnshoot2", lucario_specialnshoot2);
-    agent.acmd("effect_specialnshoot2", lucario_specialnshoot2_eff);
+    agent.acmd("effect_specialnshoot2", effect_specialnshoot2);
     agent.acmd("sound_specialnshoot2", sound_specialnshoot2);
-    agent.acmd("expression_specialnshoot2", lucario_specialnshoot2_exp);
+    agent.acmd("expression_specialnshoot2", expression_specialnshoot2);
 
     agent.acmd("game_specialairnshoot2", lucario_specialnshoot2);
     agent.acmd("sound_specialairnshoot2", sound_specialnshoot2);
-    agent.acmd("expression_specialairnshoot2", lucario_specialnshoot2_exp);
+    agent.acmd("expression_specialairnshoot2", expression_specialnshoot2);
 
     agent.acmd("game_specials", lucario_specials);
-    agent.acmd("effect_specials", lucario_specials_eff);
+    agent.acmd("effect_specials", effect_specials);
     agent.acmd("sound_specials", sound_specials);
-    agent.acmd("expression_specials", lucario_specials_exp);
+    agent.acmd("expression_specials", expression_specials);
 
     agent.acmd("game_specials2", lucario_specials2);
-    agent.acmd("effect_specials2", lucario_specials2_eff);
+    agent.acmd("effect_specials2", effect_specials2);
     agent.acmd("sound_specials2", sound_specials2);
-    agent.acmd("expression_specials2", lucario_specials2_exp);
+    agent.acmd("expression_specials2", expression_specials2);
 
     agent.acmd("game_specialairs", lucario_specialairs);
-    agent.acmd("effect_specialairs", lucario_specialairs_eff);
+    agent.acmd("effect_specialairs", effect_specialairs);
     agent.acmd("sound_specialairs", sound_specialairs);
-    agent.acmd("expression_specialairs", lucario_specialairs_exp);
+    agent.acmd("expression_specialairs", expression_specialairs);
 
     agent.acmd("game_specialairs2", lucario_specialairs2);
-    agent.acmd("effect_specialairs2", lucario_specialairs2_eff);
+    agent.acmd("effect_specialairs2", effect_specialairs2);
     agent.acmd("sound_specialairs2", sound_specialairs2);
-    agent.acmd("expression_specialairs2", lucario_specialairs2_exp);
+    agent.acmd("expression_specialairs2", expression_specialairs2);
 
     agent.acmd("game_specialsthrow", lucario_specialsthrow);
-    agent.acmd("effect_specialsthrow", lucario_specialsthrow_eff);
+    agent.acmd("effect_specialsthrow", effect_specialsthrow);
     agent.acmd("sound_specialsthrow", sound_specialsthrow);
-    agent.acmd("expression_specialsthrow", lucario_specialsthrow_exp);
+    agent.acmd("expression_specialsthrow", expression_specialsthrow);
 
     agent.acmd("game_specialsthrow2", lucario_specialsthrow2);
-    agent.acmd("effect_specialsthrow2", lucario_specialsthrow2_eff);
+    agent.acmd("effect_specialsthrow2", effect_specialsthrow2);
     agent.acmd("sound_specialsthrow2", sound_specialsthrow2);
-    agent.acmd("expression_specialsthrow2", lucario_specialsthrow2_exp);
+    agent.acmd("expression_specialsthrow2", expression_specialsthrow2);
 
     agent.acmd("game_specialairsthrow", lucario_specialairsthrow);
-    agent.acmd("effect_specialairsthrow", lucario_specialairsthrow_eff);
+    agent.acmd("effect_specialairsthrow", effect_specialairsthrow);
     agent.acmd("sound_specialairsthrow", sound_specialairsthrow);
-    agent.acmd("expression_specialairsthrow", lucario_specialairsthrow_exp);
+    agent.acmd("expression_specialairsthrow", expression_specialairsthrow);
 
     agent.acmd("game_specialairsthrow2", lucario_specialairsthrow2);
-    agent.acmd("effect_specialairsthrow2", lucario_specialairsthrow2_eff);
+    agent.acmd("effect_specialairsthrow2", effect_specialairsthrow2);
     agent.acmd("sound_specialairsthrow2", sound_specialairsthrow2);
-    agent.acmd("expression_specialairsthrow2", lucario_specialairsthrow2_exp);
+    agent.acmd("expression_specialairsthrow2", expression_specialairsthrow2);
 
     agent.acmd("game_specialhi", lucario_specialhi);
 
     agent.acmd("game_specialairhi", lucario_specialairhi);
 
     agent.acmd("game_specialhimove", lucario_specialhimove);
-    agent.acmd("effect_specialhimove", lucario_specialhimove_eff);
+    agent.acmd("effect_specialhimove", effect_specialhimove);
     agent.acmd("sound_specialhimove", sound_specialhimove);
 
     agent.acmd("game_specialhiend", lucario_specialhiend);
@@ -1248,34 +1248,34 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialairhiend", lucario_specialairhiend);
 
     agent.acmd("game_speciallw", lucario_speciallw);
-    agent.acmd("effect_speciallw", lucario_speciallw_eff);
+    agent.acmd("effect_speciallw", effect_speciallw);
     agent.acmd("sound_speciallw", sound_speciallw);
 
     agent.acmd("game_specialairlw", lucario_specialairlw);
-    agent.acmd("effect_specialairlw", lucario_specialairlw_eff);
+    agent.acmd("effect_specialairlw", effect_specialairlw);
     agent.acmd("sound_specialairlw", sound_specialairlw);
 
     agent.acmd("game_specialairlwend", lucario_speciallwend);
-    agent.acmd("effect_specialairlwend", lucario_speciallwend_eff);
+    agent.acmd("effect_specialairlwend", effect_speciallwend);
 
     agent.acmd("game_specialairlwend", lucario_speciallwend);
-    agent.acmd("effect_specialairlwend", lucario_speciallwend_eff);
+    agent.acmd("effect_specialairlwend", effect_speciallwend);
 
     agent.acmd("game_speciallwcancel", lucario_speciallwcancel);
-    agent.acmd("effect_speciallwcancel", lucario_speciallwcancel_eff);
+    agent.acmd("effect_speciallwcancel", effect_speciallwcancel);
     agent.acmd("sound_speciallwcancel", sound_speciallwcancel);
 
     agent.acmd("game_specialairlwcancel", lucario_speciallwcancel);
-    agent.acmd("effect_specialairlwcancel", lucario_speciallwcancel_eff);
+    agent.acmd("effect_specialairlwcancel", effect_speciallwcancel);
     agent.acmd("sound_specialairlwcancel", sound_speciallwcancel);
 
     agent.acmd("game_speciallwattack", lucario_speciallwattack);
-    agent.acmd("effect_speciallwattack", lucario_speciallwattack_eff);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack);
     agent.acmd("sound_speciallwattack", sound_speciallwattack);
-    agent.acmd("expression_speciallwattack", lucario_speciallwattack_exp);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack);
 
     agent.acmd("game_specialairlwattack", lucario_specialairlwattack);
-    agent.acmd("effect_specialairlwattack", lucario_specialairlwattack_eff);
+    agent.acmd("effect_specialairlwattack", effect_specialairlwattack);
     agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
-    agent.acmd("expression_specialairlwattack", lucario_specialairlwattack_exp);
+    agent.acmd("expression_specialairlwattack", expression_specialairlwattack);
 }

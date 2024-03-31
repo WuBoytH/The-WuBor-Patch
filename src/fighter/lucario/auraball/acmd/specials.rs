@@ -85,7 +85,7 @@ unsafe extern "C" fn sound_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_auraballlosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 70, 70, 0, 80, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
@@ -98,7 +98,7 @@ unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_explosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
@@ -111,6 +111,6 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_shoot", lucario_auraball_shoot);
     agent.acmd("sound_shoot", sound_shoot);
 
-    agent.acmd("game_explosion", lucario_auraball_explosion);
-    agent.acmd("effect_explosion", lucario_auraball_explosion_eff);
+    agent.acmd("game_explosion", expression_auraballlosion);
+    agent.acmd("effect_explosion", effect_explosion);
 }

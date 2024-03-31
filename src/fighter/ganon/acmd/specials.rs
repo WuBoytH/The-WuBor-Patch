@@ -46,7 +46,7 @@ unsafe extern "C" fn ganon_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ganon_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         for _ in 0..5 {
@@ -298,11 +298,11 @@ unsafe extern "C" fn ganon_specialairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_specialn", ganon_specialn);
-    agent.acmd("effect_specialn", ganon_specialn_eff);
+    agent.acmd("effect_specialn", effect_specialn);
     agent.acmd("sound_specialn", sound_specialn);
 
     agent.acmd("game_specialairn", ganon_specialn);
-    agent.acmd("effect_specialairn", ganon_specialn_eff);
+    agent.acmd("effect_specialairn", effect_specialn);
     agent.acmd("sound_specialairn", sound_specialn);
 
     agent.acmd("game_specialsstart", ganon_specialsstart);

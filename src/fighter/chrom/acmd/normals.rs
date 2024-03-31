@@ -24,7 +24,7 @@ unsafe extern "C" fn chrom_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -43,7 +43,7 @@ unsafe extern "C" fn sound_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -89,9 +89,9 @@ unsafe extern "C" fn chrom_attacklw3(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", chrom_attack11);
-    agent.acmd("effect_attack11", chrom_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
     agent.acmd("sound_attack11", sound_attack11);
-    agent.acmd("expression_attack11", chrom_attack11_exp);
+    agent.acmd("expression_attack11", expression_attack11);
 
     agent.acmd("game_attacks3", chrom_attacks3);
 

@@ -19,7 +19,7 @@ unsafe extern "C" fn marth_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -46,7 +46,7 @@ unsafe extern "C" fn marth_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -73,7 +73,7 @@ unsafe extern "C" fn marth_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -116,7 +116,7 @@ unsafe extern "C" fn marth_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -143,7 +143,7 @@ unsafe extern "C" fn marth_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -158,17 +158,17 @@ unsafe extern "C" fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attack11", marth_attack11);
-    agent.acmd("effect_attack11", marth_attack11_eff);
+    agent.acmd("effect_attack11", effect_attack11);
 
     agent.acmd("game_attack12", marth_attack12);
-    agent.acmd("effect_attack12", marth_attack12_eff);
+    agent.acmd("effect_attack12", effect_attack12);
 
     agent.acmd("game_attacks3", marth_attacks3);
-    agent.acmd("effect_attacks3", marth_attacks3_eff);
+    agent.acmd("effect_attacks3", effect_attacks3);
 
     agent.acmd("game_attackhi3", marth_attackhi3);
-    agent.acmd("effect_attackhi3", marth_attackhi3_eff);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
 
     agent.acmd("game_attacklw3", marth_attacklw3);
-    agent.acmd("effect_attacklw3", marth_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
 }

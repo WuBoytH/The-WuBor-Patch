@@ -18,7 +18,7 @@ unsafe extern "C" fn simon_whip_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_whip_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -66,7 +66,7 @@ unsafe extern "C" fn simon_whip_landingairlw(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackairlw", simon_whip_attackairlw);
-    agent.acmd("effect_attackairlw", simon_whip_attackairlw_eff);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
 
     agent.acmd("game_landingairlw", simon_whip_landingairlw);
 }

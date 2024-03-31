@@ -50,7 +50,7 @@ unsafe extern "C" fn sound_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn cloud_appealsloop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -112,7 +112,7 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_appealsloop", cloud_appealsloop);
     agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", cloud_appealsloop_exp);
+    agent.acmd("expression_appealsloop", expression_appealsloop);
 
     agent.acmd("game_appealhil", cloud_appealhil);
     agent.acmd("game_appealhir", cloud_appealhir);

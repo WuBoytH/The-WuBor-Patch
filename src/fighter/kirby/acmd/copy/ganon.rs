@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn kirby_ganonspecialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_ganonspecialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         WorkModule::set_flag(agent.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
@@ -53,9 +53,9 @@ unsafe extern "C" fn sound_ganonspecialn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_ganonspecialn", kirby_ganonspecialn_eff);
+    agent.acmd("effect_ganonspecialn", effect_ganonspecialn);
     agent.acmd("sound_ganonspecialn", sound_ganonspecialn);
 
-    agent.acmd("effect_ganonspecialairn", kirby_ganonspecialn_eff);
+    agent.acmd("effect_ganonspecialairn", effect_ganonspecialn);
     agent.acmd("sound_ganonspecialairn", sound_ganonspecialn);
 }

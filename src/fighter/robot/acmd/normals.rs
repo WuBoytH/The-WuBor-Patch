@@ -77,7 +77,7 @@ unsafe extern "C" fn robot_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let color = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -145,7 +145,7 @@ unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
     }
@@ -178,7 +178,7 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_attackhi3", robot_attackhi3);
 
     agent.acmd("game_attacklw3", robot_attacklw3);
-    agent.acmd("effect_attacklw3", robot_attacklw3_eff);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
     agent.acmd("sound_attacklw3", sound_attacklw3);
-    agent.acmd("expression_attacklw3", robot_attacklw3_exp);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 }

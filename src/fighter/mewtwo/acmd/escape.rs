@@ -13,7 +13,7 @@ unsafe extern "C" fn mewtwo_escapeair(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mewtwo_escapeair_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_escapeair(_agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     macros::EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 12, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
     // }
@@ -33,7 +33,7 @@ unsafe extern "C" fn mewtwo_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("game_escapeair", mewtwo_escapeair);
-    agent.acmd("effect_escapeair", mewtwo_escapeair_eff);
+    agent.acmd("effect_escapeair", effect_escapeair);
 
     agent.acmd("game_escapeairslide", mewtwo_escapeairslide);
 }

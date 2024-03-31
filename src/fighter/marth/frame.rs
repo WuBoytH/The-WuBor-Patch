@@ -56,11 +56,11 @@ unsafe extern "C" fn marth_check_stance(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn marth_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     marth_check_stance(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, marth_frame);
+    agent.on_line(smashline::Main, on_main);
 }

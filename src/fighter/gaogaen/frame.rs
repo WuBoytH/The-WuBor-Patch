@@ -14,11 +14,11 @@ unsafe extern "C" fn gaogaen_lariat_jump_cancel(fighter: &mut L2CFighterCommon) 
     }
 }
 
-unsafe extern "C" fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     gaogaen_lariat_jump_cancel(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, gaogaen_frame);
+    agent.on_line(smashline::Main, on_main);
 }

@@ -29,11 +29,11 @@ unsafe extern "C" fn shizue_clayrocket_fire_handler(fighter: &mut L2CFighterComm
     }
 }
 
-unsafe extern "C" fn shizue_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     shizue_clayrocket_fire_handler(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, shizue_frame);
+    agent.on_line(smashline::Main, on_main);
 }

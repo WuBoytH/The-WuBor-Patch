@@ -45,11 +45,11 @@ unsafe extern "C" fn kamui_dragon_install_handler(fighter: &mut L2CFighterCommon
     }
 }
 
-unsafe extern "C" fn kamui_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     kamui_dragon_install_handler(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, kamui_frame);
+    agent.on_line(smashline::Main, on_main);
 }

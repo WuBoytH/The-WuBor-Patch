@@ -21,7 +21,7 @@ unsafe extern "C" fn bayonetta_abk_rotation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     bayonetta_landing_frame(fighter);
     bayonetta_attack_dash_to_attack100(fighter);
@@ -29,5 +29,5 @@ unsafe extern "C" fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, bayonetta_frame);
+    agent.on_line(smashline::Main, on_main);
 }

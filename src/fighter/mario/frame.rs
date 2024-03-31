@@ -26,12 +26,12 @@ unsafe extern "C" fn mario_reset_special_lw_kind(fighter: &mut L2CFighterCommon)
     }
 }
 
-unsafe extern "C" fn mario_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     mario_attack_air_lw_bounce(fighter);
     mario_reset_special_lw_kind(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, mario_frame);
+    agent.on_line(smashline::Main, on_main);
 }

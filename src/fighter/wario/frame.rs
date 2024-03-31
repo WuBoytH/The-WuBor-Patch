@@ -18,11 +18,11 @@ unsafe extern "C" fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn wario_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     wario_training_tools(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, wario_frame);
+    agent.on_line(smashline::Main, on_main);
 }

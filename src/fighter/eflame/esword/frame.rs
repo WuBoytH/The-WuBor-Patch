@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-unsafe extern "C" fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
+unsafe extern "C" fn on_main(weapon: &mut L2CFighterBase) {
     if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY
     && VarModule::is_flag(weapon.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN)
     && ControlModule::check_button_trigger(weapon.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -11,5 +11,5 @@ unsafe extern "C" fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, eflame_esword_frame);
+    agent.on_line(smashline::Main, on_main);
 }

@@ -35,12 +35,12 @@ unsafe extern "C" fn samusd_reset_attack_air_n_float(fighter: &mut L2CFighterCom
     }
 }
 
-unsafe extern "C" fn samusd_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     samusd_special_lw_bounce(fighter);
     samusd_reset_attack_air_n_float(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, samusd_frame);
+    agent.on_line(smashline::Main, on_main);
 }

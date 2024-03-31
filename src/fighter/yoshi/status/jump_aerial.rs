@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn yoshi_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_JumpAerialSub(false.into(), false.into());

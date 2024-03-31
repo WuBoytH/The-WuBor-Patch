@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn eflame_firepillar_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 60, 90, 0, 96, 9.0, 0.0, 8.0, 2.0, Some(0.0), Some(8.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
@@ -21,7 +21,7 @@ unsafe extern "C" fn eflame_firepillar_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_firepillar_specialhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("eflame_promrevolt_firepillar_ground"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
         macros::EFFECT(agent, Hash40::new("eflame_promrevolt_firepillar"), Hash40::new("top"), 0, 1, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, true);
@@ -31,7 +31,7 @@ unsafe extern "C" fn eflame_firepillar_specialhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_firepillar_specialhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_eflame_special_h04"));
@@ -39,7 +39,7 @@ unsafe extern "C" fn eflame_firepillar_specialhi_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi", eflame_firepillar_specialhi);
-    agent.effect_acmd("effect_specialhi", eflame_firepillar_specialhi_eff);
-    agent.sound_acmd("sound_specialhi", eflame_firepillar_specialhi_snd);
+    agent.game_acmd("game_specialhi", game_specialhi);
+    agent.effect_acmd("effect_specialhi", effect_specialhi);
+    agent.sound_acmd("sound_specialhi", sound_specialhi);
 }

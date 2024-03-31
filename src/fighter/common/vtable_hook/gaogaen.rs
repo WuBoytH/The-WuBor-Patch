@@ -1,11 +1,4 @@
-use {
-    smash::{
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, app::*}
-};
+use crate::imports::*;
 
 #[skyline::hook(offset = 0xab9970)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {

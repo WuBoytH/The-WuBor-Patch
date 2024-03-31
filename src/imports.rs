@@ -9,5 +9,5 @@ pub use {
     smash_script::*,
     custom_var::*,
     custom_cancel::*,
-    wubor_utils::{cancels::*, wua_bind::*, vars::*, table_const::*}
+    wubor_utils::{app::*, cancels::*, wua_bind::*, vars::*, table_const::*}
 };

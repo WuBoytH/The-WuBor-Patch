@@ -1,8 +1,9 @@
-use {
-    crate::imports::*,
-    wubor_utils::app::*,
-    super::helper::*
-};
+use crate::imports::*;
+
+extern "C" {
+    #[link_name = "add_go"]
+    fn add_go(module_accessor: *mut BattleObjectModuleAccessor, amount: f32);
+}
 
 #[skyline::hook(offset = 0x971250)]
 pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u64 {
@@ -19,11 +20,6 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
         return 1;
     }
     0
-}
-
-#[skyline::hook(offset = 0x970ff0)]
-pub unsafe extern "C" fn dolly_check_super_special_pre(module_accessor: *mut BattleObjectModuleAccessor, param_2: u8) {
-    original!()(module_accessor, param_2)
 }
 
 #[skyline::hook(offset = 0x972db0)]
@@ -106,7 +102,6 @@ unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, l
 pub fn install() {
     skyline::install_hooks!(
         dolly_check_super_special,
-        dolly_check_super_special_pre,
         dolly_handle_special_command_turnaround
     );
     MiscModule::patch_vtable_function(0x4fa7a28, dolly_on_attack as u64);

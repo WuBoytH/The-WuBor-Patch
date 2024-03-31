@@ -1,5 +1,5 @@
 use crate::imports::*;
-use super::super::{helper::*, vtable_hook::*};
+use super::super::helper::*;
 
 unsafe extern "C" fn dolly_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);

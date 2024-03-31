@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecials(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -31,7 +31,7 @@ unsafe extern "C" fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-unsafe extern "C" fn marth_speciallwspecials_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -8, 0, 180, 0, 1.5, true);
@@ -67,7 +67,7 @@ unsafe extern "C" fn marth_speciallwspecials_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_marth_rnd_attack"));
@@ -83,7 +83,7 @@ unsafe extern "C" fn marth_speciallwspecials_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -106,7 +106,7 @@ unsafe extern "C" fn marth_speciallwspecials_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecialairs(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -137,7 +137,7 @@ unsafe extern "C" fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         let angle = VarModule::get_float(agent.module_accessor, marth::status::float::SPECIAL_S_ANGLE);
@@ -164,7 +164,7 @@ unsafe extern "C" fn marth_speciallwspecialairs_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_marth_rnd_attack"));
@@ -175,7 +175,7 @@ unsafe extern "C" fn marth_speciallwspecialairs_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -188,12 +188,12 @@ unsafe extern "C" fn marth_speciallwspecialairs_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecials2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-unsafe extern "C" fn marth_speciallwspecials2start_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecials2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_marth_stance_sword1"), Hash40::new("tex_marth_sword2"), 10, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
@@ -204,7 +204,7 @@ unsafe extern "C" fn marth_speciallwspecials2start_eff(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecials2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_l"));
@@ -215,7 +215,7 @@ unsafe extern "C" fn marth_speciallwspecials2start_snd(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2start_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecials2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -228,7 +228,7 @@ unsafe extern "C" fn marth_speciallwspecials2start_exp(agent: &mut L2CAgentBase)
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 0, 12, 60, 20, 2.0, 0.0, 8.5, 20.0, Some(0.0), Some(8.5), Some(15.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -278,7 +278,7 @@ unsafe extern "C" fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2loop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     if VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
@@ -303,7 +303,7 @@ unsafe extern "C" fn marth_speciallwspecials2loop_eff(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2loop_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_s"));
     }
@@ -318,7 +318,7 @@ unsafe extern "C" fn marth_speciallwspecials2loop_snd(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2loop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -355,7 +355,7 @@ unsafe extern "C" fn marth_speciallwspecials2loop_exp(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2end2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 14.0, 361, 50, 0, 90, 3.0, 0.0, 7.5, 20.0, Some(0.0), Some(7.5), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 15, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_FINAL, *ATTACK_REGION_SWORD);
@@ -366,7 +366,7 @@ unsafe extern "C" fn marth_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2end2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -0.0, 9.0, -10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_marth_stance_sword1"), Hash40::new("tex_marth_sword2"), 10, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
@@ -387,7 +387,7 @@ unsafe extern "C" fn marth_speciallwspecials2end2_eff(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2end2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_marth_rnd_special_l"));
@@ -398,7 +398,7 @@ unsafe extern "C" fn marth_speciallwspecials2end2_snd(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecials2end2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -418,12 +418,12 @@ unsafe extern "C" fn marth_speciallwspecials2end2_exp(agent: &mut L2CAgentBase) 
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2start_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_marth_stance_sword1"), Hash40::new("tex_marth_sword2"), 10, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
@@ -434,7 +434,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2start_eff(agent: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_l"));
@@ -445,7 +445,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2start_snd(agent: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2start_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -458,7 +458,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2start_exp(agent: &mut L2CAgentBa
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 367, 30, 20, 60, 4.5, 0.0, 0.0, 12.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -497,7 +497,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2loop_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     if VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
@@ -519,7 +519,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2loop_eff(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2loop_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_s"));
     }
@@ -534,7 +534,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2loop_snd(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2loop_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -571,7 +571,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2loop_exp(agent: &mut L2CAgentBas
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 30, 12, 0, 65, 4.0, 0.0, 0.0, 12.0, Some(0.0), Some(8.5), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -582,7 +582,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2end_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_breaker_sting"), Hash40::new("top"), -0.0, 8.0, 10, 50, 0, 0, 0.6, true);
@@ -590,14 +590,14 @@ unsafe extern "C" fn marth_speciallwspecialairs2end_eff(agent: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2end_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_m"));
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_marth_rnd_attack"));
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialairs2end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -614,7 +614,7 @@ unsafe extern "C" fn marth_speciallwspecialairs2end_exp(agent: &mut L2CAgentBase
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwspecialhi(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -651,7 +651,7 @@ unsafe extern "C" fn marth_speciallwspecialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwspecialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_dolphin_jump"), Hash40::new("top"), -0.0, 0, -5, 0, 0, 0, 1, true);
@@ -671,14 +671,14 @@ unsafe extern "C" fn marth_speciallwspecialhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwspecialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_special_h01"));
     }
 }
 
-unsafe extern "C" fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwspecialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
@@ -703,48 +703,48 @@ unsafe extern "C" fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwspecials", marth_speciallwspecials);
-    agent.acmd("effect_speciallwspecials", marth_speciallwspecials_eff);
-    agent.acmd("sound_speciallwspecials", marth_speciallwspecials_snd);
-    agent.acmd("expression_speciallwspecials", marth_speciallwspecials_exp);
+    agent.acmd("game_speciallwspecials", game_speciallwspecials);
+    agent.acmd("effect_speciallwspecials", effect_speciallwspecials);
+    agent.acmd("sound_speciallwspecials", sound_speciallwspecials);
+    agent.acmd("expression_speciallwspecials", expression_speciallwspecials);
 
-    agent.acmd("game_speciallwspecialairs", marth_speciallwspecialairs);
-    agent.acmd("effect_speciallwspecialairs", marth_speciallwspecialairs_eff);
-    agent.acmd("sound_speciallwspecialairs", marth_speciallwspecialairs_snd);
-    agent.acmd("expression_speciallwspecialairs", marth_speciallwspecialairs_exp);
+    agent.acmd("game_speciallwspecialairs", game_speciallwspecialairs);
+    agent.acmd("effect_speciallwspecialairs", effect_speciallwspecialairs);
+    agent.acmd("sound_speciallwspecialairs", sound_speciallwspecialairs);
+    agent.acmd("expression_speciallwspecialairs", expression_speciallwspecialairs);
 
-    agent.acmd("game_speciallwspecials2start", marth_speciallwspecials2start);
-    agent.acmd("effect_speciallwspecials2start", marth_speciallwspecials2start_eff);
-    agent.acmd("sound_speciallwspecials2start", marth_speciallwspecials2start_snd);
-    agent.acmd("expression_speciallwspecials2start", marth_speciallwspecials2start_exp);
+    agent.acmd("game_speciallwspecials2start", game_speciallwspecials2start);
+    agent.acmd("effect_speciallwspecials2start", effect_speciallwspecials2start);
+    agent.acmd("sound_speciallwspecials2start", sound_speciallwspecials2start);
+    agent.acmd("expression_speciallwspecials2start", expression_speciallwspecials2start);
 
-    agent.acmd("game_speciallwspecials2loop", marth_speciallwspecials2loop);
-    agent.acmd("effect_speciallwspecials2loop", marth_speciallwspecials2loop_eff);
-    agent.acmd("sound_speciallwspecials2loop", marth_speciallwspecials2loop_snd);
-    agent.acmd("expression_speciallwspecials2loop", marth_speciallwspecials2loop_exp);
+    agent.acmd("game_speciallwspecials2loop", game_speciallwspecials2loop);
+    agent.acmd("effect_speciallwspecials2loop", effect_speciallwspecials2loop);
+    agent.acmd("sound_speciallwspecials2loop", sound_speciallwspecials2loop);
+    agent.acmd("expression_speciallwspecials2loop", expression_speciallwspecials2loop);
 
-    agent.acmd("game_speciallwspecials2end2", marth_speciallwspecials2end2);
-    agent.acmd("effect_speciallwspecials2end2", marth_speciallwspecials2end2_eff);
-    agent.acmd("sound_speciallwspecials2end2", marth_speciallwspecials2end2_snd);
-    agent.acmd("expression_speciallwspecials2end2", marth_speciallwspecials2end2_exp);
+    agent.acmd("game_speciallwspecials2end2", game_speciallwspecials2end2);
+    agent.acmd("effect_speciallwspecials2end2", effect_speciallwspecials2end2);
+    agent.acmd("sound_speciallwspecials2end2", sound_speciallwspecials2end2);
+    agent.acmd("expression_speciallwspecials2end2", expression_speciallwspecials2end2);
 
-    agent.acmd("game_speciallwspecialairs2start", marth_speciallwspecialairs2start);
-    agent.acmd("effect_speciallwspecialairs2start", marth_speciallwspecialairs2start_eff);
-    agent.acmd("sound_speciallwspecialairs2start", marth_speciallwspecialairs2start_snd);
-    agent.acmd("expression_speciallwspecialairs2start", marth_speciallwspecialairs2start_exp);
+    agent.acmd("game_speciallwspecialairs2start", game_speciallwspecialairs2start);
+    agent.acmd("effect_speciallwspecialairs2start", effect_speciallwspecialairs2start);
+    agent.acmd("sound_speciallwspecialairs2start", sound_speciallwspecialairs2start);
+    agent.acmd("expression_speciallwspecialairs2start", expression_speciallwspecialairs2start);
 
-    agent.acmd("game_speciallwspecialairs2loop", marth_speciallwspecialairs2loop);
-    agent.acmd("effect_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_eff);
-    agent.acmd("sound_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_snd);
-    agent.acmd("expression_speciallwspecialairs2loop", marth_speciallwspecialairs2loop_exp);
+    agent.acmd("game_speciallwspecialairs2loop", game_speciallwspecialairs2loop);
+    agent.acmd("effect_speciallwspecialairs2loop", effect_speciallwspecialairs2loop);
+    agent.acmd("sound_speciallwspecialairs2loop", sound_speciallwspecialairs2loop);
+    agent.acmd("expression_speciallwspecialairs2loop", expression_speciallwspecialairs2loop);
 
-    agent.acmd("game_speciallwspecialairs2end", marth_speciallwspecialairs2end);
-    agent.acmd("effect_speciallwspecialairs2end", marth_speciallwspecialairs2end_eff);
-    agent.acmd("sound_speciallwspecialairs2end", marth_speciallwspecialairs2end_snd);
-    agent.acmd("expression_speciallwspecialairs2end", marth_speciallwspecialairs2end_exp);
+    agent.acmd("game_speciallwspecialairs2end", game_speciallwspecialairs2end);
+    agent.acmd("effect_speciallwspecialairs2end", effect_speciallwspecialairs2end);
+    agent.acmd("sound_speciallwspecialairs2end", sound_speciallwspecialairs2end);
+    agent.acmd("expression_speciallwspecialairs2end", expression_speciallwspecialairs2end);
 
-    agent.acmd("game_speciallwspecialhi", marth_speciallwspecialhi);
-    agent.acmd("effect_speciallwspecialhi", marth_speciallwspecialhi_eff);
-    agent.acmd("sound_speciallwspecialhi", marth_speciallwspecialhi_snd);
-    agent.acmd("expression_speciallwspecialhi", marth_speciallwspecialhi_exp);
+    agent.acmd("game_speciallwspecialhi", game_speciallwspecialhi);
+    agent.acmd("effect_speciallwspecialhi", effect_speciallwspecialhi);
+    agent.acmd("sound_speciallwspecialhi", sound_speciallwspecialhi);
+    agent.acmd("expression_speciallwspecialhi", expression_speciallwspecialhi);
 }

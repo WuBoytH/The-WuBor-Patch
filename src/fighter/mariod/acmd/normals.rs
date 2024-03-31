@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn mariod_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -24,7 +24,7 @@ unsafe extern "C" fn mariod_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -48,7 +48,7 @@ unsafe extern "C" fn mariod_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 2.0);
@@ -65,7 +65,7 @@ unsafe extern "C" fn mariod_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.5, 90, 38, 0, 90, 3.5, 0.0, 1.5, 5.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -94,7 +94,7 @@ unsafe extern "C" fn mariod_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 10.5, 361, 65, 0, 55, 3.8, 4.6, 0.0, 0.3, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -107,7 +107,7 @@ unsafe extern "C" fn mariod_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("head"), 7.5, 96, 130, 0, 28, 3.5, -0.5, -0.8, 0.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -120,7 +120,7 @@ unsafe extern "C" fn mariod_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("kneel"), 8.0, 80, 55, 0, 35, 3.5, -1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -136,21 +136,21 @@ unsafe extern "C" fn mariod_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", mariod_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", mariod_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", mariod_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attackdash", mariod_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", mariod_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attacks3hi", mariod_attacks3);
+    agent.acmd("game_attacks3hi", game_attacks3);
 
-    agent.acmd("game_attacks3lw", mariod_attacks3);
+    agent.acmd("game_attacks3lw", game_attacks3);
 
-    agent.acmd("game_attackhi3", mariod_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", mariod_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

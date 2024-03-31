@@ -1,15 +1,15 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 use super::super::vl;
 
 // Special N
 
-unsafe extern "C" fn ike_specialnend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::set_consider_ground_friction(agent.module_accessor, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        ike_special_n_end_ray_check(agent);
+        game_special_n_end_ray_check(agent);
     }
     if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
         if macros::is_excute(agent) {
@@ -68,7 +68,7 @@ unsafe extern "C" fn ike_specialnend(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -15.0);
 }
 
-unsafe extern "C" fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
     }
@@ -110,7 +110,7 @@ unsafe extern "C" fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -156,7 +156,7 @@ unsafe extern "C" fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -209,7 +209,7 @@ unsafe extern "C" fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_special_n_end_ray_check(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_special_n_end_ray_check(agent: &mut L2CAgentBase) {
     let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
     let mut counter = 0;
     let mut x_distance = vl::special_n::ray_check_x_offset;
@@ -241,7 +241,7 @@ unsafe extern "C" fn ike_special_n_end_ray_check(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialairnend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::set_consider_ground_friction(agent.module_accessor, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -264,7 +264,7 @@ unsafe extern "C" fn ike_specialairnend(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -15.0);
 }
 
-unsafe extern "C" fn ike_specialairnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
     }
@@ -279,7 +279,7 @@ unsafe extern "C" fn ike_specialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialairnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -298,7 +298,7 @@ unsafe extern "C" fn ike_specialairnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -322,7 +322,7 @@ unsafe extern "C" fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
 
 // Special S
 
-unsafe extern "C" fn ike_specialsdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsdash(agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));
     // }
@@ -332,7 +332,7 @@ unsafe extern "C" fn ike_specialsdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -8.0);
     let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(agent.module_accessor, Hash40::new("special_s_end"), true);
@@ -340,7 +340,7 @@ unsafe extern "C" fn ike_specialsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn ike_specialsattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -360,7 +360,7 @@ unsafe extern "C" fn ike_specialsattack(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialsattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialsattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -393,7 +393,7 @@ unsafe extern "C" fn ike_specialsattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));
         macros::PLAY_SE(agent, Hash40::new("se_ike_special_s02"));
@@ -402,25 +402,25 @@ unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnend", ike_specialnend);
-    agent.acmd("effect_specialnend", ike_specialnend_eff);
-    agent.acmd("sound_specialnend", ike_specialnend_snd);
-    agent.acmd("expression_specialnend", ike_specialnend_exp);
+    agent.acmd("game_specialnend", game_specialnend);
+    agent.acmd("effect_specialnend", effect_specialnend);
+    agent.acmd("sound_specialnend", sound_specialnend);
+    agent.acmd("expression_specialnend", expression_specialnend);
 
-    agent.acmd("game_specialairnend", ike_specialairnend);
-    agent.acmd("effect_specialairnend", ike_specialairnend_eff);
-    agent.acmd("sound_specialairnend", ike_specialairnend_snd);
-    agent.acmd("expression_specialairnend", ike_specialairnend_exp);
+    agent.acmd("game_specialairnend", game_specialairnend);
+    agent.acmd("effect_specialairnend", effect_specialairnend);
+    agent.acmd("sound_specialairnend", sound_specialairnend);
+    agent.acmd("expression_specialairnend", expression_specialairnend);
 
-    agent.acmd("sound_specialsdash", ike_specialsdash_snd);
+    agent.acmd("sound_specialsdash", sound_specialsdash);
 
-    agent.acmd("game_specialsend", ike_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialsattack", ike_specialsattack);
-    agent.acmd("effect_specialsattack", ike_specialsattack_eff);
-    agent.acmd("sound_specialsattack", ike_specialsattack_snd);
+    agent.acmd("game_specialsattack", game_specialsattack);
+    agent.acmd("effect_specialsattack", effect_specialsattack);
+    agent.acmd("sound_specialsattack", sound_specialsattack);
 
-    agent.acmd("game_specialairsattack", ike_specialsattack);
-    agent.acmd("effect_specialairsattack", ike_specialsattack_eff);
-    agent.acmd("sound_specialairsattack", ike_specialsattack_snd);
+    agent.acmd("game_specialairsattack", game_specialsattack);
+    agent.acmd("effect_specialairsattack", effect_specialsattack);
+    agent.acmd("sound_specialairsattack", sound_specialsattack);
 }

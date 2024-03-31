@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_attr = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {

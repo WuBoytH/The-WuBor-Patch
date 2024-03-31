@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::passive::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFly)]

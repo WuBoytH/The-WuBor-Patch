@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::common::agent_inits::*;
 
 pub unsafe extern "C" fn reflet_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn demon_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 10, 0, 30, 2.0, 0.0, 14.5, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
@@ -26,7 +26,7 @@ unsafe extern "C" fn demon_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 9.0 / 6.0);
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -53,7 +53,7 @@ unsafe extern "C" fn demon_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack14(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack14(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 10, 0, 35, 2.0, 0.0, 14.0, 10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_PUNCH01, *ATTACK_REGION_PUNCH);
@@ -76,7 +76,7 @@ unsafe extern "C" fn demon_attack14(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack15(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack15(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 42, 20, 0, 40, 4.0, 0.0, 13.0, 4.0, Some(0.0), Some(15.0), Some(11.0), 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -101,7 +101,7 @@ unsafe extern "C" fn demon_attack15(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack16(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack16(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 0, 5, 0, 30, 3.9, 0.0, 12.0, 6.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -137,7 +137,7 @@ unsafe extern "C" fn demon_attack16(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack17(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack17(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 0, 5, 0, 30, 3.3, 0.0, 6.25, 6.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -160,7 +160,7 @@ unsafe extern "C" fn demon_attack17(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack18(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack18(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 0, 5, 0, 30, 3.3, 0.0, 6.25, 6.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_auto_shift"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -185,7 +185,7 @@ unsafe extern "C" fn demon_attack18(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack19(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack19(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 361, 50, 0, 60, 2.0, 0.0, 11.5, 7.5, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fist_down3"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -209,7 +209,7 @@ unsafe extern "C" fn demon_attack19(agent: &mut L2CAgentBase) {
 
 // Twin Fangs Stature Smash
 
-unsafe extern "C" fn demon_attack142(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack142(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 12.0);
@@ -243,7 +243,7 @@ unsafe extern "C" fn demon_attack142(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack142(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -259,7 +259,7 @@ unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attack142(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_demon_swing_short02"));
@@ -267,7 +267,7 @@ unsafe extern "C" fn demon_attack142_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attack142_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack142(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_80_attackm2"), 0);
@@ -293,24 +293,24 @@ unsafe extern "C" fn demon_attack142_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", demon_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack13", demon_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attack14", demon_attack14);
+    agent.acmd("game_attack14", game_attack14);
 
-    agent.acmd("game_attack15", demon_attack15);
+    agent.acmd("game_attack15", game_attack15);
 
-    agent.acmd("game_attack16", demon_attack16);
+    agent.acmd("game_attack16", game_attack16);
 
-    agent.acmd("game_attack17", demon_attack17);
+    agent.acmd("game_attack17", game_attack17);
 
-    agent.acmd("game_attack18", demon_attack18);
+    agent.acmd("game_attack18", game_attack18);
 
-    agent.acmd("game_attack19", demon_attack19);
+    agent.acmd("game_attack19", game_attack19);
 
-    agent.acmd("game_attack142", demon_attack142);
-    agent.acmd("effect_attack142", demon_attack142_eff);
-    agent.acmd("sound_attack142", demon_attack142_snd);
-    agent.acmd("expression_attack142", demon_attack142_exp);
+    agent.acmd("game_attack142", game_attack142);
+    agent.acmd("effect_attack142", effect_attack142);
+    agent.acmd("sound_attack142", sound_attack142);
+    agent.acmd("expression_attack142", expression_attack142);
 }

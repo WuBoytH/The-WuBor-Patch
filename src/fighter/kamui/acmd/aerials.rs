@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kamui_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -66,7 +66,7 @@ unsafe extern "C" fn kamui_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -94,7 +94,7 @@ unsafe extern "C" fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -127,7 +127,7 @@ unsafe extern "C" fn kamui_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kamui_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -179,10 +179,10 @@ unsafe extern "C" fn kamui_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", kamui_attackairf);
-    agent.acmd("game_attackairf_eff", kamui_attackairf_eff);
+    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("effect_attackairf", effect_attackairf);
 
-    agent.acmd("game_attackairb", kamui_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", kamui_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 }

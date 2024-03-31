@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::helper::*;
 
 unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

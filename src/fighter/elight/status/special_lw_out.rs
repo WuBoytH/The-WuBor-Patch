@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::element::status::special_lw_out::*;
 
 pub fn install(agent: &mut smashline::Agent) {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn gamewatch_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_SPRAY, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
@@ -21,7 +21,7 @@ unsafe extern "C" fn gamewatch_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 9.0, 4.0);
     }
@@ -45,7 +45,7 @@ unsafe extern "C" fn gamewatch_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_gamewatch_wave02_lo"));
@@ -56,7 +56,7 @@ unsafe extern "C" fn gamewatch_attackdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }
@@ -75,7 +75,7 @@ unsafe extern "C" fn gamewatch_attackdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("handr"), *HIT_STATUS_XLU);
         macros::HIT_NODE(agent, Hash40::new("handl"), *HIT_STATUS_XLU);
@@ -110,7 +110,7 @@ unsafe extern "C" fn gamewatch_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_MANHOLE, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_NORMAL_WEAPON, false, -1);
@@ -132,13 +132,13 @@ unsafe extern "C" fn gamewatch_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", gamewatch_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attackdash", gamewatch_attackdash);
-    agent.acmd("sound_attackdash", gamewatch_attackdash_snd);
-    agent.acmd("expression_attackdash", gamewatch_attackdash_exp);
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("sound_attackdash", sound_attackdash);
+    agent.acmd("expression_attackdash", expression_attackdash);
 
-    agent.acmd("game_attackhi3", gamewatch_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", gamewatch_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

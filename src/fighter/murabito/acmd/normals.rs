@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn murabito_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);    
     macros::FT_MOTION_RATE(agent, 0.75);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe extern "C" fn murabito_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn murabito_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, false, -1);
     }
@@ -41,7 +41,7 @@ unsafe extern "C" fn murabito_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn murabito_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 7.0);
@@ -74,7 +74,7 @@ unsafe extern "C" fn murabito_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn murabito_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 4.0);
@@ -98,11 +98,11 @@ unsafe extern "C" fn murabito_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackdash", murabito_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", murabito_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", murabito_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", murabito_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

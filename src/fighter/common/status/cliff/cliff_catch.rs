@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_cliff_catch_move_uniq_process_init_common)]
 unsafe extern "C" fn sub_cliff_catch_move_uniq_process_init_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {

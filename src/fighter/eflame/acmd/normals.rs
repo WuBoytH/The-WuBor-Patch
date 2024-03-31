@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn eflame_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 3.0);
@@ -31,7 +31,7 @@ unsafe extern "C" fn eflame_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -84,7 +84,7 @@ unsafe extern "C" fn eflame_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 3.0);
@@ -140,7 +140,7 @@ unsafe extern "C" fn eflame_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attack100end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::status::flag::SPECIAL_CANCEL);
@@ -156,7 +156,7 @@ unsafe extern "C" fn eflame_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -211,7 +211,7 @@ unsafe extern "C" fn eflame_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 3.0);
@@ -232,14 +232,14 @@ unsafe extern "C" fn eflame_attackhi3(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, -5.0);
 }
 
-unsafe extern "C" fn eflame_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 16.0, 11.0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
-unsafe extern "C" fn eflame_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_eflame_rnd_attack02"));
@@ -247,7 +247,7 @@ unsafe extern "C" fn eflame_attackhi3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_attackhi3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
     }
@@ -266,18 +266,18 @@ unsafe extern "C" fn eflame_attackhi3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", eflame_attack11);
+    agent.acmd("game_attack11", game_attack11);
 
-    agent.acmd("game_attack12", eflame_attack12);
+    agent.acmd("game_attack12", game_attack12);
 
-    agent.acmd("game_attack13", eflame_attack13);
+    agent.acmd("game_attack13", game_attack13);
 
-    agent.acmd("game_attack100end", eflame_attack100end);
+    agent.acmd("game_attack100end", game_attack100end);
 
-    agent.acmd("game_attacks3", eflame_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", eflame_attackhi3);
-    agent.acmd("effect_attackhi3", eflame_attackhi3_eff);
-    agent.acmd("sound_attackhi3", eflame_attackhi3_snd);
-    agent.acmd("expression_attackhi3", eflame_attackhi3_exp);
+    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("effect_attackhi3", effect_attackhi3);
+    agent.acmd("sound_attackhi3", sound_attackhi3);
+    agent.acmd("expression_attackhi3", expression_attackhi3);
 }

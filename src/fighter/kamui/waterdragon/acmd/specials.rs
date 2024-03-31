@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, 11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
@@ -32,7 +32,7 @@ unsafe extern "C" fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwhit", kamui_waterdragon_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit);
 
-    agent.acmd("game_specialairlwhit", kamui_waterdragon_speciallwhit);
+    agent.acmd("game_specialairlwhit", game_speciallwhit);
 }

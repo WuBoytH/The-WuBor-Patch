@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {

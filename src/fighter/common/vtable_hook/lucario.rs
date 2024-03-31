@@ -9,8 +9,7 @@ use {
         app::{LinkEvent, LinkEventCapture}
     },
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    super::vl
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[skyline::hook(offset = 0xc5c010)]
@@ -181,11 +180,11 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
     else {
         let mut charge = VarModule::get_int(module_accessor, lucario::instance::int::AURA_LEVEL) as f32;
         charge += VarModule::get_int(module_accessor, lucario::status::int::AURA_ENHANCED_BY) as f32;
-        let min_aurapower = vl::aurapower::MIN_AURAPOWER;
-        let max_aurapower = vl::aurapower::MAX_AURAPOWER;
-        let diff = max_aurapower - min_aurapower;
-        let max_charge = vl::private::AURA_CHARGE_MAX as f32;
-        min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge)
+        let aurapower_min = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_min"));
+        let aurapower_max = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_max"));
+        let diff = aurapower_max - aurapower_min;
+        let max_charge = WorkModule::get_param_int(module_accessor, hash40("param_auracharge"), hash40("aura_charge_max")) as f32;
+        aurapower_min + (diff * charge.clamp(0.0, max_charge) / max_charge)
     }
 }
 
@@ -199,9 +198,13 @@ pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fig
         let left = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_LHADOU) as u32;
         let right = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_RHADOU) as u32;
         let aurapower = WorkModule::get_float(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
-        let ratio = (aurapower - vl::aurapower::MIN_AURAPOWER) / (vl::aurapower::MAX_AURAPOWER - vl::aurapower::MIN_AURAPOWER);
-        let diff = vl::aurapower::MAX_SCALE - vl::aurapower::MIN_SCALE;
-        let scale = vl::aurapower::MIN_SCALE + (diff * ratio);
+        let aurapower_min = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_min"));
+        let aurapower_max = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_max"));
+        let scale_min = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("scale_min"));
+        let scale_max = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("scale_max"));
+        let ratio = (aurapower - aurapower_min) / (aurapower_max - aurapower_min);
+        let diff = scale_max - scale_min;
+        let scale = scale_min + (diff * ratio);
         if left != 0 {
             EffectModule::set_scale(module_accessor, left, &smash::phx::Vector3f{x: scale, y: scale, z: scale});
         }

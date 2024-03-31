@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::ryu::helper::*;
 
 unsafe extern "C" fn ken_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {

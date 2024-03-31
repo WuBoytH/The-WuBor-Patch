@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairsjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
@@ -17,7 +17,7 @@ unsafe extern "C" fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
@@ -53,7 +53,7 @@ unsafe extern "C" fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairsjump", diddy_specialairsjump);
+    agent.acmd("game_specialairsjump", game_specialairsjump);
 
-    agent.acmd("game_specialairhijump", diddy_specialairhijump);
+    agent.acmd("game_specialairhijump", game_specialairhijump);
 }

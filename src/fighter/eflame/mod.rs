@@ -2,7 +2,6 @@ mod acmd;
 mod status;
 mod frame;
 mod agent_init;
-mod vtable_hook;
 
 mod esword;
 mod firepillar;
@@ -13,7 +12,6 @@ pub fn install() {
     status::install(agent);
     frame::install(agent);
     agent_init::install(agent);
-    vtable_hook::install();
     agent.install();
 
     esword::install();

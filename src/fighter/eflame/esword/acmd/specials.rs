@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn eflame_esword_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
@@ -18,7 +18,7 @@ unsafe extern "C" fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_flyflick(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
@@ -36,7 +36,7 @@ unsafe extern "C" fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_rotate(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::disable_tip(agent.module_accessor);
     }
@@ -139,7 +139,7 @@ unsafe extern "C" fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_rotate(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_blazeend_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.8);
@@ -169,7 +169,7 @@ unsafe extern "C" fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_reflected(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 1.5);
@@ -183,14 +183,14 @@ unsafe extern "C" fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_flyl", eflame_esword_fly);
-    agent.acmd("game_flyr", eflame_esword_fly);
+    agent.acmd("game_flyl", game_fly);
+    agent.acmd("game_flyr", game_fly);
 
-    agent.acmd("game_flyflickl", eflame_esword_flyflick);
-    agent.acmd("game_flyflickr", eflame_esword_flyflick);
+    agent.acmd("game_flyflickl", game_flyflick);
+    agent.acmd("game_flyflickr", game_flyflick);
 
-    agent.acmd("game_rotate", eflame_esword_rotate);
-    agent.acmd("effect_rotate", eflame_esword_rotate_eff);
+    agent.acmd("game_rotate", game_rotate);
+    agent.acmd("effect_rotate", effect_rotate);
 
-    agent.acmd("game_reflected", eflame_esword_reflected);
+    agent.acmd("game_reflected", game_reflected);
 }

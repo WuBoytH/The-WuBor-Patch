@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn captain_set_ground(fighter: &mut L2CFighterCommon) {
     fighter.set_situation(SITUATION_KIND_GROUND.into());

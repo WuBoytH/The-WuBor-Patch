@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn demon_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -29,7 +29,7 @@ unsafe extern "C" fn demon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -72,7 +72,7 @@ unsafe extern "C" fn demon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn demon_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::SET_SPEED_EX(agent, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -89,9 +89,9 @@ unsafe extern "C" fn demon_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", demon_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairhi", demon_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_landingairlw", demon_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
 }

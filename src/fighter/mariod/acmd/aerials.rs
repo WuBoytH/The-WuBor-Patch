@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn mariod_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -31,7 +31,7 @@ unsafe extern "C" fn mariod_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, 0.5, 9, -5, 9, 1.1, true);
@@ -44,7 +44,7 @@ unsafe extern "C" fn mariod_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -56,7 +56,7 @@ unsafe extern "C" fn mariod_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -87,7 +87,7 @@ unsafe extern "C" fn mariod_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -107,7 +107,7 @@ unsafe extern "C" fn mariod_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -129,7 +129,7 @@ unsafe extern "C" fn mariod_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.25);
     frame(agent.lua_state_agent, 2.0);
@@ -152,7 +152,7 @@ unsafe extern "C" fn mariod_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn mariod_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -182,16 +182,16 @@ unsafe extern "C" fn mariod_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", mariod_attackairn);
-    agent.acmd("effect_attackairn", mariod_attackairn_eff);
-    agent.acmd("sound_attackairn", mariod_attackairn_snd);
-    agent.acmd("expression_attackairn", mariod_attackairn_exp);
+    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("effect_attackairn", effect_attackairn);
+    agent.acmd("sound_attackairn", sound_attackairn);
+    agent.acmd("expression_attackairn", expression_attackairn);
 
-    agent.acmd("game_attackairf", mariod_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 
-    agent.acmd("game_attackairb", mariod_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairhi", mariod_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", mariod_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

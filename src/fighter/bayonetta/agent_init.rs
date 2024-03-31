@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 // unsafe extern "C" fn bayonetta_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     let is_air_f = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F;

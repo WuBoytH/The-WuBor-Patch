@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::murabito::helper::*;
 
 unsafe extern "C" fn shizue_special_n_search_end(fighter: &mut L2CFighterCommon) -> L2CValue {

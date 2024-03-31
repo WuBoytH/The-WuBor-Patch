@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn jack_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     jack_special_mot_helper(fighter, true.into(), hash40("special_s1").into(), hash40("special_air_s1").into());

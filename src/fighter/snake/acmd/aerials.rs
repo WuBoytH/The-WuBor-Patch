@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn snake_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -46,7 +46,7 @@ unsafe extern "C" fn snake_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if StatusModule::prev_status_kind(agent.module_accessor, 0) == *FIGHTER_STATUS_KIND_PASS {
         if macros::is_excute(agent) {
@@ -82,7 +82,7 @@ unsafe extern "C" fn snake_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -139,9 +139,9 @@ unsafe extern "C" fn snake_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", snake_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairb", snake_attackairb);
+    agent.acmd("game_attackairb", game_attackairb);
 
-    agent.acmd("game_attackairlw", snake_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 }

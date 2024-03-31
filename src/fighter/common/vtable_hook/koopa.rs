@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(offset = 0xbc2290)]
 pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {

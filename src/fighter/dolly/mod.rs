@@ -3,7 +3,6 @@ mod frame;
 mod status;
 pub mod agent_init;
 pub mod helper;
-pub mod vtable_hook;
 
 // mod wave;
 // mod burst;
@@ -14,7 +13,6 @@ pub fn install() {
     frame::install(agent);
     status::install(agent);
     agent_init::install(agent);
-    vtable_hook::install();
     smashline::add_param_object("dolly", "param_misc");
     agent.install();
 

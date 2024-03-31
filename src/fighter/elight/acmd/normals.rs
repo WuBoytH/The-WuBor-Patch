@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn elight_attack100end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::status::flag::SPECIAL_CANCEL);
@@ -16,7 +16,7 @@ unsafe extern "C" fn elight_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn elight_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 9.0);
@@ -58,7 +58,7 @@ unsafe extern "C" fn elight_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.75);
 }
 
-unsafe extern "C" fn elight_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 5.0);
@@ -107,7 +107,7 @@ unsafe extern "C" fn elight_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn elight_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 5.0);
@@ -185,7 +185,7 @@ unsafe extern "C" fn elight_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn elight_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -229,13 +229,13 @@ unsafe extern "C" fn elight_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack100end", elight_attack100end);
+    agent.acmd("game_attack100end", game_attack100end);
 
-    agent.acmd("game_attackdash", elight_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3", elight_attacks3);
+    agent.acmd("game_attacks3", game_attacks3);
 
-    agent.acmd("game_attackhi3", elight_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 
-    agent.acmd("game_attacklw3", elight_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3);
 }

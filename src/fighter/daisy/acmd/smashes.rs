@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn daisy_attacks4hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -22,5 +22,5 @@ unsafe extern "C" fn daisy_attacks4hi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4hi", daisy_attacks4hi);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
 }

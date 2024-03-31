@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)

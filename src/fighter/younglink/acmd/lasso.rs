@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn younglink_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -52,5 +52,5 @@ unsafe extern "C" fn younglink_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_aircatch", younglink_aircatch);
+    agent.acmd("game_aircatch", game_aircatch);
 }

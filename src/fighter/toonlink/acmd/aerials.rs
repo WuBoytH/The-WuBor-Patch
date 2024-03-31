@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn toonlink_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -33,7 +33,7 @@ unsafe extern "C" fn toonlink_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -71,7 +71,7 @@ unsafe extern "C" fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(agent, 0, 1.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -112,7 +112,7 @@ unsafe extern "C" fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, -8, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -135,10 +135,10 @@ unsafe extern "C" fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", toonlink_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.acmd("game_attackairhi", toonlink_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.acmd("game_attackairlw", toonlink_attackairlw);
-    agent.acmd("effect_attackairlw", toonlink_attackairlw_eff);
+    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("effect_attackairlw", effect_attackairlw);
 }

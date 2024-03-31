@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn gamewatch_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -16,7 +16,7 @@ unsafe extern "C" fn gamewatch_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 13.0);
@@ -45,7 +45,7 @@ unsafe extern "C" fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn gamewatch_attackhi4r(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4r(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 13.0);
@@ -74,7 +74,7 @@ unsafe extern "C" fn gamewatch_attackhi4r(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -95,11 +95,11 @@ unsafe extern "C" fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", gamewatch_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 
-    agent.acmd("game_attackhi4", gamewatch_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
 
-    agent.acmd("game_attackhi4r", gamewatch_attackhi4r);
+    agent.acmd("game_attackhi4r", game_attackhi4r);
 
-    agent.acmd("game_attacklw4", gamewatch_attacklw4);
+    agent.acmd("game_attacklw4", game_attacklw4);
 }

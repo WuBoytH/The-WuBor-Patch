@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn dedede_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 6.0, 7.0);
@@ -39,5 +39,5 @@ unsafe extern "C" fn dedede_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", dedede_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 }

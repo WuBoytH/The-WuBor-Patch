@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn miiswordsman_special_hi2_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_SDUSH_STATUS_WORK_ID_FLAG_CONTINUE);

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn simon_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     sv_kinetic_energy!(
         set_speed_mul,
         agent,
@@ -39,7 +39,7 @@ unsafe extern "C" fn simon_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 34.0 / 44.0);
 }
 
-unsafe extern "C" fn simon_attackdash_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_jump_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
@@ -61,7 +61,7 @@ unsafe extern "C" fn simon_attackdash_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -84,7 +84,7 @@ unsafe extern "C" fn simon_attackdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -106,7 +106,7 @@ unsafe extern "C" fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -149,7 +149,7 @@ unsafe extern "C" fn simon_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -192,7 +192,7 @@ unsafe extern "C" fn simon_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -235,7 +235,7 @@ unsafe extern "C" fn simon_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -246,7 +246,7 @@ unsafe extern "C" fn simon_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -260,7 +260,7 @@ unsafe extern "C" fn simon_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -280,7 +280,7 @@ unsafe extern "C" fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(34.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
@@ -315,7 +315,7 @@ unsafe extern "C" fn simon_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -326,7 +326,7 @@ unsafe extern "C" fn simon_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacklw3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -340,7 +340,7 @@ unsafe extern "C" fn simon_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -361,28 +361,28 @@ unsafe extern "C" fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackdash", simon_attackdash);
-    agent.acmd("effect_attackdash", simon_attackdash_eff);
-    agent.acmd("sound_attackdash", simon_attackdash_snd);
-    agent.acmd("expression_attackdash", simon_attackdash_exp);
+    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("effect_attackdash", effect_attackdash);
+    agent.acmd("sound_attackdash", sound_attackdash);
+    agent.acmd("expression_attackdash", expression_attackdash);
 
-    agent.acmd("game_attacks3", simon_attacks3);
-    agent.acmd("effect_attacks3", simon_attacks3_eff);
-    agent.acmd("sound_attacks3", simon_attacks3_snd);
-    agent.acmd("expression_attacks3", simon_attacks3_exp);
+    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("effect_attacks3", effect_attacks3);
+    agent.acmd("sound_attacks3", sound_attacks3);
+    agent.acmd("expression_attacks3", expression_attacks3);
 
-    agent.acmd("game_attacks3hi", simon_attacks3hi);
-    agent.acmd("effect_attacks3hi", simon_attacks3_eff);
-    agent.acmd("sound_attacks3hi", simon_attacks3_snd);
-    agent.acmd("expression_attacks3hi", simon_attacks3_exp);
+    agent.acmd("game_attacks3hi", game_attacks3hi);
+    agent.acmd("effect_attacks3hi", effect_attacks3);
+    agent.acmd("sound_attacks3hi", sound_attacks3);
+    agent.acmd("expression_attacks3hi", expression_attacks3);
 
-    agent.acmd("game_attacks3lw", simon_attacks3lw);
-    agent.acmd("effect_attacks3lw", simon_attacks3_eff);
-    agent.acmd("sound_attacks3lw", simon_attacks3_snd);
-    agent.acmd("expression_attacks3lw", simon_attacks3_exp);
+    agent.acmd("game_attacks3lw", game_attacks3lw);
+    agent.acmd("effect_attacks3lw", effect_attacks3);
+    agent.acmd("sound_attacks3lw", sound_attacks3);
+    agent.acmd("expression_attacks3lw", expression_attacks3);
 
-    agent.acmd("game_attacklw3", simon_attacklw3);
-    agent.acmd("effect_attacklw3", simon_attacklw3_eff);
-    agent.acmd("sound_attacklw3", simon_attacklw3_snd);
-    agent.acmd("expression_attacklw3", simon_attacklw3_exp);
+    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("effect_attacklw3", effect_attacklw3);
+    agent.acmd("sound_attacklw3", sound_attacklw3);
+    agent.acmd("expression_attacklw3", expression_attacklw3);
 }

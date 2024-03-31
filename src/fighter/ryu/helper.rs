@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     crate::fighter::common::status::attack::attack::only_jabs
 };
 

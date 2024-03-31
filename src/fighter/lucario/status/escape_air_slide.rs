@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::common::status::escape::escape_air_slide::*;
 
 unsafe extern "C" fn lucario_escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {

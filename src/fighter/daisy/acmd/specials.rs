@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn daisy_specialsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
         JostleModule::set_status(agent.module_accessor, false);
@@ -16,7 +16,7 @@ unsafe extern "C" fn daisy_specialsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialshitend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialshitend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 110, 42, 0, 60, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
     }
@@ -26,7 +26,7 @@ unsafe extern "C" fn daisy_specialshitend(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -84,7 +84,7 @@ unsafe extern "C" fn daisy_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -142,7 +142,7 @@ unsafe extern "C" fn daisy_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -173,7 +173,7 @@ unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("daisy_bomber_jamp"), Hash40::new("top"), 0, 12, -6, 0, 0, 0, 0.8, true);
@@ -181,7 +181,7 @@ unsafe extern "C" fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_daisy_attack05"));
@@ -189,7 +189,7 @@ unsafe extern "C" fn daisy_specialairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -201,16 +201,16 @@ unsafe extern "C" fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsjump", daisy_specialsjump);
+    agent.acmd("game_specialsjump", game_specialsjump);
 
-    agent.acmd("game_specialshitend", daisy_specialshitend);
+    agent.acmd("game_specialshitend", game_specialshitend);
 
-    agent.acmd("game_specialhistart", daisy_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", daisy_specialairhistart);
+    agent.acmd("game_specialairhistart", game_specialairhistart);
 
-    agent.acmd("game_fuwafuwastart", daisy_specialairlw);
-    agent.acmd("effect_fuwafuwastart", daisy_specialairlw_eff);
-    agent.acmd("sound_fuwafuwastart", daisy_specialairlw_snd);
-    agent.acmd("expression_fuwafuwastart", daisy_specialairlw_exp);
+    agent.acmd("game_fuwafuwastart", game_specialairlw);
+    agent.acmd("effect_fuwafuwastart", effect_specialairlw);
+    agent.acmd("sound_fuwafuwastart", sound_specialairlw);
+    agent.acmd("expression_fuwafuwastart", expression_specialairlw);
 }

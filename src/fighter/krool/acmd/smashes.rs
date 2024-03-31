@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn krool_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -21,7 +21,7 @@ unsafe extern "C" fn krool_attacks4(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -7.0);
 }
 
-unsafe extern "C" fn krool_attacks4hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("arml"), 19.95, 361, 96, 0, 40, 5.8, 6.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -38,7 +38,7 @@ unsafe extern "C" fn krool_attacks4hi(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -7.0);
 }
 
-unsafe extern "C" fn krool_attacks4lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("arml"), 19.57, 361, 96, 0, 40, 5.8, 6.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -56,9 +56,9 @@ unsafe extern "C" fn krool_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", krool_attacks4);
+    agent.acmd("game_attacks4", game_attacks4);
 
-    agent.acmd("game_attacks4hi", krool_attacks4hi);
+    agent.acmd("game_attacks4hi", game_attacks4hi);
 
-    agent.acmd("game_attacks4lw", krool_attacks4lw);
+    agent.acmd("game_attacks4lw", game_attacks4lw);
 }

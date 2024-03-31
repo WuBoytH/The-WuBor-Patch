@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairn(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW) {
         if macros::is_excute(agent) {
             ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, Hash40::new("landing_air_n"), false, -1.0);
@@ -12,7 +12,7 @@ unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -48,7 +48,7 @@ unsafe extern "C" fn master_attackairf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_landingairn", master_landingairn);
+    agent.acmd("game_landingairn", game_landingairn);
 
-    agent.acmd("game_attackairf", master_attackairf);
+    agent.acmd("game_attackairf", game_attackairf);
 }

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
@@ -37,7 +37,7 @@ unsafe extern "C" fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", pzenigame_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", pzenigame_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn rockman_airshooter_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_airshooter"), hash40("life"));

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_JumpSquat_param)]
 unsafe extern "C" fn status_pre_jumpsquat_param(

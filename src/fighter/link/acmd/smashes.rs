@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn link_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 6.0);
@@ -64,5 +64,5 @@ unsafe extern "C" fn link_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackhi4", link_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4);
 }

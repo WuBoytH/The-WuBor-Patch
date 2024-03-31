@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn brave_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe extern "C" fn brave_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_brave_sword1"), Hash40::new("tex_brave_sword2"), 5, Hash40::new("sword1"), 1.5, 0.0, 0.0, Hash40::new("sword1"), 14.4, 0.0, 0.0, true, Hash40::new("null"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, -90.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
@@ -48,7 +48,7 @@ unsafe extern "C" fn brave_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
@@ -63,7 +63,7 @@ unsafe extern "C" fn brave_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
@@ -90,7 +90,7 @@ unsafe extern "C" fn brave_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
         macros::AFTER_IMAGE_OFF(agent, 0);
@@ -111,7 +111,7 @@ unsafe extern "C" fn brave_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
@@ -126,7 +126,7 @@ unsafe extern "C" fn brave_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 6.0, 2.0);
     }
@@ -151,7 +151,7 @@ unsafe extern "C" fn brave_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack13_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND_WORK(agent, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_EFFECT_KIND_SWORD_FLARE, true, true);
     }
@@ -175,7 +175,7 @@ unsafe extern "C" fn brave_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attack13_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -189,7 +189,7 @@ unsafe extern "C" fn brave_attack13_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -224,7 +224,7 @@ unsafe extern "C" fn brave_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attacks3s2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attacks3s2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -250,7 +250,7 @@ unsafe extern "C" fn brave_attacks3s2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -290,21 +290,21 @@ unsafe extern "C" fn brave_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", brave_attack11);
-    agent.acmd("effect_attack11", brave_attack11_eff);
-    agent.acmd("expression_attack11", brave_attack11_exp);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("effect_attack11", effect_attack11);
+    agent.acmd("expression_attack11", expression_attack11);
 
-    agent.acmd("game_attack12", brave_attack12);
-    agent.acmd("effect_attack12", brave_attack12_eff);
-    agent.acmd("expression_attack12", brave_attack12_exp);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("effect_attack12", effect_attack12);
+    agent.acmd("expression_attack12", expression_attack12);
 
-    agent.acmd("game_attack13", brave_attack13);
-    agent.acmd("effect_attack13", brave_attack13_eff);
-    agent.acmd("expression_attack13", brave_attack13_exp);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("effect_attack13", effect_attack13);
+    agent.acmd("expression_attack13", expression_attack13);
 
-    agent.acmd("game_attackdash", brave_attackdash);
+    agent.acmd("game_attackdash", game_attackdash);
 
-    agent.acmd("game_attacks3s2", brave_attacks3s2);
+    agent.acmd("game_attacks3s2", game_attacks3s2);
 
-    agent.acmd("game_attackhi3", brave_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3);
 }

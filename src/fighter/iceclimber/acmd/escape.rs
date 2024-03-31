@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn iceclimber_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -12,7 +12,7 @@ unsafe extern "C" fn iceclimber_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn iceclimber_escapeairslide_nana(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide_nana(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -25,7 +25,7 @@ unsafe extern "C" fn iceclimber_escapeairslide_nana(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_escapeairslide", iceclimber_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 
-    agent.acmd("game_escapeairslide_nana", iceclimber_escapeairslide_nana);
+    agent.acmd("game_escapeairslide_nana", game_escapeairslide_nana);
 }

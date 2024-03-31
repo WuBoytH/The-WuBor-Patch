@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::helper::*;
 
 unsafe extern "C" fn mario_attack_s4_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {

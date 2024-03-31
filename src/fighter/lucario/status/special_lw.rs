@@ -1,5 +1,5 @@
-use crate::imports::status_imports::*;
-use super::super::{vl, helper::*};
+use crate::imports::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -137,22 +137,25 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
         if step == lucario::SPECIAL_LW_STEP_CHARGE {
             lucario_special_lw_effect_helper(fighter);
             let charges_gained = VarModule::get_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGES_GAINED);
+            let subsequent_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_auracharge"), hash40("charge_subsequent_mul"));
             if VarModule::get_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME) == 0 {
                 if charges_gained == 0 {
                     macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucario_aura"), false, true);
                 }
                 macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-                let rate_add = vl::special_lw::CHARGE_FRAME_SUBSEQUENT_MUL * VarModule::get_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGES_GAINED) as f32;
+                let rate_add = subsequent_mul * charges_gained as f32;
                 macros::LAST_EFFECT_SET_RATE(fighter, 0.5 + rate_add);
                 macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_l01"));
             }
             VarModule::inc_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME);
-            let charge_max = vl::special_lw::CHARGE_FRAME - (vl::special_lw::CHARGE_FRAME * charges_gained as f32 * vl::special_lw::CHARGE_FRAME_SUBSEQUENT_MUL);
-            if VarModule::get_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME) >= charge_max as i32 {
+            let charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_auracharge"), hash40("charge_frame"));
+            let charge_max_total = charge_frame - (charge_frame * charges_gained as f32 * subsequent_mul);
+            if VarModule::get_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME) >= charge_max_total as i32 {
                 VarModule::set_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
                 lucario_gain_aura(fighter);
                 lucario_special_lw_effect_helper(fighter);
-                if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) >= vl::private::AURA_CHARGE_MAX
+                let aura_charge_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_auracharge"), hash40("aura_charge_max"));
+                if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) >= aura_charge_max
                 || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                     VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                     VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_LW_CHARGE_END);

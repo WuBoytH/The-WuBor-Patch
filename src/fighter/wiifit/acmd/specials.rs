@@ -1,12 +1,12 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn wiifit_specialhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
 }
 
-unsafe extern "C" fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -17,7 +17,7 @@ unsafe extern "C" fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhijump", wiifit_specialhijump);
+    agent.acmd("game_specialhijump", game_specialhijump);
 
-    agent.acmd("game_specialhiend", wiifit_specialhiend);
+    agent.acmd("game_specialhiend", game_specialhiend);
 }

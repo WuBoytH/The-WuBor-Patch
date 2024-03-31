@@ -1,5 +1,5 @@
 use {
-    crate::imports::status_imports::*,
+    crate::imports::*,
     super::{
         escape::escape_air_slide::*,
         cliff::cliff_jump1::*

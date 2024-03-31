@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn wolf_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_inflict_kind_status(agent.module_accessor);
@@ -27,7 +27,7 @@ unsafe extern "C" fn wolf_specialsend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsend", wolf_specialsend);
+    agent.acmd("game_specialsend", game_specialsend);
 
-    agent.acmd("game_specialairsend", wolf_specialsend);
+    agent.acmd("game_specialairsend", game_specialsend);
 }

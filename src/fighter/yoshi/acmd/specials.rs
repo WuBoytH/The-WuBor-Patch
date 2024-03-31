@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn yoshi_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.1);
     frame(agent.lua_state_agent, 15.0);
@@ -34,7 +34,7 @@ unsafe extern "C" fn yoshi_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.85);
     frame(agent.lua_state_agent, 4.0);
@@ -49,7 +49,7 @@ unsafe extern "C" fn yoshi_specials(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-unsafe extern "C" fn yoshi_specials_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 4, 10.5, -11, 0, 0, 0, 2, 0, 0, 0, 0, 0, 360, true);
@@ -64,14 +64,14 @@ unsafe extern "C" fn yoshi_specials_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_specials_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_yoshi_special_h01"));
     }
 }
 
-unsafe extern "C" fn yoshi_specials_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 3);
@@ -88,17 +88,17 @@ unsafe extern "C" fn yoshi_specials_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", yoshi_specialn);
+    agent.acmd("game_specialn", game_specialn);
 
-    agent.acmd("game_specialairn", yoshi_specialn);
+    agent.acmd("game_specialairn", game_specialn);
 
-    agent.acmd("game_specials", yoshi_specials);
-    agent.acmd("effect_specials", yoshi_specials_eff);
-    agent.acmd("sound_specials", yoshi_specials_snd);
-    agent.acmd("expression_specials", yoshi_specials_exp);
+    agent.acmd("game_specials", game_specials);
+    agent.acmd("effect_specials", effect_specials);
+    agent.acmd("sound_specials", sound_specials);
+    agent.acmd("expression_specials", expression_specials);
 
-    agent.acmd("game_specialairs", yoshi_specials);
-    agent.acmd("effect_specialairs", yoshi_specials_eff);
-    agent.acmd("sound_specialairs", yoshi_specials_snd);
-    agent.acmd("expression_specialairs", yoshi_specials_exp);
+    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("effect_specialairs", effect_specials);
+    agent.acmd("sound_specialairs", sound_specials);
+    agent.acmd("expression_specialairs", expression_specials);
 }

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn peach_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -59,7 +59,7 @@ unsafe extern "C" fn peach_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", peach_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", peach_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 }

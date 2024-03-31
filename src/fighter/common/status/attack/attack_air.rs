@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_uniq_process_init)]
 unsafe extern "C" fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {

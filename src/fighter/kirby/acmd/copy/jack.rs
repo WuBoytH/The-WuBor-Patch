@@ -1,9 +1,9 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn jack_jackspecialnjump_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_jackspecialnjump(_agent: &mut L2CAgentBase) {
 }
 
-unsafe extern "C" fn kirby_jackspecialnjump_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_jackspecialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     for _ in 0..4 {
         if macros::is_excute(agent) {
@@ -14,6 +14,6 @@ unsafe extern "C" fn kirby_jackspecialnjump_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_jackspecialnjump", jack_jackspecialnjump_eff);
-    agent.acmd("sound_jackspecialnjump", kirby_jackspecialnjump_snd);
+    agent.acmd("effect_jackspecialnjump", effect_jackspecialnjump);
+    agent.acmd("sound_jackspecialnjump", sound_jackspecialnjump);
 }

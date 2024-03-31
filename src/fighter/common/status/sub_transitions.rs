@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_wait_ground_check_common)]

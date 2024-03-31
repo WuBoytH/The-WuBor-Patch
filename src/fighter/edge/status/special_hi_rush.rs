@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 unsafe extern "C" fn edge_special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

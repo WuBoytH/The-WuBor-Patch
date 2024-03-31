@@ -8,9 +8,6 @@ use {
 
 mod init_settings;
 mod get_val;
-// mod get_param;
-// mod collision_hit;
-// mod handle_damage;
 mod sound;
 pub mod func_links;
 mod fighterutil;

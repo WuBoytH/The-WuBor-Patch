@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::ryu::helper::*;
 
 unsafe extern "C" fn ken_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

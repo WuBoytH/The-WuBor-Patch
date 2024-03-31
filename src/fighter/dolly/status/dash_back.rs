@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::common::status::movement::dash::*;
 
 pub fn install(agent: &mut smashline::Agent) {

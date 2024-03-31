@@ -1,7 +1,6 @@
 mod acmd;
 mod status;
 mod frame;
-mod vtable_hook;
 
 mod fireball;
 
@@ -10,7 +9,6 @@ pub fn install() {
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);
-    vtable_hook::install();
     agent.install();
 
     fireball::install();

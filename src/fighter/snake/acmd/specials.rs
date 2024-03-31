@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn snake_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CORRECT(agent, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -15,7 +15,7 @@ unsafe extern "C" fn snake_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn snake_specialairhihang(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhihang(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -37,9 +37,9 @@ unsafe extern "C" fn snake_specialairhihang(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", snake_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhistart", snake_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart);
 
-    agent.acmd("game_specialairhihang", snake_specialairhihang);
+    agent.acmd("game_specialairhihang", game_specialairhihang);
 }

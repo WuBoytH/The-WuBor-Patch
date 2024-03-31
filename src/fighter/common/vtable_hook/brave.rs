@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(offset = 0x853ce0)]
 unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {

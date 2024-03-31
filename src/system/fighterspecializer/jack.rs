@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::from_offset(0xb2f820)]
 extern "C" fn jack_customizer(module_accessor: *mut BattleObjectModuleAccessor, customize_to: u32);

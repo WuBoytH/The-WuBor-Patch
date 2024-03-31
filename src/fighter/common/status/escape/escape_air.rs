@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::escape_air_slide::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]

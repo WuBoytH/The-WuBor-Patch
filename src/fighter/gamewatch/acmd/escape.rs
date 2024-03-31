@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn gamewatch_escapeair(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -9,7 +9,7 @@ unsafe extern "C" fn gamewatch_escapeair(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 27.0, 13.0);
 }
 
-unsafe extern "C" fn gamewatch_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -22,7 +22,7 @@ unsafe extern "C" fn gamewatch_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_escapeair", gamewatch_escapeair);
+    agent.acmd("game_escapeair", game_escapeair);
 
-    agent.acmd("game_escapeairslide", gamewatch_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide);
 }

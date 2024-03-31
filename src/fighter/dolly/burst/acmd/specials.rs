@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_superspecial(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -64,5 +64,5 @@ unsafe extern "C" fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_superspecial", dolly_burst_superspecial);
+    agent.acmd("game_superspecial", game_superspecial);
 }

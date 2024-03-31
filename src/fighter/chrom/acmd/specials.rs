@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn chrom_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
@@ -12,7 +12,7 @@ unsafe extern "C" fn chrom_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -23,14 +23,14 @@ unsafe extern "C" fn chrom_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_chrom_special_l01"));
     }
 }
 
-unsafe extern "C" fn chrom_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -44,7 +44,7 @@ unsafe extern "C" fn chrom_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 65, 115, 0, 65, 10.0, 0.0, 6.0, 11.0, Some(0.0), Some(11.0), Some(11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
     }
@@ -69,7 +69,7 @@ unsafe extern "C" fn chrom_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("chrom_tenku_landing"), Hash40::new("top"), 0, 0, 10, 70, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
     }
@@ -83,7 +83,7 @@ unsafe extern "C" fn chrom_speciallwhit_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_kick_hit_l"));
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_chrom_rnd_special_l"));
@@ -98,7 +98,7 @@ unsafe extern "C" fn chrom_speciallwhit_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn chrom_speciallwhit_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -118,13 +118,13 @@ unsafe extern "C" fn chrom_speciallwhit_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairlw", chrom_speciallw);
-    agent.acmd("effect_specialairlw", chrom_speciallw_eff);
-    agent.acmd("sound_specialairlw", chrom_speciallw_snd);
-    agent.acmd("expression_specialairlw", chrom_speciallw_exp);
+    agent.acmd("game_specialairlw", game_speciallw);
+    agent.acmd("effect_specialairlw", effect_speciallw);
+    agent.acmd("sound_specialairlw", sound_speciallw);
+    agent.acmd("expression_specialairlw", expression_speciallw);
 
-    agent.acmd("game_speciallwhit", chrom_speciallwhit);
-    agent.acmd("effect_speciallwhit", chrom_speciallwhit_eff);
-    agent.acmd("sound_speciallwhit", chrom_speciallwhit_snd);
-    agent.acmd("expression_speciallwhit", chrom_speciallwhit_exp);
+    agent.acmd("game_speciallwhit", game_speciallwhit);
+    agent.acmd("effect_speciallwhit", effect_speciallwhit);
+    agent.acmd("sound_speciallwhit", sound_speciallwhit);
+    agent.acmd("expression_speciallwhit", expression_speciallwhit);
 }

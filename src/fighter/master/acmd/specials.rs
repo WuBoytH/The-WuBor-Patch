@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn master_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.3);
     if macros::is_excute(agent) {
@@ -72,7 +72,7 @@ unsafe extern "C" fn master_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -121,7 +121,7 @@ unsafe extern "C" fn master_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn master_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -175,9 +175,9 @@ unsafe extern "C" fn master_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairhi", master_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_speciallw", master_speciallw);
+    agent.acmd("game_speciallw", game_speciallw);
 
-    agent.acmd("game_specialairlw", master_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw);
 }

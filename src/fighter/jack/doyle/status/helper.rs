@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 pub unsafe extern "C" fn jack_doyle_set_flags(weapon: &mut L2CWeaponCommon) {
     WorkModule::off_flag(weapon.module_accessor, *WEAPON_JACK_DOYLE_INSTANCE_WORK_ID_FLAG_FOLLOW_DAMAGE);

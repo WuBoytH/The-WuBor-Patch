@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn kirby_belmontspecialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_belmontspecialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -10,7 +10,7 @@ unsafe extern "C" fn kirby_belmontspecialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_belmontspecialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_lightthrow4item"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -18,11 +18,11 @@ unsafe extern "C" fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("expression_simonspecialn", kirby_belmontspecialn_exp);
+    agent.acmd("expression_simonspecialn", expression_belmontspecialn);
 
-    agent.acmd("expression_simonspecialairn", kirby_belmontspecialairn_exp);
+    agent.acmd("expression_simonspecialairn", expression_belmontspecialairn);
 
-    agent.acmd("expression_richterspecialn", kirby_belmontspecialn_exp);
+    agent.acmd("expression_richterspecialn", expression_belmontspecialn);
 
-    agent.acmd("expression_richterspecialairn", kirby_belmontspecialairn_exp);
+    agent.acmd("expression_richterspecialairn", expression_belmontspecialairn);
 }

@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack3_uniq_check_param)]
 unsafe extern "C" fn sub_attack3_uniq_check_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, is_attack_lw3: L2CValue, is_button: L2CValue) {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn pikmin_cliffcatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_cliffcatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHANGE_STATUS_DLAY_MOTION);
@@ -8,5 +8,5 @@ unsafe extern "C" fn pikmin_cliffcatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_cliffcatch", pikmin_cliffcatch);
+    agent.acmd("game_cliffcatch", game_cliffcatch);
 }

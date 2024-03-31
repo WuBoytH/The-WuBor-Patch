@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn miifighter_specials3dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specials3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 6.0, 4.0);
@@ -29,7 +29,7 @@ unsafe extern "C" fn miifighter_specials3dash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_specialairs3dash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairs3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 4.5, 4.5, 6.0, 6.0);
@@ -63,7 +63,7 @@ unsafe extern "C" fn miifighter_specialairs3dash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-unsafe extern "C" fn miifighter_specialhi12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 86, 100, 79, 0, 3.5, 0.0, 3.5, 7.0, None, None, None, 1.0, 1.3, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -91,7 +91,7 @@ unsafe extern "C" fn miifighter_specialhi12(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_specialhi13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         GroundModule::set_passable_check(agent.module_accessor, true);
@@ -113,7 +113,7 @@ unsafe extern "C" fn miifighter_specialhi13(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MIIFIGHTER_STATUS_SYOTEN_KICK_FLAG_AIR_START);
@@ -206,7 +206,7 @@ unsafe extern "C" fn miifighter_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_specialairhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_XLU);
@@ -302,7 +302,7 @@ unsafe extern "C" fn miifighter_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
@@ -370,23 +370,23 @@ unsafe extern "C" fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials3dash", miifighter_specials3dash);
+    agent.acmd("game_specials3dash", game_specials3dash);
 
-    agent.acmd("game_specialairs3dash", miifighter_specialairs3dash);
+    agent.acmd("game_specialairs3dash", game_specialairs3dash);
 
-    agent.acmd("game_specialhi12", miifighter_specialhi12);
+    agent.acmd("game_specialhi12", game_specialhi12);
 
-    agent.acmd("game_specialairhi12", miifighter_specialhi12);
+    agent.acmd("game_specialairhi12", game_specialhi12);
 
-    agent.acmd("game_specialhi13", miifighter_specialhi13);
+    agent.acmd("game_specialhi13", game_specialhi13);
 
-    agent.acmd("game_specialairhi13", miifighter_specialhi13);
+    agent.acmd("game_specialairhi13", game_specialhi13);
 
-    agent.acmd("game_specialhi2", miifighter_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2);
 
-    agent.acmd("game_specialairhi2", miifighter_specialairhi2);
+    agent.acmd("game_specialairhi2", game_specialairhi2);
 
-    agent.acmd("game_specialhi3", miifighter_specialhi3);
+    agent.acmd("game_specialhi3", game_specialhi3);
 
-    agent.acmd("game_specialairhi3", miifighter_specialhi3);
+    agent.acmd("game_specialairhi3", game_specialhi3);
 }

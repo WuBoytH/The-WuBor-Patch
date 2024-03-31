@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use crate::fighter::lucario::helper::*;
 
 unsafe extern "C" fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn szerosuit_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);
@@ -55,7 +55,7 @@ unsafe extern "C" fn szerosuit_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);
@@ -110,7 +110,7 @@ unsafe extern "C" fn szerosuit_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 1, Hash40::new("top"), 1.3, 60, 100, 35, 0, 7.0, 0.0, 12.0, 10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -148,7 +148,7 @@ unsafe extern "C" fn szerosuit_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("szero_boost_line_02"), false, false);
@@ -167,14 +167,14 @@ unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_szerosuit_special_h02"));
     }
 }
 
-unsafe extern "C" fn szerosuit_specialhi2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 4);
@@ -195,7 +195,7 @@ unsafe extern "C" fn szerosuit_specialhi2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 1, Hash40::new("top"), 1.3, 60, 100, 35, 0, 7.0, 0.0, 12.0, 10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -233,7 +233,7 @@ unsafe extern "C" fn szerosuit_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("szero_boost_line_02"), false, false);
@@ -252,14 +252,14 @@ unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_szerosuit_special_h02"));
     }
 }
 
-unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 4);
@@ -281,17 +281,17 @@ unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", szerosuit_specialhi);
+    agent.acmd("game_specialhi", game_specialhi);
 
-    agent.acmd("game_specialairhi", szerosuit_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi);
 
-    agent.acmd("game_specialhi2", szerosuit_specialhi2);
-    agent.acmd("effect_specialhi2", szerosuit_specialhi2_eff);
-    agent.acmd("sound_specialhi2", szerosuit_specialhi2_snd);
-    agent.acmd("expression_specialhi2", szerosuit_specialhi2_exp);
+    agent.acmd("game_specialhi2", game_specialhi2);
+    agent.acmd("effect_specialhi2", effect_specialhi2);
+    agent.acmd("sound_specialhi2", sound_specialhi2);
+    agent.acmd("expression_specialhi2", expression_specialhi2);
 
-    agent.acmd("game_specialairhi2", szerosuit_specialairhi2);
-    agent.acmd("effect_specialairhi2", szerosuit_specialairhi2_eff);
-    agent.acmd("sound_specialairhi2", szerosuit_specialairhi2_snd);
-    agent.acmd("expression_specialairhi2", szerosuit_specialairhi2_exp);
+    agent.acmd("game_specialairhi2", game_specialairhi2);
+    agent.acmd("effect_specialairhi2", effect_specialairhi2);
+    agent.acmd("sound_specialairhi2", sound_specialairhi2);
+    agent.acmd("expression_specialairhi2", expression_specialairhi2);
 }

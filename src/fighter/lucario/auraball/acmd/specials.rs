@@ -1,6 +1,6 @@
-use crate::imports::acmd_imports::*;
+use crate::imports::*;
 
-unsafe extern "C" fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_charge(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
@@ -8,7 +8,7 @@ unsafe extern "C" fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_charge(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
@@ -16,7 +16,7 @@ unsafe extern "C" fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_shoot(agent: &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 42, 0, 14, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
@@ -35,7 +35,7 @@ unsafe extern "C" fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_shoot(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
         macros::STOP_SE(agent, Hash40::new_raw(0x16b0e86b15));
@@ -85,7 +85,7 @@ unsafe extern "C" fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_explosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 70, 70, 0, 80, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
@@ -98,19 +98,19 @@ unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_explosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_charge", lucario_auraball_charge);
-    agent.acmd("sound_charge", lucario_auraball_charge_snd);
+    agent.acmd("game_charge", game_charge);
+    agent.acmd("sound_charge", sound_charge);
 
-    agent.acmd("game_shoot", lucario_auraball_shoot);
-    agent.acmd("sound_shoot", lucario_auraball_shoot_snd);
+    agent.acmd("game_shoot", game_shoot);
+    agent.acmd("sound_shoot", sound_shoot);
 
-    agent.acmd("game_explosion", lucario_auraball_explosion);
-    agent.acmd("effect_explosion", lucario_auraball_explosion_eff);
+    agent.acmd("game_explosion", expression_explosion);
+    agent.acmd("effect_explosion", effect_explosion);
 }

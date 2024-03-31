@@ -1,4 +1,4 @@
-use crate::imports::status_imports::*;
+use crate::imports::*;
 use super::super::helper::*;
 
 unsafe extern "C" fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

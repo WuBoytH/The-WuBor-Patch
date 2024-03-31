@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-unsafe extern "C" fn yoshi_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -31,7 +31,7 @@ unsafe extern "C" fn yoshi_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 5.0);
@@ -53,7 +53,7 @@ unsafe extern "C" fn yoshi_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     macros::FT_MOTION_RATE(agent, 5.0/6.0);
     if macros::is_excute(agent) {
@@ -117,7 +117,7 @@ unsafe extern "C" fn yoshi_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn yoshi_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 40, 100, 0, 65, 5.0, 0.0, 2.5, -3.0, Some(0.0), Some(2.5), Some(6.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -129,8 +129,11 @@ unsafe extern "C" fn yoshi_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", yoshi_attackairn);
-    agent.game_acmd("game_attackairhi", yoshi_attackairhi);
-    agent.game_acmd("game_attackairlw", yoshi_attackairlw);
-    agent.game_acmd("game_landingairlw", yoshi_landingairlw);
+    agent.game_acmd("game_attackairn", game_attackairn);
+
+    agent.game_acmd("game_attackairhi", game_attackairhi);
+
+    agent.game_acmd("game_attackairlw", game_attackairlw);
+
+    agent.game_acmd("game_landingairlw", game_landingairlw);
 }

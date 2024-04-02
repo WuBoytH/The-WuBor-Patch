@@ -60,9 +60,6 @@ unsafe extern "C" fn trail_landing_attack_air_init(fighter: &mut L2CFighterCommo
     }
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, landing_param_type, landing_param);
     landing_lag *= motion_rate;
-    if VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
-        landing_lag += 4.0;
-    }
     if landing_lag != 0.0 {
         motion_rate = fighter.sub_get_landing_motion_rate(landing_mot.into(), landing_lag.into()).get_f32();
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);

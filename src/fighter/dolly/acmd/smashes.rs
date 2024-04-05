@@ -2,14 +2,16 @@ use crate::imports::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(agent, Hash40::new("footr"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_XLU);        
+    }
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    frame(agent.lua_state_agent, 7.0);
-    if macros::is_excute(agent) {
-        macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD); 
     }
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -21,10 +23,12 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("footr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_NORMAL);        
     }
     wait(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL); 
     }
 }
 

@@ -146,9 +146,18 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("dolly_attack_arc"), Hash40::new("dolly_attack_arc"), Hash40::new("top"), -2, 11, 0, -5.3, -20, 90, 1, true, *EF_FLIP_YZ, 0.1);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.6);
+    }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        macros::LAST_EFFECT_SET_RATE(agent, 1);
+    }
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 16, 5, 0, 0, 0, 1.0, true, *EF_FLIP_YZ, 0.5);
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 18, 7, 0, 0, 0, 1.4, true, *EF_FLIP_YZ, 0.6);
     }
 }
 

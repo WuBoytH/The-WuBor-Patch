@@ -202,10 +202,6 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("effect_specialairnholdhi", effect_specialairnhold);
 
-    agent.acmd("effect_specialnstos", effect_specialairnhold);
-
-    agent.acmd("effect_specialairnstos", effect_specialairnhold);
-
     agent.acmd("effect_specialnstohi", effect_specialairnhold);
 
     agent.acmd("effect_specialairnstohi", effect_specialairnhold);

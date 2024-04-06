@@ -129,11 +129,11 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn);
 
-    agent.game_acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi);
 
-    agent.game_acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw);
 
-    agent.game_acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw);
 }

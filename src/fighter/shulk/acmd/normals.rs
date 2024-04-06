@@ -96,12 +96,12 @@ unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_attack11", game_attack11);
-    agent.effect_acmd("effect_attack11", effect_attack11);
+    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("effect_attack11", effect_attack11);
 
-    agent.game_acmd("game_attack12", game_attack12);
-    agent.effect_acmd("effect_attack12", effect_attack12);
+    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("effect_attack12", effect_attack12);
 
-    agent.game_acmd("game_attack13", game_attack13);
-    agent.effect_acmd("effect_attack13", effect_attack13);
+    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("effect_attack13", effect_attack13);
 }

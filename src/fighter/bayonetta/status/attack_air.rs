@@ -34,19 +34,6 @@ unsafe extern "C" fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn bayonetta_attackair_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::off_flag(fighter.module_accessor, attack_air::flag::WHIFF);
-    }
-    else if !VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
-        let part_size = AttackModule::part_size(fighter.module_accessor) as i32;
-        for id in 0..part_size {
-            if AttackModule::is_attack(fighter.module_accessor, id, false) {
-                VarModule::on_flag(fighter.module_accessor, attack_air::flag::WHIFF);
-                break;
-            }
-        }
-    }
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_STEP);
     let mut check_end = true;
     if step != *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_STEP_START {

@@ -150,8 +150,7 @@ pub mod attack {
 
 pub mod attack_air {
     pub mod flag {
-        pub const WHIFF : i32 = 0x1051;
-        pub const ENABLE_LANDING_ATTACK : i32 = 0x1052;
+        pub const ENABLE_LANDING_ATTACK : i32 = 0x1051;
     }
 }
 

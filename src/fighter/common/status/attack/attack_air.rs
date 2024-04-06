@@ -26,19 +26,6 @@ unsafe extern "C" fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::off_flag(fighter.module_accessor, attack_air::flag::WHIFF);
-    }
-    else if !VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
-        let part_size = AttackModule::part_size(fighter.module_accessor) as i32;
-        for id in 0..part_size {
-            if AttackModule::is_attack(fighter.module_accessor, id, false) {
-                VarModule::on_flag(fighter.module_accessor, attack_air::flag::WHIFF);
-                break;
-            }
-        }
-    }
     if !fighter.attack_air_common_strans().get_bool() {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             if MotionModule::is_end(fighter.module_accessor) {
@@ -110,10 +97,7 @@ unsafe extern "C" fn status_pre_landingattackair(fighter: &mut L2CFighterCommon)
 #[skyline::hook(replace = L2CFighterCommon_sub_landing_attack_air_init)]
 unsafe extern "C" fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
-    let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();
-    if VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
-        landing_lag += 4.0;
-    }
+    let landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();
     let mut motion_rate = 1.0;
     if landing_lag != 0.0 {
         motion_rate = fighter.sub_get_landing_motion_rate(mot.into(), landing_lag.into()).get_f32();

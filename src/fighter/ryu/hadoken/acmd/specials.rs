@@ -39,9 +39,9 @@ pub fn install(agent: &mut smashline::Agent) {
 
     agent.acmd("game_movesps", game_movesp);
 
-    agent.acmd("game_last", game_movesp_last);
+    agent.acmd("game_movespw_last", game_movesp_last);
 
-    agent.acmd("game_last", game_movesp_last);
+    agent.acmd("game_movespm_last", game_movesp_last);
 
-    agent.acmd("game_last", game_movesp_last);
+    agent.acmd("game_movesps_last", game_movesp_last);
 }

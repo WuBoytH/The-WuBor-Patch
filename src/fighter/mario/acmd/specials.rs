@@ -299,8 +299,8 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("sound_speciallwjump", sound_longjump);
     agent.acmd("expression_speciallwjump", expression_longjump);
 
-    agent.acmd("effect_speciallwlanding", sound_longjumpland);
     agent.acmd("effect_speciallwlanding", effect_longjumpland);
+    agent.acmd("sound_speciallwlanding", sound_longjumpland);
     agent.acmd("expression_speciallwlanding", expression_longjumpland);
 
     agent.acmd("game_specialairlwstart", game_groundpoundstart);

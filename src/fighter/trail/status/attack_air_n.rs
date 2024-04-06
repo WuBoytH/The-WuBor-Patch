@@ -23,19 +23,19 @@ unsafe extern "C" fn trail_attack_air_n_substatus(fighter: &mut L2CFighterCommon
     if fighter.attack_air_uniq(param_1).get_bool() {
         return 0.into();
     }
-    let mut cont = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0;
-    if !cont {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CHECK_COMBO_BUTTON_ON) {
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                cont = true;
-            }
-        }
-    }
-    if cont {
-        if ComboModule::is_enable_combo_input(fighter.module_accessor) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CONNECT_COMBO);
-        }
-    }
+    // let mut cont = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0;
+    // if !cont {
+    //     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CHECK_COMBO_BUTTON_ON) {
+    //         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+    //             cont = true;
+    //         }
+    //     }
+    // }
+    // if cont {
+    //     if ComboModule::is_enable_combo_input(fighter.module_accessor) {
+    //         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CONNECT_COMBO);
+    //     }
+    // }
     0.into()
 }
 
@@ -100,13 +100,10 @@ unsafe extern "C" fn trail_attack_air_n_main_loop(fighter: &mut L2CFighterCommon
     if !StatusModule::is_changing(fighter.module_accessor) {
         let count = ComboModule::count(fighter.module_accessor) as i32;
         let combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_air_n_combo_max"));
-        let mut cont = count < combo_max;
-        if cont {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CONNECT_COMBO) {
+        if count < combo_max {
+            let mut cont = false;
+            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
                 cont = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_ENABLE_COMBO);
-            }
-            else {
-                cont = false;
             }
             if cont {
                 if !only_jabs(fighter) {

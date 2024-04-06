@@ -1255,8 +1255,8 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.acmd("effect_specialairlw", effect_specialairlw);
     agent.acmd("sound_specialairlw", sound_specialairlw);
 
-    agent.acmd("game_specialairlwend", game_speciallwend);
-    agent.acmd("effect_specialairlwend", effect_speciallwend);
+    agent.acmd("game_speciallwend", game_speciallwend);
+    agent.acmd("effect_speciallwend", effect_speciallwend);
 
     agent.acmd("game_specialairlwend", game_speciallwend);
     agent.acmd("effect_specialairlwend", effect_speciallwend);

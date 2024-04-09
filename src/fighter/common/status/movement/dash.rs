@@ -722,7 +722,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         let re_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32;
         re_dash_frame <= frame
     } {
-        fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
         return 1.into();
     }
 

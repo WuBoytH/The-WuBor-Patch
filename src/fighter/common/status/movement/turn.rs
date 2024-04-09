@@ -2,6 +2,7 @@ use crate::imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnCommon)]
 unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
+    // Vanilla
     let groups = [
         *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL,
         *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM,
@@ -24,13 +25,6 @@ unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     ];
     for x in group_ex.iter() {
         WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *x);
-    }
-    if [
-        *FIGHTER_STATUS_KIND_DASH,
-        *FIGHTER_STATUS_KIND_TURN_DASH
-    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32())
-    && VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_PIVOT_TURN_DASH) {
-        WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_TURN_ATTACK_S4_REV_PAD);
     MotionModule::change_motion(

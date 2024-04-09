@@ -3,6 +3,7 @@ mod status;
 mod frame;
 
 mod c4;
+mod cypher;
 
 pub fn install() {
     let agent = &mut smashline::Agent::new("snake");
@@ -12,4 +13,5 @@ pub fn install() {
     agent.install();
 
     c4::install();
+    cypher::install();
 }

@@ -17,11 +17,11 @@ unsafe extern "C" fn game_trickf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_trickb(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, sonic::status::flag::TRICK_ENABLE_MOVEMENT);
     }
-    frame(agent.lua_state_agent, 1.0);
-    MiscModule::calc_motion_rate_from_cancel_frame(agent, 0.0, 10.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 6.0, 10.0);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

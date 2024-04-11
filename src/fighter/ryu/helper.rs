@@ -78,6 +78,18 @@ pub unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) ->
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 1.into();
     }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+        if fighter.sub_transition_group_check_ground_attack().get_bool() {
+            return 1.into();
+        }
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+    }
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
         hash40("attack_11_w"),

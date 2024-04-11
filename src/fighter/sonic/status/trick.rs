@@ -90,7 +90,7 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
             (2.5, 0.5)
         }
         else if mot == hash40("trick_b") {
-            (-2.2, 1.0)
+            (-2.0, 1.0)
         }
         else {
             (0.0, 2.4)

@@ -1,5 +1,17 @@
 use crate::imports::*;
 
+unsafe extern "C" fn game_specialnhit(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        KineticModule::add_speed(agent.module_accessor, &Vector3f{x: -0.7, y: 0.0, z: 0.0});
+    }
+    macros::FT_MOTION_RATE(agent, 0.6);
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.module_accessor, sonic::status::flag::ENABLE_TRICK);
+    }
+}
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::shoot_exist(agent.module_accessor, *FIGHTER_SONIC_GENERATE_ARTICLE_GIMMICKJUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
@@ -11,5 +23,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
+    agent.acmd("game_specialnhit", game_specialnhit);
+
     agent.acmd("game_specialhi", game_specialhi);
 }

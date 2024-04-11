@@ -870,8 +870,13 @@ pub mod shizue {
 pub mod sonic {
     pub mod status {
         pub mod flag {
+            pub const ENABLE_TRICK : i32 = 0x1100;
+
             pub const DASH_FROM_THROW_LW : i32 = 0x1150;
+
+            pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
         }
+        pub const TRICK : i32 = 0x1F3;
     }
 }
 

@@ -182,15 +182,14 @@ unsafe extern "C" fn status_attack_main_button(fighter: &mut L2CFighterCommon, p
     }
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
-        if fighter.sub_transition_group_check_ground_attack().get_bool() {
+        let normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec();
+        if normal_cancel_common(fighter, normal_cancels).get_bool() {
             return 1.into();
         }
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
     }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);
     if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE {

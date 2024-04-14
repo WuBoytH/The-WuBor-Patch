@@ -155,7 +155,6 @@ pub mod damage_fly_roll {
 pub mod dash {
     pub mod flag {
         pub const DISABLE_RUN : i32 = 0x1051;
-        pub const DISABLE_PIVOT_TURN_DASH : i32 = 0x1052;
     }
 }
 

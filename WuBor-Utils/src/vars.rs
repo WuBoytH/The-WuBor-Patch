@@ -425,9 +425,10 @@ pub mod lucario {
             pub const SPECIAL_N_SPIRIT_BOMB_FALLING : i32 = 0x1154;
 
             pub const SPECIAL_S_CHECK_ENHANCE : i32 = 0x1150;
-            pub const SPECIAL_S_ENHANCE : i32 = 0x1151;
-            pub const SPECIAL_S_ENABLE_GRAVITY : i32 = 0x1152;
-            pub const SPECIAL_S_POST_GRAVITY : i32 = 0x1153;
+            pub const SPECIAL_S_SET_MOTION : i32 = 0x1151;
+            pub const SPECIAL_S_ENHANCE : i32 = 0x1152;
+            pub const SPECIAL_S_ENABLE_GRAVITY : i32 = 0x1153;
+            pub const SPECIAL_S_POST_GRAVITY : i32 = 0x1154;
 
             pub const SPECIAL_HI_CANCELLED_INTO : i32 = 0x1150;
             pub const SPECIAL_HI_SUPER_DASH_CANCEL : i32 = 0x1151;

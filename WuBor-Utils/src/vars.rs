@@ -875,6 +875,7 @@ pub mod sonic {
             pub const DASH_FROM_THROW_LW : i32 = 0x1150;
 
             pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
+            pub const TRICK_ENABLE_CONTROL : i32 = 0x1151;
         }
         pub const TRICK : i32 = 0x1F3;
     }

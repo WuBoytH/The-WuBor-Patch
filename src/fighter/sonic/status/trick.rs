@@ -131,6 +131,31 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
             0.0
         );
     }
+    if VarModule::is_flag(fighter.module_accessor, sonic::status::flag::TRICK_ENABLE_CONTROL) {
+        VarModule::off_flag(fighter.module_accessor, sonic::status::flag::TRICK_ENABLE_CONTROL);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            controller_set_accel_x_add,
+            fighter,
+            0.01
+        );
+        sv_kinetic_energy!(
+            controller_set_accel_x_mul,
+            fighter,
+            0.01
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
     0.into()
 }
 

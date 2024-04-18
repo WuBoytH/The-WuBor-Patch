@@ -74,15 +74,16 @@ unsafe extern "C" fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterC
 unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
-        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
-        && only_jabs(fighter) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0 {
+            if only_jabs(fighter) {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+                }
+                VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
             }
-            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-        }
-        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            else {
+                VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            }
         }
         let button = param_2.get_i32();
         if !ControlModule::check_button_on(fighter.module_accessor, button) {

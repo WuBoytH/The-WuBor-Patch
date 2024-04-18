@@ -80,8 +80,7 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
         return 0.into();
     }
     let max_charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));
-    let charge = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME);
-    if charge >= max_charge_frame as i32 {
+    if fighter.global_table[STATUS_FRAME].get_f32() >= max_charge_frame + 4.0 {
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
     }
     0.into()

@@ -705,6 +705,18 @@ pub mod simon {
     pub use super::richter::*;
 }
 
+pub mod snake_c4 {
+    pub mod instance {
+        pub mod flag {
+            pub const TRACKER_ENABLED : i32 = 0x0150;
+            pub const TRACKER_VISIBLE : i32 = 0x0151;
+        }
+        pub mod int {
+            pub const TRACKER_EFF : i32 = 0x0150;
+        }
+    }
+}
+
 pub mod rockman {
     pub mod instance {
         pub mod flag {

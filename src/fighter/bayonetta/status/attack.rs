@@ -85,6 +85,17 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
             return 0.into();
         }
     }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        let normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec();
+        if normal_cancel_common(fighter, normal_cancels).get_bool() {
+            return 1.into();
+        }
+    }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);
     if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100)

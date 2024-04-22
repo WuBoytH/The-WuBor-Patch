@@ -2,34 +2,6 @@
 
 use smash::phx::Vector3f;
 
-// System
-pub static mut INT_OFFSET : usize = 0x4E19D0;
-// pub static mut INT64_OFFSET : usize = 0x4E19F0;
-pub static mut FLOAT_OFFSET : usize = 0x4E19D0;
-pub static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
-pub static mut DEFINE_LUA_CONSTANT_OFFSET : usize = 0x3727390; //13.0.1
-pub static INT_SEARCH_CODE: &[u8] = &[
-    0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x11, 0x40, 0xf9,
-];
-pub static FLOAT_SEARCH_CODE: &[u8] = &[
-    0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x19, 0x40, 0xf9,
-];
-// pub static INT64_SEARCH_CODE: &[u8] = &[
-//     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x15, 0x40, 0xf9,
-// ];
-pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
-    0xff, 0x03, 0x03, 0xd1,
-    0xe8, 0x2b, 0x00, 0xfd,
-    0xfc, 0x6f, 0x06, 0xa9,
-    0xfa, 0x67, 0x07, 0xa9,
-    0xf8, 0x5f, 0x08, 0xa9,
-    0xf6, 0x57, 0x09, 0xa9,
-    0xf4, 0x4f, 0x0a, 0xa9,
-    0xfd, 0x7b, 0x0b, 0xa9,
-    0xfd, 0xc3, 0x02, 0x91,
-    0xfb, 0x03, 0x00, 0xaa
-];
-
 // Common
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
@@ -183,7 +155,6 @@ pub mod damage_fly_roll {
 pub mod dash {
     pub mod flag {
         pub const DISABLE_RUN : i32 = 0x1051;
-        pub const DISABLE_PIVOT_TURN_DASH : i32 = 0x1052;
     }
 }
 
@@ -454,9 +425,10 @@ pub mod lucario {
             pub const SPECIAL_N_SPIRIT_BOMB_FALLING : i32 = 0x1154;
 
             pub const SPECIAL_S_CHECK_ENHANCE : i32 = 0x1150;
-            pub const SPECIAL_S_ENHANCE : i32 = 0x1151;
-            pub const SPECIAL_S_ENABLE_GRAVITY : i32 = 0x1152;
-            pub const SPECIAL_S_POST_GRAVITY : i32 = 0x1153;
+            pub const SPECIAL_S_SET_MOTION : i32 = 0x1151;
+            pub const SPECIAL_S_ENHANCE : i32 = 0x1152;
+            pub const SPECIAL_S_ENABLE_GRAVITY : i32 = 0x1153;
+            pub const SPECIAL_S_POST_GRAVITY : i32 = 0x1154;
 
             pub const SPECIAL_HI_CANCELLED_INTO : i32 = 0x1150;
             pub const SPECIAL_HI_SUPER_DASH_CANCEL : i32 = 0x1151;
@@ -731,6 +703,18 @@ pub mod richter {
 
 pub mod simon {
     pub use super::richter::*;
+}
+
+pub mod snake_c4 {
+    pub mod instance {
+        pub mod flag {
+            pub const TRACKER_ENABLED : i32 = 0x0150;
+            pub const TRACKER_VISIBLE : i32 = 0x0151;
+        }
+        pub mod int {
+            pub const TRACKER_EFF : i32 = 0x0150;
+        }
+    }
 }
 
 pub mod rockman {

@@ -715,7 +715,8 @@ pub mod MiscModule {
         unk3: i32,
         unk4: i32,
         unk5: i32,
-        unk6: i32
+        unk6: i32,
+        unk7: i32
     ) -> u64;
 
     pub fn patch_vtable_function(offset: usize, function: u64) {

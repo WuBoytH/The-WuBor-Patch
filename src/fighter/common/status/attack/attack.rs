@@ -74,15 +74,16 @@ unsafe extern "C" fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterC
 unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
-        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
-        && only_jabs(fighter) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0 {
+            if only_jabs(fighter) {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+                }
+                VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
             }
-            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-        }
-        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            else {
+                VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            }
         }
         let button = param_2.get_i32();
         if !ControlModule::check_button_on(fighter.module_accessor, button) {
@@ -179,6 +180,17 @@ unsafe extern "C" fn status_attack_main_button(fighter: &mut L2CFighterCommon, p
     }
     if CustomCancelManager::execute_cancel(fighter) {
         return 1.into();
+    }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        let normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec();
+        if normal_cancel_common(fighter, normal_cancels).get_bool() {
+            return 1.into();
+        }
     }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);
     if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE {

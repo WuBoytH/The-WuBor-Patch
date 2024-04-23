@@ -71,7 +71,7 @@ unsafe extern "C" fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon)
         0.into()
     }
     else {
-        let original = smashline::original_status(smashline::Init, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
+        let original = original_status(Init, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
         original(fighter)
     }
 }
@@ -82,7 +82,7 @@ unsafe extern "C" fn pikachu_special_s_warp_main(fighter: &mut L2CFighterCommon)
     }
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count != 0 {
-        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
+        let original = original_status(Main, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
         return original(fighter);
     }
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_SPECIALUPDUMMY, false, -1);
@@ -133,8 +133,8 @@ unsafe extern "C" fn pikachu_special_s_warp_1_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_pre);
-    agent.status(smashline::Init, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_init);
-    agent.status(smashline::Main, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_pre);
+    agent.status(Init, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_init);
+    agent.status(Main, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_main);
 }

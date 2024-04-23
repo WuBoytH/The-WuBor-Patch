@@ -91,6 +91,6 @@ unsafe extern "C" fn kirby_ganon_specialn_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, kirby_ganon_specialn_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, kirby_ganon_specialn_main);
 }

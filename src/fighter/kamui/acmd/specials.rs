@@ -100,14 +100,14 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsjump", game_specialsjump);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialsjump", game_specialsjump, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_speciallwhit", game_speciallwhit);
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
 
-    agent.acmd("game_specialairlwhit", game_speciallwhit);
+    agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
 }

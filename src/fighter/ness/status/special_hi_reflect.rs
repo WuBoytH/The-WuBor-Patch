@@ -60,6 +60,6 @@ unsafe extern "C" fn lucas_special_hi_reflect_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_REFLECT, ness_special_hi_reflect_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_REFLECT, ness_special_hi_reflect_main);
 }

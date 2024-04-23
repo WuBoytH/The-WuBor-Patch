@@ -191,12 +191,12 @@ unsafe extern "C" fn expression_ikespecialairnend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_ikespecialnend", effect_ikespecialnend);
-    agent.acmd("sound_ikespecialnend", sound_ikespecialnend);
-    agent.acmd("expression_ikespecialnend", expression_ikespecialnend);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("effect_ikespecialnend", effect_ikespecialnend, Priority::Low);
+    agent.acmd("sound_ikespecialnend", sound_ikespecialnend, Priority::Low);
+    agent.acmd("expression_ikespecialnend", expression_ikespecialnend, Priority::Low);
 
-    agent.acmd("effect_ikespecialairnend", effect_ikespecialairnend);
-    agent.acmd("sound_ikespecialairnend", sound_ikespecialairnend);
-    agent.acmd("expression_ikespecialairnend", expression_ikespecialairnend);
+    agent.acmd("effect_ikespecialairnend", effect_ikespecialairnend, Priority::Low);
+    agent.acmd("sound_ikespecialairnend", sound_ikespecialairnend, Priority::Low);
+    agent.acmd("expression_ikespecialairnend", expression_ikespecialairnend, Priority::Low);
 }

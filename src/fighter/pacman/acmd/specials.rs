@@ -12,6 +12,6 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhistart", game_specialhistart);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
 }

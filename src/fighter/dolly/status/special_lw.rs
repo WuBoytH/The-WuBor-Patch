@@ -280,14 +280,14 @@ unsafe extern "C" fn dolly_special_lw_attack_end(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_pre);
-    agent.status(smashline::Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_main);
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_command_main);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_end);
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_pre);
+    agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_main);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_command_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_end);
 
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_main);
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_end);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_main);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_end);
 }

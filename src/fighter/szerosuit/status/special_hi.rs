@@ -149,6 +149,6 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, szerosuit_specialhi_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, szerosuit_specialhi_main);
 }

@@ -126,20 +126,20 @@ unsafe extern "C" fn game_speciallwf(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials", game_specials);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
 
-    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
 
-    agent.acmd("game_specialairsfall", game_specialairsfall);
+    agent.acmd("game_specialairsfall", game_specialairsfall, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_speciallwattack", game_speciallwattack);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
 
-    agent.acmd("game_specialairlwattack", game_speciallwattack);
+    agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
 
-    agent.acmd("game_speciallwf", game_speciallwf);
+    agent.acmd("game_speciallwf", game_speciallwf, Priority::Low);
 }

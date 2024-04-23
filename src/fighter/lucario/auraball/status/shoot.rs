@@ -213,8 +213,8 @@ unsafe extern "C" fn lucario_auraball_shoot_exec(weapon: &mut L2CWeaponCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_pre);
-    agent.status(smashline::Main, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_main);
-    agent.status(smashline::Exec, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_exec);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_pre);
+    agent.status(Main, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_main);
+    agent.status(Exec, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_exec);
 }

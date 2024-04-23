@@ -176,6 +176,6 @@ unsafe extern "C" fn ryu_special_s_end_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, ryu_special_s_end_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, ryu_special_s_end_main);
 }

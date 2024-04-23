@@ -277,28 +277,28 @@ unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK, marth_speciallw_attack_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK, marth_speciallw_attack_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, marth::status::STANCE_ATTACK, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK, marth_speciallw_attack_main);
+    agent.status(End, marth::status::STANCE_ATTACK, marth_speciallw_attack_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_lw3_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_end);
+    agent.status(Pre, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_lw3_main);
+    agent.status(End, marth::status::STANCE_ATTACK_LW3, marth_speciallw_attack_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_lw4_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_end);
+    agent.status(Pre, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_lw4_main);
+    agent.status(End, marth::status::STANCE_ATTACK_LW4, marth_speciallw_attack_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_hi3_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_end);
+    agent.status(Pre, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_hi3_main);
+    agent.status(End, marth::status::STANCE_ATTACK_HI3, marth_speciallw_attack_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_f3_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_end);
+    agent.status(Pre, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_f3_main);
+    agent.status(End, marth::status::STANCE_ATTACK_F3, marth_speciallw_attack_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_b3_main);
-    agent.status(smashline::End, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_end);
+    agent.status(Pre, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_pre);
+    agent.status(Main, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_b3_main);
+    agent.status(End, marth::status::STANCE_ATTACK_B3, marth_speciallw_attack_end);
 }

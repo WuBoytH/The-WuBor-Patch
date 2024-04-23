@@ -78,12 +78,12 @@ unsafe extern "C" fn lucina_special_n_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn lucina_special_n_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let original = original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
     original(fighter)
 }
 
 unsafe extern "C" fn lucina_special_n_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let original = smashline::original_status(smashline::Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let original = original_status(Init, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
     original(fighter)
 }
 
@@ -100,21 +100,21 @@ unsafe extern "C" fn lucina_special_n_command_main(fighter: &mut L2CFighterCommo
 }
 
 unsafe extern "C" fn lucina_special_n_command_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let original = smashline::original_status(smashline::Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let original = original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
     original(fighter)
 }
 
 unsafe extern "C" fn lucina_special_n_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let original = smashline::original_status(smashline::End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let original = original_status(End, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
     original(fighter)
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, lucina_special_n_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, lucina_special_n_main);
 
-    agent.status(smashline::Pre, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_pre);
-    agent.status(smashline::Init, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_init);
-    agent.status(smashline::Main, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_main);
-    agent.status(smashline::Exec, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_exec);
-    agent.status(smashline::End, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_end);
+    agent.status(Pre, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_pre);
+    agent.status(Init, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_init);
+    agent.status(Main, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_main);
+    agent.status(Exec, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_exec);
+    agent.status(End, yu::status::SPECIAL_N_COMMAND, lucina_special_n_command_end);
 }

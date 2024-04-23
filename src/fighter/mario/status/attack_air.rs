@@ -12,8 +12,8 @@ unsafe extern "C" fn mario_landing_attack_air_end(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, mario_attack_air_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_AIR, mario_attack_air_end);
 
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, mario_landing_attack_air_end);
+    agent.status(End, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, mario_landing_attack_air_end);
 }

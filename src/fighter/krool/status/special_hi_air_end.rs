@@ -31,6 +31,6 @@ unsafe extern "C" fn krool_special_hi_air_end_pre(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, krool_special_hi_air_end_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI_AIR_END, krool_special_hi_air_end_pre);
 }

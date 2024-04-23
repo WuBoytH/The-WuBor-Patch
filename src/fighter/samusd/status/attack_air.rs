@@ -34,6 +34,6 @@ unsafe extern "C" fn samusd_attack_air_substatus2(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, samusd_attack_air_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, samusd_attack_air_main);
 }

@@ -169,9 +169,9 @@ unsafe extern "C" fn ken_special_hi_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, ken_special_hi_pre);
-    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, ken_special_hi_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, ken_special_hi_main);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, ken_special_hi_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, ken_special_hi_pre);
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, ken_special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, ken_special_hi_main);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, ken_special_hi_main);
 }

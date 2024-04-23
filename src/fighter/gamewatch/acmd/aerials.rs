@@ -170,20 +170,20 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", game_attackairf);
-    agent.acmd("effect_attackairf", effect_attackairf);
-    agent.acmd("sound_attackairf", sound_attackairf);
-    agent.acmd("expression_attackairf", expression_attackairf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
+    agent.acmd("sound_attackairf", sound_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 
-    agent.acmd("game_landingairf", game_landingairf);
-    agent.acmd("effect_landingairf", effect_landingairf);
-    agent.acmd("sound_landingairf", sound_landingairf);
-    agent.acmd("expression_landingairf", expression_landingairf);
+    agent.acmd("game_landingairf", game_landingairf, Priority::Low);
+    agent.acmd("effect_landingairf", effect_landingairf, Priority::Low);
+    agent.acmd("sound_landingairf", sound_landingairf, Priority::Low);
+    agent.acmd("expression_landingairf", expression_landingairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
 
-    agent.acmd("game_landingairb", game_landingairb);
+    agent.acmd("game_landingairb", game_landingairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 }

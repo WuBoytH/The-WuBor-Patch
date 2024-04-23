@@ -134,7 +134,7 @@ unsafe extern "C" fn marth_special_hi_main_loop(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn marth_special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        let original = smashline::original_status(smashline::Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI);
+        let original = original_status(Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI);
         original(fighter);
     }
     0.into()
@@ -152,9 +152,9 @@ unsafe extern "C" fn marth_special_hi_end(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_main);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_exec);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_exec);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, marth_special_hi_end);
 }

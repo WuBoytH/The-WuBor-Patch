@@ -70,6 +70,6 @@ unsafe extern "C" fn luigi_special_hi_drop_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, luigi_special_hi_drop_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, luigi_special_hi_drop_main);
 }

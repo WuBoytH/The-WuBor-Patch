@@ -6,6 +6,6 @@ unsafe extern "C" fn dolly_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_APPEAL, dolly_appeal_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_APPEAL, dolly_appeal_end);
 }

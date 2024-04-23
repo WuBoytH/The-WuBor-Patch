@@ -22,12 +22,12 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsstart", game_specialsstart);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
 
-    agent.acmd("game_specialairsstart", game_specialsstart);
+    agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);
 
-    agent.acmd("game_specialsend", game_specialsend);
+    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
 
-    agent.acmd("game_specialairsend", game_specialsend);
+    agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
 }

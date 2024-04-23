@@ -310,24 +310,24 @@ unsafe extern "C" fn expression_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_throwf", game_throwf);
-    agent.acmd("effect_throwf", effect_throwf);
-    agent.acmd("sound_throwf", sound_throwf);
-    agent.acmd("expression_throwf", expression_throwf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
+    agent.acmd("effect_throwf", effect_throwf, Priority::Low);
+    agent.acmd("sound_throwf", sound_throwf, Priority::Low);
+    agent.acmd("expression_throwf", expression_throwf, Priority::Low);
 
-    agent.acmd("game_throwb", game_throwb);
-    agent.acmd("effect_throwb", effect_throwb);
-    agent.acmd("sound_throwb", sound_throwb);
-    agent.acmd("expression_throwb", expression_throwb);
+    agent.acmd("game_throwb", game_throwb, Priority::Low);
+    agent.acmd("effect_throwb", effect_throwb, Priority::Low);
+    agent.acmd("sound_throwb", sound_throwb, Priority::Low);
+    agent.acmd("expression_throwb", expression_throwb, Priority::Low);
 
-    agent.acmd("game_throwhi", game_throwhi);
-    agent.acmd("effect_throwhi", effect_throwhi);
-    agent.acmd("sound_throwhi", sound_throwhi);
-    agent.acmd("expression_throwhi", expression_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
+    agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);
+    agent.acmd("sound_throwhi", sound_throwhi, Priority::Low);
+    agent.acmd("expression_throwhi", expression_throwhi, Priority::Low);
 
-    agent.acmd("game_throwlw", game_throwlw);
-    agent.acmd("effect_throwlw", effect_throwlw);
-    agent.acmd("sound_throwlw", sound_throwlw);
-    agent.acmd("expression_throwlw", expression_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
+    agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
+    agent.acmd("sound_throwlw", sound_throwlw, Priority::Low);
+    agent.acmd("expression_throwlw", expression_throwlw, Priority::Low);
 }

@@ -259,8 +259,8 @@ unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_pre);
-    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_init);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_pre);
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_init);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_main);
 }

@@ -131,12 +131,12 @@ unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, marth::status::STANCE_DASH_F, marth_speciallw_dash_pre);
-    agent.status(smashline::Main, marth::status::STANCE_DASH_F, marth_speciallw_dash_f_main);
-    agent.status(smashline::End, marth::status::STANCE_DASH_F, marth_speciallw_dash_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, marth::status::STANCE_DASH_F, marth_speciallw_dash_pre);
+    agent.status(Main, marth::status::STANCE_DASH_F, marth_speciallw_dash_f_main);
+    agent.status(End, marth::status::STANCE_DASH_F, marth_speciallw_dash_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_DASH_B, marth_speciallw_dash_pre);
-    agent.status(smashline::Main, marth::status::STANCE_DASH_B, marth_speciallw_dash_b_main);
-    agent.status(smashline::End, marth::status::STANCE_DASH_B, marth_speciallw_dash_end);
+    agent.status(Pre, marth::status::STANCE_DASH_B, marth_speciallw_dash_pre);
+    agent.status(Main, marth::status::STANCE_DASH_B, marth_speciallw_dash_b_main);
+    agent.status(End, marth::status::STANCE_DASH_B, marth_speciallw_dash_end);
 }

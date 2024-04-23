@@ -11,10 +11,10 @@ unsafe extern "C" fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue
         return 1.into();
     }
 
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_STATUS_KIND_FALL);
+    let original = original_status(Pre, fighter, *FIGHTER_STATUS_KIND_FALL);
     original(fighter)
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_FALL, tantan_fall_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_FALL, tantan_fall_pre);
 }

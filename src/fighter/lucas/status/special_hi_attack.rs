@@ -32,6 +32,6 @@ unsafe extern "C" fn lucas_special_hi_attack_pre(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, lucas_special_hi_attack_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, lucas_special_hi_attack_pre);
 }

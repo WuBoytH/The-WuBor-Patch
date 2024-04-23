@@ -6,6 +6,7 @@ pub use {
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
+    smashline::*,
     smash_script::*,
     custom_var::*,
     custom_cancel::*,

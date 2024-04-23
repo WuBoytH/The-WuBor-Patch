@@ -37,14 +37,14 @@ unsafe extern "C" fn game_escapeairslideforesight(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_escapen", game_escapen);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_escapen", game_escapen, Priority::Low);
 
-    agent.acmd("game_escapef", game_escapef);
+    agent.acmd("game_escapef", game_escapef, Priority::Low);
 
-    agent.acmd("game_escapeb", game_escapeb);
+    agent.acmd("game_escapeb", game_escapeb, Priority::Low);
 
-    agent.acmd("game_escapeairslide", game_escapeairslide);
+    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 
-    agent.acmd("game_escapeairslideforesight", game_escapeairslideforesight);
+    agent.acmd("game_escapeairslideforesight", game_escapeairslideforesight, Priority::Low);
 }

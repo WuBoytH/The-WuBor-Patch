@@ -19,7 +19,7 @@ unsafe extern "C" fn sound_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catchattack", game_catchattack);
-    agent.acmd("sound_catchattack", sound_catchattack);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
+    agent.acmd("sound_catchattack", sound_catchattack, Priority::Low);
 }

@@ -91,11 +91,11 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_throwf", game_throwf);
-    agent.acmd("effect_throwf", effect_throwf);
-    agent.acmd("sound_throwf", sound_throwf);
-    agent.acmd("expression_throwf", expression_throwf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
+    agent.acmd("effect_throwf", effect_throwf, Priority::Low);
+    agent.acmd("sound_throwf", sound_throwf, Priority::Low);
+    agent.acmd("expression_throwf", expression_throwf, Priority::Low);
 
-    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

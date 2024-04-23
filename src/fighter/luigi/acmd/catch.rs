@@ -154,21 +154,21 @@ unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catch", game_catch);
-    agent.acmd("effect_catch", effect_catch);
-    agent.acmd("sound_catch", sound_catch);
-    agent.acmd("expression_catch", expression_catch);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catch", game_catch, Priority::Low);
+    agent.acmd("effect_catch", effect_catch, Priority::Low);
+    agent.acmd("sound_catch", sound_catch, Priority::Low);
+    agent.acmd("expression_catch", expression_catch, Priority::Low);
 
-    agent.acmd("game_catchdash", game_catchdash);
-    agent.acmd("sound_catchdash", sound_catchdash);
-    agent.acmd("expression_catchdash", expression_catchdash);
+    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    agent.acmd("sound_catchdash", sound_catchdash, Priority::Low);
+    agent.acmd("expression_catchdash", expression_catchdash, Priority::Low);
 
-    agent.acmd("game_catchturn", game_catchturn);
-    agent.acmd("sound_catchturn", sound_catchturn);
-    agent.acmd("expression_catchturn", expression_catchturn);
+    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
+    agent.acmd("sound_catchturn", sound_catchturn, Priority::Low);
+    agent.acmd("expression_catchturn", expression_catchturn, Priority::Low);
 
-    agent.acmd("game_catchattack", game_catchattack);
-    agent.acmd("effect_catchattack", effect_catchattack);
-    agent.acmd("expression_catchattack", expression_catchattack);
+    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
+    agent.acmd("effect_catchattack", effect_catchattack, Priority::Low);
+    agent.acmd("expression_catchattack", expression_catchattack, Priority::Low);
 }

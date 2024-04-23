@@ -87,9 +87,9 @@ unsafe extern "C" fn chrom_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_pre);
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_init);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_main);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_exec);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, chrom_special_lw_exec);
 }

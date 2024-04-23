@@ -215,19 +215,19 @@ unsafe extern "C" fn expression_attackairlw2(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
-    agent.acmd("effect_attackairn", effect_attackairn);
-    agent.acmd("sound_attackairn", sound_attackairn);
-    agent.acmd("expression_attackairn", expression_attackairn);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
+    agent.acmd("effect_attackairn", effect_attackairn, Priority::Low);
+    agent.acmd("sound_attackairn", sound_attackairn, Priority::Low);
+    agent.acmd("expression_attackairn", expression_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
-    agent.acmd("effect_attackairlw", effect_attackairlw);
-    agent.acmd("sound_attackairlw", sound_attackairlw);
-    agent.acmd("expression_attackairlw", expression_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
+    agent.acmd("sound_attackairlw", sound_attackairlw, Priority::Low);
+    agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);
 
-    agent.acmd("game_attackairlw2", game_attackairlw2);
-    agent.acmd("effect_attackairlw2", effect_attackairlw2);
-    agent.acmd("sound_attackairlw2", sound_attackairlw2);
-    agent.acmd("expression_attackairlw2", expression_attackairlw2);
+    agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
+    agent.acmd("effect_attackairlw2", effect_attackairlw2, Priority::Low);
+    agent.acmd("sound_attackairlw2", sound_attackairlw2, Priority::Low);
+    agent.acmd("expression_attackairlw2", expression_attackairlw2, Priority::Low);
 }

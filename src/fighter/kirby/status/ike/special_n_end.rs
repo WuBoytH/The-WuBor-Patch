@@ -76,7 +76,7 @@ unsafe extern "C" fn kirby_ike_special_n_end_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_init);
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_init);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_main);
 }

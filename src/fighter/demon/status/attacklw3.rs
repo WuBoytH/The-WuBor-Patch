@@ -103,8 +103,8 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, demon_attack_lw3_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, demon_attack_lw3_main);
 
-    agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL, demon_attack_lw3_cancel_main);
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL, demon_attack_lw3_cancel_main);
 }

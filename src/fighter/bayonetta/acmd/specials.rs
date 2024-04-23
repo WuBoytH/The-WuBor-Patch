@@ -195,13 +195,13 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 7.0 / 11.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialairsu", game_specialairsu);
-    agent.acmd("effect_specialairsu", effect_specialairsu);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialairsu", game_specialairsu, Priority::Low);
+    agent.acmd("effect_specialairsu", effect_specialairsu, Priority::Low);
 
-    agent.acmd("game_specialairsd", game_specialairsd);
+    agent.acmd("game_specialairsd", game_specialairsd, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 }

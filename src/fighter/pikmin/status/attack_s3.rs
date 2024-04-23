@@ -109,7 +109,7 @@ unsafe extern "C" fn pikmin_attack_s3_end(fighter: &mut L2CFighterCommon) -> L2C
     fighter.status_end_AttackS3()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_main);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_end);
 }

@@ -309,24 +309,24 @@ unsafe extern "C" fn expression_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials", game_specials);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
 
-    agent.acmd("game_specialairs", game_specials);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
 
-    agent.acmd("game_specialsflick", game_specials);
+    agent.acmd("game_specialsflick", game_specials, Priority::Low);
 
-    agent.acmd("game_specialairsflick", game_specials);
+    agent.acmd("game_specialairsflick", game_specials, Priority::Low);
 
-    agent.acmd("game_specialairhijump", game_specialairhijump);
+    agent.acmd("game_specialairhijump", game_specialairhijump, Priority::Low);
 
-    agent.acmd("game_speciallwattack", game_speciallwattack);
-    agent.acmd("effect_speciallwattack", effect_speciallwattack);
-    agent.acmd("sound_speciallwattack", sound_speciallwattack);
-    agent.acmd("expression_speciallwattack", expression_speciallwattack);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack, Priority::Low);
+    agent.acmd("sound_speciallwattack", sound_speciallwattack, Priority::Low);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack, Priority::Low);
 
-    agent.acmd("game_specialairlwattack", game_speciallwattack);
-    agent.acmd("effect_specialairlwattack", effect_speciallwattack);
-    agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
-    agent.acmd("expression_specialairlwattack", expression_speciallwattack);
+    agent.acmd("game_specialairlwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("effect_specialairlwattack", effect_speciallwattack, Priority::Low);
+    agent.acmd("sound_specialairlwattack", sound_specialairlwattack, Priority::Low);
+    agent.acmd("expression_specialairlwattack", expression_speciallwattack, Priority::Low);
 }

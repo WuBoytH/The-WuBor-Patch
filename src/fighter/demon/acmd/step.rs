@@ -328,12 +328,12 @@ unsafe extern "C" fn game_attackstep2s(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackstep2", game_attackstep2);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackstep2", game_attackstep2, Priority::Low);
 
-    agent.acmd("game_attackstep2f", game_attackstep2f);
+    agent.acmd("game_attackstep2f", game_attackstep2f, Priority::Low);
 
-    agent.acmd("game_attackstep2l", game_attackstep2l);
+    agent.acmd("game_attackstep2l", game_attackstep2l, Priority::Low);
 
-    agent.acmd("game_attackstep2s", game_attackstep2s);
+    agent.acmd("game_attackstep2s", game_attackstep2s, Priority::Low);
 }

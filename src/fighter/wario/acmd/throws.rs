@@ -110,12 +110,12 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_throwf", game_throwf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
 
-    agent.acmd("game_throwb", game_throwb);
+    agent.acmd("game_throwb", game_throwb, Priority::Low);
 
-    agent.acmd("game_throwhi", game_throwhi);
+    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
 
-    agent.acmd("game_throwlw", game_throwlw);
+    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

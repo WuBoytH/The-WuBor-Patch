@@ -14,6 +14,6 @@ unsafe extern "C" fn ryu_guard_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.status_Guard_Main()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_GUARD, ryu_guard_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_GUARD, ryu_guard_main);
 }

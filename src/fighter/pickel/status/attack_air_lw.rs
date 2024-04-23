@@ -99,6 +99,6 @@ unsafe extern "C" fn pickel_attack_air_lw_dead_area(fighter: &mut L2CFighterComm
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, pickel_attack_air_lw_start_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, pickel_attack_air_lw_start_main);
 }

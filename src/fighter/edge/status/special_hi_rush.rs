@@ -35,11 +35,11 @@ unsafe extern "C" fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) ->
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL);
     }
-    let original = smashline::original_status(smashline::End, fighter, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH);
+    let original = original_status(End, fighter, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH);
     original(fighter)
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_pre);
-    agent.status(smashline::End, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_pre);
+    agent.status(End, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_end);
 }

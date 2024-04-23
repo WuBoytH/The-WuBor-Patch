@@ -20,5 +20,5 @@ unsafe extern "C" fn game_speciallwmax(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwmax", game_speciallwmax);
+    agent.acmd("game_speciallwmax", game_speciallwmax, Priority::Low);
 }

@@ -75,9 +75,9 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialscatch", game_specialscatch);
+    agent.acmd("game_specialscatch", game_specialscatch, Priority::Low);
 
-    agent.acmd("game_specialairscatch", game_specialsaircatch);
+    agent.acmd("game_specialairscatch", game_specialsaircatch, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 }

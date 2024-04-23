@@ -222,15 +222,15 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairf2", game_attackairf2);
+    agent.acmd("game_attackairf2", game_attackairf2, Priority::Low);
 
-    agent.acmd("game_attackairf3", game_attackairf3);
+    agent.acmd("game_attackairf3", game_attackairf3, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 
-    agent.acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw, Priority::Low);
 }

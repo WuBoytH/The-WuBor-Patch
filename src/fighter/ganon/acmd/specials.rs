@@ -297,31 +297,31 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", game_specialn);
-    agent.acmd("effect_specialn", effect_specialn);
-    agent.acmd("sound_specialn", sound_specialn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialn", effect_specialn, Priority::Low);
+    agent.acmd("sound_specialn", sound_specialn, Priority::Low);
 
-    agent.acmd("game_specialairn", game_specialn);
-    agent.acmd("effect_specialairn", effect_specialn);
-    agent.acmd("sound_specialairn", sound_specialn);
+    agent.acmd("game_specialairn", game_specialn, Priority::Low);
+    agent.acmd("effect_specialairn", effect_specialn, Priority::Low);
+    agent.acmd("sound_specialairn", sound_specialn, Priority::Low);
 
-    agent.acmd("game_specialsstart", game_specialsstart);
+    agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
 
-    agent.acmd("game_specialairsstart", game_specialairsstart);
+    agent.acmd("game_specialairsstart", game_specialairsstart, Priority::Low);
 
-    agent.acmd("game_specialairscatch", game_specialairscatch);
+    agent.acmd("game_specialairscatch", game_specialairscatch, Priority::Low);
 
-    agent.acmd("game_specialairs", game_specialairs);
+    agent.acmd("game_specialairs", game_specialairs, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialhicatch", game_specialhicatch);
+    agent.acmd("game_specialhicatch", game_specialhicatch, Priority::Low);
 
-    agent.acmd("game_specialhithrow", game_specialhithrow);
+    agent.acmd("game_specialhithrow", game_specialhithrow, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
 
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
 }

@@ -107,16 +107,16 @@ unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_appealsl", game_appeals);
-    agent.acmd("game_appealsr", game_appeals);
+    agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    agent.acmd("game_appealsr", game_appeals, Priority::Low);
 
-    agent.acmd("game_appealsloop", game_appealsloop);
-    agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", expression_appealsloop);
+    agent.acmd("game_appealsloop", game_appealsloop, Priority::Low);
+    agent.acmd("sound_appealsloop", sound_appealsloop, Priority::Low);
+    agent.acmd("expression_appealsloop", expression_appealsloop, Priority::Low);
 
-    agent.acmd("game_appealhil", game_appealhil);
-    agent.acmd("game_appealhir", game_appealhir);
+    agent.acmd("game_appealhil", game_appealhil, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhir, Priority::Low);
 
-    agent.acmd("game_appeallwl", game_appeallw);
-    agent.acmd("game_appeallwr", game_appeallw);
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
 }

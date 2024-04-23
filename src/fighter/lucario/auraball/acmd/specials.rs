@@ -105,12 +105,12 @@ unsafe extern "C" fn effect_explosion(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_charge", game_charge);
-    agent.acmd("sound_charge", sound_charge);
+    agent.acmd("game_charge", game_charge, Priority::Low);
+    agent.acmd("sound_charge", sound_charge, Priority::Low);
 
-    agent.acmd("game_shoot", game_shoot);
-    agent.acmd("sound_shoot", sound_shoot);
+    agent.acmd("game_shoot", game_shoot, Priority::Low);
+    agent.acmd("sound_shoot", sound_shoot, Priority::Low);
 
-    agent.acmd("game_explosion", game_explosion);
-    agent.acmd("effect_explosion", effect_explosion);
+    agent.acmd("game_explosion", game_explosion, Priority::Low);
+    agent.acmd("effect_explosion", effect_explosion, Priority::Low);
 }

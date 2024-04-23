@@ -20,5 +20,5 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catch", game_catch);
+    agent.acmd("game_catch", game_catch, Priority::Low);
 }

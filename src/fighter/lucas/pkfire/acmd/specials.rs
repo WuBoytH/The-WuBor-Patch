@@ -13,5 +13,5 @@ unsafe extern "C" fn game_pillar(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_pillar", game_pillar);
+    agent.acmd("game_pillar", game_pillar, Priority::Low);
 }

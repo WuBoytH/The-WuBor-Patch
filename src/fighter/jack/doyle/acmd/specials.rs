@@ -40,7 +40,7 @@ unsafe extern "C" fn effect_return(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_appear", effect_appear);
+    agent.acmd("effect_appear", effect_appear, Priority::Low);
 
-    agent.acmd("effect_return", effect_return);
+    agent.acmd("effect_return", effect_return, Priority::Low);
 }

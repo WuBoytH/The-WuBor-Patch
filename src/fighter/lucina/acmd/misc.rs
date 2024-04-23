@@ -76,7 +76,7 @@ unsafe extern "C" fn expression_run(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_run", effect_run);
-    agent.acmd("sound_run", sound_run);
-    agent.acmd("expression_run", expression_run);
+    agent.acmd("effect_run", effect_run, Priority::Low);
+    agent.acmd("sound_run", sound_run, Priority::Low);
+    agent.acmd("expression_run", expression_run, Priority::Low);
 }

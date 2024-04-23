@@ -155,14 +155,14 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 // }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairnmelee", game_attackairn);
-    agent.acmd("effect_attackairnmelee", effect_attackairn);
-    agent.acmd("sound_attackairnmelee", sound_attackairn);
-    agent.acmd("expression_attackairnmelee", expression_attackairn);
+    agent.acmd("game_attackairnmelee", game_attackairn, Priority::Low);
+    agent.acmd("effect_attackairnmelee", effect_attackairn, Priority::Low);
+    agent.acmd("sound_attackairnmelee", sound_attackairn, Priority::Low);
+    agent.acmd("expression_attackairnmelee", expression_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
 
-    // agent.acmd("game_attackairhi", game_attackairhi);
+    // agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 }

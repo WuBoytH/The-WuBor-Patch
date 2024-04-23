@@ -15,7 +15,7 @@ unsafe extern "C" fn game_shootb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_shootf", game_shootf);
+    agent.acmd("game_shootf", game_shootf, Priority::Low);
 
-    agent.acmd("game_shootb", game_shootb);
+    agent.acmd("game_shootb", game_shootb, Priority::Low);
 }

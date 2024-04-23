@@ -16,7 +16,7 @@ unsafe extern "C" fn game_hburst(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_homing", game_homing);
+    agent.acmd("game_homing", game_homing, Priority::Low);
 
-    agent.acmd("game_hburst", game_hburst);
+    agent.acmd("game_hburst", game_hburst, Priority::Low);
 }

@@ -304,21 +304,21 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
 
-    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack12", game_attack12, Priority::Low);
 
-    agent.acmd("game_attack13", game_attack13);
+    agent.acmd("game_attack13", game_attack13, Priority::Low);
 
-    agent.acmd("game_attack100", game_attack100);
+    agent.acmd("game_attack100", game_attack100, Priority::Low);
 
-    agent.acmd("game_attack100end", game_attack100end);
+    agent.acmd("game_attack100end", game_attack100end, Priority::Low);
 
-    agent.acmd("game_attacks32", game_attacks32);
+    agent.acmd("game_attacks32", game_attacks32, Priority::Low);
 
-    agent.acmd("game_attacks33", game_attacks33);
+    agent.acmd("game_attacks33", game_attacks33, Priority::Low);
 
-    agent.acmd("game_attacklw3", game_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
 
-    agent.acmd("game_attackdash", game_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

@@ -35,9 +35,9 @@ unsafe extern "C" fn game_wait(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_fallattack", game_fallattack);
+    agent.acmd("game_fallattack", game_fallattack, Priority::Low);
 
-    agent.acmd("game_fallattackride", game_fallattackride);
+    agent.acmd("game_fallattackride", game_fallattackride, Priority::Low);
 
-    agent.acmd("game_wait", game_wait);
+    agent.acmd("game_wait", game_wait, Priority::Low);
 }

@@ -156,29 +156,29 @@ unsafe extern "C" fn game_speciallwflyr(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialnopenwait", game_specialnopenwait);
+    agent.acmd("game_specialnopenwait", game_specialnopenwait, Priority::Low);
 
-    agent.acmd("game_specialairnopenwait", game_specialnopenwait);
+    agent.acmd("game_specialairnopenwait", game_specialnopenwait, Priority::Low);
 
-    agent.acmd("game_specialnbite", game_specialnbite);
+    agent.acmd("game_specialnbite", game_specialnbite, Priority::Low);
 
-    agent.acmd("game_specialairnbite", game_specialnbite);
+    agent.acmd("game_specialairnbite", game_specialnbite, Priority::Low);
 
-    agent.acmd("game_specialhijump", game_specialhijump);
+    agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
 
-    agent.acmd("game_speciallwsr", game_speciallwsr);
+    agent.acmd("game_speciallwsr", game_speciallwsr, Priority::Low);
 
-    agent.acmd("game_specialairlwsr", game_speciallwsr);
+    agent.acmd("game_specialairlwsr", game_speciallwsr, Priority::Low);
 
-    agent.acmd("game_speciallwmr", game_speciallwmr);
+    agent.acmd("game_speciallwmr", game_speciallwmr, Priority::Low);
 
-    agent.acmd("game_specialairlwmr", game_speciallwmr);
+    agent.acmd("game_specialairlwmr", game_speciallwmr, Priority::Low);
 
-    agent.acmd("game_speciallwlr", game_speciallwlr);
+    agent.acmd("game_speciallwlr", game_speciallwlr, Priority::Low);
 
-    agent.acmd("game_specialairlwlr", game_speciallwlr);
+    agent.acmd("game_specialairlwlr", game_speciallwlr, Priority::Low);
 
-    agent.acmd("game_speciallwflyr", game_speciallwflyr);
+    agent.acmd("game_speciallwflyr", game_speciallwflyr, Priority::Low);
 
-    agent.acmd("game_specialairlwflyr", game_speciallwflyr);
+    agent.acmd("game_specialairlwflyr", game_speciallwflyr, Priority::Low);
 }

@@ -91,7 +91,7 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
 
-    agent.acmd("game_attacks3", game_attacks3);
+    agent.acmd("game_attacks3", game_attacks3, Priority::Low);
 }

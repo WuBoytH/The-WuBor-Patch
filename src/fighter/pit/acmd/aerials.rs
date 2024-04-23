@@ -21,5 +21,5 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 }

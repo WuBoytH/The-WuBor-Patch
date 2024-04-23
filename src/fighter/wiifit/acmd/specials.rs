@@ -17,7 +17,7 @@ unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhijump", game_specialhijump);
+    agent.acmd("game_specialhijump", game_specialhijump, Priority::Low);
 
-    agent.acmd("game_specialhiend", game_specialhiend);
+    agent.acmd("game_specialhiend", game_specialhiend, Priority::Low);
 }

@@ -8,5 +8,5 @@ unsafe extern "C" fn sound_guarddamage(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("sound_guarddamage", sound_guarddamage);
+    agent.acmd("sound_guarddamage", sound_guarddamage, Priority::Low);
 }

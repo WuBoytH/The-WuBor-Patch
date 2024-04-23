@@ -370,23 +370,23 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials3dash", game_specials3dash);
+    agent.acmd("game_specials3dash", game_specials3dash, Priority::Low);
 
-    agent.acmd("game_specialairs3dash", game_specialairs3dash);
+    agent.acmd("game_specialairs3dash", game_specialairs3dash, Priority::Low);
 
-    agent.acmd("game_specialhi12", game_specialhi12);
+    agent.acmd("game_specialhi12", game_specialhi12, Priority::Low);
 
-    agent.acmd("game_specialairhi12", game_specialhi12);
+    agent.acmd("game_specialairhi12", game_specialhi12, Priority::Low);
 
-    agent.acmd("game_specialhi13", game_specialhi13);
+    agent.acmd("game_specialhi13", game_specialhi13, Priority::Low);
 
-    agent.acmd("game_specialairhi13", game_specialhi13);
+    agent.acmd("game_specialairhi13", game_specialhi13, Priority::Low);
 
-    agent.acmd("game_specialhi2", game_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
 
-    agent.acmd("game_specialairhi2", game_specialairhi2);
+    agent.acmd("game_specialairhi2", game_specialairhi2, Priority::Low);
 
-    agent.acmd("game_specialhi3", game_specialhi3);
+    agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
 
-    agent.acmd("game_specialairhi3", game_specialhi3);
+    agent.acmd("game_specialairhi3", game_specialhi3, Priority::Low);
 }

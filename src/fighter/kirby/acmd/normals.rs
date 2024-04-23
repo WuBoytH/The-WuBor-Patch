@@ -160,15 +160,15 @@ unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attack11", game_attack11);
+    agent.acmd("game_attack11", game_attack11, Priority::Low);
 
-    agent.acmd("game_attack12", game_attack12);
+    agent.acmd("game_attack12", game_attack12, Priority::Low);
 
-    agent.acmd("game_attackdash", game_attackdash);
-    agent.acmd("effect_attackdash", effect_attackdash);
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
+    agent.acmd("effect_attackdash", effect_attackdash, Priority::Low);
 
-    agent.acmd("game_attackhi3", game_attackhi3);
+    agent.acmd("game_attackhi3", game_attackhi3, Priority::Low);
 
-    agent.acmd("game_attacklw3", game_attacklw3);
-    agent.acmd("effect_attacklw3", effect_attacklw3);
+    agent.acmd("game_attacklw3", game_attacklw3, Priority::Low);
+    agent.acmd("effect_attacklw3", effect_attacklw3, Priority::Low);
 }

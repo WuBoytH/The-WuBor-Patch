@@ -13,7 +13,7 @@ unsafe extern "C" fn game_speciallwend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_speciallwend", game_speciallwend);
+    agent.acmd("game_speciallwend", game_speciallwend, Priority::Low);
 
-    agent.acmd("game_specialairlwend", game_speciallwend);
+    agent.acmd("game_specialairlwend", game_speciallwend, Priority::Low);
 }

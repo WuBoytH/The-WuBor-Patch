@@ -76,7 +76,7 @@ unsafe extern "C" fn expression_attackairb(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairb", game_attackairb);
-    agent.acmd("effect_attackairb", effect_attackairb);
-    agent.acmd("expression_attackairb", expression_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
+    agent.acmd("effect_attackairb", effect_attackairb, Priority::Low);
+    agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
 }

@@ -27,21 +27,21 @@ unsafe extern "C" fn game_movesp_last(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_movew", game_move);
+    agent.acmd("game_movew", game_move, Priority::Low);
 
-    agent.acmd("game_movem", game_move);
+    agent.acmd("game_movem", game_move, Priority::Low);
 
-    agent.acmd("game_moves", game_move);
+    agent.acmd("game_moves", game_move, Priority::Low);
 
-    agent.acmd("game_movespw", game_movesp);
+    agent.acmd("game_movespw", game_movesp, Priority::Low);
 
-    agent.acmd("game_movespm", game_movesp);
+    agent.acmd("game_movespm", game_movesp, Priority::Low);
 
-    agent.acmd("game_movesps", game_movesp);
+    agent.acmd("game_movesps", game_movesp, Priority::Low);
 
-    agent.acmd("game_movespw_last", game_movesp_last);
+    agent.acmd("game_movespw_last", game_movesp_last, Priority::Low);
 
-    agent.acmd("game_movespm_last", game_movesp_last);
+    agent.acmd("game_movespm_last", game_movesp_last, Priority::Low);
 
-    agent.acmd("game_movesps_last", game_movesp_last);
+    agent.acmd("game_movesps_last", game_movesp_last, Priority::Low);
 }

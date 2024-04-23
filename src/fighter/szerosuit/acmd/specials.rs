@@ -281,17 +281,17 @@ unsafe extern "C" fn expression_specialairhi2(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialairhi);
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 
-    agent.acmd("game_specialhi2", game_specialhi2);
-    agent.acmd("effect_specialhi2", effect_specialhi2);
-    agent.acmd("sound_specialhi2", sound_specialhi2);
-    agent.acmd("expression_specialhi2", expression_specialhi2);
+    agent.acmd("game_specialhi2", game_specialhi2, Priority::Low);
+    agent.acmd("effect_specialhi2", effect_specialhi2, Priority::Low);
+    agent.acmd("sound_specialhi2", sound_specialhi2, Priority::Low);
+    agent.acmd("expression_specialhi2", expression_specialhi2, Priority::Low);
 
-    agent.acmd("game_specialairhi2", game_specialairhi2);
-    agent.acmd("effect_specialairhi2", effect_specialairhi2);
-    agent.acmd("sound_specialairhi2", sound_specialairhi2);
-    agent.acmd("expression_specialairhi2", expression_specialairhi2);
+    agent.acmd("game_specialairhi2", game_specialairhi2, Priority::Low);
+    agent.acmd("effect_specialairhi2", effect_specialairhi2, Priority::Low);
+    agent.acmd("sound_specialairhi2", sound_specialairhi2, Priority::Low);
+    agent.acmd("expression_specialairhi2", expression_specialairhi2, Priority::Low);
 }

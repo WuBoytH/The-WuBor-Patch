@@ -971,21 +971,21 @@ unsafe extern "C" fn expression_specialairlwattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialn", game_specialn);
+    agent.acmd("game_specialn", game_specialn, Priority::Low);
 
-    agent.acmd("game_specialairn", game_specialairn);
+    agent.acmd("game_specialairn", game_specialairn, Priority::Low);
 
-    agent.acmd("game_specialn2", game_specialn2);
+    agent.acmd("game_specialn2", game_specialn2, Priority::Low);
 
-    agent.acmd("game_specialairn2", game_specialairn2);
+    agent.acmd("game_specialairn2", game_specialairn2, Priority::Low);
 
-    agent.acmd("game_speciallwattack", game_speciallwattack);
-    agent.acmd("effect_speciallwattack", effect_speciallwattack);
-    agent.acmd("sound_speciallwattack", sound_speciallwattack);
-    agent.acmd("expression_speciallwattack", expression_speciallwattack);
+    agent.acmd("game_speciallwattack", game_speciallwattack, Priority::Low);
+    agent.acmd("effect_speciallwattack", effect_speciallwattack, Priority::Low);
+    agent.acmd("sound_speciallwattack", sound_speciallwattack, Priority::Low);
+    agent.acmd("expression_speciallwattack", expression_speciallwattack, Priority::Low);
 
-    agent.acmd("game_specialairlwattack", game_specialairlwattack);
-    agent.acmd("effect_specialairlwattack", effect_specialairlwattack);
-    agent.acmd("sound_specialairlwattack", sound_specialairlwattack);
-    agent.acmd("expression_specialairlwattack", expression_specialairlwattack);
+    agent.acmd("game_specialairlwattack", game_specialairlwattack, Priority::Low);
+    agent.acmd("effect_specialairlwattack", effect_specialairlwattack, Priority::Low);
+    agent.acmd("sound_specialairlwattack", sound_specialairlwattack, Priority::Low);
+    agent.acmd("expression_specialairlwattack", expression_specialairlwattack, Priority::Low);
 }

@@ -63,6 +63,6 @@ unsafe extern "C" fn expression_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_aircatch", game_aircatch);
-    agent.acmd("expression_aircatch", expression_aircatch);
+    agent.acmd("game_aircatch", game_aircatch, Priority::Low);
+    agent.acmd("expression_aircatch", expression_aircatch, Priority::Low);
 }

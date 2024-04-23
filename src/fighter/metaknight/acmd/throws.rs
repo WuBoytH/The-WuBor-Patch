@@ -30,5 +30,5 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_throwf", game_throwf);
+    agent.acmd("game_throwf", game_throwf, Priority::Low);
 }

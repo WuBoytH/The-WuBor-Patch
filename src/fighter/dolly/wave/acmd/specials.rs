@@ -260,12 +260,12 @@ unsafe extern "C" fn game_normalair(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_normalw", game_normalw);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_normalw", game_normalw, Priority::Low);
 
-    agent.acmd("game_normal", game_normal);
+    agent.acmd("game_normal", game_normal, Priority::Low);
 
-    agent.acmd("game_normalairw", game_normalairw);
+    agent.acmd("game_normalairw", game_normalairw, Priority::Low);
 
-    agent.acmd("game_normalair", game_normalair);
+    agent.acmd("game_normalair", game_normalair, Priority::Low);
 }

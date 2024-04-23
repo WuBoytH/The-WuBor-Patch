@@ -34,6 +34,6 @@ unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     shizue_clayrocket_fire_handler(fighter);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, on_main);
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, on_main);
 }

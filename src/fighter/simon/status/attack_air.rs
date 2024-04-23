@@ -1,7 +1,7 @@
 use crate::imports::*;
 
 unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR);
+    let original = original_status(Main, fighter, *FIGHTER_STATUS_KIND_ATTACK_AIR);
     let ret = original(fighter);
     let motion = MotionModule::motion_kind(fighter.module_accessor);
     let new_mot = if motion == hash40("attack_air_b") { hash40("attack_air_f") }
@@ -34,8 +34,8 @@ unsafe extern "C" fn simon_attack_air_check_attack(_fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_main);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_exec);
-    agent.status(smashline::CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_check_attack);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_exec);
+    agent.status(CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_check_attack);
 }

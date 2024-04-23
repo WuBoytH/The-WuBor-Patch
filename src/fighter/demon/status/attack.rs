@@ -205,8 +205,8 @@ unsafe extern "C" fn demon_attack_combo_main_loop_helper_second(fighter: &mut L2
     status
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, demon_attack_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, demon_attack_main);
 
-    agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, demon_attack_combo_main);
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, demon_attack_combo_main);
 }

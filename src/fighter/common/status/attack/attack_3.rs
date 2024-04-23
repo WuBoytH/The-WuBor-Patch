@@ -210,16 +210,12 @@ unsafe extern "C" fn status_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2
         return 1.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE) {
-        if !StatusModule::is_changing(fighter.module_accessor) {
-            let combo = ComboModule::count(fighter.module_accessor) as i32;
-            let s3_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("s3_combo_max"), 0);
-            if combo < s3_combo_max
-            || (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
-            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)) {
-                fighter.attack_s3_mtrans_param(FIGHTER_COMBO_KIND_S3.into());
-            }
-        }
-        else {
+        let combo = ComboModule::count(fighter.module_accessor) as i32;
+        let s3_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("s3_combo_max"), 0);
+        if StatusModule::is_changing(fighter.module_accessor)
+        || (combo < s3_combo_max
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)) {
             fighter.attack_s3_mtrans_param(FIGHTER_COMBO_KIND_S3.into());
         }
     }

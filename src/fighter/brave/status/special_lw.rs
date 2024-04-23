@@ -11,6 +11,6 @@ unsafe extern "C" fn brave_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, brave_special_lw_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, brave_special_lw_end);
 }

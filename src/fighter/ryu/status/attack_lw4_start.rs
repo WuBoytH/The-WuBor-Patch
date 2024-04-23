@@ -26,6 +26,6 @@ unsafe extern "C" fn ryu_attack_lw4_start_main_loop(fighter: &mut L2CFighterComm
     fighter.status_AttackLw4Start_Main()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, ryu_attack_lw4_start_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, ryu_attack_lw4_start_main);
 }

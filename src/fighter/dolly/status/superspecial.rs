@@ -5,7 +5,7 @@ unsafe extern "C" fn dolly_super_special_main(fighter: &mut L2CFighterCommon) ->
         VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
-    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL);
+    let original = original_status(Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL);
     original(fighter)
 }
 
@@ -29,7 +29,7 @@ unsafe extern "C" fn dolly_super_special2_main(fighter: &mut L2CFighterCommon) -
         VarModule::on_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
-    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2);
+    let original = original_status(Main, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2);
     original(fighter)
 }
 
@@ -76,12 +76,12 @@ unsafe extern "C" fn dolly_super_special2_blow_end(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_main);
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_main);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, dolly_super_special_end);
 
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_main);
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_end);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_main);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, dolly_super_special2_end);
 
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW, dolly_super_special2_blow_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW, dolly_super_special2_blow_end);
 }

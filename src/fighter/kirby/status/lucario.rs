@@ -5,7 +5,6 @@ unsafe extern "C" fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-    WorkModule::set_customize_no(fighter.module_accessor, 0, 0);
     kirby_lucario_special_set_kinetic(fighter);
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
@@ -87,6 +86,7 @@ unsafe extern "C" fn kirby_lucario_special_n_main_loop(fighter: &mut L2CFighterC
         }
     }
     else {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, false, -1);
         fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD.into(), false.into());
     }
     0.into()
@@ -131,10 +131,10 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_end(fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_main);
-    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_end);
 
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_main);
-    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_end);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_end);
 }

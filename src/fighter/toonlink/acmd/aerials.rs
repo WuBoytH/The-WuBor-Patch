@@ -134,11 +134,11 @@ unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn", game_attackairn);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn", game_attackairn, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
-    agent.acmd("effect_attackairlw", effect_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
+    agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
 }

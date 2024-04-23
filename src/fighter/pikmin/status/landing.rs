@@ -50,15 +50,15 @@ unsafe extern "C" fn pikmin_landing_exit_inner(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_init);
-    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_exit);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_init);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_exit);
 
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_init);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exec);
-    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exit);
+    agent.status(Init, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_init);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exec);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exit);
 
-    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, pikmin_landing_attack_air_exit);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, pikmin_landing_attack_air_exit);
 
-    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, pikmin_landing_fall_special_exit);
+    agent.status(Exit, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, pikmin_landing_fall_special_exit);
 }

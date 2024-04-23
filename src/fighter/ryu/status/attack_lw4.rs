@@ -40,7 +40,7 @@ unsafe extern "C" fn ryu_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.status_AttackLw4()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_main);
 }

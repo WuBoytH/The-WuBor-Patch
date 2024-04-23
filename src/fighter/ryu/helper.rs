@@ -78,6 +78,17 @@ pub unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) ->
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 1.into();
     }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+        let normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec();
+        if normal_cancel_common(fighter, normal_cancels).get_bool() {
+            return 1.into();
+        }
+    }
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
         hash40("attack_11_w"),
@@ -243,12 +254,13 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
     }
     else {
         fighter.attack_uniq_chk();
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
-        && only_jabs(fighter) {
-            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-        }
-        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+            if only_jabs(fighter) {
+                VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            }
+            else {
+                VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            }
         }
         if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);

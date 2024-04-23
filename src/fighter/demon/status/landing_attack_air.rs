@@ -16,6 +16,6 @@ unsafe extern "C" fn demon_landing_attack_air_main_loop(fighter: &mut L2CFighter
     fighter.status_LandingAttackAir_Main()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, demon_landing_attack_air_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, demon_landing_attack_air_main);
 }

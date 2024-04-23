@@ -56,14 +56,14 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialsend", game_specialsend);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
 
-    agent.acmd("game_specialairsend", game_specialairsend);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
-    agent.acmd("game_specialhistart", game_specialhistart);
+    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
 
-    agent.acmd("game_specialairhistart", game_specialhistart);
+    agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 }

@@ -45,6 +45,6 @@ unsafe extern "C" fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_THROW, wario_throw_exec);
+pub fn install(agent: &mut Agent) {
+    agent.status(Exec, *FIGHTER_STATUS_KIND_THROW, wario_throw_exec);
 }

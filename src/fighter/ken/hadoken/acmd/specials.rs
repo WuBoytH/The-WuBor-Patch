@@ -8,10 +8,10 @@ unsafe extern "C" fn game_move(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_movew", game_move);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_movew", game_move, Priority::Low);
 
-    agent.acmd("game_movem", game_move);
+    agent.acmd("game_movem", game_move, Priority::Low);
 
-    agent.acmd("game_moves", game_move);
+    agent.acmd("game_moves", game_move, Priority::Low);
 }

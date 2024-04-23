@@ -6,7 +6,7 @@ unsafe extern "C" fn dolly_special_sb_main(fighter: &mut L2CFighterCommon) -> L2
         VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
-    let original = smashline::original_status(smashline::Main, fighter, status);
+    let original = original_status(Main, fighter, status);
     original(fighter)
 }
 
@@ -36,18 +36,18 @@ unsafe extern "C" fn dolly_special_b_attack_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, dolly_special_sb_main);
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, dolly_special_sb_main);
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, dolly_special_sb_main);
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, dolly_special_sb_main);
-    // agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, dolly_special_s_end);
-    // agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, dolly_special_s_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, dolly_special_sb_main);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, dolly_special_sb_main);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, dolly_special_sb_main);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, dolly_special_sb_main);
+    // agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, dolly_special_s_end);
+    // agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, dolly_special_s_end);
 
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK, dolly_special_f_attack_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK, dolly_special_f_attack_end);
 
-    // agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, dolly_special_s_end);
-    // agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, dolly_special_s_end);
+    // agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B, dolly_special_s_end);
+    // agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, dolly_special_s_end);
 
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_ATTACK, dolly_special_b_attack_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_ATTACK, dolly_special_b_attack_end);
 }

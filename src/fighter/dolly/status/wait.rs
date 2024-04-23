@@ -22,6 +22,6 @@ unsafe extern "C" fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_WAIT, dolly_wait_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_WAIT, dolly_wait_pre);
 }

@@ -1036,37 +1036,37 @@ unsafe extern "C" fn marth_speciallw_specials2_end2_main_loop(fighter: &mut L2CF
 //     0.into()
 // }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, marth_speciallw_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, marth_speciallw_end);
 
-    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, marth_speciallw_hit_main);
-    agent.status(smashline::End, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, marth_speciallw_hit_end);
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, marth_speciallw_hit_main);
+    agent.status(End, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, marth_speciallw_hit_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S, marth_speciallw_specials_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S, marth_speciallw_specials_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S, marth_speciallw_specials_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S, marth_speciallw_specials_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S_DASH, marth_speciallw_specials_dash_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S_DASH, marth_speciallw_specials_dash_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S_DASH, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S_DASH, marth_speciallw_specials_dash_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S_DASH, marth_speciallw_specials_dash_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S_DASH, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S_END, marth_speciallw_specials_end_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S_END, marth_speciallw_specials_end_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S_END, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S_END, marth_speciallw_specials_end_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S_END, marth_speciallw_specials_end_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S_END, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S2_START, marth_speciallw_specials2_start_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S2_START, marth_speciallw_specials2_start_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S2_START, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S2_START, marth_speciallw_specials2_start_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S2_START, marth_speciallw_specials2_start_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S2_START, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S2_LOOP, marth_speciallw_specials2_loop_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S2_LOOP, marth_speciallw_specials2_loop_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S2_LOOP, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S2_LOOP, marth_speciallw_specials2_loop_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S2_LOOP, marth_speciallw_specials2_loop_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S2_LOOP, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S2_END, marth_speciallw_specials2_end_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S2_END, marth_speciallw_specials2_end_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S2_END, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S2_END, marth_speciallw_specials2_end_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S2_END, marth_speciallw_specials2_end_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S2_END, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SPECIAL_S2_END2, marth_speciallw_specials2_end2_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SPECIAL_S2_END2, marth_speciallw_specials2_end2_main);
-    agent.status(smashline::End, marth::status::STANCE_SPECIAL_S2_END2, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SPECIAL_S2_END2, marth_speciallw_specials2_end2_pre);
+    agent.status(Main, marth::status::STANCE_SPECIAL_S2_END2, marth_speciallw_specials2_end2_main);
+    agent.status(End, marth::status::STANCE_SPECIAL_S2_END2, marth_stance_common_end);
 }

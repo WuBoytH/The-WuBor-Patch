@@ -103,12 +103,12 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairn3", game_attackairn3);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairn3", game_attackairn3, Priority::Low);
 
-    agent.acmd("game_attackairf", game_attackairf);
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairlw", game_attackairlw);
+    agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 
-    agent.acmd("game_landingairlw", game_landingairlw);
+    agent.acmd("game_landingairlw", game_landingairlw, Priority::Low);
 }

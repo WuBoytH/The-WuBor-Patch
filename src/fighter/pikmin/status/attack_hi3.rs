@@ -126,7 +126,7 @@ unsafe extern "C" fn pikmin_attack_hi3_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_pre);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_main);
 }

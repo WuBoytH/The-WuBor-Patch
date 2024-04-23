@@ -1,16 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    // super::super::vars::*
-};
+use crate::imports::*;
 
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 39.0);
@@ -406,27 +394,27 @@ unsafe extern "C" fn expression_appeallwloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_appealsl", game_appeals);
-    agent.acmd("game_appealsr", game_appeals);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    agent.acmd("game_appealsr", game_appeals, Priority::Low);
 
-    agent.acmd("effect_appealsloop", effect_appealsloop);
-    agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", expression_appealsloop);
+    agent.acmd("effect_appealsloop", effect_appealsloop, Priority::Low);
+    agent.acmd("sound_appealsloop", sound_appealsloop, Priority::Low);
+    agent.acmd("expression_appealsloop", expression_appealsloop, Priority::Low);
 
-    agent.acmd("game_appealsattack", game_appealsattack);
-    agent.acmd("effect_appealsattack", effect_appealsattack);
-    agent.acmd("sound_appealsattack", sound_appealsattack);
-    agent.acmd("expression_appealsattack", expression_appealsattack);
+    agent.acmd("game_appealsattack", game_appealsattack, Priority::Low);
+    agent.acmd("effect_appealsattack", effect_appealsattack, Priority::Low);
+    agent.acmd("sound_appealsattack", sound_appealsattack, Priority::Low);
+    agent.acmd("expression_appealsattack", expression_appealsattack, Priority::Low);
 
-    agent.acmd("game_appealsattackjust", game_appealsattackjust);
-    agent.acmd("effect_appealsattackjust", effect_appealsattackjust);
-    agent.acmd("sound_appealsattackjust", sound_appealsattackjust);
-    agent.acmd("expression_appealsattackjust", expression_appealsattackjust);
+    agent.acmd("game_appealsattackjust", game_appealsattackjust, Priority::Low);
+    agent.acmd("effect_appealsattackjust", effect_appealsattackjust, Priority::Low);
+    agent.acmd("sound_appealsattackjust", sound_appealsattackjust, Priority::Low);
+    agent.acmd("expression_appealsattackjust", expression_appealsattackjust, Priority::Low);
 
-    agent.acmd("game_appeallwl", game_appeallw);
-    agent.acmd("game_appeallwr", game_appeallw);
+    agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
+    agent.acmd("game_appeallwr", game_appeallw, Priority::Low);
 
-    agent.acmd("effect_appeallwloop", effect_appeallwloop);
-    agent.acmd("expression_appeallwloop", expression_appeallwloop);
+    agent.acmd("effect_appeallwloop", effect_appeallwloop, Priority::Low);
+    agent.acmd("expression_appeallwloop", expression_appeallwloop, Priority::Low);
 }

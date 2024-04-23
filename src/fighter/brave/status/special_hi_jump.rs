@@ -376,6 +376,6 @@ unsafe extern "C" fn brave_special_hi_jump_situation_change_handler(fighter: &mu
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP, brave_special_hi_jump_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP, brave_special_hi_jump_main);
 }

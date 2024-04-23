@@ -13,7 +13,7 @@ unsafe extern "C" fn sound_jackspecialnjump(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("effect_jackspecialnjump", effect_jackspecialnjump);
-    agent.acmd("sound_jackspecialnjump", sound_jackspecialnjump);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("effect_jackspecialnjump", effect_jackspecialnjump, Priority::Low);
+    agent.acmd("sound_jackspecialnjump", sound_jackspecialnjump, Priority::Low);
 }

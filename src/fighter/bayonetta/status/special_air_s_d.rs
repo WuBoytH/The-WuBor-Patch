@@ -129,8 +129,8 @@ unsafe extern "C" fn bayonetta_reset_witchtwist(fighter: &mut L2CFighterCommon) 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AFTER_ACTION);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, bayonetta_specialairs_d_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, bayonetta_specialairs_d_main);
 
-    agent.status(smashline::Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, bayonetta_specialairs_d_landing_main);
+    agent.status(Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, bayonetta_specialairs_d_landing_main);
 }

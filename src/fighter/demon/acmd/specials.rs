@@ -506,20 +506,20 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specialhi", game_specialhi);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialhiground", game_specialhigroundair);
-    agent.acmd("game_specialhiair", game_specialhigroundair);
+    agent.acmd("game_specialhiground", game_specialhigroundair, Priority::Low);
+    agent.acmd("game_specialhiair", game_specialhigroundair, Priority::Low);
 
-    agent.acmd("game_attackragedrive", game_attackragedrive);
-    agent.acmd("game_attackairragedrive", game_attackragedrive);
+    agent.acmd("game_attackragedrive", game_attackragedrive, Priority::Low);
+    agent.acmd("game_attackairragedrive", game_attackragedrive, Priority::Low);
 
-    agent.game_acmd(0x15cb9d3406, game_15cb9d3406);
+    agent.game_acmd(0x15cb9d3406, game_15cb9d3406, Priority::Low);
 
-    agent.game_acmd(0x15b52c48bb, game_15b52c48bb);
+    agent.game_acmd(0x15b52c48bb, game_15b52c48bb, Priority::Low);
 
-    agent.acmd("game_speciallw", game_speciallw);
+    agent.acmd("game_speciallw", game_speciallw, Priority::Low);
 
-    agent.acmd("game_specialairlw", game_specialairlw);
+    agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
 }

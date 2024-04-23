@@ -216,10 +216,10 @@ unsafe extern "C" fn ryu_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_pre);
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_init);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_main);
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_exec);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_exec);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, ryu_special_lw_end);
 }

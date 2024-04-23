@@ -209,18 +209,18 @@ unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_appealsl", game_appeals);
-    agent.acmd("effect_appealsl", effect_appeals);
-    agent.acmd("sound_appealsl", sound_appeals);
-    agent.acmd("expression_appealsl", expression_appeals);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
+    agent.acmd("sound_appealsl", sound_appeals, Priority::Low);
+    agent.acmd("expression_appealsl", expression_appeals, Priority::Low);
 
-    agent.acmd("game_appealsr", game_appeals);
-    agent.acmd("effect_appealsr", effect_appeals);
-    agent.acmd("sound_appealsr", sound_appeals);
-    agent.acmd("expression_appealsr", expression_appeals);
+    agent.acmd("game_appealsr", game_appeals, Priority::Low);
+    agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
+    agent.acmd("sound_appealsr", sound_appeals, Priority::Low);
+    agent.acmd("expression_appealsr", expression_appeals, Priority::Low);
 
-    agent.acmd("effect_appealsloop", effect_appealsloop);
-    agent.acmd("sound_appealsloop", sound_appealsloop);
-    agent.acmd("expression_appealsloop", expression_appealsloop);
+    agent.acmd("effect_appealsloop", effect_appealsloop, Priority::Low);
+    agent.acmd("sound_appealsloop", sound_appealsloop, Priority::Low);
+    agent.acmd("expression_appealsloop", expression_appealsloop, Priority::Low);
 }

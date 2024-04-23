@@ -123,7 +123,7 @@ unsafe extern "C" fn ryu_special_n_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, ryu_special_n_main);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, ryu_special_n_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, ryu_special_n_main);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, ryu_special_n_main);
 }

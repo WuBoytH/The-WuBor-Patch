@@ -63,18 +63,18 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", game_attackairf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairfhi", game_attackairf);
+    agent.acmd("game_attackairfhi", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairflw", game_attackairf);
+    agent.acmd("game_attackairflw", game_attackairf, Priority::Low);
 
-    agent.acmd("game_attackairb", game_attackairb);
+    agent.acmd("game_attackairb", game_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairbhi", game_attackairb);
+    agent.acmd("game_attackairbhi", game_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairblw", game_attackairb);
+    agent.acmd("game_attackairblw", game_attackairb, Priority::Low);
 
-    agent.acmd("game_attackairhi", game_attackairhi);
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 }

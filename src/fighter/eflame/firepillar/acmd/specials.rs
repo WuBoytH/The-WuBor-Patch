@@ -38,8 +38,8 @@ unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.game_acmd("game_specialhi", game_specialhi);
-    agent.effect_acmd("effect_specialhi", effect_specialhi);
-    agent.sound_acmd("sound_specialhi", sound_specialhi);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+    agent.acmd("effect_specialhi", effect_specialhi, Priority::Low);
+    agent.acmd("sound_specialhi", sound_specialhi, Priority::Low);
 }

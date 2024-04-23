@@ -159,9 +159,9 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, sonic::status::TRICK, sonic_trick_pre);
-    agent.status(smashline::Init, sonic::status::TRICK, sonic_trick_init);
-    agent.status(smashline::Main, sonic::status::TRICK, sonic_trick_main);
-    agent.status(smashline::Exec, sonic::status::TRICK, sonic_trick_exec);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, sonic::status::TRICK, sonic_trick_pre);
+    agent.status(Init, sonic::status::TRICK, sonic_trick_init);
+    agent.status(Main, sonic::status::TRICK, sonic_trick_main);
+    agent.status(Exec, sonic::status::TRICK, sonic_trick_exec);
 }

@@ -30,10 +30,10 @@ unsafe extern "C" fn game_trickb(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 6.0, 5.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_trickhi", game_trickhi);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_trickhi", game_trickhi, Priority::Low);
 
-    agent.acmd("game_trickf", game_trickf);
+    agent.acmd("game_trickf", game_trickf, Priority::Low);
 
-    agent.acmd("game_trickb", game_trickb);
+    agent.acmd("game_trickb", game_trickb, Priority::Low);
 }

@@ -87,9 +87,9 @@ unsafe extern "C" fn expression_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackairf", game_attackairf);
-    agent.acmd("effect_attackairf", effect_attackairf);
-    agent.acmd("sound_attackairf", sound_attackairf);
-    agent.acmd("expression_attackairf", expression_attackairf);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+    agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
+    agent.acmd("sound_attackairf", sound_attackairf, Priority::Low);
+    agent.acmd("expression_attackairf", expression_attackairf, Priority::Low);
 }

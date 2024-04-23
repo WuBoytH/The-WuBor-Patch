@@ -108,7 +108,7 @@ unsafe extern "C" fn game_specialhiloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnstart", game_specialnstart, Priority::Low);
     agent.acmd("effect_specialnstart", effect_specialnstart, Priority::Low);
 

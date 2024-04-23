@@ -821,7 +821,7 @@ unsafe extern "C" fn sound_speciallwrush(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("sound_specialn", sound_specialn, Priority::Low);
 

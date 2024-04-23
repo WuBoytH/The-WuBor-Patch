@@ -771,7 +771,7 @@ unsafe extern "C" fn expression_lightningflash(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialnstart", effect_specialnstart, Priority::Low);
     agent.acmd("sound_specialnstart", sound_specialnstart, Priority::Low);
 

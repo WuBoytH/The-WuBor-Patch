@@ -29,6 +29,6 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 10.0, -4.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwf", game_throwf, Priority::Low);
 }

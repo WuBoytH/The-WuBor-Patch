@@ -30,6 +30,6 @@ unsafe extern "C" fn richter_attack_mtrans(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, richter_attack_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK, richter_attack_main);
 }

@@ -39,7 +39,7 @@ unsafe extern "C" fn game_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi1", game_specialhi1, Priority::Low);
 
     agent.acmd("game_specialairhi1", game_specialhi1, Priority::Low);

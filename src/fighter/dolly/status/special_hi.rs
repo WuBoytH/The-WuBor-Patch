@@ -6,7 +6,7 @@ unsafe extern "C" fn dolly_special_hi_main(fighter: &mut L2CFighterCommon) -> L2
         VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::SPECIAL_CANCEL);
     }
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
-    let original = smashline::original_status(smashline::Main, fighter, status);
+    let original = original_status(Main, fighter, status);
     original(fighter)
 }
 
@@ -51,11 +51,11 @@ unsafe extern "C" fn dolly_special_hi_jump_end(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, dolly_special_hi_main);
-    agent.status(smashline::Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, dolly_special_hi_main);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_HI, dolly_special_hi_end);
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, dolly_special_hi_command_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, dolly_special_hi_main);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, dolly_special_hi_main);
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_HI, dolly_special_hi_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, dolly_special_hi_command_end);
 
-    agent.status(smashline::End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, dolly_special_hi_jump_end);
+    agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, dolly_special_hi_jump_end);
 }

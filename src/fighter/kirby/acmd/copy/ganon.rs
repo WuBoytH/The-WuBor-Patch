@@ -52,7 +52,7 @@ unsafe extern "C" fn sound_ganonspecialn(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("effect_ganonspecialn", effect_ganonspecialn, Priority::Low);
     agent.acmd("sound_ganonspecialn", sound_ganonspecialn, Priority::Low);
 

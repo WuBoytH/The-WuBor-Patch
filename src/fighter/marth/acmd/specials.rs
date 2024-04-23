@@ -532,7 +532,7 @@ unsafe extern "C" fn game_speciallwairexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("effect_specialnend", effect_specialnend, Priority::Low);
 

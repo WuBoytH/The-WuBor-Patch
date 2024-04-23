@@ -134,6 +134,6 @@ unsafe extern "C" fn edge_special_hi_end_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END, edge_special_hi_end_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END, edge_special_hi_end_main);
 }

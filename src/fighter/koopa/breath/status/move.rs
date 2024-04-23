@@ -71,6 +71,6 @@ unsafe extern "C" fn koopa_breath_move_fastshift(weapon: &mut L2CWeaponCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, koopa_breath_move_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, koopa_breath_move_main);
 }

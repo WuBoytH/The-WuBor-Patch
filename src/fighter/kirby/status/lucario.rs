@@ -131,10 +131,10 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_end(fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_main);
-    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, kirby_lucario_special_n_end);
 
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_main);
-    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_end);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, kirby_lucario_special_n_hold_end);
 }

@@ -40,7 +40,7 @@ unsafe extern "C" fn daisy_speciallw_init(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, daisy_speciallw_pre);
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, daisy_speciallw_init);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, daisy_speciallw_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, daisy_speciallw_init);
 }

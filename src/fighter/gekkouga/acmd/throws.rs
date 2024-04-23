@@ -25,6 +25,6 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_throwlw", game_throwlw, Priority::Low);
 }

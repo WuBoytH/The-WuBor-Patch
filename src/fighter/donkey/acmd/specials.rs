@@ -77,7 +77,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
 
     agent.acmd("game_specialairs", game_specialairs, Priority::Low);

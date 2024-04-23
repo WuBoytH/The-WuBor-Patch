@@ -23,7 +23,7 @@ unsafe extern "C" fn game_cliffcatch_nana(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_cliffcatch", game_cliffcatch, Priority::Low);
     agent.acmd("game_cliffcatch_nana", game_cliffcatch_nana, Priority::Low);
 }

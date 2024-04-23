@@ -122,6 +122,6 @@ unsafe extern "C" fn miiswordsman_special_hi2_rush_handle_bound(fighter: &mut L2
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, miiswordsman_special_hi2_rush_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, miiswordsman_special_hi2_rush_main);
 }

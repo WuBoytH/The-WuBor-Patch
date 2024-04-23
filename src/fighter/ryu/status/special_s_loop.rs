@@ -167,7 +167,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn ryu_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     if start_sit == *SITUATION_KIND_GROUND {
-        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
+        let original = original_status(Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
         return original(fighter);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
@@ -231,7 +231,7 @@ unsafe extern "C" fn ryu_special_s2_loop_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_init);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_init);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ryu_special_s_loop_main);
 }

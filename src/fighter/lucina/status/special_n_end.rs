@@ -127,6 +127,6 @@ unsafe extern "C" fn lucina_special_n_end_mot_helper(fighter: &mut L2CFighterCom
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, lucina_special_n_end_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, lucina_special_n_end_main);
 }

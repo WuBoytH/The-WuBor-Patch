@@ -211,9 +211,9 @@ unsafe extern "C" fn ryu_special_s_mot_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_init);
-    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_command_init);
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_main);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_init);
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_command_init);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_main);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_main);
 }

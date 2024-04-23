@@ -28,6 +28,6 @@ unsafe extern "C" fn wolf_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK, wolf_attack_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK, wolf_attack_pre);
 }

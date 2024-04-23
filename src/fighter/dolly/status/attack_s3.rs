@@ -177,6 +177,6 @@ unsafe extern "C" fn dolly_attack_s3_mtrans_param(fighter: &mut L2CFighterCommon
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_S3, dolly_attack_s3_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_S3, dolly_attack_s3_main);
 }

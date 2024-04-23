@@ -51,6 +51,6 @@ unsafe extern "C" fn game_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_aircatch", game_aircatch, Priority::Low);
 }

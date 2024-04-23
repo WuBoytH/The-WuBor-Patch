@@ -1684,7 +1684,7 @@ unsafe extern "C" fn expression_speciallwstepf(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
 
     agent.acmd("game_specialairn", game_specialn, Priority::Low);

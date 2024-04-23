@@ -191,7 +191,7 @@ unsafe extern "C" fn expression_ikespecialairnend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("effect_ikespecialnend", effect_ikespecialnend, Priority::Low);
     agent.acmd("sound_ikespecialnend", sound_ikespecialnend, Priority::Low);
     agent.acmd("expression_ikespecialnend", expression_ikespecialnend, Priority::Low);

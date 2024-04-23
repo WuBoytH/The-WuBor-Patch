@@ -490,7 +490,7 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
     agent.acmd("effect_attackairn", effect_attackairn, Priority::Low);
     agent.acmd("sound_attackairn", sound_attackairn, Priority::Low);

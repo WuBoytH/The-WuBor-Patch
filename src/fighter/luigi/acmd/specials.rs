@@ -266,7 +266,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 45.0, -15.0);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
 
     agent.acmd("game_specialairsstart", game_specialsstart, Priority::Low);

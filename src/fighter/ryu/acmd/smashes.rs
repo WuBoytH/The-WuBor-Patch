@@ -68,7 +68,7 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
     agent.acmd("effect_attacklw4", effect_attacklw4, Priority::Low);
 }

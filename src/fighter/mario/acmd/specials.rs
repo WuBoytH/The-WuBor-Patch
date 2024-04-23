@@ -280,7 +280,7 @@ unsafe extern "C" fn expression_groundpoundland(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
     agent.acmd("effect_specials", effect_specials, Priority::Low);
     agent.acmd("expression_specials", expression_specials, Priority::Low);

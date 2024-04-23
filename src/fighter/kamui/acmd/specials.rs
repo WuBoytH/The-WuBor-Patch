@@ -100,7 +100,7 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsjump", game_specialsjump, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);

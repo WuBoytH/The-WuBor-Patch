@@ -155,7 +155,7 @@ unsafe extern "C" fn game_speciallwflyr(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnopenwait", game_specialnopenwait, Priority::Low);
 
     agent.acmd("game_specialairnopenwait", game_specialnopenwait, Priority::Low);

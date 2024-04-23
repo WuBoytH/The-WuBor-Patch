@@ -209,7 +209,7 @@ unsafe extern "C" fn expression_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_appealsl", game_appeals, Priority::Low);
     agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
     agent.acmd("sound_appealsl", sound_appeals, Priority::Low);

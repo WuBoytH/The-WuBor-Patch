@@ -27,7 +27,7 @@ unsafe extern "C" fn sound_move(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_move", game_move, Priority::Low);
     agent.acmd("effect_move", effect_move, Priority::Low);
     agent.acmd("sound_move", sound_move, Priority::Low);

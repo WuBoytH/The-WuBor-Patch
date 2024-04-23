@@ -19,7 +19,7 @@ unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_catchattack", game_catchattack, Priority::Low);
     agent.acmd("effect_catchattack", effect_catchattack, Priority::Low);
 }

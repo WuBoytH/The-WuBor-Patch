@@ -6,6 +6,6 @@ unsafe extern "C" fn ken_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.status_AttackLw4()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, ken_attack_lw4_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, ken_attack_lw4_main);
 }

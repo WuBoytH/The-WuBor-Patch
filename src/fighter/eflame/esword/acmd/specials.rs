@@ -182,7 +182,7 @@ unsafe extern "C" fn game_reflected(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_flyl", game_fly, Priority::Low);
     agent.acmd("game_flyr", game_fly, Priority::Low);
 

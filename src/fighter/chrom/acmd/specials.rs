@@ -117,7 +117,7 @@ unsafe extern "C" fn expression_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairlw", game_speciallw, Priority::Low);
     agent.acmd("effect_specialairlw", effect_speciallw, Priority::Low);
     agent.acmd("sound_specialairlw", sound_speciallw, Priority::Low);

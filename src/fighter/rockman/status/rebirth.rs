@@ -12,6 +12,6 @@ unsafe extern "C" fn rockman_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, rockman_rebirth_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_REBIRTH, rockman_rebirth_end);
 }

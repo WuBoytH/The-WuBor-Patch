@@ -18,7 +18,7 @@ unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_dash", game_dash, Priority::Low);
 
     agent.acmd("game_turndash", game_turndash, Priority::Low);

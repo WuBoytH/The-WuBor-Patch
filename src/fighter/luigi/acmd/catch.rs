@@ -154,7 +154,7 @@ unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
     agent.acmd("effect_catch", effect_catch, Priority::Low);
     agent.acmd("sound_catch", sound_catch, Priority::Low);

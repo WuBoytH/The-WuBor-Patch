@@ -161,7 +161,7 @@ unsafe extern "C" fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> 
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
             return 1.into();
         }
-        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
+        let original = original_status(Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
         return original(fighter);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
@@ -247,8 +247,8 @@ pub unsafe extern "C" fn ken_special_s_loop_end_inner(fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_init);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_main);
-    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_init);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_main);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_end);
 }

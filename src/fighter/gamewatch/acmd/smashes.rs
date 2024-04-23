@@ -94,12 +94,12 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attacks4", game_attacks4);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4", game_attacks4, Priority::Low);
 
-    agent.acmd("game_attackhi4", game_attackhi4);
+    agent.acmd("game_attackhi4", game_attackhi4, Priority::Low);
 
-    agent.acmd("game_attackhi4r", game_attackhi4r);
+    agent.acmd("game_attackhi4r", game_attackhi4r, Priority::Low);
 
-    agent.acmd("game_attacklw4", game_attacklw4);
+    agent.acmd("game_attacklw4", game_attacklw4, Priority::Low);
 }

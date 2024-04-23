@@ -16,6 +16,6 @@ unsafe extern "C" fn snake_attack_air_check_attack(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, snake_attack_air_check_attack);
+pub fn install(agent: &mut Agent) {
+    agent.status(CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, snake_attack_air_check_attack);
 }

@@ -49,8 +49,8 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, kirby_attackdash_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, kirby_attackdash_main);
 
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, kirby_attacklw3_main);
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, kirby_attacklw3_main);
 }

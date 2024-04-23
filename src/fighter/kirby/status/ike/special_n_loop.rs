@@ -123,6 +123,6 @@ unsafe extern "C" fn kirby_ike_special_n_loop_main_loop(fighter: &mut L2CFighter
     }
     0.into()
 }
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_LOOP, kirby_ike_special_n_loop_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_LOOP, kirby_ike_special_n_loop_main);
 }

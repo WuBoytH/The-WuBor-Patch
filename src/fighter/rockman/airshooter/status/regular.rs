@@ -66,7 +66,7 @@ unsafe extern "C" fn rockman_airshooter_regular_exec(weapon: &mut L2CWeaponCommo
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, rockman_airshooter_regular_init);
-    agent.status(smashline::Exec, *WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, rockman_airshooter_regular_exec);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, rockman_airshooter_regular_init);
+    agent.status(Exec, *WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, rockman_airshooter_regular_exec);
 }

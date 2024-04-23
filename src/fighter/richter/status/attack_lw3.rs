@@ -15,6 +15,6 @@ unsafe extern "C" fn richter_attack_lw3_main_loop(fighter: &mut L2CFighterCommon
     fighter.status_AttackLw3_Main()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, richter_attack_lw3_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, richter_attack_lw3_main);
 }

@@ -183,6 +183,6 @@ unsafe extern "C" fn jack_special_s_end(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, jack_special_s_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_S, jack_special_s_end);
 }

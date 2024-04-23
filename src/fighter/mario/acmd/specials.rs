@@ -280,38 +280,38 @@ unsafe extern "C" fn expression_groundpoundland(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_specials", game_specials);
-    agent.acmd("effect_specials", effect_specials);
-    agent.acmd("expression_specials", expression_specials);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_specials", game_specials, Priority::Low);
+    agent.acmd("effect_specials", effect_specials, Priority::Low);
+    agent.acmd("expression_specials", expression_specials, Priority::Low);
 
-    agent.acmd("game_specialairs", game_specials);
-    agent.acmd("effect_specialairs", effect_specialairs);
-    agent.acmd("expression_specialairs", expression_specials);
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specialairs, Priority::Low);
+    agent.acmd("expression_specialairs", expression_specials, Priority::Low);
 
-    agent.acmd("game_specialhi", game_specialhi);
+    agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
-    agent.acmd("game_specialairhi", game_specialhi);
+    agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("sound_speciallwstart", sound_longjumpstart);
+    agent.acmd("sound_speciallwstart", sound_longjumpstart, Priority::Low);
 
-    agent.acmd("game_speciallwjump", game_longjump);
-    agent.acmd("sound_speciallwjump", sound_longjump);
-    agent.acmd("expression_speciallwjump", expression_longjump);
+    agent.acmd("game_speciallwjump", game_longjump, Priority::Low);
+    agent.acmd("sound_speciallwjump", sound_longjump, Priority::Low);
+    agent.acmd("expression_speciallwjump", expression_longjump, Priority::Low);
 
-    agent.acmd("effect_speciallwlanding", effect_longjumpland);
-    agent.acmd("sound_speciallwlanding", sound_longjumpland);
-    agent.acmd("expression_speciallwlanding", expression_longjumpland);
+    agent.acmd("effect_speciallwlanding", effect_longjumpland, Priority::Low);
+    agent.acmd("sound_speciallwlanding", sound_longjumpland, Priority::Low);
+    agent.acmd("expression_speciallwlanding", expression_longjumpland, Priority::Low);
 
-    agent.acmd("game_specialairlwstart", game_groundpoundstart);
-    agent.acmd("effect_specialairlwstart", sound_groundpoundstart);
+    agent.acmd("game_specialairlwstart", game_groundpoundstart, Priority::Low);
+    agent.acmd("effect_specialairlwstart", sound_groundpoundstart, Priority::Low);
 
-    agent.acmd("game_specialairlwfall", game_groundpoundfall);
-    agent.acmd("effect_specialairlwfall", effect_groundpoundfall);
-    agent.acmd("expression_specialairlwfall", expression_groundpoundfall);
+    agent.acmd("game_specialairlwfall", game_groundpoundfall, Priority::Low);
+    agent.acmd("effect_specialairlwfall", effect_groundpoundfall, Priority::Low);
+    agent.acmd("expression_specialairlwfall", expression_groundpoundfall, Priority::Low);
 
-    agent.acmd("game_specialairlwlanding", game_groundpoundland);
-    agent.acmd("effect_specialairlwlanding", sound_groundpoundland);
-    agent.acmd("sound_specialairlwlanding", effect_groundpoundland);
-    agent.acmd("expression_specialairlwlanding", expression_groundpoundland);
+    agent.acmd("game_specialairlwlanding", game_groundpoundland, Priority::Low);
+    agent.acmd("effect_specialairlwlanding", sound_groundpoundland, Priority::Low);
+    agent.acmd("sound_specialairlwlanding", effect_groundpoundland, Priority::Low);
+    agent.acmd("expression_specialairlwlanding", expression_groundpoundland, Priority::Low);
 }

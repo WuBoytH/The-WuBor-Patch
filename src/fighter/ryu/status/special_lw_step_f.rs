@@ -171,8 +171,8 @@ unsafe extern "C" fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_pre);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_main);
-    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_pre);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_main);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_end);
 }

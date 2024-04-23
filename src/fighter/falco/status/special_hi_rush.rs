@@ -123,6 +123,6 @@ unsafe extern "C" fn falco_special_hi_rush_handle_bound(fighter: &mut L2CFighter
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH, falco_special_hi_rush_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH, falco_special_hi_rush_main);
 }

@@ -27,10 +27,10 @@ unsafe extern "C" fn lucario_landing_attack_air_pre(fighter: &mut L2CFighterComm
     fighter.status_pre_LandingAttackAir()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_LANDING, lucario_landing_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_LANDING, lucario_landing_pre);
 
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_LANDING_LIGHT, lucario_landing_light_pre);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_LANDING_LIGHT, lucario_landing_light_pre);
 
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, lucario_landing_attack_air_pre);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, lucario_landing_attack_air_pre);
 }

@@ -99,6 +99,6 @@ unsafe extern "C" fn on_main(weapon: &mut L2CWeaponCommon) {
     tracker_timer_flash(weapon);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, on_main);
+pub fn install(agent: &mut Agent) {
+    agent.on_line(Main, on_main);
 }

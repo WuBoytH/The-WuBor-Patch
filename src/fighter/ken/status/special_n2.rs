@@ -309,9 +309,9 @@ pub unsafe extern "C" fn ken_special_n2_command_end(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_pre);
-    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_init);
-    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_main);
-    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_pre);
+    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_init);
+    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_main);
+    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_end);
 }

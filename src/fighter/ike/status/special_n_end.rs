@@ -92,7 +92,7 @@ unsafe extern "C" fn ike_special_n_end_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, ike_special_n_end_init);
-    agent.status(smashline::Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, ike_special_n_end_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Init, *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, ike_special_n_end_init);
+    agent.status(Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, ike_special_n_end_main);
 }

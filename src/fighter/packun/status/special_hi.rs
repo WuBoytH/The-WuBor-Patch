@@ -32,6 +32,6 @@ unsafe extern "C" fn packun_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, packun_special_hi_pre);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, packun_special_hi_pre);
 }

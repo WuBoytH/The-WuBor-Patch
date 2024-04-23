@@ -462,28 +462,28 @@ unsafe extern "C" fn marth_speciallw_exit_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, marth::status::STANCE_ENTER, marth_speciallw_enter_pre);
-    agent.status(smashline::Main, marth::status::STANCE_ENTER, marth_speciallw_enter_main);
-    agent.status(smashline::End, marth::status::STANCE_ENTER, marth_stance_common_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, marth::status::STANCE_ENTER, marth_speciallw_enter_pre);
+    agent.status(Main, marth::status::STANCE_ENTER, marth_speciallw_enter_main);
+    agent.status(End, marth::status::STANCE_ENTER, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_WAIT, marth_speciallw_wait_pre);
-    agent.status(smashline::Main, marth::status::STANCE_WAIT, marth_speciallw_wait_main);
-    agent.status(smashline::End, marth::status::STANCE_WAIT, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_WAIT, marth_speciallw_wait_pre);
+    agent.status(Main, marth::status::STANCE_WAIT, marth_speciallw_wait_main);
+    agent.status(End, marth::status::STANCE_WAIT, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SQUAT, marth_speciallw_squat_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SQUAT, marth_speciallw_squat_main);
-    agent.status(smashline::End, marth::status::STANCE_SQUAT, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SQUAT, marth_speciallw_squat_pre);
+    agent.status(Main, marth::status::STANCE_SQUAT, marth_speciallw_squat_main);
+    agent.status(End, marth::status::STANCE_SQUAT, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_wait_main);
-    agent.status(smashline::End, marth::status::STANCE_SQUAT_WAIT, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_pre);
+    agent.status(Main, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_wait_main);
+    agent.status(End, marth::status::STANCE_SQUAT_WAIT, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_pre);
-    agent.status(smashline::Main, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_rv_main);
-    agent.status(smashline::End, marth::status::STANCE_SQUAT_RV, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_pre);
+    agent.status(Main, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_rv_main);
+    agent.status(End, marth::status::STANCE_SQUAT_RV, marth_stance_common_end);
 
-    agent.status(smashline::Pre, marth::status::STANCE_EXIT, marth_speciallw_exit_pre);
-    agent.status(smashline::Main, marth::status::STANCE_EXIT, marth_speciallw_exit_main);
-    agent.status(smashline::End, marth::status::STANCE_EXIT, marth_stance_common_end);
+    agent.status(Pre, marth::status::STANCE_EXIT, marth_speciallw_exit_pre);
+    agent.status(Main, marth::status::STANCE_EXIT, marth_speciallw_exit_main);
+    agent.status(End, marth::status::STANCE_EXIT, marth_stance_common_end);
 }

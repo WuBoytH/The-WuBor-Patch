@@ -65,10 +65,10 @@ unsafe extern "C" fn game_catchcommand(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_catchattack", game_catchattack);
-    agent.acmd("effect_catchattack", effect_catchattack);
-    agent.acmd("sound_catchattack", sound_catchattack);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
+    agent.acmd("effect_catchattack", effect_catchattack, Priority::Low);
+    agent.acmd("sound_catchattack", sound_catchattack, Priority::Low);
 
-    agent.acmd("game_catchcommand", game_catchcommand);
+    agent.acmd("game_catchcommand", game_catchcommand, Priority::Low);
 }

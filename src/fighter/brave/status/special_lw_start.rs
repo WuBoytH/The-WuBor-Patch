@@ -21,7 +21,7 @@ unsafe extern "C" fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) 
             VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
         }
     }
-    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START);
+    let original = original_status(Pre, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START);
     original(fighter)
 }
 
@@ -53,7 +53,7 @@ unsafe extern "C" fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_pre);
-    agent.status(smashline::End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_pre);
+    agent.status(End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_end);
 }

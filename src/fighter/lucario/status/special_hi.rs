@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    // crate::function_hooks::get_touch_normal_consider_gravity_2,
-    super::super::helper::*
-};
+use crate::imports::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn lucario_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     // let enhanced_by = VarModule::get_int(fighter.module_accessor, lucario::status::int::AURA_ENHANCED_BY);
@@ -517,13 +505,13 @@ unsafe extern "C" fn lucario_special_hi_end(fighter: &mut L2CFighterCommon, stat
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_pre);
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_init);
+pub fn install(agent: &mut Agent) {
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_pre);
+    agent.status(Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_init);
 
-    agent.status(smashline::Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_pre);
-    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main);
+    agent.status(Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_pre);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main);
 
-    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main);
-    agent.status(smashline::End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_end);
+    agent.status(Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main);
+    agent.status(End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_end);
 }

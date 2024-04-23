@@ -9,6 +9,6 @@ unsafe extern "C" fn ryu_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CV
     ryu_attack_hi3_main_inner(fighter)
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, ryu_attack_hi3_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, ryu_attack_hi3_main);
 }

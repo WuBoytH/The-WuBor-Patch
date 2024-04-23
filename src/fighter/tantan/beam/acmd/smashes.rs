@@ -7,6 +7,6 @@ unsafe extern "C" fn game_bigshoot(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_bigshoot", game_bigshoot);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_bigshoot", game_bigshoot, Priority::Low);
 }

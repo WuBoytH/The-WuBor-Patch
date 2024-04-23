@@ -10,6 +10,6 @@ unsafe extern "C" fn lucario_escape_air_slide_end(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, lucario_escape_air_slide_end);
+pub fn install(agent: &mut Agent) {
+    agent.status(End, *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, lucario_escape_air_slide_end);
 }

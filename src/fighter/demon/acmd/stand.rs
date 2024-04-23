@@ -127,13 +127,13 @@ unsafe extern "C" fn game_attackstand32(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.acmd("game_attackstand24", game_attackstand24);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackstand24", game_attackstand24, Priority::Low);
 
-    agent.acmd("game_attackstand2f", game_attackstand2f);
-    agent.acmd("effect_attackstand2f", effect_attackstand2f);
-    agent.acmd("sound_attackstand2f", sound_attackstand2f);
-    agent.acmd("expression_attackstand2f", expression_attackstand2f);
+    agent.acmd("game_attackstand2f", game_attackstand2f, Priority::Low);
+    agent.acmd("effect_attackstand2f", effect_attackstand2f, Priority::Low);
+    agent.acmd("sound_attackstand2f", sound_attackstand2f, Priority::Low);
+    agent.acmd("expression_attackstand2f", expression_attackstand2f, Priority::Low);
 
-    agent.acmd("game_attackstand32", game_attackstand32);
+    agent.acmd("game_attackstand32", game_attackstand32, Priority::Low);
 }

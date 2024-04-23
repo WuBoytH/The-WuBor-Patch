@@ -286,11 +286,11 @@ unsafe extern "C" fn marth_specials_status_change_helper(fighter: &mut L2CFighte
     1.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, marth_specials_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_S, marth_specials_main);
 
-    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, marth_specials2_main);
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, marth_specials2_main);
 
-    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, marth_specials3_main);
-    agent.status(smashline::ExecStop, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, marth_specials3_exec_stop);
+    agent.status(Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, marth_specials3_main);
+    agent.status(ExecStop, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, marth_specials3_exec_stop);
 }

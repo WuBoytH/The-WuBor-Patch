@@ -88,6 +88,6 @@ unsafe extern "C" fn samusd_special_air_lw_is_end_helper(fighter: &mut L2CFighte
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW, samusd_special_air_lw_main);
+pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW, samusd_special_air_lw_main);
 }

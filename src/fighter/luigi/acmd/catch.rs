@@ -18,9 +18,6 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_catch(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn sound_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -156,7 +153,7 @@ unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_catch", game_catch, Priority::Low);
-    agent.acmd("effect_catch", effect_catch, Priority::Low);
+    agent.acmd("effect_catch", acmd_stub, Priority::Low);
     agent.acmd("sound_catch", sound_catch, Priority::Low);
     agent.acmd("expression_catch", expression_catch, Priority::Low);
 

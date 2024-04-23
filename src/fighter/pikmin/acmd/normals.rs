@@ -80,10 +80,6 @@ unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_attacks3(_agent: &mut L2CAgentBase) {
-    // Blank
-}
-
 unsafe extern "C" fn sound_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -262,7 +258,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackdash", game_attackdash, Priority::Low);
     agent.acmd("expression_attack_dash", expression_attackdash, Priority::Low);
 
-    agent.acmd("game_attacks3", game_attacks3, Priority::Low);
+    agent.acmd("game_attacks3", acmd_stub, Priority::Low);
     agent.acmd("sound_attacks3", sound_attacks3, Priority::Low);
 
     agent.acmd("effect_attacks3loop", effect_attacks3loop, Priority::Low);

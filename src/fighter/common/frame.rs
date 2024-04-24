@@ -79,10 +79,8 @@ unsafe fn purged_handler(fighter: &mut L2CFighterCommon) {
 #[no_mangle]
 pub extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            hit_cancel_frame_set(fighter);
-            special_jump_stick_flick(fighter);
-            purged_handler(fighter);
-        }
+        hit_cancel_frame_set(fighter);
+        special_jump_stick_flick(fighter);
+        purged_handler(fighter);
     }
 }

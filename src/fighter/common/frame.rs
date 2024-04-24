@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::*;
 
 unsafe extern "C" fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
     let frame = fighter.global_table[STATUS_FRAME].get_f32();

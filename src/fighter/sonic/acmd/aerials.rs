@@ -28,13 +28,13 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8.0, 0, 0, 0, -90, 0.6, true, *EF_FLIP_YZ);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.2, 0.2, 0.5);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.4, 0.4, 1.0);
         macros::LAST_EFFECT_SET_RATE(agent, 2.0);
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 8.0, 0, 0, 0, -90, 0.8, true, *EF_FLIP_YZ);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.2, 0.2, 0.5);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.4, 0.4, 1.0);
         macros::LAST_EFFECT_SET_RATE(agent, 2.0);
     }
     frame(agent.lua_state_agent, 17.0);

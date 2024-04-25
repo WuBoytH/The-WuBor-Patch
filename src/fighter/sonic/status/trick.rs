@@ -93,7 +93,7 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
             (-2.0, 1.0)
         }
         else {
-            (0.0, 2.4)
+            (0.0, 2.0)
         };
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         sv_kinetic_energy!(

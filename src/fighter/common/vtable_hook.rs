@@ -1,7 +1,7 @@
 mod brave;
 mod dolly;
 mod eflame;
-mod elight;
+// mod elight;
 mod ganon;
 mod gaogaen;
 mod ike;
@@ -25,7 +25,7 @@ pub fn install() {
     brave::install();
     dolly::install();
     eflame::install();
-    elight::install();
+    // elight::install();
     ganon::install();
     gaogaen::install();
     ike::install();

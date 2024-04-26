@@ -1,6 +1,5 @@
 pub fn install() {
-    // Patches which statuses are checked for Foresight
-    skyline::patching::Patch::in_text(0xa2951c).data(0x71000D1Fu32);
-    skyline::patching::Patch::in_text(0xa29594).data(0x71000D1Fu32);
-    skyline::patching::Patch::in_text(0xa29008).data(0x71000F5Fu32);
+    // Disables Foresight
+    skyline::patching::Patch::in_text(0xa28e78).nop();
+    skyline::patching::Patch::in_text(0xa28e84).data(0x140000ACu32);
 }

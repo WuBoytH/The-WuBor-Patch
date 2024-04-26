@@ -154,17 +154,8 @@ fn exec_post(module_accessor: *mut BattleObjectModuleAccessor, cat1_prev: i32) {
         let cat1 = ControlModule::get_command_flag_cat(module_accessor, 0);
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
         && cat1_prev & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 {
-            let attacks = [
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4,
-            ];
-            for attack in attacks.iter() {
-                ControlModule::clear_command_one(module_accessor, 0, *attack);
+            for attack in 0..7 {
+                ControlModule::clear_command_one(module_accessor, 0, attack);
             }
         }
     }

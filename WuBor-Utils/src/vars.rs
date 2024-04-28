@@ -858,10 +858,21 @@ pub mod sonic {
 
             pub const DASH_FROM_THROW_LW : i32 = 0x1150;
 
+            pub const SPECIAL_AIR_S_FIRST : i32 = 0x1150;
+            pub const SPECIAL_AIR_S_CHECK_END : i32 = 0x1151;
+            pub const SPECIAL_AIR_S_TO_END : i32 = 0x1152;
+            pub const SPECIAL_AIR_S_CHECK_HIT : i32 = 0x1153;
+
             pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
             pub const TRICK_ENABLE_CONTROL : i32 = 0x1151;
         }
-        pub const TRICK : i32 = 0x1F3;
+        pub mod int {
+            pub const SPECIAL_AIR_S_HOLD_COUNT_REMAIN : i32 = 0x1150;
+        }
+        pub const SPECIAL_AIR_S_START : i32 = 0x1F3;
+        pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F4;
+        pub const SPECIAL_AIR_S_END : i32 = 0x1F5;
+        pub const TRICK : i32 = 0x1F6;
     }
 }
 

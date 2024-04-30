@@ -26,6 +26,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, true);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 36.0, 6.0);
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {

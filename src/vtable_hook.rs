@@ -1,3 +1,4 @@
+mod fighter;
 mod brave;
 mod dolly;
 mod eflame;
@@ -23,6 +24,7 @@ mod mariod_drcapsule;
 mod belmont_cross;
 
 pub fn install() {
+    fighter::install();
     brave::install();
     dolly::install();
     eflame::install();

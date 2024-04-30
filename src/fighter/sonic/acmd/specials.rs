@@ -33,11 +33,11 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     for _ in 0..2 {
         if macros::is_excute(agent) {
-            macros::FLASH(agent, 0.4, 0.4, 1.0, 1.0);
+            macros::FLASH(agent, 0.7, 0.7, 1.0, 1.0);
         }
         wait(agent.lua_state_agent, 2.0);
         if macros::is_excute(agent) {
-            macros::FLASH(agent, 0.33, 0.33, 0.78, 1.0);
+            macros::FLASH(agent, 0.55, 0.55, 0.78, 1.0);
         }
         wait(agent.lua_state_agent, 2.0);
         if macros::is_excute(agent) {
@@ -78,6 +78,31 @@ unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn effect_specialairsstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    for _ in 0..2 {
+        if macros::is_excute(agent) {
+            macros::FLASH(agent, 0.7, 0.7, 1.0, 1.0);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::FLASH(agent, 0.55, 0.55, 0.78, 1.0);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::COL_NORMAL(agent);
+        }
+        wait(agent.lua_state_agent, 2.0);
+    }
+}
+
+unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_special_s03"));
+    }
+}
+
 unsafe extern "C" fn game_specialairshold(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     game_specialairshold_inner(agent);
@@ -111,6 +136,11 @@ unsafe extern "C" fn game_specialairshold_inner(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specialairshold(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.module_accessor, sonic::status::flag::SPECIAL_AIR_S_FIRST) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("sonic_spintrace"), Hash40::new("top"), 0, 7, 0, 0, 0, 0, 1.25, true);
+        }
+    }
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 3, 7.8, -2, 30, 0, 0, 0.9, true, *EF_FLIP_YZ);
@@ -129,6 +159,7 @@ unsafe extern "C" fn sound_specialairshold(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, sonic::status::flag::SPECIAL_AIR_S_FIRST) {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("vc_sonic_attack06"));
+            macros::PLAY_SE(agent, Hash40::new("se_sonic_special_s01"));
         }
     }
     frame(agent.lua_state_agent, 2.0);
@@ -237,6 +268,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specials", effect_specials, Priority::Low);
     agent.acmd("sound_specials", sound_specials, Priority::Low);
     agent.acmd("expression_specials", expression_specials, Priority::Low);
+
+    agent.acmd("effect_specialairsstart", effect_specialairsstart, Priority::Low);
+    agent.acmd("sound_specialairsstart", sound_specialairsstart, Priority::Low);
 
     agent.acmd("game_specialairshold", game_specialairshold, Priority::Low);
     agent.acmd("effect_specialairshold", effect_specialairshold, Priority::Low);

@@ -314,9 +314,6 @@ unsafe extern "C" fn game_specialnjump(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialnjump(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn sound_specialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     for _ in 0..4 {
@@ -907,7 +904,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn1_ex", game_specialairn1_ex, Priority::Low);
 
     agent.acmd("game_specialnjump", game_specialnjump, Priority::Low);
-    agent.acmd("effect_specialnjump", effect_specialnjump, Priority::Low);
+    agent.acmd("effect_specialnjump", acmd_stub, Priority::Low);
     agent.acmd("sound_specialnjump", sound_specialnjump, Priority::Low);
 
     agent.acmd("game_specialairnshoot", game_specialairnshoot, Priority::Low);

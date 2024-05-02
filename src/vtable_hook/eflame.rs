@@ -33,8 +33,9 @@ const EFLAME_DISABLE_GROUPS: [WorkId; 2] = [
     transition_groups::CHECK_AIR_SPECIAL
 ];
 
-const EFLAME_DISABLE_INDIVI: [WorkId; 9] = [
+const EFLAME_DISABLE_INDIVI: [WorkId; 10] = [
     transition_terms::CONT_ATTACK_S3,
+    transition_terms::CONT_ATTACK_HI3,
     transition_terms::CONT_ATTACK_LW3,
     transition_terms::CONT_ATTACK_S4_START,
     transition_terms::CONT_ATTACK_HI4_START,

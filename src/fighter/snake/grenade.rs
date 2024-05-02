@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::system::func_links;
 
 pub static mut GRENADE_STATUS_FALL : usize = 0x7c9ae0;
 pub static mut GRENADE_STATUS_LANDING : usize = 0x7c9d10;
@@ -8,6 +9,9 @@ pub static mut GRENADE_STATUS_THROWN : usize = 0x7c9fc0;
 unsafe extern "C" fn snake_grenade_status_fall(item: &mut L2CAgent) -> L2CValue {
     TeamModule::set_hit_team(item.module_accessor, -1);
     HitModule::set_hit_stop_mul(item.module_accessor, 0.25, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_ALL as u8}, 0.0);
+    item.clear_lua_stack();
+    lua_args!(item, ITEM_AREA_KIND_PICKUP);
+    func_links::Item::disable_area(item.lua_state_agent, *ITEM_AREA_KIND_PICKUP);
     original!()(item)
 }
 
@@ -15,6 +19,9 @@ unsafe extern "C" fn snake_grenade_status_fall(item: &mut L2CAgent) -> L2CValue 
 unsafe extern "C" fn snake_grenade_status_landing(item: &mut L2CAgent) -> L2CValue {
     TeamModule::set_hit_team(item.module_accessor, -1);
     HitModule::set_hit_stop_mul(item.module_accessor, 0.25, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_ALL as u8}, 0.0);
+    item.clear_lua_stack();
+    lua_args!(item, ITEM_AREA_KIND_PICKUP);
+    func_links::Item::disable_area(item.lua_state_agent, *ITEM_AREA_KIND_PICKUP);
     original!()(item)
 }
 
@@ -22,6 +29,9 @@ unsafe extern "C" fn snake_grenade_status_landing(item: &mut L2CAgent) -> L2CVal
 unsafe extern "C" fn snake_grenade_status_thrown(item: &mut L2CAgent) -> L2CValue {
     TeamModule::set_hit_team(item.module_accessor, -1);
     HitModule::set_hit_stop_mul(item.module_accessor, 0.25, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_ALL as u8}, 0.0);
+    item.clear_lua_stack();
+    lua_args!(item, ITEM_AREA_KIND_PICKUP);
+    func_links::Item::disable_area(item.lua_state_agent, *ITEM_AREA_KIND_PICKUP);
     original!()(item)
 }
 

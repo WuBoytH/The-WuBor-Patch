@@ -284,6 +284,12 @@ unsafe extern "C" fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFight
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__check_hit_stop_delay_flick)]
+unsafe extern "C" fn fighterstatusguard__check_hit_stop_delay_flick(_fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
+    // disable shield sdi
+    false.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -294,7 +300,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             check_guard_attack_special_hi,
             sub_ftstatusuniqprocessguardfunc_updateshield,
             bind_address_call_fighterstatusguard__set_shield_scale,
-            fighterstatusguard__set_shield_scale
+            fighterstatusguard__set_shield_scale,
+            fighterstatusguard__check_hit_stop_delay_flick
         );
     }
 }

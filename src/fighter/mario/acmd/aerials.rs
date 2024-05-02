@@ -210,9 +210,6 @@ unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_landingairlw(_agent: &mut L2CAgentBase) {
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairf", game_attackairf, Priority::Low);
     agent.acmd("effect_attackairf", effect_attackairf, Priority::Low);
@@ -230,5 +227,5 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackairlw", sound_attackairlw, Priority::Low);
     agent.acmd("expression_attackairlw", expression_attackairlw, Priority::Low);
 
-    agent.acmd("game_landingairlw", game_landingairlw, Priority::Low);
+    agent.acmd("game_landingairlw", acmd_stub, Priority::Low);
 }

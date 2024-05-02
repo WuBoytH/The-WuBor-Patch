@@ -13,12 +13,6 @@ unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_escapeair(_agent: &mut L2CAgentBase) {
-    // if macros::is_excute(agent) {
-    //     macros::EFFECT(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0, 12, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
-    // }
-}
-
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -33,7 +27,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_escapeair", game_escapeair, Priority::Low);
-    agent.acmd("effect_escapeair", effect_escapeair, Priority::Low);
+    agent.acmd("effect_escapeair", acmd_stub, Priority::Low);
 
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 }

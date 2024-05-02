@@ -1,3 +1,4 @@
+mod fighter;
 mod brave;
 mod dolly;
 mod eflame;
@@ -15,6 +16,7 @@ mod reflet;
 mod rockman;
 mod shotos;
 mod shulk;
+// mod sonic;
 mod wario;
 
 mod weapon;
@@ -22,6 +24,7 @@ mod mariod_drcapsule;
 mod belmont_cross;
 
 pub fn install() {
+    fighter::install();
     brave::install();
     dolly::install();
     eflame::install();
@@ -39,6 +42,7 @@ pub fn install() {
     rockman::install();
     shotos::install();
     shulk::install();
+    // sonic::install();
     wario::install();
 
     weapon::install();

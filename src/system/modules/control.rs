@@ -1,7 +1,7 @@
 use {
     smash::{
         app::{lua_bind::*, *},
-        // lib::lua_const::*
+        lib::lua_const::*
     },
     wubor_utils::controls::*
 };
@@ -148,12 +148,27 @@ fn exec_internal(module_accessor: *mut BattleObjectModuleAccessor) {
     }
 }
 
+fn exec_post(module_accessor: *mut BattleObjectModuleAccessor, cat1_prev: i32) {
+    unsafe {
+        // Cull Attack inputs if grab is used
+        let cat1 = ControlModule::get_command_flag_cat(module_accessor, 0);
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+        && cat1_prev & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 {
+            for attack in 0..7 {
+                ControlModule::clear_command_one(module_accessor, 0, attack);
+            }
+        }
+    }
+}
+
 #[skyline::hook(offset = 0x6bac10)]
 fn exec_command_hook(control_module: u64, flag: bool) {
-    let boma = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
+    let module_accessor = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
 
-    exec_internal(boma);
-    call_original!(control_module, flag)
+    exec_internal(module_accessor);
+    let cat1_prev = unsafe{ ControlModule::get_command_flag_cat(module_accessor, 0) };
+    call_original!(control_module, flag);
+    exec_post(module_accessor, cat1_prev);
 }
 
 // These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat

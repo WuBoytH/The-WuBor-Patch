@@ -1,17 +1,16 @@
 use crate::imports::*;
 
 unsafe extern "C" fn game_escapef(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), true);
-    }
-    frame(agent.lua_state_agent, 7.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), false);
-    }
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::REVERSE_LR(agent);
+    }
+}
+
+unsafe extern "C" fn game_escapeair(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 19.0);
+    if macros::is_excute(agent) {
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
 }
 
@@ -28,7 +27,13 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_escapen", acmd_stub, Priority::Low);
+
     agent.acmd("game_escapef", game_escapef, Priority::Low);
+
+    agent.acmd("game_escapeb", acmd_stub, Priority::Low);
+
+    agent.acmd("game_escapeair", game_escapeair, Priority::Low);
 
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 }

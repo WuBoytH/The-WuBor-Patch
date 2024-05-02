@@ -80,8 +80,9 @@ unsafe extern "C" fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
         let attack = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0;
+        let catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0;
         let special = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0;
-        if attack || special {
+        if attack || catch || special {
             let catch_attack_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("catch_attack_distance"));
             let scale = PostureModule::scale(fighter.module_accessor);
             let capture_pos_x_diff = CatchModule::capture_pos_x_diff(fighter.module_accessor);

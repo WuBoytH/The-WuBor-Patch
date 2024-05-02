@@ -38,10 +38,9 @@ unsafe extern "C" fn snake_grenade_status_thrown(item: &mut L2CAgent) -> L2CValu
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "item" {
         unsafe {
-            // Makes it so hitting the grenade doesn't make it explode
+            // Makes it so hitting the grenade launches it instead of exploding
             let item_offset = (*info.module.ModuleObject).module_base as usize;
-            skyline::patching::nop_pointer((0x7ca4c0 + item_offset) as *const u8);
-            skyline::patching::nop_pointer((0x7ca4d0 + item_offset) as *const u8);
+            skyline::patching::patch_pointer((0x7ca48c + item_offset) as *const u8, &0x529FE608u32);
             GRENADE_STATUS_FALL += item_offset;
             GRENADE_STATUS_LANDING += item_offset;
             GRENADE_STATUS_THROWN += item_offset;

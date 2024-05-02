@@ -1,8 +1,5 @@
 use crate::imports::*;
 
-unsafe extern "C" fn game_ready(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -26,7 +23,7 @@ unsafe extern "C" fn game_burst(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_ready", game_ready, Priority::Low);
+    agent.acmd("game_ready", acmd_stub, Priority::Low);
 
     agent.acmd("game_fly", game_fly, Priority::Low);
 

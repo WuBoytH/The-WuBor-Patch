@@ -1,16 +1,10 @@
 use crate::imports::*;
 
-unsafe extern "C" fn game_escapen(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_escapef(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::REVERSE_LR(agent);
     }
-}
-
-unsafe extern "C" fn game_escapeb(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
@@ -38,11 +32,11 @@ unsafe extern "C" fn game_escapeairslideforesight(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_escapen", game_escapen, Priority::Low);
+    agent.acmd("game_escapen", acmd_stub, Priority::Low);
 
     agent.acmd("game_escapef", game_escapef, Priority::Low);
 
-    agent.acmd("game_escapeb", game_escapeb, Priority::Low);
+    agent.acmd("game_escapeb", acmd_stub, Priority::Low);
 
     agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
 

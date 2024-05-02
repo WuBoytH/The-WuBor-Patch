@@ -255,12 +255,10 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
     else {
         fighter.attack_uniq_chk();
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
-            if only_jabs(fighter) {
-                VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-            }
-            else {
-                VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-            }
+            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+        }
+        else if !only_jabs(fighter) {
+            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
         }
         if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);

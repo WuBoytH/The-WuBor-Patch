@@ -7,13 +7,7 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_regular(_agent: &mut L2CAgentBase) {
-    // if macros::is_excute(agent) {
-    //     macros::EFFECT(agent, Hash40::new("pikachu_kaminari_cloud"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    // }
-}
-
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_regular", game_regular, Priority::Low);
-    agent.acmd("effect_regular", effect_regular, Priority::Low);
+    agent.acmd("effect_regular", acmd_stub, Priority::Low);
 }

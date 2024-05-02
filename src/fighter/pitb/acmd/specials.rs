@@ -27,9 +27,6 @@ unsafe extern "C" fn effect_specialnhold(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairnhold(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_specialnfire(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -194,21 +191,21 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("effect_specialnholdhi", effect_specialnhold, Priority::Low);
 
-    agent.acmd("effect_specialnstos", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialnstos", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialairnstos", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialairnstos", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialairnholds", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialairnholds", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialairnholdhi", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialairnholdhi", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialnstohi", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialnstohi", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialairnstohi", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialairnstohi", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialnhitos", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialnhitos", acmd_stub, Priority::Low);
 
-    agent.acmd("effect_specialairnhitos", effect_specialairnhold, Priority::Low);
+    agent.acmd("effect_specialairnhitos", acmd_stub, Priority::Low);
 
     agent.acmd("game_specialnfires", game_specialnfire, Priority::Low);
     agent.acmd("expression_specialnfires", expression_specialnfires, Priority::Low);

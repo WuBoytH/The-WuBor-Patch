@@ -11,8 +11,9 @@
 
 use skyline::libc::c_char;
 pub mod system;
-mod fighter;
 mod custom_vars;
+mod fighter;
+mod vtable_hook;
 
 mod imports;
 
@@ -62,7 +63,8 @@ pub fn is_on_ryujinx() -> bool {
 #[skyline::main(name = "wubor")]
 pub fn main() {
     system::install();
-    fighter::install();
     custom_vars::install();
+    fighter::install();
+    vtable_hook::install();
     skyline::install_hooks!(change_version_string_hook);
 }

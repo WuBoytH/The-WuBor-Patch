@@ -101,9 +101,6 @@ unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_landingairb(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -130,7 +127,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_attackairb", sound_attackairb, Priority::Low);
     agent.acmd("expression_attackairb", expression_attackairb, Priority::Low);
 
-    agent.acmd("game_landingairb", game_landingairb, Priority::Low);
+    agent.acmd("game_landingairb", acmd_stub, Priority::Low);
 
     agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
 }

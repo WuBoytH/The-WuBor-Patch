@@ -75,15 +75,13 @@ unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon
     if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
         if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0 {
-            if only_jabs(fighter) {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
-                }
-                VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
             }
-            else {
-                VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
-            }
+            VarModule::off_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
+        }
+        else if !only_jabs(fighter) {
+            VarModule::on_flag(fighter.module_accessor, attack::flag::INVALID_HOLD_INPUT);
         }
         let button = param_2.get_i32();
         if !ControlModule::check_button_on(fighter.module_accessor, button) {

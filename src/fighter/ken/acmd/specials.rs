@@ -713,13 +713,6 @@ unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairs2(_agent: &mut L2CAgentBase) {
-    // if macros::is_excute(agent) {
-    //     macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 1, false);
-    //     EffectModule::enable_sync_init_pos_last(agent.module_accessor);
-    // }
-}
-
 unsafe extern "C" fn sound_specialairs2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -1728,7 +1721,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairsend", expression_specialairsend, Priority::Low);
 
     agent.acmd("game_specialairs2", game_specialairs2, Priority::Low);
-    agent.acmd("effect_specialairs2", effect_specialairs2, Priority::Low);
     agent.acmd("sound_specialairs2", sound_specialairs2, Priority::Low);
     agent.acmd("expression_specialairs2", expression_specialairs2, Priority::Low);
 

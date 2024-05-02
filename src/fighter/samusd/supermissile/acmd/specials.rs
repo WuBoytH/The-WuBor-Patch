@@ -1,8 +1,5 @@
 use crate::imports::*;
 
-unsafe extern "C" fn game_ready(_agent: &mut L2CAgentBase) {
-}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_ready", game_ready, Priority::Low);
+    agent.acmd("game_ready", acmd_stub, Priority::Low);
 }

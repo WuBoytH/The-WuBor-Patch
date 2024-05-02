@@ -146,9 +146,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_longjumpstart(_agent: &mut L2CAgentBase) {
-}
-
 unsafe extern "C" fn game_longjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -187,9 +184,6 @@ unsafe extern "C" fn expression_longjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-}
-
-unsafe extern "C" fn sound_longjumpland(_agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_longjumpland(agent: &mut L2CAgentBase) {
@@ -293,25 +287,25 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
 
-    agent.acmd("sound_speciallwstart", sound_longjumpstart, Priority::Low);
+    agent.acmd("sound_speciallwstart", acmd_stub, Priority::Low);
 
     agent.acmd("game_speciallwjump", game_longjump, Priority::Low);
     agent.acmd("sound_speciallwjump", sound_longjump, Priority::Low);
     agent.acmd("expression_speciallwjump", expression_longjump, Priority::Low);
 
     agent.acmd("effect_speciallwlanding", effect_longjumpland, Priority::Low);
-    agent.acmd("sound_speciallwlanding", sound_longjumpland, Priority::Low);
+    agent.acmd("sound_speciallwlanding", acmd_stub, Priority::Low);
     agent.acmd("expression_speciallwlanding", expression_longjumpland, Priority::Low);
 
     agent.acmd("game_specialairlwstart", game_groundpoundstart, Priority::Low);
-    agent.acmd("effect_specialairlwstart", sound_groundpoundstart, Priority::Low);
+    agent.acmd("sound_specialairlwstart", sound_groundpoundstart, Priority::Low);
 
     agent.acmd("game_specialairlwfall", game_groundpoundfall, Priority::Low);
     agent.acmd("effect_specialairlwfall", effect_groundpoundfall, Priority::Low);
     agent.acmd("expression_specialairlwfall", expression_groundpoundfall, Priority::Low);
 
     agent.acmd("game_specialairlwlanding", game_groundpoundland, Priority::Low);
-    agent.acmd("effect_specialairlwlanding", sound_groundpoundland, Priority::Low);
-    agent.acmd("sound_specialairlwlanding", effect_groundpoundland, Priority::Low);
+    agent.acmd("effect_specialairlwlanding", effect_groundpoundland, Priority::Low);
+    agent.acmd("sound_specialairlwlanding", sound_groundpoundland, Priority::Low);
     agent.acmd("expression_specialairlwlanding", expression_groundpoundland, Priority::Low);
 }

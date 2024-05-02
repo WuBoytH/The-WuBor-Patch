@@ -16,7 +16,7 @@ mod reflet;
 mod rockman;
 mod shotos;
 mod shulk;
-// mod sonic;
+mod sonic;
 mod wario;
 
 mod weapon;
@@ -42,7 +42,7 @@ pub fn install() {
     rockman::install();
     shotos::install();
     shulk::install();
-    // sonic::install();
+    sonic::install();
     wario::install();
 
     weapon::install();

@@ -80,7 +80,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
         0.0
     );
     let brake = if start_sit != *SITUATION_KIND_GROUND {
-        0.05
+        0.01
     }
     else {
         0.0

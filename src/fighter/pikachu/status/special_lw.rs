@@ -36,6 +36,7 @@ unsafe extern "C" fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) ->
 
 unsafe extern "C" fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_START);
+    VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
     VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
     MotionModule::change_motion(
         fighter.module_accessor,

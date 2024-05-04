@@ -30,7 +30,7 @@ unsafe extern "C" fn game_specialairhihang(agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     // }
-    frame(agent.lua_state_agent, 60.0);
+    frame(agent.lua_state_agent, 74.0);
     if macros::is_excute(agent) {
         WorkModule::enable_transition_term(agent.module_accessor, *FIGHTER_SNAKE_STATUS_CYPHER_HANG_TRANS_ID_CUT_TIME_OUT);
     }

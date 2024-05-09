@@ -55,6 +55,10 @@ unsafe extern "C" fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_
     || fighter.sub_transition_group_check_ground_jump().get_bool() {
         return 1.into();
     }
+    if fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].get_ptr());
+        callable(fighter).get_bool();
+    }
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {

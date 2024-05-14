@@ -40,6 +40,12 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
+#[skyline::hook(offset = 0x617aa4, inline)]
+unsafe extern "C" fn reverse_trump_logic(ctx: &mut skyline::hooks::InlineCtx) {
+    let object = *ctx.registers[23].x.as_ref() as *mut BattleObject;
+    WorkModule::on_flag((*object).module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
+}
+
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
     cliff_catch::install();
@@ -48,4 +54,11 @@ pub fn install() {
 
     cliff_jump1::install();
     cliff_jump2::install();
+
+    skyline::patching::Patch::in_text(0x617a90).nop();
+    skyline::patching::Patch::in_text(0x617aa4).nop();
+    skyline::install_hooks!(
+        reverse_trump_logic
+    );
+
 }

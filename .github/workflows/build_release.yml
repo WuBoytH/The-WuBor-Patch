@@ -9,7 +9,7 @@ jobs:
   get-version:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4.1.4
       - name: Get Plugin Version
         id: plugin-version
         # You may pin to the exact commit or the version.
@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-python@v4.3.0
         with:
           python-version: '3.9'
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4.1.4
       - name: Download ROMFS
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -51,7 +51,7 @@ jobs:
         run: |
           cd scripts && python3 create_main.py && cd ..
       - name: Upload Plugin Artifact (Main)
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: The_WuBor_Patch
           path: The_WuBor_Patch.zip
@@ -67,7 +67,7 @@ jobs:
         uses: actions/setup-python@v4.3.0
         with:
           python-version: '3.9'
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4.1.4
       - name: Download ROMFS
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -85,7 +85,7 @@ jobs:
         run: |
           cd scripts && python3 create_dev.py && cd ..
       - name: Upload Plugin Artifact (Dev)
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: The_WuBor_Patch_Dev
           path: The_WuBor_Patch_Dev.zip
@@ -95,7 +95,7 @@ jobs:
     needs: [ package-main, get-version ]
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.1.7
       - name: Create Main Draft Release
         uses: softprops/action-gh-release@v0.1.15
         env:
@@ -128,9 +128,9 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.1.7
       - name: Create Dev Prerelease
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v2.0.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

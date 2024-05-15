@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-python@v4.3.0
         with:
           python-version: '3.9'
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v4.1.4
       - name: Get Branch Name
         id: branch-name
         uses: tj-actions/branch-names@v7.0.1
@@ -46,7 +46,7 @@ jobs:
         run: |
           cd scripts && python3 create_pr.py && cd ..
       - name: Upload Plugin Artifact (PR)
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: The_WuBor_Patch_PR
           path: build/

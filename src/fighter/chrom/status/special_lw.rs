@@ -33,7 +33,6 @@ unsafe extern "C" fn chrom_special_lw_init(_fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn chrom_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_lw"),
@@ -81,7 +80,6 @@ unsafe extern "C" fn chrom_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2
             dive_speed_y,
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         VarModule::off_flag(fighter.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
     }
     0.into()

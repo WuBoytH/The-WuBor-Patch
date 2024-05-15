@@ -709,36 +709,29 @@ unsafe extern "C" fn sub_transition_group_check_air_cliff(fighter: &mut L2CFight
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_CLIFF_LASSO_UNIQ].get_ptr());
         early_end = callable(fighter).get_bool()
     }
-    if !early_end {
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-            // println!("air!");
-            if GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
-                // println!("can entry cliff");
-                let stick_y = fighter.global_table[STICK_Y].get_f32();
-                let cliff_catch_cancel_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_catch_cancel_stick_y"));
-                if cliff_catch_cancel_stick_y < stick_y {
-                    // println!("not canceling!");
-                    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH) {
-                        // println!("transition term");
-                        if GroundModule::is_status_cliff(fighter.module_accessor)
-                        || VarModule::is_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK) {
-                            // println!("is status cliff");
-                            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME) == 0 {
-                                // println!("cliff frame passed");
-                                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
-                                fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), true.into());
-                                return true.into();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE) {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
-            StatusModule::delete_status_request_from_script(fighter.module_accessor);
+    if early_end {
+        return false.into();
+    }
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR
+    && GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let cliff_catch_cancel_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_catch_cancel_stick_y"));
+        if cliff_catch_cancel_stick_y < stick_y
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH)
+        && GroundModule::is_status_cliff(fighter.module_accessor)
+        && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME) == 0 {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
+            fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), true.into());
+            return true.into();
         }
     }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
+        StatusModule::delete_status_request_from_script(fighter.module_accessor);
+    }
+
     false.into()
 }
 

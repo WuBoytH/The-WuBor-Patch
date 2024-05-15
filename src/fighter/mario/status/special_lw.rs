@@ -128,7 +128,6 @@ unsafe extern "C" fn mario_special_lw_shoot_main(fighter: &mut L2CFighterCommon)
         fighter.sub_shift_status_main(L2CValue::Ptr(mario_special_lw_longjump_jump_main_loop as *const () as _))
     }
     else {
-        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_air_lw_fall"),
@@ -155,7 +154,6 @@ unsafe extern "C" fn mario_special_lw_longjump_jump_main_loop(fighter: &mut L2CF
 }
 
 unsafe extern "C" fn mario_special_lw_groundpound_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }

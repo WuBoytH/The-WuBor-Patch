@@ -30,7 +30,7 @@ jobs:
       image: hewdrawremix/hewdraw-builder:latest
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.9'
       - uses: actions/checkout@v4.1.4
@@ -64,7 +64,7 @@ jobs:
       image: hewdrawremix/hewdraw-builder:latest
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.9'
       - uses: actions/checkout@v4.1.4

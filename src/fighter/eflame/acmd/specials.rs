@@ -118,10 +118,10 @@ unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_int64(agent.module_accessor, hash40("special_air_hi_jump") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
-    frame(agent.lua_state_agent, 31.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS); // Was ALWAYS_BOTH_SIDES
-    }
+    // frame(agent.lua_state_agent, 31.0);
+    // if macros::is_excute(agent) {
+    //     notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS); // Was ALWAYS_BOTH_SIDES
+    // }
     frame(agent.lua_state_agent, 32.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {

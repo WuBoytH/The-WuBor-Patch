@@ -109,14 +109,14 @@ unsafe extern "C" fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_
     let stick_y = fighter.global_table[STICK_Y].get_f32();
     let attack_lw4_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw4_stick_y"));
     if stick_y <= attack_lw4_stick_y {
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            if fighter.global_table[CHECK_ATTACK_LW4_UNIQ].get_bool() && {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START) {
+            let mut cont = true;
+            if fighter.global_table[CHECK_ATTACK_LW4_UNIQ].get_bool() {
                 let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_LW4_UNIQ].get_ptr());
-                callable(fighter).get_bool()
-            } {
-                return 1.into();
+                cont = callable(fighter).get_bool();
             }
-            else {
+            if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW4_START.into(), true.into());
                 return 1.into();
             }

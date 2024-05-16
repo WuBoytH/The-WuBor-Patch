@@ -80,6 +80,15 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn game_specialhi4(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40::new("special_hi4"), false, -1.0);
+        ArticleModule::set_rate(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, 31.0 / 21.0);
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTERSHOT, false, -1);
+    }
+    macros::FT_MOTION_RATE(agent, 21.0 / 31.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsstart", game_specialsstart, Priority::Low);
 
@@ -92,4 +101,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
     agent.acmd("game_specialairhi", game_specialhi, Priority::Low);
+
+    agent.acmd("game_specialhi4", game_specialhi4, Priority::Low);
+
+    agent.acmd("game_specialairhi4", game_specialhi4, Priority::Low);
 }

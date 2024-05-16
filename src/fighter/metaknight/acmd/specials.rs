@@ -66,7 +66,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         GroundModule::set_passable_check(agent.module_accessor, false);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
@@ -100,7 +100,7 @@ unsafe extern "C" fn game_specialhiloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         GroundModule::set_passable_check(agent.module_accessor, true);
-        notify_event_msc_cmd!(agent , Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(agent , Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 41.0);
     if macros::is_excute(agent) {

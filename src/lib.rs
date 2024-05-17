@@ -9,13 +9,21 @@
     unused_must_use
 )]
 
+extern crate skyline;
+extern crate smash;
+extern crate smash_rs;
+extern crate wubor_utils;
+extern crate custom_var;
+
 use skyline::libc::c_char;
 pub mod system;
 mod custom_vars;
-mod fighter;
+// mod fighter;
 mod vtable_hook;
 
 mod imports;
+
+mod fighters;
 
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
@@ -24,6 +32,13 @@ extern "C" {
 #[no_mangle]
 pub extern "C" fn is_wubor_patch() {}
 
+#[cfg(not(feature = "main_nro"))]
+#[no_mangle]
+pub fn smashline_install() {
+    fighters::install();
+}
+
+#[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
@@ -62,9 +77,14 @@ pub fn is_on_ryujinx() -> bool {
 
 #[skyline::main(name = "wubor")]
 pub fn main() {
-    system::install();
-    custom_vars::install();
-    fighter::install();
-    vtable_hook::install();
-    skyline::install_hooks!(change_version_string_hook);
+    #[cfg(feature = "main_nro")]
+    {
+        system::install();
+        custom_vars::install();
+        // fighter::install();
+        vtable_hook::install();
+        skyline::install_hooks!(change_version_string_hook);
+    }
+
+    fighters::install();
 }

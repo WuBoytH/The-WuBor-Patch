@@ -1,4 +1,4 @@
-use crate::imports::*;
+use super::*;
 
 unsafe extern "C" fn gekkouga_special_hi_loop_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

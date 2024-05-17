@@ -1,4 +1,4 @@
-use crate::imports::*;
+use super::*;
 
 unsafe extern "C" fn sheik_special_hi_move_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let move_time = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("move_time"));

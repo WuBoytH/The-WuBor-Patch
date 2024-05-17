@@ -1,4 +1,4 @@
-use crate::imports::*;
+use super::*;
 
 unsafe extern "C" fn murabito_special_hi_flap_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

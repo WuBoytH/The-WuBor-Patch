@@ -11,4 +11,4 @@ if "build" in os.listdir('..'):
   shutil.rmtree('../build')
 os.makedirs('../build/')
 shutil.unpack_archive("../romfs.zip", "../build/")
-shutil.move("../target/aarch64-skyline-switch/release/libwubor.nro", "../build/ultimate/mods/The WuBor Patch/plugin.nro")
+shutil.move("../target/plugin.nro", "../build/ultimate/mods/wubor/plugin.nro")

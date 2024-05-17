@@ -1,6 +1,0 @@
-use crate::imports::*;
-use crate::fighter::element::status::special_lw_out::*;
-
-pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_LW_OUT, element_special_lw_out_main);
-}

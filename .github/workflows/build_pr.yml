@@ -38,7 +38,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (PR)
         run: |
-          cargo skyline build --release --features pr
+          cd scripts && python3 build.py pr
         env:
           HOME: /root
       - name: Setup Build Directory (PR)

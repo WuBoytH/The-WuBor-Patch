@@ -1,7 +1,7 @@
 [package]
 name = "custom_var"
 version = "3.0.0"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 # skyline = "0.2.1"

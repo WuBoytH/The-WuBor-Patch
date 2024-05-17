@@ -68,8 +68,7 @@ pub mod fighter {
             pub const SPECIAL_CANCEL : i32 = 0x1003;
             pub const ENABLE_AERIAL_STRING : i32 = 0x1004;
             pub const IS_DASH_CANCEL : i32 = 0x1005;
-            pub const SKIP_IS_STATUS_CLIFF_CHECK : i32 = 0x1006;
-            pub const FORCE_ESCAPE_AIR_SLIDE_IN_STATUS : i32 = 0x1007;
+            pub const FORCE_ESCAPE_AIR_SLIDE_IN_STATUS : i32 = 0x1006;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;
@@ -632,14 +631,6 @@ pub mod packun {
     pub mod status {
         pub mod flag {
             pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
-        }
-    }
-}
-
-pub mod pickel {
-    pub mod instance {
-        pub mod int {
-            pub const MINING_PROGRESS_REAL : i32 = 0x0100;
         }
     }
 }

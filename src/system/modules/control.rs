@@ -153,7 +153,8 @@ fn exec_post(module_accessor: *mut BattleObjectModuleAccessor, cat1_prev: i32) {
         // Cull Attack inputs if grab is used
         let cat1 = ControlModule::get_command_flag_cat(module_accessor, 0);
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
-        && cat1_prev & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 {
+        && cat1_prev & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        && !ControlModule::check_button_trigger(module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             for attack in 0..7 {
                 ControlModule::clear_command_one(module_accessor, 0, attack);
             }

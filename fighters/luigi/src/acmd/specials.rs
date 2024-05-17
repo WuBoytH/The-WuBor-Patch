@@ -2,12 +2,12 @@ use super::*;
 
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &ZERO_VECTOR, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &ZERO_VECTOR, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &ZERO_VECTOR, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &vars::ZERO_VECTOR, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &vars::ZERO_VECTOR, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &vars::ZERO_VECTOR, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &vars::ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
     }
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.4);

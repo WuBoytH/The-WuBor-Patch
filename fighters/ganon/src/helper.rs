@@ -1,18 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Vector2f,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
-};
+use super::*;
 
-#[inline(always)]
+#[no_mangle]
 pub unsafe extern "C" fn deception_init(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, false);
     let tele_x = match dir {
@@ -54,14 +42,14 @@ pub unsafe extern "C" fn deception_init(fighter: &mut L2CFighterCommon) {
     VarModule::set_vec2(fighter.module_accessor, vars::ganon::status::float::TELEPORT_END_POS, Vector2f{x: tele_x, y: tele_y});
 }
 
-#[inline(always)]
+#[no_mangle]
 pub unsafe extern "C" fn deception_movement(fighter: &mut L2CFighterCommon) {
     let end_pos = VarModule::get_vec2(fighter.module_accessor, vars::ganon::status::float::TELEPORT_END_POS);
     PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{x: end_pos.x, y: end_pos.y});
     VarModule::set_int(fighter.module_accessor, vars::ganon::status::int::TELEPORT_STEP, vars::ganon::TELEPORT_STEP_MOVE_DONE);
 }
 
-#[inline(always)]
+#[no_mangle]
 pub unsafe extern "C" fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, vars::ganon::status::flag::TELEPORT_FEINT) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);

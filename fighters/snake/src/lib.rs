@@ -21,8 +21,6 @@ mod frame;
 mod c4;
 mod cypher;
 
-mod grenade;
-
 pub fn install() {
     let agent = &mut smashline::Agent::new("snake");
     acmd::install(agent);
@@ -32,6 +30,4 @@ pub fn install() {
 
     c4::install();
     cypher::install();
-
-    grenade::install();
 }

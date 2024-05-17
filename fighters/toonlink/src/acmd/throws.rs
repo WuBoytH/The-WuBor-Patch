@@ -15,7 +15,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CHECK_FINISH_CAMERA(agent, -6, 4);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), vars::ZERO_VECTOR);
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {

@@ -1,11 +1,9 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::L2CValue
-    },
-    wubor_utils::table_const::*,
-    crate::fighter::daisy::agent_init::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "daisy_itemtoss_pre"]
+    pub fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));

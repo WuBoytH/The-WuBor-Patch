@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use super::*;
 
 pub unsafe extern "C" fn edge_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();

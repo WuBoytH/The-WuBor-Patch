@@ -1,7 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::agent_inits::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "speciallw_pre_generic"]
+    pub fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();

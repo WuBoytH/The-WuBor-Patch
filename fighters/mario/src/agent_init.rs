@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::L2CValue
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use super::*;
 
 unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::get_int(fighter.module_accessor, vars::mario::instance::int::SPECIAL_LW_KIND) == vars::mario::SPECIAL_LW_KIND_GROUND_POUND_CANCEL {

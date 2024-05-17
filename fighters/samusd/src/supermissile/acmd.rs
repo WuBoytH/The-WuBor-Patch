@@ -1,5 +1,5 @@
-mod specials;
+use super::*;
 
-pub fn install(agent: &mut smashline::Agent) {
-    specials::install(agent);
+pub fn install(agent: &mut Agent) {
+    agent.acmd("game_ready", acmd_stub, Priority::Low);
 }

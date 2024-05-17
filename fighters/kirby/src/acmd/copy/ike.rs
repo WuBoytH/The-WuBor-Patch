@@ -1,5 +1,7 @@
 use super::*;
-use crate::fighter::ike::vl;
+
+#[allow(non_upper_case_globals)]
+pub const eruption_count_for_critical : i32 = 5;
 
 unsafe extern "C" fn effect_ikespecialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
@@ -47,7 +49,7 @@ unsafe extern "C" fn sound_ikespecialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         let count = VarModule::get_int(agent.module_accessor, vars::ike::status::int::ERUPTION_COUNT);
-        if count > vl::special_n::eruption_count_for_critical {
+        if count > eruption_count_for_critical {
             macros::PLAY_SE(agent, Hash40::new("vc_kirby_copy_ike_02"));
         }
         else {

@@ -1,7 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::agent_inits::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "speciallw_pre_generic"]
+    pub fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE)

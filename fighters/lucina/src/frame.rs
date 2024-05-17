@@ -1,8 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::frame::common_fighter_frame,
-    super::{vl, helper::*}
-};
+use super::{*, vl, helper::*};
+
+extern "C" {
+    #[link_name = "common_fighter_frame"]
+    pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
@@ -88,8 +89,8 @@ unsafe extern "C" fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon
                 fighter.module_accessor,
                 Hash40::new("sys_aura_light"),
                 Hash40::new("hip"),
-                &ZERO_VECTOR,
-                &ZERO_VECTOR,
+                &vars::ZERO_VECTOR,
+                &vars::ZERO_VECTOR,
                 4.0,
                 false,
                 0,

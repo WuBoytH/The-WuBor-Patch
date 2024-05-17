@@ -1,3 +1,5 @@
+use super::*;
+
 mod ganon;
 mod ike;
 mod belmont;

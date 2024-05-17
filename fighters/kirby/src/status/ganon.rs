@@ -1,5 +1,13 @@
 use super::*;
-use crate::fighter::ganon::helper::*;
+
+extern "C" {
+    #[link_name = "deception_init"]
+    pub fn deception_init(fighter: &mut L2CFighterCommon);
+    #[link_name = "deception_movement"]
+    pub fn deception_movement(fighter: &mut L2CFighterCommon);
+    #[link_name = "deception_feint_handler"]
+    pub fn deception_feint_handler(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn kirby_ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

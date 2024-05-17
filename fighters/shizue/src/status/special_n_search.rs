@@ -1,5 +1,9 @@
 use super::*;
-use crate::fighter::murabito::helper::*;
+
+extern "C" {
+    #[link_name = "special_n_pocket_set_flag"]
+    pub fn special_n_pocket_set_flag(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 unsafe extern "C" fn shizue_special_n_search_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     special_n_pocket_set_flag(fighter)

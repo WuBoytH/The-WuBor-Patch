@@ -23,8 +23,6 @@ mod whip;
 mod axe;
 mod cross;
 
-mod holywater;
-
 pub fn install() {
     let agent = &mut smashline::Agent::new("richter");
     acmd::install(agent);
@@ -36,6 +34,4 @@ pub fn install() {
     whip::install();
     axe::install();
     cross::install();
-
-    holywater::install();
 }

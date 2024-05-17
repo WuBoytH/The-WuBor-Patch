@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::helper::*
-};
+use super::*;
+use super::helper::*;
 
 unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::yu::instance::flag::DISABLE_SPECIAL_N_S) {

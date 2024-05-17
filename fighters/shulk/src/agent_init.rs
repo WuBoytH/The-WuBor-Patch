@@ -1,7 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::agent_inits::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "speciallw_pre_generic"]
+    pub fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_NONE, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);

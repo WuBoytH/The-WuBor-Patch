@@ -1,8 +1,10 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::frame::common_fighter_frame,
-    super::helper::*,
-};
+use super::*;
+use super::helper::*;
+
+extern "C" {
+    #[link_name = "common_fighter_frame"]
+    pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn shizue_clayrocket_fire_handler(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, vars::shizue::instance::flag::FIRE_ROCKET_ANYTIME) {

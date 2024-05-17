@@ -1,8 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::frame::common_fighter_frame,
-    wubor_utils::cancels::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "common_fighter_frame"]
+    pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn jack_throw_cancel(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)

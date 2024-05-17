@@ -1,5 +1,17 @@
 use super::*;
-use crate::fighter::lucario::helper::*;
+
+extern "C" {
+    #[link_name = "lucario_special_set_air"]
+    pub fn lucario_special_set_air(fighter: &mut L2CFighterCommon);
+    #[link_name = "lucario_special_set_ground"]
+    pub fn lucario_special_set_ground(fighter: &mut L2CFighterCommon);
+    #[link_name = "lucario_special_set_kinetic"]
+    pub fn lucario_special_set_kinetic(fighter: &mut L2CFighterCommon);
+    #[link_name = "lucario_special_n_joint_translate"]
+    pub fn lucario_special_n_joint_translate(fighter: &mut L2CFighterCommon);
+    #[link_name = "lucario_special_n_save_charge_status"]
+    pub fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);

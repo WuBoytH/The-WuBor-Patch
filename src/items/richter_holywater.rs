@@ -1,4 +1,4 @@
-use super::*;
+use crate::imports::*;
 use crate::system::func_links;
 
 pub static mut RICHTER_HOLYWATER : usize = 0x758e00;

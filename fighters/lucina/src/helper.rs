@@ -161,8 +161,8 @@ pub unsafe extern "C" fn get_damage_mul(module_accessor: *mut BattleObjectModule
 }
 
 pub unsafe extern "C" fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) {
-    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-    let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &vars::ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+    let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &vars::ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
     EffectModule::set_rate(module_accessor, onemoreeff, 2.0);
     EffectModule::set_rate(module_accessor, onemoreeff2, 2.0);
     if VarModule::is_flag(module_accessor, vars::yu::instance::flag::SHADOW_FRENZY) {
@@ -191,7 +191,7 @@ pub unsafe extern "C" fn sp_gauge_handler(module_accessor: *mut BattleObjectModu
                 6 => vars::yu::SP_6,
                 _ => vars::yu::SP_1,
             };
-            EffectModule::req_follow(module_accessor, Hash40::new("sys_starrod_bullet"), Hash40::new("top"), &pos, &ZERO_VECTOR, 0.3, false, 0, 0, 0, 0, 0, false, false);
+            EffectModule::req_follow(module_accessor, Hash40::new("sys_starrod_bullet"), Hash40::new("top"), &pos, &vars::ZERO_VECTOR, 0.3, false, 0, 0, 0, 0, 0, false, false);
             level -= 1;
         }
     }

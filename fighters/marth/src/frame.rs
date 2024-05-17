@@ -1,8 +1,10 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::frame::common_fighter_frame,
-    super::vl
-};
+use super::*;
+use super::vl;
+
+extern "C" {
+    #[link_name = "common_fighter_frame"]
+    pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn marth_allow_stance_toggle(fighter: &mut L2CFighterCommon) -> bool {
     !VarModule::is_flag(fighter.module_accessor, vars::marth::status::flag::DISABLE_STANCE_CHANGE)

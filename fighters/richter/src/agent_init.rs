@@ -1,14 +1,12 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::L2CValue
-    },
-    crate::fighter::{
-        common::agent_inits::*,
-        belmont::agent_init::*
-    },
-    wubor_utils::table_const::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "specialhi_pre_generic"]
+    pub fn specialhi_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+
+    #[link_name = "belmont_guard_cont_pre"]
+    pub fn belmont_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_HI_UNIQ].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));

@@ -500,6 +500,7 @@ unsafe extern "C" fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
@@ -529,6 +530,7 @@ pub unsafe extern "C" fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // New
     let start_rate = if VarModule::is_flag(fighter.module_accessor, vars::fighter::status::flag::IS_DASH_CANCEL) {

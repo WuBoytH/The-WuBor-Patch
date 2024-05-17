@@ -1,8 +1,10 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::frame::common_fighter_frame,
-    super::helper::*
-};
+use super::*;
+use super::helper::*;
+
+extern "C" {
+    #[link_name = "common_fighter_frame"]
+    pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+}
 
 unsafe extern "C" fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode()

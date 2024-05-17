@@ -1,14 +1,9 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        // phx::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    // custom_cancel::*,
-    wubor_utils::{vars::*, table_const::*},
-    crate::fighter::common::agent_inits::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "specials_pre_generic"]
+    pub fn specials_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 pub unsafe extern "C" fn ike_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();

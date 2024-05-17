@@ -1,13 +1,9 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*,
-    crate::fighter::common::agent_inits::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "specials_pre_generic"]
+    pub fn specials_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
@@ -17,6 +13,7 @@ pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> 
     1.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PAD_FLAG].get_i32() == *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER {
         let stick_y = fighter.global_table[STICK_Y].get_f32();

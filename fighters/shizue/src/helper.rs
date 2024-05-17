@@ -1,10 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::lua_const::*
-    }
-};
+use super::*;
 
 pub unsafe extern "C" fn shizue_check_rocket_fire(fighter: &mut L2CFighterCommon) -> bool {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_CLAYROCKET)

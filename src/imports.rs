@@ -3,8 +3,9 @@ pub use {
         hash40,
         phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, L2CValue, L2CAgent}
     },
+    smash_script::*,
     custom_var::*,
     wubor_utils::{app::*, wua_bind::*, vars::*}
 };

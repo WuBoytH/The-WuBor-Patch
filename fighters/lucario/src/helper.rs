@@ -30,6 +30,7 @@ pub unsafe extern "C" fn lucario_gain_aura(fighter: &mut L2CAgentBase) -> bool {
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_set_kinetic(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         lucario_special_set_air(fighter);
@@ -43,16 +44,19 @@ pub unsafe extern "C" fn lucario_special_set_kinetic(fighter: &mut L2CFighterCom
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_set_ground(fighter: &mut L2CFighterCommon) {
     fighter.set_situation(SITUATION_KIND_GROUND.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_set_air(fighter: &mut L2CFighterCommon) {
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_ground_mot_helper(fighter: &mut L2CFighterCommon) {
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
@@ -79,6 +83,7 @@ pub unsafe extern "C" fn lucario_special_ground_mot_helper(fighter: &mut L2CFigh
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_air_mot_helper(fighter: &mut L2CFighterCommon) {
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
@@ -105,6 +110,7 @@ pub unsafe extern "C" fn lucario_special_air_mot_helper(fighter: &mut L2CFighter
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFighterCommon) {
     let havel = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
     let haver = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
@@ -131,6 +137,7 @@ pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFigh
     );
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
     let kind = fighter.global_table[KIND].get_i32();
     let status = fighter.global_table[STATUS_KIND].get_i32();

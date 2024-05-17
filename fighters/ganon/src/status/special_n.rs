@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::super::helper::*
-};
+use super::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn ganon_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

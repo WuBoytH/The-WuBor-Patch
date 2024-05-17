@@ -292,6 +292,7 @@ unsafe extern "C" fn sub_escape_air_slide_common(fighter: &mut L2CFighterCommon)
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_escape_air_uniq as *const () as _));
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL

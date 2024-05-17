@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::super::vl
-};
+use super::*;
+use super::super::vl;
 
 unsafe extern "C" fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::wario::status::flag::THROW_B_MOVE) {

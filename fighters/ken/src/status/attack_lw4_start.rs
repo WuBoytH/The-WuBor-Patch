@@ -1,5 +1,11 @@
 use super::*;
-use crate::fighter::ryu::helper::*;
+
+extern "C" {
+    #[link_name = "ryu_attack_reset"]
+    pub fn ryu_attack_reset(fighter: &mut L2CFighterCommon);
+    #[link_name = "ryu_kara_cancel"]
+    pub fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 unsafe extern "C" fn ken_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_attack_reset(fighter);

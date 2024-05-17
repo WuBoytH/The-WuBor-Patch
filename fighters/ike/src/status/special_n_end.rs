@@ -1,11 +1,8 @@
 use super::*;
 use super::super::vl;
 
-unsafe extern "C" fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ike_special_n_end_init_inner(fighter)
-}
-
-pub unsafe extern "C" fn ike_special_n_end_init_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[no_mangle]
+pub unsafe extern "C" fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     let charge_count = WorkModule::get_float(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_N_WORK_FLOAT_CHARGE_COUNT);
     let special_n_charge_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_charge_count_max"));

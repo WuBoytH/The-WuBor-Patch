@@ -1,5 +1,9 @@
 use super::*;
-use crate::fighter::common::agent_inits::*;
+
+extern "C" {
+    #[link_name = "specialhi_pre_generic"]
+    pub fn specialhi_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+}
 
 pub unsafe extern "C" fn reflet_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();

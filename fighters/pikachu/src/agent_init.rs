@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-};
+use super::*;
 
 pub unsafe extern "C" fn pikachu_special_hi_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_HI) {

@@ -1,5 +1,9 @@
 use super::*;
-use crate::fighter::ryu::helper::*;
+
+extern "C" {
+    #[link_name = "ryu_final_hit_cancel"]
+    pub fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
+}
 
 unsafe extern "C" fn ken_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attr = if VarModule::is_flag(fighter.module_accessor, vars::ken::instance::flag::QUICK_STEP_INHERIT) {

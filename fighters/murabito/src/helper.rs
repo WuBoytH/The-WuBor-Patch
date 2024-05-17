@@ -1,15 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::table_const::*
-};
+use super::*;
 
+#[no_mangle]
 pub unsafe extern "C" fn special_n_pocket_set_flag(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::set_rate(fighter.module_accessor, 1.0);
     let target_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_TARGET_OBJECT_ID) as u32;

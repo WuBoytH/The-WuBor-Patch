@@ -1,7 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::status::attack::attack::only_jabs
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "only_jabs"]
+    pub fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
+}
 
 #[inline(always)]
 pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, b: f32) {
@@ -31,6 +33,7 @@ pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE, 0);
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
@@ -52,6 +55,7 @@ pub unsafe extern "C" fn ryu_attack_main_inner(fighter: &mut L2CFighterCommon) -
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_main_loop as *const () as _))
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
@@ -162,6 +166,7 @@ pub unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         let combo_count = ComboModule::count(fighter.module_accessor) as i32;
@@ -179,6 +184,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommon, mot1: L2CValue, mot2: L2CValue) {
     ryu_attack_reset(fighter);
     fighter.attack_mtrans_pre_process();
@@ -202,6 +208,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_reset(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_FRAME);
@@ -215,6 +222,7 @@ pub unsafe extern "C" fn ryu_attack_reset(fighter: &mut L2CFighterCommon) {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_CHANGE_LOG);
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
@@ -299,6 +307,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_s3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_attack_reset(fighter);
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_TURN_RUN {
@@ -321,6 +330,7 @@ pub unsafe extern "C" fn ryu_attack_s3_main_inner(fighter: &mut L2CFighterCommon
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_s3_main_loop as *const () as _))
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
@@ -374,6 +384,7 @@ unsafe extern "C" fn ryu_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_hi3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
@@ -421,6 +432,7 @@ pub unsafe extern "C" fn ryu_attack_hi3_main_inner(fighter: &mut L2CFighterCommo
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_hi3_main_loop as *const() as _))
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_attack_hi3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     let stop = param_1.get_bool();
     fighter.sub_attack3_uniq_check(stop.into());
@@ -441,6 +453,7 @@ unsafe extern "C" fn ryu_attack_hi3_substatus(fighter: &mut L2CFighterCommon, pa
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
@@ -509,6 +522,7 @@ unsafe extern "C" fn ryu_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_check_attack_button_trigger(fighter: &mut L2CFighterCommon) {
     if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
@@ -519,6 +533,7 @@ unsafe extern "C" fn ryu_check_attack_button_trigger(fighter: &mut L2CFighterCom
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_attack_lw3_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_attack_reset(fighter);
     fighter.status_AttackLw3_common_param(
@@ -535,6 +550,7 @@ pub unsafe extern "C" fn ryu_attack_lw3_main_inner(fighter: &mut L2CFighterCommo
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_lw3_main_loop as *const () as _))
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_attack_lw3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     let stop = param_1.get_bool();
     fighter.sub_attack3_uniq_check(stop.into());
@@ -556,6 +572,7 @@ unsafe extern "C" fn ryu_attack_lw3_substatus(fighter: &mut L2CFighterCommon, pa
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
@@ -624,6 +641,7 @@ unsafe extern "C" fn ryu_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_get_mini_jump_attack_data_log_info(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     let info = fighter.get_mini_jump_attack_data_log_info(param_1.clone());
     if info.get_bool() {
@@ -635,6 +653,7 @@ unsafe extern "C" fn ryu_get_mini_jump_attack_data_log_info(fighter: &mut L2CFig
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -671,6 +690,7 @@ pub unsafe extern "C" fn ryu_specialhi_main(fighter: &mut L2CFighterCommon) -> L
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specialhi_main_loop as *const () as _))
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_specialhi_substatus(fighter: &mut L2CFighterCommon, param_2: L2CValue) -> L2CValue {
     if !param_2.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR) {
@@ -689,6 +709,7 @@ unsafe extern "C" fn ryu_specialhi_substatus(fighter: &mut L2CFighterCommon, par
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -705,6 +726,7 @@ unsafe extern "C" fn ryu_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn ryu_specialhi_mot_helper(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -751,6 +773,7 @@ unsafe extern "C" fn ryu_specialhi_mot_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
     let final_cancel = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
@@ -766,6 +789,7 @@ pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, si
     ret.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
     let special_n = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     let special_s = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
@@ -821,6 +845,7 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     ret.into()
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     let special_n_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
     let special_n2_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
@@ -869,6 +894,7 @@ pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CV
 //     }
 // }
 
+#[no_mangle]
 pub unsafe extern "C" fn ryu_idkwhatthisis2(fighter: &mut L2CFighterCommon) {
     if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_RELEASE_BUTTON);

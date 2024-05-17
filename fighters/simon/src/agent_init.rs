@@ -1,10 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::L2CValue
-    },
-    wubor_utils::table_const::*
-};
+use super::*;
 
 #[no_mangle]
 pub unsafe extern "C" fn belmont_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

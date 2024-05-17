@@ -1,8 +1,8 @@
 use super::*;
-use crate::fighter::vars::ike::status::special_n_end::*;
 
-unsafe extern "C" fn kirby_ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ike_special_n_end_init_inner(fighter)
+extern "C" {
+    #[link_name = "ike_special_n_end_init"]
+    pub fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 unsafe extern "C" fn kirby_ike_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -77,6 +77,6 @@ unsafe extern "C" fn kirby_ike_special_n_end_main_loop(fighter: &mut L2CFighterC
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_init);
+    agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, ike_special_n_end_init);
     agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_main);
 }

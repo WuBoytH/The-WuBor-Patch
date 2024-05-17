@@ -416,7 +416,7 @@ unsafe extern "C" fn game_specialsshoulder(agent: &mut L2CAgentBase) {
         lua_args!(agent, 0.0, 0.0);
         sv_animcmd::CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(agent.lua_state_agent);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), vars::ZERO_VECTOR);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -460,7 +460,7 @@ unsafe extern "C" fn game_specialairsshoulder(agent: &mut L2CAgentBase) {
         lua_args!(agent, 0.0, 0.0);
         sv_animcmd::CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(agent.lua_state_agent);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), vars::ZERO_VECTOR);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -497,7 +497,7 @@ unsafe extern "C" fn game_specialslariat(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 0, 0, Hash40::new("arml"), 16.0, 145, 36, 0, 88, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         macros::CHECK_FINISH_CAMERA(agent, 0, 0);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), vars::ZERO_VECTOR);
     }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {

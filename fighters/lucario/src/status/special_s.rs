@@ -1,6 +1,15 @@
 use super::*;
 use super::super::helper::*;
 
+#[allow(non_snake_case)]
+pub mod LinkEventThrow {
+    use super::*;
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app14LinkEventThrow13new_l2c_tableEv"]
+        pub fn new_l2c_table() -> L2CValue;
+    }
+}
+
 unsafe extern "C" fn lucario_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_S);
@@ -219,7 +228,7 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         let request_throw = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
         if !throw_done {
             if request_throw {
-                let mut event = crate::system::func_links::LinkEventThrow::new_l2c_table();
+                let mut event = LinkEventThrow::new_l2c_table();
                 event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("throw")));
                 let callable: extern "C" fn() -> *mut smash::app::LinkEvent = std::mem::transmute(event["new_instance_lua_"].get_ptr());
                 let link_event = callable();

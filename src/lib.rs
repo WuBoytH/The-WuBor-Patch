@@ -12,6 +12,7 @@
 extern crate skyline;
 extern crate smash;
 extern crate smash_rs;
+extern crate smash_script;
 extern crate wubor_utils;
 extern crate custom_var;
 
@@ -24,6 +25,8 @@ mod vtable_hook;
 mod imports;
 
 mod fighters;
+
+mod items;
 
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
@@ -87,4 +90,6 @@ pub fn main() {
     }
 
     fighters::install();
+
+    items::install();
 }

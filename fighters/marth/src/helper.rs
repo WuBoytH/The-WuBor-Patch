@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        hash40,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    wubor_utils::vars::*
-};
+use super::*;
 
 #[repr(C)]
 pub struct UnstanceGame {

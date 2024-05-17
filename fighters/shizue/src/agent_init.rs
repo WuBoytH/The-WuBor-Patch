@@ -1,13 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::helper::*
-};
+use super::*;
+use super::helper::*;
 
 unsafe extern "C" fn shizue_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if shizue_check_rocket_fire(fighter)

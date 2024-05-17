@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::status::helper::*
-};
+use super::*;
+use super::status::helper::*;
 
 pub unsafe extern "C" fn marth_check_ground_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)

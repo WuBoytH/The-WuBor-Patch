@@ -1,13 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*,
-    super::status::special_s::*,
-    super::status::special_lw::*
-};
+use super::*;
+use super::status::special_s::*;
+use super::status::special_lw::*;
 
 unsafe extern "C" fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) {
     if fighter.global_table["move_customizer_set"].get_bool() {

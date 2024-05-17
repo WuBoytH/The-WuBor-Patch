@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::super::vl,
-};
+use super::*;
+use super::super::vl;
 
 unsafe extern "C" fn samusd_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());

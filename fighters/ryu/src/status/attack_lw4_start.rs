@@ -1,7 +1,5 @@
-use {
-    crate::imports::*,
-    super::super::helper::*
-};
+use super::*;
+use super::super::helper::*;
 
 unsafe extern "C" fn ryu_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT) {

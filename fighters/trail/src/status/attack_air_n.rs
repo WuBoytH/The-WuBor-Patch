@@ -1,7 +1,9 @@
-use {
-    crate::imports::*,
-    crate::fighter::common::status::attack::attack::*
-};
+use super::*;
+
+extern "C" {
+    #[link_name = "only_jabs"]
+    pub fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
+}
 
 unsafe extern "C" fn trail_attack_air_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
@@ -107,7 +109,7 @@ unsafe extern "C" fn trail_attack_air_n_main_loop(fighter: &mut L2CFighterCommon
             }
             if cont {
                 if !only_jabs(fighter) {
-                    let flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+                    let flags = vars::ATTACK_AIR_F_MASK + vars::ATTACK_AIR_B_MASK + vars::ATTACK_AIR_HI_MASK + vars::ATTACK_AIR_LW_MASK;
                     VarModule::set_int(fighter.module_accessor, vars::fighter::status::int::ENABLED_AERIALS, flags);
                     if aerial_cancel_common(fighter).get_bool() {
                         return 1.into();

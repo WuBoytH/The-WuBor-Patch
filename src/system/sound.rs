@@ -4,9 +4,13 @@ use {
         app::*,
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
-    crate::fighter::lucina::helper::*,
     wubor_utils::vars
 };
+
+extern "C" {
+    #[link_name = "shadow_id"]
+    fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool;
+}
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SE)]
 unsafe fn play_se_replace(lua_state: u64) {

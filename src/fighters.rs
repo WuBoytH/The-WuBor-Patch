@@ -8,13 +8,9 @@ macro_rules! install_fighters {
 }
 
 pub fn install() {
-    #[cfg(feature = "main_nro")]
-    {
-        common::install();
-    }
-
     install_fighters! {
         install;
+        common = "common",
         bayonetta = "bayonetta",
         brave = "brave",
         buddy = "buddy",

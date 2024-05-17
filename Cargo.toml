@@ -228,7 +228,13 @@ skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 default = [
     "local",
     "main_nro",
-    "common",
+    "all_chars"
+]
+main_nro = ["common"]
+local = []
+pr = []
+dev = []
+all_chars = [
     "bayonetta",
     "brave",
     "buddy",
@@ -319,10 +325,6 @@ default = [
     "younglink",
     "zelda"
 ]
-main_nro = []
-local = []
-pr = []
-dev = []
 
 [profile.dev]
 panic = "abort"

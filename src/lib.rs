@@ -16,18 +16,22 @@ extern crate smash_script;
 extern crate wubor_utils;
 extern crate custom_var;
 
+#[cfg(feature = "main_nro")]
 use skyline::libc::c_char;
-pub mod system;
-mod custom_vars;
-// mod fighter;
-mod vtable_hook;
-
+#[cfg(feature = "main_nro")]
 mod imports;
+#[cfg(feature = "main_nro")]
+pub mod system;
+#[cfg(feature = "main_nro")]
+mod custom_vars;
+#[cfg(feature = "main_nro")]
+mod vtable_hook;
+#[cfg(feature = "main_nro")]
+mod items;
 
 mod fighters;
 
-mod items;
-
+#[cfg(feature = "main_nro")]
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }
@@ -84,12 +88,10 @@ pub fn main() {
     {
         system::install();
         custom_vars::install();
-        // fighter::install();
         vtable_hook::install();
+        items::install();
         skyline::install_hooks!(change_version_string_hook);
     }
 
     fighters::install();
-
-    items::install();
 }

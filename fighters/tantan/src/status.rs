@@ -1,3 +1,5 @@
+use super::*;
+
 mod jump_squat;
 mod fall;
 

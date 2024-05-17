@@ -1,3 +1,5 @@
+use super::*;
+
 mod special_s;
 
 mod special_hi;

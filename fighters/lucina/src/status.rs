@@ -1,3 +1,5 @@
+use super::*;
+
 mod attack_dash;
 mod special_n;
 mod special_n_loop;

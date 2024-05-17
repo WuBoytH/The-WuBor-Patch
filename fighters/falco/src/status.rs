@@ -1,3 +1,5 @@
+use super::*;
+
 mod attack;
 mod attack_s4;
 mod attack_lw4;

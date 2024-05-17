@@ -1,3 +1,5 @@
+use super::*;
+
 mod special_n;
 mod special_n_escape;
 mod special_n_jump;

@@ -1,3 +1,5 @@
+use super::*;
+
 mod specials;
 mod catch;
 mod throws;

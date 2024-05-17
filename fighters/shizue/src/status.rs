@@ -1,3 +1,5 @@
+use super::*;
+
 mod special_n_search;
 mod special_lw_fire;
 

@@ -1,3 +1,5 @@
+use super::*;
+
 mod kirby;
 mod purin;
 mod koopa;

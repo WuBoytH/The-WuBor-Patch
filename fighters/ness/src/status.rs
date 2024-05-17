@@ -1,3 +1,5 @@
+use super::*;
+
 mod special_hi_attack;
 mod special_hi_reflect;
 

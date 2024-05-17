@@ -1,3 +1,5 @@
+use super::*;
+
 mod normals;
 mod smashes;
 mod aerials;

@@ -1,7 +1,7 @@
 use super::*;
 
-mod special_hi_move;
+mod special_hi_warp;
 
 pub fn install(agent: &mut smashline::Agent) {
-    special_hi_move::install(agent);
+    special_hi_warp::install(agent);
 }

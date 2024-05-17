@@ -1,4 +1,4 @@
-use crate::imports::*;
+use super::*;
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);

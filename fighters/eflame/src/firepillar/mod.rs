@@ -1,3 +1,5 @@
+use super::*;
+
 mod acmd;
 
 pub fn install() {

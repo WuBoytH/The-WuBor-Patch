@@ -20,6 +20,7 @@ mod frame;
 mod agent_init;
 
 mod esword;
+mod firepillar;
 
 pub fn install() {
     let agent = &mut smashline::Agent::new("eflame");
@@ -30,4 +31,5 @@ pub fn install() {
     agent.install();
 
     esword::install();
+    firepillar::install();
 }

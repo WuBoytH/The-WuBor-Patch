@@ -19,6 +19,14 @@ if "-ip" in sys.argv:
 elif "--i" in sys.argv:
     ip_index = sys.argv.index("--i")
 
+full_args = ''
+if "pr" in sys.argv:
+    full_args = ' --no-default-features --features=pr'
+elif "dev" in sys.argv:
+    full_args = ' --no-default-features --features=dev'
+elif "main" in sys.argv:
+    full_args = ' --no-default-features --features=main'
+
 if sys.argv.count("-help") > 0 or sys.argv.count("--h") > 0:
     print("This is the WuBor Patch build script.")
     print("Please pass arguments into the script to build WuBor.")
@@ -57,7 +65,7 @@ if build:
             os.remove("../target/development.nro")
 
     if not dev:
-        build_command = 'cargo skyline build --release'
+        build_command = 'cargo skyline build --release' + full_args
         # print(build_command)
         print("Building Full Plugin!")
 

@@ -38,13 +38,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (PR)
         run: |
-          cargo skyline build --release --features pr
+          cd scripts && python3 build.py pr
         env:
           HOME: /root
       - name: Setup Build Directory (PR)
         shell: bash
         run: |
-          cd scripts && python3 create_pr.py && cd ..
+          python3 create_pr.py && cd ..
       - name: Upload Plugin Artifact (PR)
         uses: actions/upload-artifact@v4.3.3
         with:

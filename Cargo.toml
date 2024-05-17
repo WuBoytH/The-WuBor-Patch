@@ -226,14 +226,25 @@ skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 
 [features]
 default = [
-    "local",
+    "local"
+]
+main_nro = ["common"]
+local = [
     "main_nro",
     "all_chars"
 ]
-main_nro = ["common"]
-local = []
-pr = []
-dev = []
+pr = [
+    "main_nro",
+    "all_chars"
+]
+dev = [
+    "main_nro",
+    "all_chars"
+]
+main = [
+    "main_nro",
+    "all_chars"
+]
 all_chars = [
     "bayonetta",
     "brave",

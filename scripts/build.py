@@ -52,7 +52,7 @@ else:
             if dev_index < arg_len:
                 dev_chars += ','
         for character in characters.characters:
-            if character not in dev_chars:
+            if character not in sys.argv:
                 if non_dev_chars != '':
                     non_dev_chars += ','
                 non_dev_chars += character

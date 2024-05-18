@@ -313,9 +313,9 @@ smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 
 [features]
-default = ["local"]
+default = ["local", "all_chars"]
 main_nro = ["common"]
-local = ["main_nro", "all_chars"]
+local = ["main_nro"]
 pr = ["main_nro", "all_chars"]
 dev = ["main_nro", "all_chars"]
 main = ["main_nro", "all_chars"]

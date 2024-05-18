@@ -825,6 +825,30 @@ unsafe extern "C" fn game_specialhithrow(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_f"), false, -1.0);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
+    frame(agent.lua_state_agent, 34.0);
+    frame(agent.lua_state_agent, 37.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_HI2_FLAG_APPEAR_DOYLE);
+    }
+}
+
+unsafe extern "C" fn game_specialairhib(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_b"), false, -1.0);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+    }
+    frame(agent.lua_state_agent, 34.0);
+    frame(agent.lua_state_agent, 37.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_HI2_FLAG_APPEAR_DOYLE);
+    }
+}
+
 unsafe extern "C" fn effect_wait4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -924,6 +948,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialhithrow", game_specialhithrow, Priority::Low);
 
     agent.acmd("game_specialairhithrow", game_specialhithrow, Priority::Low);
+
+    agent.acmd("game_specialairhif", game_specialairhif, Priority::Low);
+
+    agent.acmd("game_specialairhib", game_specialairhib, Priority::Low);
 
     agent.acmd("effect_wait4", effect_wait4, Priority::Low);
 

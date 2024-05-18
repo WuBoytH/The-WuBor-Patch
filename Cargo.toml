@@ -1,6 +1,5 @@
 [workspace]
-members = [
-    "fighters/common",
+members = ["fighters/common",
     "fighters/bayonetta",
     "fighters/brave",
     "fighters/buddy",
@@ -89,8 +88,8 @@ members = [
     "fighters/wolf",
     "fighters/yoshi",
     "fighters/younglink",
-    "fighters/zelda",
-]
+    "fighters/zelda"]
+
 resolver = "2"
 
 [workspace.package]
@@ -409,8 +408,7 @@ all_chars = [
     "wolf",
     "yoshi",
     "younglink",
-    "zelda",
-]
+    "zelda"]
 
 [profile.dev]
 panic = "abort"

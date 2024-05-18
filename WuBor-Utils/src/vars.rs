@@ -317,15 +317,6 @@ pub mod falco {
     }
 }
 
-pub mod fox {
-    pub mod status {
-        pub mod flag {
-            pub const SPECIAL_HI_ENABLE_SNAP : i32 = 0x1100;
-            pub const SPECIAL_HI_ENABLED_SNAP : i32 = 0x1101;
-        }
-    }
-}
-
 pub mod ganon {
     pub mod status {
         pub mod flag {

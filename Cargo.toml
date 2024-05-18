@@ -95,7 +95,6 @@ members = [
 resolver = "2"
 
 [workspace.package]
-version = "0.17.0"
 authors = ["WuBoy and Bor"]
 edition = "2021"
 
@@ -201,8 +200,8 @@ younglink = { path = "fighters/younglink" }
 zelda = { path = "fighters/zelda" }
 
 [package]
+version = "0.17.0"
 name = "wubor"
-version.workspace = true
 authors.workspace = true
 
 [package.metadata.skyline]

@@ -36,17 +36,13 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.83);
 }
 
-unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
-    MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 6.0);
-}
-
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES); // Vanilla
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Vanilla
     }
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
@@ -60,10 +56,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialsend", game_specialsend, Priority::Low);
 
     agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
-
-    agent.acmd("game_specialhistart", game_specialhistart, Priority::Low);
-
-    agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 }

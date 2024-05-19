@@ -4,6 +4,7 @@ import shutil, os, sys, characters
 build = True
 dev = False
 dev_chars = ''
+only_dev = False
 non_dev_chars = ''
 
 arg_len = sys.argv.__len__()
@@ -33,7 +34,8 @@ if sys.argv.count("-help") > 0 or sys.argv.count("--h") > 0:
     print("Arguments:")
     print("    -dev, --d: Indicate you're building a Dev plugin.")
     print("               List a set of characters afterwards to build a dev plugin for them.")
-    print("               ex. build.py --d sonic captain")
+    print("               Pass in \"only\" to only push the dev plugin.")
+    print("               ex. build.py --d only sonic captain")
     print("    -ip,  --i: Indicate the IP of the console you're sending the plugin to.")
     print("               ex. build.py --i 192.168.1.11")
     build = False
@@ -44,7 +46,9 @@ else:
         dev = True
         dev_index += 1
         while dev_index < arg_len:
-            if sys.argv[dev_index] in characters.characters:
+            if sys.argv[dev_index] == 'only':
+                only_dev = True
+            elif sys.argv[dev_index] in characters.characters:
                 dev_chars += (sys.argv[dev_index])
             else:
                 break
@@ -86,24 +90,25 @@ if build:
             ip = sys.argv[ip_index + 1]
             os.system('curl -T ../target/plugin.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
     else:
-        os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev_base")
-        build_command = 'cargo skyline build --release --no-default-features --features=local,main_nro,' + non_dev_chars
-        # print(build_command)
-        print("Building Base Dev Plugin!")
+        if not only_dev:
+            os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev_base")
+            build_command = 'cargo skyline build --release --no-default-features --features=local,main_nro,' + non_dev_chars
+            # print(build_command)
+            print("Building Base Dev Plugin!")
 
-        if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
-            os.remove("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro")
+            if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
+                os.remove("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro")
 
-        os.system(build_command)
+            os.system(build_command)
 
-        if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
-            print("Plugin built successfully! Copying to the target folder as plugin.nro")
-            shutil.copy(
-                "../target/dev_base/aarch64-skyline-switch/release/libwubor.nro",
-                "../target/plugin.nro"
-            )
-        else:
-            print("Something went wrong! Please read any compiler errors you see.")
+            if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
+                print("Plugin built successfully! Copying to the target folder as plugin.nro")
+                shutil.copy(
+                    "../target/dev_base/aarch64-skyline-switch/release/libwubor.nro",
+                    "../target/plugin.nro"
+                )
+            else:
+                print("Something went wrong! Please read any compiler errors you see.")
 
         os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev")
         build_command = 'cargo skyline build --release --no-default-features --features=' + dev_chars
@@ -126,7 +131,9 @@ if build:
 
         if ip_index != -1:
             ip = sys.argv[ip_index + 1]
-            os.system('curl -T ../target/plugin.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
+            if not only_dev:
+                os.system('curl -T ../target/plugin.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
+
             switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
             development_subpath = "smashline/"
 

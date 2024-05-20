@@ -40,6 +40,6 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
 
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_appealhil", game_appealhi, Priority::Low);
-    agent.acmd("game_appealhir", game_appealhi, Priority::Low);
+    agent.acmd("game_appealhil", game_appealhil, Priority::Low);
+    agent.acmd("game_appealhir", game_appealhir, Priority::Low);
 }

@@ -1,17 +1,21 @@
 use super::*;
 
-mod aerials;
-mod appeal;
 mod normals;
+mod aerials;
 mod specials;
+
 mod escape;
 mod cliff;
 
+mod appeal;
+
 pub fn install(agent: &mut smashline::Agent) {
-    aerials::install(agent);
-    appeal::install(agent);    
     normals::install(agent);
+    aerials::install(agent);
     specials::install(agent);
+
     escape::install(agent);
     cliff::install(agent);
+
+    appeal::install(agent);    
 }

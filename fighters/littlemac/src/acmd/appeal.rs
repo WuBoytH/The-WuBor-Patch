@@ -1,10 +1,9 @@
 use super::*;
 
 unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
-
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-    JostleModule::set_status(agent.module_accessor, false);
+        JostleModule::set_status(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -41,10 +40,9 @@ unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_appeallwl(agent: &mut L2CAgentBase) {
-
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-    JostleModule::set_status(agent.module_accessor, false);
+        JostleModule::set_status(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {

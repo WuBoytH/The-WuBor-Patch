@@ -1,6 +1,5 @@
 [workspace]
-members = [
-    "fighters/common",
+members = ["fighters/common",
     "fighters/bayonetta",
     "fighters/brave",
     "fighters/buddy",
@@ -89,8 +88,7 @@ members = [
     "fighters/wolf",
     "fighters/yoshi",
     "fighters/younglink",
-    "fighters/zelda"
-]
+    "fighters/zelda"]
 
 resolver = "2"
 
@@ -100,7 +98,7 @@ edition = "2021"
 
 [workspace.dependencies]
 skyline = "0.2.1"
-skyline_smash = { git =  "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash", features = ["weak_l2cvalue"] }
 smashline = { git = "https://github.com/HDR-Development/smashline" }
 
 wubor_utils = { path = "WuBor-Utils" }
@@ -315,26 +313,12 @@ smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
 
 [features]
-default = [
-    "local"
-]
+default = ["local", "all_chars"]
 main_nro = ["common"]
-local = [
-    "main_nro",
-    "all_chars"
-]
-pr = [
-    "main_nro",
-    "all_chars"
-]
-dev = [
-    "main_nro",
-    "all_chars"
-]
-main = [
-    "main_nro",
-    "all_chars"
-]
+local = ["main_nro"]
+pr = ["main_nro", "all_chars"]
+dev = ["main_nro", "all_chars"]
+main = ["main_nro", "all_chars"]
 all_chars = [
     "bayonetta",
     "brave",
@@ -424,8 +408,7 @@ all_chars = [
     "wolf",
     "yoshi",
     "younglink",
-    "zelda"
-]
+    "zelda"]
 
 [profile.dev]
 panic = "abort"

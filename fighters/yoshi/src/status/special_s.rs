@@ -35,7 +35,7 @@ unsafe extern "C" fn yoshi_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CV
 
 unsafe extern "C" fn yoshi_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let y_spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_spd_mul"));
-    let y_acl = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_acl"));
+    let y_acl = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
     let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
     let x_spd_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("x_spd_max_mul"));
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -215,13 +215,6 @@ unsafe extern "C" fn yoshi_special_s_exec(fighter: &mut L2CFighterCommon) -> L2C
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             1.5
         );
-        let y_acl = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("y_acl"));
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -y_acl
-        );
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         let x_spd_max_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("x_spd_max_mul"));
         sv_kinetic_energy!(
@@ -230,11 +223,6 @@ unsafe extern "C" fn yoshi_special_s_exec(fighter: &mut L2CFighterCommon) -> L2C
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
             air_speed_x_stable * x_spd_max_mul,
             0.0
-        );
-        sv_kinetic_energy!(
-            controller_set_accel_x_add,
-            fighter,
-            0.01
         );
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     }

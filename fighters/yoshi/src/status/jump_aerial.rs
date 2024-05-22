@@ -25,6 +25,11 @@ unsafe extern "C" fn yoshi_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_JumpAerial_Main as *const () as _))
 }
 
+unsafe extern "C" fn yoshi_jump_aerial_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, yoshi_jump_aerial_main);
+    agent.status(Exec, *FIGHTER_STATUS_KIND_JUMP_AERIAL, yoshi_jump_aerial_exec);
 }

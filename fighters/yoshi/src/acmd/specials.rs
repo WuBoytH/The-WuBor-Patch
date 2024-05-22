@@ -87,6 +87,59 @@ unsafe extern "C" fn expression_specials(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.module_accessor, vars::yoshi::status::flag::SPECIAL_HI_RISE);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.module_accessor, vars::yoshi::status::flag::SPECIAL_HI_RISE_AIR_CANCEL);
+        VarModule::on_flag(agent.module_accessor, vars::yoshi::status::flag::SPECIAL_HI_RISE_GROUND_CANCEL);
+    }
+    frame(agent.lua_state_agent, 30.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.module_accessor, vars::yoshi::status::flag::SPECIAL_HI_RISE_CUT);
+    }
+}
+
+unsafe extern "C" fn sound_specialairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_STATUS(agent, Hash40::new("vc_yoshi_jump02"));
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_yoshi_jump02"));
+    }
+    for _ in 0..5 {
+        wait(agent.lua_state_agent, 5.0);
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_yoshi_bata_left"));
+        }
+        wait(agent.lua_state_agent, 5.0);
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_yoshi_bata_right"));
+        }
+    }
+}
+
+unsafe extern "C" fn expression_specialairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    for _ in 0..11 {
+        if macros::is_excute(agent) {
+            ControlModule::set_rumble(
+                agent.module_accessor,
+                Hash40::new("rbkind_jump"),
+                0,
+                false,
+                *BATTLE_OBJECT_CATEGORY_INVALID as u32
+            );
+        }
+        wait(agent.lua_state_agent, 5.0);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
 
@@ -101,4 +154,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairs", effect_specials, Priority::Low);
     agent.acmd("sound_specialairs", sound_specials, Priority::Low);
     agent.acmd("expression_specialairs", expression_specials, Priority::Low);
+
+    agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
+    agent.acmd("effect_specialairhi", acmd_stub, Priority::Low);
+    agent.acmd("sound_specialairhi", sound_specialairhi, Priority::Low);
+    agent.acmd("expression_specialairhi", expression_specialairhi, Priority::Low);
 }

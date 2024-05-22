@@ -8,6 +8,8 @@ mod guard_damage;
 
 mod special_s;
 
+mod special_hi;
+
 pub mod helper;
 
 pub fn install(agent: &mut smashline::Agent) {
@@ -18,4 +20,6 @@ pub fn install(agent: &mut smashline::Agent) {
     guard_damage::install(agent);
 
     special_s::install(agent);
+
+    special_hi::install(agent);
 }

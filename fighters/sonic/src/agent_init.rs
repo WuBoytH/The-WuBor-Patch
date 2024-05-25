@@ -19,6 +19,6 @@ unsafe extern "C" fn sonic_status_end_control(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 }

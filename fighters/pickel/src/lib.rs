@@ -22,7 +22,7 @@ mod forge;
 mod trolley;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("pickel");
+    let agent = &mut Agent::new("pickel");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

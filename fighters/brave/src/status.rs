@@ -7,7 +7,7 @@ mod special_lw_start;
 mod special_lw_crash_end;
 pub mod helper;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     special_hi_jump::install(agent);
     special_lw::install(agent);
     special_lw_select::install(agent);

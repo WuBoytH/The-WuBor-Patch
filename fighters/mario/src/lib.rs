@@ -22,7 +22,7 @@ pub mod helper;
 pub mod vl;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("mario");
+    let agent = &mut Agent::new("mario");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

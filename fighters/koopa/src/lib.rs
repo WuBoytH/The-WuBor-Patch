@@ -21,7 +21,7 @@ mod frame;
 mod breath;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("koopa");
+    let agent = &mut Agent::new("koopa");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

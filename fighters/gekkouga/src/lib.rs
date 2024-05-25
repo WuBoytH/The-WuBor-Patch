@@ -19,7 +19,7 @@ mod status;
 mod frame;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("gekkouga");
+    let agent = &mut Agent::new("gekkouga");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

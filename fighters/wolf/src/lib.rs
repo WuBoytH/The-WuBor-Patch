@@ -20,7 +20,7 @@ mod frame;
 mod fgc;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("wolf");
+    let agent = &mut Agent::new("wolf");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

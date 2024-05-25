@@ -8,7 +8,7 @@ mod escape;
 mod cliff;
 mod misc;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     normals::install(agent);
     aerials::install(agent);
     specials::install(agent);

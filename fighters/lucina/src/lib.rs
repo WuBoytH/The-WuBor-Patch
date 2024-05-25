@@ -23,7 +23,7 @@ pub mod vl;
 mod cancel;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("lucina");
+    let agent = &mut Agent::new("lucina");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

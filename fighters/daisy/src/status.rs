@@ -10,7 +10,7 @@ mod special_lw;
 
 mod uniq_float;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     fall_special::install(agent);
 
     attack_air::install(agent);

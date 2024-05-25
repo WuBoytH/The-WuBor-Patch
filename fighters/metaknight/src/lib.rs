@@ -19,7 +19,7 @@ mod status;
 mod frame;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("metaknight");
+    let agent = &mut Agent::new("metaknight");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

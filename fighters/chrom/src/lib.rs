@@ -20,7 +20,7 @@ mod frame;
 mod fgc;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("chrom");
+    let agent = &mut Agent::new("chrom");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

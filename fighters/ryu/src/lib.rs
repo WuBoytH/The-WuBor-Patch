@@ -23,7 +23,7 @@ pub mod helper;
 mod hadoken;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("ryu");
+    let agent = &mut Agent::new("ryu");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

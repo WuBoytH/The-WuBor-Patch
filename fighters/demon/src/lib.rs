@@ -20,7 +20,7 @@ mod frame;
 pub mod helper;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("demon");
+    let agent = &mut Agent::new("demon");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

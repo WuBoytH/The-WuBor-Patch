@@ -9,7 +9,7 @@ mod cliff;
 
 mod appeal;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     specials::install(agent);
     catch::install(agent);
     throws::install(agent);

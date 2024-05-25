@@ -2,6 +2,6 @@ use super::*;
 
 mod specials;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     specials::install(agent);
 }

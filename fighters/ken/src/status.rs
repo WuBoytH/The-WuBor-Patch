@@ -17,7 +17,7 @@ mod special_hi;
 
 mod special_lw;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     dash_back::install(agent);
 
     attack::install(agent);

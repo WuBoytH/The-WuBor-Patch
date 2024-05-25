@@ -7,7 +7,7 @@ mod escape_air;
 
 mod change_helper;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     attack_air::install(agent);
     special_lw::install(agent);
     special_lw_out::install(agent);

@@ -25,7 +25,7 @@ mod bullet;
 mod clayrocket;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("shizue");
+    let agent = &mut Agent::new("shizue");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

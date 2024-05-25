@@ -884,3 +884,20 @@ pub mod wario {
         }
     }
 }
+
+pub mod yoshi {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_HOP : i32 = 0x1150;
+
+            pub const SPECIAL_HI_SPECIAL_HOLD : i32 = 0x1150;
+            pub const SPECIAL_HI_RISE : i32 = 0x1151;
+            pub const SPECIAL_HI_RISE_CUT : i32 = 0x1152;
+            pub const SPECIAL_HI_RISE_AIR_CANCEL : i32 = 0x1153;
+            pub const SPECIAL_HI_RISE_GROUND_CANCEL : i32 = 0x1154;
+        }
+        pub mod int {
+            pub const SPECIAL_HI_START_SITUATION : i32 = 0x1150;
+        }
+    }
+}

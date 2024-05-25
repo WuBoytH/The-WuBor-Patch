@@ -23,7 +23,7 @@ mod bowarrow;
 mod boomerang;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("toonlink");
+    let agent = &mut Agent::new("toonlink");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

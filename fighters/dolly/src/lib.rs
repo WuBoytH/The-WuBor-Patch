@@ -24,7 +24,7 @@ pub mod helper;
 // mod burst;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("dolly");
+    let agent = &mut Agent::new("dolly");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

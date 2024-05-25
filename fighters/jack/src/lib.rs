@@ -23,7 +23,7 @@ mod fgc;
 mod doyle;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("jack");
+    let agent = &mut Agent::new("jack");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

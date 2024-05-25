@@ -20,7 +20,7 @@ mod status;
 pub mod agent_init;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("daisy");
+    let agent = &mut Agent::new("daisy");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

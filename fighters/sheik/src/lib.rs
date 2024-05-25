@@ -19,7 +19,7 @@ mod status;
 mod frame;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("sheik");
+    let agent = &mut Agent::new("sheik");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

@@ -21,7 +21,7 @@ mod agent_init;
 mod fgc;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("bayonetta");
+    let agent = &mut Agent::new("bayonetta");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

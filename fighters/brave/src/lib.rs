@@ -20,7 +20,7 @@ mod frame;
 mod agent_init;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("brave");
+    let agent = &mut Agent::new("brave");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

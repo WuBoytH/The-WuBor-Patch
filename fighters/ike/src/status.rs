@@ -6,7 +6,7 @@ mod special_s_dash;
 mod rebirth;
 pub mod helper;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     special_n_loop::install(agent);
     special_n_end::install(agent);
     special_s_dash::install(agent);

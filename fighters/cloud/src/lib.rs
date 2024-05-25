@@ -18,7 +18,7 @@ mod acmd;
 mod frame;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("cloud");
+    let agent = &mut Agent::new("cloud");
     acmd::install(agent);
     frame::install(agent);
     agent.install();

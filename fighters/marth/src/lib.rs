@@ -22,7 +22,7 @@ pub mod vl;
 pub mod helper;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("marth");
+    let agent = &mut Agent::new("marth");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

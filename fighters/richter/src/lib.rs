@@ -24,7 +24,7 @@ mod axe;
 mod cross;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("richter");
+    let agent = &mut Agent::new("richter");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

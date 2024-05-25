@@ -8,7 +8,7 @@ mod special_hi_turn;
 
 mod special_lw_fire;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     special_n_search::install(agent);
     
     special_hi_wait::install(agent);

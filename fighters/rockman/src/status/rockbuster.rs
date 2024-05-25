@@ -9,7 +9,7 @@ mod shoot_air;
 mod shoot_landing;
 pub mod helper;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     shoot_wait::install(agent);
     shoot_walk::install(agent);
     shoot_turn::install(agent);

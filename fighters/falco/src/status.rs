@@ -6,7 +6,7 @@ mod attack_lw4;
 mod special_hi_rush;
 mod appeal;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     attack::install(agent);
     attack_s4::install(agent);
     attack_lw4::install(agent);

@@ -23,7 +23,7 @@ mod whip;
 mod axe;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("simon");
+    let agent = &mut Agent::new("simon");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

@@ -2,6 +2,6 @@ use super::*;
 
 mod escape_air;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     escape_air::install(agent);
 }

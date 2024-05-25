@@ -45,6 +45,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 }

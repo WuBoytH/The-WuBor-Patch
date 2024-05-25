@@ -32,6 +32,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     VarModule::set_int(fighter.module_accessor, vars::brave::instance::int::SPELL_SLOT_4, -1);
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
 }

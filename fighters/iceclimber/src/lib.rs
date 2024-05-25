@@ -18,8 +18,8 @@ mod acmd;
 mod frame;
 
 pub fn install() {
-    let popo = &mut smashline::Agent::new("popo");
-    let nana = &mut smashline::Agent::new("nana");
+    let popo = &mut Agent::new("popo");
+    let nana = &mut Agent::new("nana");
     acmd::install(popo);
     acmd::install(nana);
     frame::install(popo);

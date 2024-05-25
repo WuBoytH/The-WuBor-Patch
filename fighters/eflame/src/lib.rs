@@ -23,7 +23,7 @@ mod esword;
 mod firepillar;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("eflame");
+    let agent = &mut Agent::new("eflame");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

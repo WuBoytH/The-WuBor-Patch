@@ -21,7 +21,7 @@ mod frame;
 mod clay;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("duckhunt");
+    let agent = &mut Agent::new("duckhunt");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

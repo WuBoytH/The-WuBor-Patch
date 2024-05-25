@@ -25,7 +25,7 @@ mod cloud;
 mod kaminari;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("pikachu");
+    let agent = &mut Agent::new("pikachu");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

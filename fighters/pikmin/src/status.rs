@@ -7,7 +7,7 @@ mod attack_hi3;
 mod special_hi;
 mod special_hi_wait;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     landing::install(agent);
     attack_s3::install(agent);
     attack_hi3::install(agent);

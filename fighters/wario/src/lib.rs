@@ -20,7 +20,7 @@ mod frame;
 pub mod vl;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("wario");
+    let agent = &mut Agent::new("wario");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

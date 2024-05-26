@@ -161,12 +161,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialhiend(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
-    }
-}
-
 unsafe extern "C" fn game_dspecialhold(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, 0, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_LW);
@@ -230,8 +224,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhistart", game_specialhistart, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
-
-    agent.acmd("game_specialairhiend", game_specialhiend, Priority::Low);
 
     agent.acmd("game_speciallwhold", game_dspecialhold, Priority::Low);
 

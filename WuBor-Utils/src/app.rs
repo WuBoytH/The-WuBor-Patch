@@ -225,3 +225,16 @@ impl ShieldGroupResource2 {
         }
     }
 }
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct CommandInputState {
+    pub vtable: u64,
+    pub command_timer: u8,
+    pub state: u8,
+    pub unk2: u8,
+    pub input_allow: u8,
+    pub max_timer: u8,
+    pub enable_timer: u8,
+    pub lr: i8,
+}

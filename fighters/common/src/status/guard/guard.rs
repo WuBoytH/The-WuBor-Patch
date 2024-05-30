@@ -97,7 +97,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
         return true.into();
     }
     if can_act {
-        if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             let cat1 = fighter.global_table[CMD_CAT1].get_i32();
             set_cat1_backup(fighter, cat1, true);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());

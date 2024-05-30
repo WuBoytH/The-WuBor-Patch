@@ -1,14 +1,23 @@
 use super::*;
 
+unsafe extern "C" fn game_attacks4charge(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4_hold"), false, -1.0);
+    }
+}
+
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
-        // ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("start"), false, -1.0);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4"), false, -1.0);
     }
     frame(agent.lua_state_agent, 8.0);
+    execute(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        let restart_frame = WorkModule::get_float(agent.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4"), false, restart_frame);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -41,11 +50,14 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
-        // ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("start"), false, -1.0);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4_hi"), false, -1.0);
     }
     frame(agent.lua_state_agent, 8.0);
+    execute(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        let restart_frame = WorkModule::get_float(agent.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4_hi"), false, restart_frame);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -78,11 +90,14 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
-        // ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("start"), false, -1.0);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4_lw"), false, -1.0);
     }
     frame(agent.lua_state_agent, 8.0);
+    execute(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        let restart_frame = WorkModule::get_float(agent.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4_lw"), false, restart_frame);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -179,6 +194,8 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attacks4charge", game_attacks4charge, Priority::Low);
+
     agent.acmd("game_attacks4", game_attacks4, Priority::Low);
     agent.acmd("effect_attacks4", effect_attacks4, Priority::Low);
     agent.acmd("sound_attacks4", sound_attacks4, Priority::Low);

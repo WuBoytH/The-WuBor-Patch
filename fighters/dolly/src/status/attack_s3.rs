@@ -8,35 +8,36 @@ unsafe extern "C" fn dolly_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn dolly_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if dolly_hit_cancel(fighter).get_i32() == 0
-    && dolly_attack_start_cancel(fighter).get_i32() == 0 {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_lw")
-        && !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
-            let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
-            if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
-            && FGCModule::cancel_exceptions(
-                fighter,
-                *FIGHTER_STATUS_KIND_ATTACK_HI3,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
-                true
-            ).get_bool())
-            || (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
-            && attack_s3_stick_dir_hi < stick_dir
-            && FGCModule::cancel_exceptions(
-                fighter,
-                *FIGHTER_STATUS_KIND_ATTACK_S3,
-                *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
-                true
-            ).get_bool()) {
-                VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL);
-                return 1.into();
-            }
-        }
-        dolly_attack_s3_main_loop_inner(fighter, FIGHTER_COMBO_KIND_S3.into());
-        return 0.into();
+    if dolly_hit_cancel(fighter).get_i32() != 0
+    || dolly_attack_start_cancel(fighter).get_i32() != 0 {
+        return 1.into();
     }
-    1.into()
+
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_lw")
+    && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
+        let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
+        if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
+        && FGCModule::cancel_exceptions(
+            fighter,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
+            true
+        ).get_bool())
+        || (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
+        && attack_s3_stick_dir_hi < stick_dir
+        && FGCModule::cancel_exceptions(
+            fighter,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
+            true
+        ).get_bool()) {
+            VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL);
+            return 1.into();
+        }
+    }
+    dolly_attack_s3_main_loop_inner(fighter, FIGHTER_COMBO_KIND_S3.into());
+    return 0.into();
 }
 
 unsafe extern "C" fn dolly_attack_s3_main_loop_inner(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {

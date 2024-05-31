@@ -78,15 +78,20 @@ unsafe extern "C" fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L
 
 unsafe extern "C" fn dolly_attack_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
-        if dolly_hit_cancel(fighter).get_i32() == 1 {
+        if dolly_hit_cancel(fighter).get_i32() != 0 {
             return 1.into();
         }
     }
-    else if !VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
-        if dolly_hit_cancel(fighter).get_i32() == 1
-        || dolly_attack_start_cancel(fighter).get_i32() == 1 {
+    else {
+        if dolly_hit_cancel(fighter).get_i32() != 0{
             return 1.into();
         }
+        if !VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
+            if dolly_attack_start_cancel(fighter).get_i32() != 0 {
+                return 1.into();
+            }
+        }
+        
     }
     fighter.status_AttackDash_Main();
     0.into()

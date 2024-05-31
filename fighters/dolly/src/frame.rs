@@ -98,12 +98,22 @@ unsafe extern "C" fn dolly_scuffed_special_super_cancels(fighter: &mut L2CFighte
     }
 }
 
+unsafe extern "C" fn dolly_training_meter(fighter: &mut L2CFighterCommon) {
+    if smashball::is_training_mode() {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+        && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+            add_go(fighter.module_accessor, 100.0);
+        }
+    }
+}
+
 unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     // dolly_reset_vars(fighter);
     common_fighter_frame(fighter);
     dolly_super_special_aura(fighter);
     dolly_super_super_cancels(fighter);
     dolly_scuffed_special_super_cancels(fighter);
+    dolly_training_meter(fighter);
 }
 
 pub fn install(agent: &mut Agent) {

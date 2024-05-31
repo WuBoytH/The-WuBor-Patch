@@ -1,5 +1,5 @@
 use super::*;
-use super::agent_init::*;
+use crate::{agent_init::*, helper::*};
 
 extern "C" {
     #[link_name = "common_fighter_frame"]
@@ -87,11 +87,23 @@ unsafe extern "C" fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe extern "C" fn dolly_scuffed_special_super_cancels(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK {
+        let situation = fighter.global_table[SITUATION_KIND].get_i32();
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && dolly_final_cancel(fighter, situation.into()).get_bool() {
+            return;
+        }
+    }
+}
+
 unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     // dolly_reset_vars(fighter);
     common_fighter_frame(fighter);
     dolly_super_special_aura(fighter);
     dolly_super_super_cancels(fighter);
+    dolly_scuffed_special_super_cancels(fighter);
 }
 
 pub fn install(agent: &mut Agent) {

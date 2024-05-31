@@ -21,10 +21,15 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
         if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT) {
             MotionModule::set_rate(agent.module_accessor, 1.0);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
+            WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         }
         else {
             MotionModule::set_rate(agent.module_accessor, 1.5);
         }
+    }
+    frame(agent.lua_state_agent, 25.0);
+    if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 
@@ -108,9 +113,9 @@ unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    }
+    // if macros::is_excute(agent) {
+    //     WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    // }
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
             macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
@@ -210,7 +215,7 @@ unsafe extern "C" fn game_specialsbattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        // WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         AttackModule::clear_all(agent.module_accessor);
     }
 }

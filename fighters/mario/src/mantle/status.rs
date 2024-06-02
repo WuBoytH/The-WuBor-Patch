@@ -11,6 +11,5 @@ unsafe extern "C" fn set_bonker(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    println!("help me");
     agent.status(Init, 0, set_bonker);
 }

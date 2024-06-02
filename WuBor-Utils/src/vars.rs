@@ -528,6 +528,7 @@ pub mod mario {
     pub mod instance {
         pub mod flag {
             pub const SPECIAL_LW_BLJ_PREV : i32 = 0x0100;
+            pub const BONKER : i32 = 0x0101;
         }
         pub mod int {
             pub const SPECIAL_LW_KIND : i32 = 0x0100;

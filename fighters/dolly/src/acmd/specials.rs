@@ -764,17 +764,9 @@ unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK) {
         if macros::is_excute(agent) {
-            for _ in 0..5 {
-                macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flyroll_smoke"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1.0, true);
-                macros::LAST_EFFECT_SET_RATE(agent, 0.1);
-                macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 1.0);
-                macros::LAST_EFFECT_SET_ALPHA(agent, 0.4);
-            }
+            macros::LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.4, 0.4, 0.7);
         }
-    }
-    frame(agent.lua_state_agent, 11.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("sys_flyroll_smoke"), false, false);
     }
 }
 

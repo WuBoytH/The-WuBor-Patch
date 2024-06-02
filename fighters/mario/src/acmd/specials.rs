@@ -1,5 +1,4 @@
 use super::*;
-use super::super::vl;
 
 unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -7,29 +6,20 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
-        if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP)
-        && StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_AIR {
-            macros::SET_SPEED_EX(
-                agent,
-                0.0,
-                vl::param_special_s::spin_hop_speed_y,
-                *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
-            );
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP);
-        }
+        VarModule::on_flag(agent.module_accessor, vars::mario::status::flag::SPECIAL_S_TRY_HOP);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_MARIO_REFLECTOR_KIND_MANTLE, *FIGHTER_REFLECTOR_GROUP_EXTEND);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 65, 0, 65, 4.0, 0.0, 9.0, 10.0, Some(0.0), Some(5.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 361, 50, 0, 65, 3.0, 0.0, 9.0, 7.0, Some(0.0), Some(9.0), Some(-10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 5.0, 361, 50, 0, 65, 3.0, 0.0, 5.0, 7.0, Some(0.0), Some(5.0), Some(-10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 90, 0, 50, 4.0, 0.0, 9.0, 10.0, Some(0.0), Some(5.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 361, 70, 0, 50, 3.0, 0.0, 9.0, 7.0, Some(0.0), Some(9.0), Some(-10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 5.0, 361, 70, 0, 50, 3.0, 0.0, 5.0, 7.0, Some(0.0), Some(5.0), Some(-10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         AttackModule::clear(agent.module_accessor, 0, false);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_MARIO_REFLECTOR_KIND_MANTLE, *FIGHTER_REFLECTOR_GROUP_EXTEND);
     }
@@ -37,30 +27,48 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(agent.module_accessor);
+        VarModule::on_flag(agent.module_accessor, vars::mario::status::flag::SPECIAL_S_ENABLE_CONTROL);
     }
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("mario_supermant_wind_r"), Hash40::new("mario_supermant_wind_l"), Hash40::new("top"), 2.5, 5, -2.0, 22, 0, 0, 1.2, true, *EF_FLIP_NONE);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
-    }
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
-        macros::LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 9.0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -9.0, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 4.5, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -4.5, 0, 0, 0, 1.0, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
     }
 }
 
-unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("mario_supermant_wind_r"), Hash40::new("mario_supermant_wind_l"), Hash40::new("top"), 2.5, 5, -2.0, 22, 0, 0, 1.2, true, *EF_FLIP_NONE);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
-    }
-    frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        macros::LANDING_EFFECT_FLIP(agent, Hash40::new("sys_whirlwind_r"), Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        macros::PLAY_SE(agent, Hash40::new("se_mario_special_s01"));
     }
 }
 
@@ -277,10 +285,12 @@ unsafe extern "C" fn expression_groundpoundland(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specials", game_specials, Priority::Low);
     agent.acmd("effect_specials", effect_specials, Priority::Low);
+    agent.acmd("sound_specials", sound_specials, Priority::Low);
     agent.acmd("expression_specials", expression_specials, Priority::Low);
 
     agent.acmd("game_specialairs", game_specials, Priority::Low);
-    agent.acmd("effect_specialairs", effect_specialairs, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specials, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specials, Priority::Low);
     agent.acmd("expression_specialairs", expression_specials, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);

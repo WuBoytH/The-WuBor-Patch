@@ -249,8 +249,9 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
         macros::HIT_NODE(agent, Hash40::new("claviclel"), *HIT_STATUS_NORMAL);    
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 23.0);
+    frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 

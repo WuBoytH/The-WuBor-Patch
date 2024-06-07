@@ -89,11 +89,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
-        if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
-        }
-    }
+    ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("toer"), 0, 0, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -108,11 +104,7 @@ unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
         macros::LAST_EFFECT_SET_ALPHA(agent, 0.7);
     }
     frame(agent.lua_state_agent, 7.0);
-    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
-        if macros::is_excute(agent) {
-            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
-        }
-    }
+    ryu_saving_aura_remover(agent);
 }
 
 pub fn install(agent: &mut Agent) {

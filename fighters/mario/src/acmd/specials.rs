@@ -31,36 +31,48 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.65);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 9.0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -9.0, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 4.5, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -4.5, 0, 0, 0, 1.0, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+    frame(agent.lua_state_agent, 10.0);
+    if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 180, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.045, 0.345, 2.05);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 9.0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -9.0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, 4.5, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_starrod_splash"), Hash40::new("top"), 0, 9.3, -4.5, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.5);
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 10.4, 0, 0, 0, 0, 1.0, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+            macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+        }
     }
 }
 

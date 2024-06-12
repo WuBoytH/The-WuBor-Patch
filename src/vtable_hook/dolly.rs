@@ -11,9 +11,9 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    if smashball::is_training_mode() {
-        return 1;
-    }
+    // if smashball::is_training_mode() {
+    //     return 1;
+    // }
     let go_meter = VarModule::get_float(module_accessor, dolly::instance::float::GO_METER);
     // println!("go_meter: {}", go_meter);
     if go_meter >= 100.0 {

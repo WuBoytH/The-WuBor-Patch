@@ -44,6 +44,9 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Vanilla
     }
+    macros::FT_MOTION_RATE(agent, 8.0/34.0);
+    frame(agent.lua_state_agent, 44.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);

@@ -9,16 +9,16 @@ non_dev_chars = ''
 
 arg_len = sys.argv.__len__()
 dev_index = -1
-if "-dev" in sys.argv:
-    dev_index = sys.argv.index("-dev")
-elif "--d" in sys.argv:
-    dev_index = sys.argv.index("--d")
+if "--dev" in sys.argv:
+    dev_index = sys.argv.index("--dev")
+elif "-d" in sys.argv:
+    dev_index = sys.argv.index("-d")
 ip_index = -1
 ip = ''
-if "-ip" in sys.argv:
-    ip_index = sys.argv.index("-ip")
-elif "--i" in sys.argv:
-    ip_index = sys.argv.index("--i")
+if "--ip" in sys.argv:
+    ip_index = sys.argv.index("--ip")
+elif "-i" in sys.argv:
+    ip_index = sys.argv.index("-i")
 
 full_args = ''
 if "pr" in sys.argv:
@@ -28,15 +28,15 @@ elif "dev" in sys.argv:
 elif "main" in sys.argv:
     full_args = ' --no-default-features --features=main'
 
-if sys.argv.count("-help") > 0 or sys.argv.count("--h") > 0:
+if sys.argv.count("--help") > 0 or sys.argv.count("-h") > 0:
     print("This is the WuBor Patch build script.")
     print("Please pass arguments into the script to build WuBor.")
     print("Arguments:")
-    print("    -dev, --d: Indicate you're building a Dev plugin.")
+    print("    --dev, -d: Indicate you're building a Dev plugin.")
     print("               List a set of characters afterwards to build a dev plugin for them.")
     print("               Pass in \"only\" to only push the dev plugin.")
     print("               ex. build.py --d only sonic captain")
-    print("    -ip,  --i: Indicate the IP of the console you're sending the plugin to.")
+    print("    --ip,  -i: Indicate the IP of the console you're sending the plugin to.")
     print("               ex. build.py --i 192.168.1.11")
     build = False
 else:

@@ -249,7 +249,7 @@ unsafe extern "C" fn effect_attack142(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
-        macros::LANDING_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.5, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.5, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {

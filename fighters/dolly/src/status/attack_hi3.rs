@@ -19,26 +19,25 @@ unsafe extern "C" fn dolly_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn dolly_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if dolly_hit_cancel(fighter).get_i32() == 0 {
-        if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE
-        && !VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL) {
+    if dolly_hit_cancel(fighter).get_i32() != 0 {
+        return 1.into();
+    }
+
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE
+    && !VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL) {
+        if dolly_attack_start_cancel(fighter).get_i32() == 1 {
+            return 1.into();
+        }
+    }
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ESCAPE_ATTACK) {
             if dolly_attack_start_cancel(fighter).get_i32() == 1 {
                 return 1.into();
             }
         }
-        else {
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ESCAPE_ATTACK) {
-                if dolly_attack_start_cancel(fighter).get_i32() == 1 {
-                    return 1.into();
-                }
-            }
-        }
-        fighter.status_AttackHi3_Main();
-        0.into()
     }
-    else {
-        1.into()
-    }
+    fighter.status_AttackHi3_Main();
+    0.into()
 }
 
 pub fn install(agent: &mut Agent) {

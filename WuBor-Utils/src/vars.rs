@@ -528,6 +528,7 @@ pub mod mario {
     pub mod instance {
         pub mod flag {
             pub const SPECIAL_LW_BLJ_PREV : i32 = 0x0100;
+            pub const BONKER : i32 = 0x0101;
         }
         pub mod int {
             pub const SPECIAL_LW_KIND : i32 = 0x0100;
@@ -536,6 +537,10 @@ pub mod mario {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
+
+            pub const SPECIAL_S_TRY_HOP : i32 = 0x1150;
+            pub const SPECIAL_S_HOP : i32 = 0x1151;
+            pub const SPECIAL_S_ENABLE_CONTROL : i32 = 0x1152;
 
             pub const SPECIAL_LW_LANDING : i32 = 0x1150;
             pub const SPECIAL_LW_BLJ : i32 = 0x1151;

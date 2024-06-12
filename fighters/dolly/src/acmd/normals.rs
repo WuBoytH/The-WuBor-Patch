@@ -148,7 +148,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     else {
         if macros::is_excute(agent) {
             JostleModule::set_status(agent.module_accessor, false);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 50, 10, 50, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 25, 50, 10, 50, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 10.0, false);
         }
     }
@@ -249,8 +249,9 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
         macros::HIT_NODE(agent, Hash40::new("claviclel"), *HIT_STATUS_NORMAL);    
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 23.0);
+    frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 

@@ -202,6 +202,65 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
 //     }
 // }
 
+#[skyline::hook(offset = 0x6bd5b4, inline)]
+unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
+    // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
+    // let precede_extension = (*(*control_scuffed).something).precede_extension;
+    let precede_extension = 24;
+    let current_buffer = ctx.registers[8].w.as_ref();
+    let threshold = u8::MAX - precede_extension;
+    let buffer = if *current_buffer == 1 {
+        // println!("Starting Hold Buffer");
+        u8::MAX as u32
+    }
+    else if *current_buffer == threshold as u32 {
+        // println!("Hold Threshold Reached");
+        1
+    }
+    else {
+        *current_buffer
+    };
+    *ctx.registers[8].w.as_mut() = buffer as u32;
+}
+
+#[skyline::hook(offset = 0x6bd51c, inline)]
+unsafe fn set_release_value_in_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
+    set_release_value_internal(ctx);
+}
+
+#[skyline::hook(offset = 0x6bd5d8, inline)]
+unsafe fn set_release_value(ctx: &mut skyline::hooks::InlineCtx) {
+    set_release_value_internal(ctx);
+}
+
+unsafe fn set_release_value_internal(ctx: &mut skyline::hooks::InlineCtx) {
+    // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
+    // let precede_extension = (*(*control_scuffed).something).precede_extension;
+    let precede_extension = 24;
+    // println!("precede_extension: {:#x}", precede_extension);
+    let threshold = u8::MAX - precede_extension;
+    // println!("precede_extension threshold: {:#x}", threshold);
+    let current_buffer = ctx.registers[9].w.as_ref();
+    // println!("current: {:#x}", *current_buffer);
+    let buffer = if *current_buffer < threshold as u32 {
+        *current_buffer
+    }
+    else {
+        1
+    };
+    *ctx.registers[8].w.as_mut() = buffer as u32;
+}
+
+// #[skyline::hook(offset = 0x6bd5ec, inline)]
+// unsafe fn get_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
+//     let cat = *ctx.registers[24].w.as_ref();
+//     let flag = *ctx.registers[22].w.as_ref();
+//     if cat == 0 && flag == 25 {
+//         let buffer = *ctx.registers[8].w.as_ref();
+//         println!("ESCAPE_F buffer: {:#x}", buffer);
+//     }
+// }
+
 pub fn install() {
     // Prevents buffered C-stick aerials from triggering nair
     skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
@@ -219,17 +278,20 @@ pub fn install() {
     // Always uses the hitlag handling that cat4 uses
     skyline::patching::Patch::in_text(0x6bd448).nop();
     skyline::patching::Patch::in_text(0x6bd4a4).nop();
+    // Stubs the check if the buffer value is 1 and the button is held
+    skyline::patching::Patch::in_text(0x6bd5b0).nop();
     // Stubs setting the buffer lifetime to 2 if held
     skyline::patching::Patch::in_text(0x6bd53c).nop();
-    skyline::patching::Patch::in_text(0x6bd5b8).nop();
-    // Stubs adding 1 to the buffer when released
-    skyline::patching::Patch::in_text(0x6bd518).nop();
-    skyline::patching::Patch::in_text(0x6bd5d4).nop();
+    skyline::patching::Patch::in_text(0x6bd5b4).nop();
 
     skyline::install_hooks!(
         // get_command_flag_cat_replace,
         exec_command_hook,
         set_attack_air_stick_hook,
-        // exec_command_reset_attack_air_kind_hook
+        // exec_command_reset_attack_air_kind_hook,
+        set_hold_buffer_value,
+        set_release_value_in_hitlag,
+        set_release_value,
+        // get_buffer_value
     );
 }

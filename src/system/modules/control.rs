@@ -202,13 +202,14 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
 //     }
 // }
 
+const PRECEDE_EXTENSION : u8 = 24;
+
 #[skyline::hook(offset = 0x6bd5b4, inline)]
 unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
     // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
     // let precede_extension = (*(*control_scuffed).something).precede_extension;
-    let precede_extension = 24;
     let current_buffer = ctx.registers[8].w.as_ref();
-    let threshold = u8::MAX - precede_extension;
+    let threshold = u8::MAX - PRECEDE_EXTENSION;
     let buffer = if *current_buffer == 1 {
         // println!("Starting Hold Buffer");
         u8::MAX as u32
@@ -236,9 +237,8 @@ unsafe fn set_release_value(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe fn set_release_value_internal(ctx: &mut skyline::hooks::InlineCtx) {
     // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
     // let precede_extension = (*(*control_scuffed).something).precede_extension;
-    let precede_extension = 24;
     // println!("precede_extension: {:#x}", precede_extension);
-    let threshold = u8::MAX - precede_extension;
+    let threshold = u8::MAX - PRECEDE_EXTENSION;
     // println!("precede_extension threshold: {:#x}", threshold);
     let current_buffer = ctx.registers[9].w.as_ref();
     // println!("current: {:#x}", *current_buffer);

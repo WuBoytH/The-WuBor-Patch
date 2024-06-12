@@ -12,8 +12,8 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_s4"), false, -1.0);
     }
-    frame(agent.lua_state_agent, 7.0);
-    execute(agent.lua_state_agent, 7.0);
+    frame(agent.lua_state_agent, 8.0);
+    execute(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
         let restart_frame = WorkModule::get_float(agent.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);

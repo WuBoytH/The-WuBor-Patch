@@ -24,7 +24,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 15.0, 361, 90, 0, 25, 2.0, 0.0, 0.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("haver"), 15.0, 361, 90, 0, 25, 3.0, 5.0, 0.0, -3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 18.0, 361, 90, 0, 25, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("haver"), 18.0, 361, 90, 0, 25, 4.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
@@ -53,10 +53,18 @@ unsafe extern "C" fn effect_attacks4(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_attacks4(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 17.0);
+    frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_common_smash_start"));
+        macros::PLAY_SE(agent, Hash40::new("se_common_smashswing_03"));
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_mario_attack05"));
+    }
+    frame(agent.lua_state_agent, 21.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_mario_manthit"));
     }
 }
 

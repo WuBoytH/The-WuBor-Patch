@@ -27,7 +27,7 @@ unsafe extern "C" fn ryu_special_n2_command_pre(fighter: &mut L2CFighterCommon) 
             *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON |
             *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N2_COMMAND
         ) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
         0
     );

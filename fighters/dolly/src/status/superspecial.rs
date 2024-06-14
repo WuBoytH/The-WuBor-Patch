@@ -64,7 +64,7 @@ unsafe extern "C" fn dolly_super_special2_blow_end(fighter: &mut L2CFighterCommo
         CatchModule::catch_cut(fighter.module_accessor, false, false);
     }
     if ![
-        *FIGHTER_STATUS_KIND_ATTACK_DASH
+        vars::dolly::status::ATTACK_DASH_COMMAND
     ].contains(&status) {
         VarModule::off_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE);
         EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);

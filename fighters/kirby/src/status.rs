@@ -8,6 +8,7 @@ mod lucario;
 mod ike;
 mod belmont;
 mod jack;
+mod dolly;
 
 pub fn install(agent: &mut Agent) {
     kirby::install(agent);
@@ -18,4 +19,5 @@ pub fn install(agent: &mut Agent) {
     ike::install(agent);
     belmont::install(agent);
     jack::install(agent);
+    dolly::install(agent);
 }

@@ -29,8 +29,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND);
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
+        fighter.change_status(vars::dolly::status::ATTACK_DASH_COMMAND.into(), true.into());
         return true.into();
     }
 
@@ -51,7 +50,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_N_UNIQ].clone()).get_bool() {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
+        fighter.change_status(vars::dolly::status::SPECIAL_N_COMMAND.into(), true.into());
         return true.into();
     }
 

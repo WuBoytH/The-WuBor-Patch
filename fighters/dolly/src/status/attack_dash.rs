@@ -2,34 +2,34 @@ use super::*;
 use super::super::helper::*;
 
 unsafe extern "C" fn dolly_attack_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_command = VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND);
-    fighter.status_pre_AttackDash();
-    VarModule::set_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND, is_command);
-    0.into()
+    fighter.status_pre_AttackDash()
+}
+
+unsafe extern "C" fn dolly_attack_dash_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND);
+    let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
+    if special_command_lr != 0.0 && PostureModule::lr(fighter.module_accessor) != special_command_lr {
+        PostureModule::set_lr(fighter.module_accessor, special_command_lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+    }
+    dolly_attack_dash_main(fighter)
 }
 
 unsafe extern "C" fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::SPECIAL_CANCEL) {
         VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.module_accessor, vars::dolly::instance::flag::SPECIAL_CANCEL);
-    }
-    if VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
-        let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
-        if special_command_lr != 0.0 && PostureModule::lr(fighter.module_accessor) != special_command_lr {
-            PostureModule::set_lr(fighter.module_accessor, special_command_lr);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-            sv_kinetic_energy!(
-                reset_energy,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            );
-        }
     }
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -41,16 +41,7 @@ unsafe extern "C" fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L
         false,
         false
     );
-    if VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
-        let attack_dash_h_distance_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_misc"), hash40("attack_dash_h_distance_mul"));
-        sv_kinetic_energy!(
-            set_speed_mul,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            attack_dash_h_distance_mul
-        );
-    }
-    else {
+    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
@@ -116,7 +107,10 @@ unsafe extern "C" fn dolly_attack_dash_end(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_pre);
     agent.status(Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_main);
     agent.status(End, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_end);
+
+    agent.status(Pre, vars::dolly::status::ATTACK_DASH_COMMAND, dolly_attack_dash_pre);
+    agent.status(Main, vars::dolly::status::ATTACK_DASH_COMMAND, dolly_attack_dash_command_main);
+    agent.status(End, vars::dolly::status::ATTACK_DASH_COMMAND, dolly_attack_dash_end);
 }

@@ -1,5 +1,6 @@
 use {
     smash::{
+        hash40,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -166,8 +167,11 @@ fn exec_post(module_accessor: *mut BattleObjectModuleAccessor, cat1_prev: i32) {
     }
 }
 
+pub static mut EXEC_CONTROL_MODULE : u64 = 0;
+
 #[skyline::hook(offset = 0x6bac10)]
 fn exec_command_hook(control_module: u64, flag: bool) {
+    unsafe {EXEC_CONTROL_MODULE = control_module;}
     let module_accessor = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
 
     exec_internal(module_accessor);
@@ -206,22 +210,45 @@ const PRECEDE_EXTENSION : u8 = 24;
 
 #[skyline::hook(offset = 0x6bd5b4, inline)]
 unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
-    // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
-    // let precede_extension = (*(*control_scuffed).something).precede_extension;
-    let current_buffer = ctx.registers[8].w.as_ref();
+    let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
+    let cat = *ctx.registers[24].w.as_ref();
+    let flag = *ctx.registers[22].w.as_ref() as i32;
+    let current_buffer = *ctx.registers[8].w.as_ref();
     let threshold = u8::MAX - PRECEDE_EXTENSION;
-    let buffer = if *current_buffer == 1 {
+    let mut buffer = if current_buffer == 1 {
         // println!("Starting Hold Buffer");
         u8::MAX as u32
     }
-    else if *current_buffer == threshold as u32 {
+    else if current_buffer == threshold as u32 {
         // println!("Hold Threshold Reached");
         1
     }
     else {
-        *current_buffer
+        current_buffer
     };
-    *ctx.registers[8].w.as_mut() = buffer as u32;
+
+    if buffer > threshold as u32 {
+        // special handling for spotdodge and roll
+        if cat == 0 {
+            if flag == *FIGHTER_PAD_CMD_CAT1_ESCAPE {
+                let stick_y = ControlModule::get_stick_y(module_accessor);
+                let escape_stick_y = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("escape_stick_y"));
+                if stick_y > escape_stick_y {
+                    buffer = 1;
+                }
+            }
+            else if flag == *FIGHTER_PAD_CMD_CAT1_ESCAPE_F
+            || flag == *FIGHTER_PAD_CMD_CAT1_ESCAPE_B {
+                let stick_x = ControlModule::get_stick_x(module_accessor);
+                let escape_fb_stick_x = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("escape_fb_stick_x"));
+                if stick_x.abs() < escape_fb_stick_x {
+                    buffer = 1;
+                }
+            }
+        }
+    }
+
+    *ctx.registers[8].w.as_mut() = buffer;
 }
 
 #[skyline::hook(offset = 0x6bd51c, inline)]

@@ -7,20 +7,46 @@ extern "C" {
 
 #[inline(always)]
 pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, b: f32) {
-    if !VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        VarModule::on_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA);
+    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            if !VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA) {
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+                macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+
+                agent.clear_lua_stack();
+                EFFECT_STENCIL_ON(agent.lua_state_agent);
+                macros::BURN_COLOR(agent, r, g, b, 0);
+                macros::BURN_COLOR_FRAME(agent, 1, r, g, b, 0.7);
+
+                VarModule::on_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA);
+            }
+        }
+    }
+}
+
+#[inline(always)]
+pub unsafe fn ryu_saving_aura_remover(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+
+            macros::BURN_COLOR_NORMAL(agent);
+            agent.clear_lua_stack();
+            EFFECT_STENCIL_OFF(agent.lua_state_agent);
+
+            VarModule::off_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
+            VarModule::off_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA);
+        }
     }
 }
 

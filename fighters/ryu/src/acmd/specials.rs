@@ -737,12 +737,10 @@ unsafe extern "C" fn game_speciallwreversal(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_speciallwreversal(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.0, 12.0, 6.0, 0.0, 0.0, 0.0, 1.4, true);
-        ryu_saving_aura_handler(agent, 0.1, 0.1, 0.1);
+        ryu_saving_aura_handler(agent, 0.3, 0.1, 0.1);
     }
     frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
-    }
+    ryu_saving_aura_remover(agent);
 }
 
 unsafe extern "C" fn sound_speciallwreversal(agent: &mut L2CAgentBase) {

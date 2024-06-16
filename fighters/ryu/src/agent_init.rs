@@ -7,11 +7,13 @@ extern "C" {
 
 pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE)
+    && !fighter.global_table[IS_STOP].get_bool()
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
-        let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
-        if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0
-        && pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER != 0 {
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B.into(), true.into());
             return true.into();
         }

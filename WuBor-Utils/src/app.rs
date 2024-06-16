@@ -225,3 +225,46 @@ impl ShieldGroupResource2 {
         }
     }
 }
+
+pub mod Cat4 {
+    pub const SPECIAL_N_COMMAND : usize = 0x0;
+    pub const SPECIAL_N2_COMMAND : usize = 0x1;
+    pub const SPECIAL_S_COMMAND : usize = 0x2;
+    pub const SPECIAL_HI_COMMAND : usize = 0x3;
+    pub const COMMAND_6N6 : usize = 0x4;
+    pub const COMMAND_4N4 : usize = 0x5;
+    pub const ATTACK_COMMAND1 : usize = 0x6;
+    pub const SPECIAL_HI2_COMMAND : usize = 0x7;
+    pub const SUPER_SPECIAL_COMMAND : usize = 0x8;
+    pub const SUPER_SPECIAL_R_COMMAND : usize = 0x9;
+    pub const SUPER_SPECIAL2_COMMAND : usize = 0xA;
+    pub const SUPER_SPECIAL2_R_COMMAND : usize = 0xB;
+    pub const COMMAND_623NB : usize = 0xC;
+    pub const COMMAND_623STRICT : usize = 0xD;
+    pub const COMMAND_623ALONG : usize = 0xE;
+    pub const COMMAND_623BLONG : usize = 0xF;
+    pub const COMMAND_623A : usize = 0x10;
+    pub const COMMAND_2 : usize = 0x11;
+    pub const COMMAND_3 : usize = 0x12;
+    pub const COMMAND_1 : usize = 0x13;
+    pub const COMMAND_6 : usize = 0x14;
+    pub const COMMAND_4 : usize = 0x15;
+    pub const COMMAND_8 : usize = 0x16;
+    pub const COMMAND_9 : usize = 0x17;
+    pub const COMMAND_7 : usize = 0x18;
+    pub const COMMAND_6N6AB : usize = 0x19;
+    pub const COMMAND_323CATCH : usize = 0x1A;
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct CommandInputState {
+    pub vtable: u64,
+    pub command_timer: u8,
+    pub state: u8,
+    pub unk2: u8,
+    pub input_allow: u8,
+    pub max_timer: u8,
+    pub enable_timer: u8,
+    pub lr: i8,
+}

@@ -432,6 +432,14 @@ pub mod FGCModule {
         let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut u8;
         *command_input.add(0xb) = buttons;
     }
+
+    /// Clones a command input to another cat4 flag
+    pub unsafe fn clone_command_input(module_accessor: *mut BattleObjectModuleAccessor, command: usize, replace_command: usize) {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        let original = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut CommandInputState;
+        let replace = *control_module.add((0x7f0 + (replace_command * 8)) / 8) as *mut CommandInputState;
+        *replace = *original.clone();
+    }
 }
 
 #[allow(non_snake_case)]

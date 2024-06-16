@@ -1,7 +1,6 @@
 use super::*;
-use super::super::helper::*;
 
-unsafe extern "C" fn ryu_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_ryu_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +33,7 @@ unsafe extern "C" fn ryu_special_n2_command_pre(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-unsafe extern "C" fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
@@ -134,46 +133,42 @@ unsafe extern "C" fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn ryu_special_n2_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
-        ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
-    }
+unsafe extern "C" fn kirby_ryu_special_n2_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
-        ryu_special_n2_substatus(fighter, false.into());
+        kirby_ryu_special_n2_substatus(fighter, false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_special_n2_substatus as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_n2_main_loop as *const () as _))
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(kirby_ryu_special_n2_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(kirby_ryu_special_n2_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ryu_special_n2_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn kirby_ryu_special_n2_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
     }
     0.into()
 }
 
-unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-        let sitation = fighter.global_table[SITUATION_KIND].get_i32();
-        if ryu_final_hit_cancel(fighter, sitation.into()).get_bool() {
-            return 1.into();
-        }
-    }
+    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    // && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+    //     let sitation = fighter.global_table[SITUATION_KIND].get_i32();
+    //     if ryu_final_hit_cancel(fighter, sitation.into()).get_bool() {
+    //         return 1.into();
+    //     }
+    // }
     if StatusModule::is_changing(fighter.module_accessor)
     || StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             let mot_air = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST) {
-                MotionModule::change_motion(
+                FighterMotionModuleImpl::change_motion_kirby_copy(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_air),
                     0.0,
@@ -186,7 +181,7 @@ unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
             }
             else {
-                MotionModule::change_motion_inherit_frame(
+                FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_air),
                     -1.0,
@@ -213,7 +208,7 @@ unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
             let mot_ground = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST) {
-                MotionModule::change_motion(
+                FighterMotionModuleImpl::change_motion_kirby_copy(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_ground),
                     0.0,
@@ -226,7 +221,7 @@ unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
             }
             else {
-                MotionModule::change_motion_inherit_frame(
+                FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_ground),
                     -1.0,
@@ -260,7 +255,7 @@ unsafe extern "C" fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_pre);
-    agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_init);
-    agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ryu_special_n2_command_main);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, kirby_ryu_special_n2_command_pre);
+    agent.status(Init, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, kirby_ryu_special_n2_command_init);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND, kirby_ryu_special_n2_command_main);
 }

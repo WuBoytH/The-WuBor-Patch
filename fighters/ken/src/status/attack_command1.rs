@@ -75,7 +75,7 @@ unsafe extern "C" fn ken_attack_command1_substatus(fighter: &mut L2CFighterCommo
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
     }
     if VarModule::is_flag(fighter.module_accessor, vars::ken::status::flag::SPECIAL_N2_GROUND_BRANCH_CHECK) {
-        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr = PostureModule::lr(fighter.module_accessor);
             let stick_y = fighter.global_table[STICK_Y].get_f32();

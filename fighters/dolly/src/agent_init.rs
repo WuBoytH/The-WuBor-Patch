@@ -47,7 +47,8 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
         return true.into();
     }
 
-    if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+    if !fighter.global_table[IS_STOP].get_bool()
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_N_UNIQ].clone()).get_bool() {
         fighter.change_status(vars::dolly::status::SPECIAL_N_COMMAND.into(), true.into());

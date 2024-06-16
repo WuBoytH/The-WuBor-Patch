@@ -266,8 +266,13 @@ pub mod dolly {
             pub const SPECIAL_LW_BREAK : i32 = 0x1152;
         }
         pub mod int {
+            pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;
+
             pub const D_TILT_CHAIN_COUNT : i32 = 0x1150;
         }
+
+        pub const ATTACK_DASH_COMMAND : i32 = 0x203;
+        pub const SPECIAL_N_COMMAND : i32 = 0x204;
     }
 }
 
@@ -392,6 +397,8 @@ pub mod kirby {
         pub mod int {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
+
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = 0x37D;
     }
 }
 

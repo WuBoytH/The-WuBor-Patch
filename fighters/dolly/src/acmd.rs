@@ -8,6 +8,7 @@ mod aerials;
 mod specials;
 mod escape;
 mod cliff;
+mod appeal;
 mod misc;
 
 pub fn install(agent: &mut Agent) {
@@ -19,5 +20,6 @@ pub fn install(agent: &mut Agent) {
     specials::install(agent);
     escape::install(agent);
     cliff::install(agent);
+    appeal::install(agent);
     misc::install(agent);
 }

@@ -5,15 +5,19 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     *(control_energy as *mut u8).add(0xa4) = 1;
-    FGCModule::set_command_input_button(module_accessor, 0, 2);
-    FGCModule::set_command_input_button(module_accessor, 1, 2);
-    FGCModule::set_command_input_button(module_accessor, 2, 2);
-    FGCModule::set_command_input_button(module_accessor, 3, 2);
-    FGCModule::set_command_input_button(module_accessor, 7, 2);
-    FGCModule::set_command_input_button(module_accessor, 8, 2);
-    FGCModule::set_command_input_button(module_accessor, 9, 2);
-    FGCModule::set_command_input_button(module_accessor, 10, 2);
-    FGCModule::set_command_input_button(module_accessor, 11, 2);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_S_COMMAND, 2);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_HI_COMMAND, 1);
+    if fighter.battle_object.kind == 0x3c {
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+        FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
+    }
+    else {
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_HI_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+        FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N2_COMMAND, 2);
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_N_COMMAND, Cat4::ATTACK_COMMAND1);
+        FGCModule::set_command_input_button(module_accessor, Cat4::ATTACK_COMMAND1, 2);
+    }
 }
 
 #[skyline::from_offset(0x646fe0)]

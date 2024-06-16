@@ -6,8 +6,10 @@ mod koopa;
 mod ganon;
 mod lucario;
 mod ike;
+// mod ryu;
 mod belmont;
 mod jack;
+mod dolly;
 
 pub fn install(agent: &mut Agent) {
     kirby::install(agent);
@@ -16,6 +18,8 @@ pub fn install(agent: &mut Agent) {
     ganon::install(agent);
     lucario::install(agent);
     ike::install(agent);
+    // ryu::install(agent);
     belmont::install(agent);
     jack::install(agent);
+    dolly::install(agent);
 }

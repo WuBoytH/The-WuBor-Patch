@@ -78,8 +78,15 @@ unsafe extern "C" fn effect_specials(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn sound_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_mario_special_s01"));
+    if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP) {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_mario_special_s01"));
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
+        }
     }
 }
 

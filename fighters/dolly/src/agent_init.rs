@@ -29,8 +29,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND);
-        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
+        fighter.change_status(vars::dolly::status::ATTACK_DASH_COMMAND.into(), true.into());
         return true.into();
     }
 
@@ -48,10 +47,11 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
         return true.into();
     }
 
-    if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
+    if !fighter.global_table[IS_STOP].get_bool()
+    && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_N_UNIQ].clone()).get_bool() {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
+        fighter.change_status(vars::dolly::status::SPECIAL_N_COMMAND.into(), true.into());
         return true.into();
     }
 
@@ -234,20 +234,19 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
     // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
-    FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 1, 1);
-    FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
-    let control_module = *(fighter.module_accessor as *const *const u64).add(0x48 / 8);
-    let special_s_command = *control_module.add((0x7f0 + (2 * 8)) / 8) as *mut CommandInputState;
-    let attack_command = *control_module.add((0x7f0 + (6 * 8)) / 8) as *mut CommandInputState;
-    *attack_command = *special_s_command.clone();
-    FGCModule::set_command_input_button(fighter.module_accessor, 6, 1);
-    FGCModule::set_command_input_button(fighter.module_accessor, 7, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI_COMMAND, 2);
+
+    FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::ATTACK_COMMAND1);
+
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::ATTACK_COMMAND1, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI2_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_R_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL2_R_COMMAND, 2);
 }
 
 pub fn install(agent: &mut Agent) {

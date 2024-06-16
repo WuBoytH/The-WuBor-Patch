@@ -230,8 +230,7 @@ unsafe extern "C" fn dolly_special_hi_set_kinetic(fighter: &mut L2CFighterCommon
 unsafe extern "C" fn dolly_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // <WuBor>
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
-    if !VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE)
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
     && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
     && dolly_final_cancel(fighter, situation.into()).get_bool() {
         return 1.into();

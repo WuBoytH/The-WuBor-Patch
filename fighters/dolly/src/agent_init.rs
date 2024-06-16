@@ -241,7 +241,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::ATTACK_COMMAND1);
 
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::ATTACK_COMMAND1, 2);
-    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI2_COMMAND, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI2_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_R_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);

@@ -81,7 +81,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         }
-        else if VarModule::get_int(fighter.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        else if VarModule::get_int(fighter.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_S {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);

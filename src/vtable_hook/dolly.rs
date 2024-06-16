@@ -42,7 +42,7 @@ pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
             }
             NoSpecial{no: -1, special: -1}
         }
-        0x1dc /*| 0x204*/ => dolly_handle_special_strength(module_accessor, 0, 0),
+        0x1dc | 0x204 => dolly_handle_special_strength(module_accessor, 0, 0),
         0x1dd | 0x1eb => dolly_handle_special_strength(module_accessor, 0, 1),
         0x1de | 0x1f5 => dolly_handle_special_strength(module_accessor, 0, 2),
         0x1df | 0x1f6 => dolly_handle_special_strength(module_accessor, 0, 3),

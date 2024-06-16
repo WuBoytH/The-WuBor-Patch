@@ -59,7 +59,7 @@ fn marth_fgc() {
     }
 }
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     agent.on_start(on_start);
     marth_fgc();
 }

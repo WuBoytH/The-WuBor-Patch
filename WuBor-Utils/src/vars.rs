@@ -256,18 +256,23 @@ pub mod dolly {
         pub mod flag {
             pub const DISABLE_METER_GAIN : i32 = 0x1100;
             pub const IS_SPECIAL_CANCEL : i32 = 0x1101;
-            
+
             pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
-            
+
             pub const SPECIAL_N_FEINT : i32 = 0x1150;
-            
+
             pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1150;
             pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1151;
             pub const SPECIAL_LW_BREAK : i32 = 0x1152;
         }
         pub mod int {
+            pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;
+
             pub const D_TILT_CHAIN_COUNT : i32 = 0x1150;
         }
+
+        pub const ATTACK_DASH_COMMAND : i32 = 0x203;
+        pub const SPECIAL_N_COMMAND : i32 = 0x204;
     }
 }
 
@@ -392,6 +397,8 @@ pub mod kirby {
         pub mod int {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
+
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = 0x37D;
     }
 }
 
@@ -528,6 +535,7 @@ pub mod mario {
     pub mod instance {
         pub mod flag {
             pub const SPECIAL_LW_BLJ_PREV : i32 = 0x0100;
+            pub const BONKER : i32 = 0x0101;
         }
         pub mod int {
             pub const SPECIAL_LW_KIND : i32 = 0x0100;
@@ -536,6 +544,10 @@ pub mod mario {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
+
+            pub const SPECIAL_S_TRY_HOP : i32 = 0x1150;
+            pub const SPECIAL_S_HOP : i32 = 0x1151;
+            pub const SPECIAL_S_ENABLE_CONTROL : i32 = 0x1152;
 
             pub const SPECIAL_LW_LANDING : i32 = 0x1150;
             pub const SPECIAL_LW_BLJ : i32 = 0x1151;
@@ -654,7 +666,7 @@ pub mod pikmin {
         }
     }
     pub mod status {
-        pub mod flag {            
+        pub mod flag {
             pub const ATTACK_HI3_DRIFT : i32 = 0x1150;
         }
         pub mod int {
@@ -856,6 +868,23 @@ pub mod wario {
         pub mod flag {
             pub const THROW_B_MOVE : i32 = 0x1150;
             pub const THROW_B_CONTROL_RESET : i32 = 0x1151;
+        }
+    }
+}
+
+pub mod yoshi {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_HOP : i32 = 0x1150;
+
+            pub const SPECIAL_HI_SPECIAL_HOLD : i32 = 0x1150;
+            pub const SPECIAL_HI_RISE : i32 = 0x1151;
+            pub const SPECIAL_HI_RISE_CUT : i32 = 0x1152;
+            pub const SPECIAL_HI_RISE_AIR_CANCEL : i32 = 0x1153;
+            pub const SPECIAL_HI_RISE_GROUND_CANCEL : i32 = 0x1154;
+        }
+        pub mod int {
+            pub const SPECIAL_HI_START_SITUATION : i32 = 0x1150;
         }
     }
 }

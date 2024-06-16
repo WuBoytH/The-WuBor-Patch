@@ -21,8 +21,10 @@ mod agent_init;
 pub mod helper;
 pub mod vl;
 
+mod mantle;
+
 pub fn install() {
-    let agent = &mut smashline::Agent::new("mario");
+    let agent = &mut Agent::new("mario");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);
@@ -31,4 +33,6 @@ pub fn install() {
 
     wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4630, smash::hash40("trans"));
     wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4638, smash::hash40("trans"));
+
+    mantle::install();
 }

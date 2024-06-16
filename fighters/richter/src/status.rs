@@ -7,7 +7,7 @@ mod special_n;
 mod special_hi;
 mod special_lw;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     attack::install(agent);
     attack_lw3::install(agent);
     attack_air::install(agent);

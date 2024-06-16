@@ -37,7 +37,7 @@ mod special_lw_step_f;
 // Reused for Denjin Impact / Denjin Reversal
 mod special_lw_step_b;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     rebirth::install(agent);
 
     dash_back::install(agent);

@@ -1,6 +1,8 @@
 #![allow(non_upper_case_globals)]
 
 pub mod param_special_s {
+    pub const spin_hop_speed_xg : f32 = 1.5;
+    pub const spin_hop_speed_xa : f32 = 1.0;
     pub const spin_hop_speed_y : f32 = 1.0;
 }
 

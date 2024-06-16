@@ -19,7 +19,7 @@ mod status;
 mod frame;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("purin");
+    let agent = &mut Agent::new("purin");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

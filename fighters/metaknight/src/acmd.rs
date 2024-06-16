@@ -9,7 +9,7 @@ mod throws;
 mod escape;
 mod cliff;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     normals::install(agent);
     smashes::install(agent);
     aerials::install(agent);

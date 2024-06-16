@@ -14,7 +14,7 @@ mod escape_air_slide;
 
 mod landing;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     special_n::install(agent);
 
     special_s::install(agent);

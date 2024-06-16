@@ -205,6 +205,8 @@ unsafe extern "C" fn mario_special_lw_shoot_exec(fighter: &mut L2CFighterCommon)
 
 unsafe extern "C" fn mario_special_lw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::get_int(fighter.module_accessor, vars::mario::instance::int::SPECIAL_LW_KIND) == vars::mario::SPECIAL_LW_KIND_LONG_JUMP {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_landing"),
@@ -219,6 +221,7 @@ unsafe extern "C" fn mario_special_lw_charge_main(fighter: &mut L2CFighterCommon
     }
     else if VarModule::get_int(fighter.module_accessor, vars::mario::instance::int::SPECIAL_LW_KIND) == vars::mario::SPECIAL_LW_KIND_GROUND_POUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_air_lw_landing"),
@@ -233,7 +236,8 @@ unsafe extern "C" fn mario_special_lw_charge_main(fighter: &mut L2CFighterCommon
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        macros::SET_SPEED_EX(fighter, 0.0, -1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        macros::SET_SPEED_EX(fighter, 0.0, -1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_air_lw_cancel"),

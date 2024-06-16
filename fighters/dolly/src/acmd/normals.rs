@@ -113,16 +113,6 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-            macros::FT_MOTION_RATE(agent, 0.8);
-        }
-        else {
-            macros::FT_MOTION_RATE(agent, 1.5);
-        }
-    }
     if VarModule::is_flag(agent.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
         if macros::is_excute(agent) {
             VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::DISABLE_METER_GAIN);
@@ -130,10 +120,34 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
         }
     }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+    }
+    if VarModule::is_flag(agent.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
+        macros::FT_MOTION_RATE(agent, 2.0);
+    }
+    else if VarModule::get_int(agent.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        macros::FT_MOTION_RATE(agent, 3.0 / 5.0);
+    }
+    else {
+        let attack_dash_h_distance_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("attack_dash_h_distance_mul"));
+        sv_kinetic_energy!(
+            set_speed_mul,
+            agent,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            attack_dash_h_distance_mul
+        );
+        macros::FT_MOTION_RATE(agent, 2.0);
+    }
     frame(agent.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
-        if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
+        if VarModule::get_int(agent.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
             if macros::is_excute(agent) {
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 40, 30, 0, 75, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
@@ -148,13 +162,13 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     else {
         if macros::is_excute(agent) {
             JostleModule::set_status(agent.module_accessor, false);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 50, 10, 50, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 25, 50, 10, 50, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 10.0, false);
         }
     }
     wait(agent.lua_state_agent, 5.0);
     if !VarModule::is_flag(agent.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
-        if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
+        if VarModule::get_int(agent.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
             if macros::is_excute(agent) {
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 30, 0, 30, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(6.0), Some(4.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
@@ -171,7 +185,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
         JostleModule::set_status(agent.module_accessor, true);
         AttackModule::clear_all(agent.module_accessor);
     }
-    if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::ATTACK_DASH_COMMAND) {
+    if VarModule::get_int(agent.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
         macros::FT_MOTION_RATE(agent, 1.5);
     }
     else {
@@ -249,8 +263,9 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
         macros::HIT_NODE(agent, Hash40::new("claviclel"), *HIT_STATUS_NORMAL);    
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 23.0);
+    frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
 }
 

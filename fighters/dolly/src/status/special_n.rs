@@ -1,4 +1,14 @@
 use super::*;
+use crate::helper::*;
+
+unsafe extern "C" fn dolly_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    smashline::original_status(Pre, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N)(fighter)
+}
+
+unsafe extern "C" fn dolly_special_n_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND);
+    dolly_special_n_main(fighter)
+}
 
 unsafe extern "C" fn dolly_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::SPECIAL_CANCEL) {
@@ -107,6 +117,13 @@ unsafe extern "C" fn dolly_special_n_main_loop(fighter: &mut L2CFighterCommon) -
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
+    // <WuBor>
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    && dolly_final_cancel(fighter, situation.into()).get_bool() {
+        return 1.into();
+    }
+    // </WuBor>
     0.into()
 }
 
@@ -118,4 +135,8 @@ unsafe extern "C" fn dolly_special_n_end(fighter: &mut L2CFighterCommon) -> L2CV
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, dolly_special_n_main);
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, dolly_special_n_end);
+
+    agent.status(Pre, vars::dolly::status::SPECIAL_N_COMMAND, dolly_special_n_pre);
+    agent.status(Main, vars::dolly::status::SPECIAL_N_COMMAND, dolly_special_n_command_main);
+    agent.status(End, vars::dolly::status::SPECIAL_N_COMMAND, dolly_special_n_end);
 }

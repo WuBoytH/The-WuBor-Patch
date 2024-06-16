@@ -22,7 +22,7 @@ mod agent_init;
 mod hadoken;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("ken");
+    let agent = &mut Agent::new("ken");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);

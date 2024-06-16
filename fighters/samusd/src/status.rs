@@ -8,7 +8,7 @@ mod special_n_hold;
 
 mod special_air_lw;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     wait::install(agent);
 
     attack_air::install(agent);

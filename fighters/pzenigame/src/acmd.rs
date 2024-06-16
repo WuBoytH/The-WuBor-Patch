@@ -6,7 +6,7 @@ mod catch;
 mod escape;
 mod cliff;
 
-pub fn install(agent: &mut smashline::Agent) {
+pub fn install(agent: &mut Agent) {
     normals::install(agent);
     specials::install(agent);
     catch::install(agent);

@@ -5,15 +5,19 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     *(control_energy as *mut u8).add(0xa4) = 1;
-    FGCModule::set_command_input_button(module_accessor, 0, 2);
-    FGCModule::set_command_input_button(module_accessor, 1, 2);
-    FGCModule::set_command_input_button(module_accessor, 2, 2);
-    FGCModule::set_command_input_button(module_accessor, 3, 2);
-    FGCModule::set_command_input_button(module_accessor, 7, 2);
-    FGCModule::set_command_input_button(module_accessor, 8, 2);
-    FGCModule::set_command_input_button(module_accessor, 9, 2);
-    FGCModule::set_command_input_button(module_accessor, 10, 2);
-    FGCModule::set_command_input_button(module_accessor, 11, 2);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_S_COMMAND, 2);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_HI_COMMAND, 1);
+    if fighter.battle_object.kind == 0x3c {
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+        FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
+    }
+    else {
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_HI_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+        FGCModule::set_command_input_button(module_accessor, Cat4::SPECIAL_N2_COMMAND, 2);
+        FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_N_COMMAND, Cat4::ATTACK_COMMAND1);
+        FGCModule::set_command_input_button(module_accessor, Cat4::ATTACK_COMMAND1, 2);
+    }
 }
 
 #[skyline::from_offset(0x646fe0)]
@@ -156,6 +160,36 @@ unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fig
     VarModule::off_flag(module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
 }
 
+unsafe extern "C" fn syoryuken_eff_handler(
+    module_accessor: *mut BattleObjectModuleAccessor,
+    collision_log: *mut CollisionLogScuffed,
+    eff: Hash40,
+    r: f32,
+    g: f32,
+    b: f32,
+    rate: f32
+) {
+    let lr = PostureModule::lr(module_accessor);
+
+    let rot = lr * 1.570796;
+
+    let pos = &(*collision_log).location;
+
+    let eff = EffectModule::req(
+        module_accessor,
+        eff,
+        &Vector3f{x: pos.x, y: pos.y, z: pos.z},
+        &Vector3f{x: 0.0, y: 0.0, z: rot},
+        1.0,
+        0,
+        -1,
+        false,
+        2
+    ) as u32;
+    EffectModule::set_rgb(module_accessor, eff, r, g, b);
+    EffectModule::set_rate(module_accessor, eff, rate);
+}
+
 #[skyline::hook(offset = 0x10d6ca0)]
 unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
@@ -166,48 +200,63 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     let collision_kind = (*collision_log).collision_kind;
     let opponent_object_id = (*collision_log).opponent_object_id;
     if kind == 0x3c {
-        if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
-        && VarModule::get_int(module_accessor, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
-        && !VarModule::is_flag(module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
-            if collision_kind == 1
-            && opponent_object_id >> 0x1c == 0 {
-                let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
-                if armor_count != 2 {
-                    SoundModule::play_se(
-                        module_accessor,
-                        Hash40::new("se_ryu_drive_impact_punish"),
-                        true,
-                        false,
-                        false,
-                        false,
-                        enSEType(0)
-                    );
-                    let pos = &(*collision_log).location;
-                    EffectModule::req(
-                        module_accessor,
-                        Hash40::new("ryu_savingattack_guard"),
-                        &Vector3f{x: pos.x, y: pos.y, z: pos.z},
-                        &ZERO_VECTOR,
-                        1.0,
-                        0,
-                        -1,
-                        false,
-                        0
-                    );
-                    VarModule::on_flag(module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR
+        ].contains(&status)
+        && VarModule::is_flag(module_accessor, ryu::status::flag::USED_DENJIN_CHARGE)
+        && collision_kind == 1 {
+            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+            if (*opponent_object).battle_object_id >> 0x1c == 0
+            && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.1, 0.45, 0.2, 1.2);
+            }
+        }
+        if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B {
+            if VarModule::get_int(module_accessor, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
+            && !VarModule::is_flag(module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
+                if collision_kind == 1
+                && opponent_object_id >> 0x1c == 0 {
+                    let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+                    if armor_count != 2 {
+                        SoundModule::play_se(
+                            module_accessor,
+                            Hash40::new("se_ryu_drive_impact_punish"),
+                            true,
+                            false,
+                            false,
+                            false,
+                            enSEType(0)
+                        );
+                        syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.1, 0.1, 0.1, 0.75);
+                        VarModule::on_flag(module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
+                    }
+                }
+                if collision_kind == 2
+                && (*collision_log).opponent_object_category == 0 {
+                    let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+                    let func: extern "C" fn(*mut BattleObject) -> u64 = std::mem::transmute(*((*(opponent_object as *const u64) + 0x2d0) as *const u64));
+                    let flag = if func(opponent_object) == 0 {
+                        ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD
+                    }
+                    else {
+                        ryu::status::flag::SPECIAL_LW_IMPACT_JUST_SHIELD
+                    };
+                    VarModule::on_flag(module_accessor, flag);
                 }
             }
-            if collision_kind == 2
-            && (*collision_log).opponent_object_category == 0 {
-                let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-                let func: extern "C" fn(*mut BattleObject) -> u64 = std::mem::transmute(*((*(opponent_object as *const u64) + 0x2d0) as *const u64));
-                let flag = if func(opponent_object) == 0 {
-                    ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD
+            else if VarModule::get_int(module_accessor, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_REVERSAL {
+                if collision_kind == 1 {
+                    let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+                    if (*opponent_object).battle_object_id >> 0x1c == 0
+                    && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                        syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.3, 0.1, 0.1, 0.75);
+                    }
                 }
-                else {
-                    ryu::status::flag::SPECIAL_LW_IMPACT_JUST_SHIELD
-                };
-                VarModule::on_flag(module_accessor, flag);
             }
         }
         if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
@@ -236,42 +285,26 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                 // if (*attack_data).vector != 0x169 {
                 //     angle = (*attack_data).vector as f32 * 0.01745329;
                 // }
-                let lr = PostureModule::lr(module_accessor);
-
-                let rot = lr * 1.570796;
-
-                let pos = &(*collision_log).location;
 
                 let command = WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
 
                 let eff = if kind == 0x3c {
                     if command {
-                        hash40("ryu_syoryuken_hit2")
+                        Hash40::new("ryu_syoryuken_hit2")
                     }
                     else {
-                        hash40("ryu_syoryuken_hit")
+                        Hash40::new("ryu_syoryuken_hit")
                     }
                 }
                 else {
                     if command {
-                        hash40("ken_syoryuken_hit2")
+                        Hash40::new("ken_syoryuken_hit2")
                     }
                     else {
-                        hash40("ken_syoryuken_hit")
+                        Hash40::new("ken_syoryuken_hit")
                     }
                 };
-
-                EffectModule::req(
-                    module_accessor,
-                    Hash40::new_raw(eff),
-                    &Vector3f{x: pos.x, y: pos.y, z: pos.z},
-                    &Vector3f{x: 0.0, y: 0.0, z: rot},
-                    1.0,
-                    0,
-                    -1,
-                    false,
-                    2
-                );
+                syoryuken_eff_handler(module_accessor, collision_log, eff, 1.0, 1.0, 1.0, 1.0);
             }
         }
         return;

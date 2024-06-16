@@ -21,7 +21,7 @@ mod agent_init;
 pub mod helper;
 
 pub fn install() {
-    let agent = &mut smashline::Agent::new("ganon");
+    let agent = &mut Agent::new("ganon");
     acmd::install(agent);
     frame::install(agent);
     status::install(agent);

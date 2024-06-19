@@ -1,19 +1,27 @@
 use super::*;
 
+mod dash;
+
 mod normals;
 mod aerials;
 mod specials;
 mod copy;
+
 mod escape;
 mod cliff;
-mod misc;
+
+mod appeal;
 
 pub fn install(agent: &mut Agent) {
+    dash::install(agent);
+
     normals::install(agent);
     aerials::install(agent);
     specials::install(agent);
     copy::install(agent);
+
     escape::install(agent);
     cliff::install(agent);
-    misc::install(agent);
+
+    appeal::install(agent);
 }

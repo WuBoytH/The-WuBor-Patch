@@ -4,6 +4,7 @@ import shutil, os, sys, characters
 build = True
 dev = False
 dev_chars = ''
+dev_all = False
 only_dev = False
 non_dev_chars = ''
 
@@ -35,6 +36,7 @@ if sys.argv.count("--help") > 0 or sys.argv.count("-h") > 0:
     print("    --dev, -d: Indicate you're building a Dev plugin.")
     print("               List a set of characters afterwards to build a dev plugin for them.")
     print("               Pass in \"only\" to only push the dev plugin.")
+    print("               Pass in \"all\" to push every character to the dev plugin.")
     print("               ex. build.py --d only sonic captain")
     print("    --ip,  -i: Indicate the IP of the console you're sending the plugin to.")
     print("               ex. build.py --i 192.168.1.11")
@@ -48,6 +50,12 @@ else:
         while dev_index < arg_len:
             if sys.argv[dev_index] == 'only':
                 only_dev = True
+            elif sys.argv[dev_index] == 'all':
+                for character in characters.characters:
+                    if dev_chars != '':
+                        dev_chars += ','
+                    dev_chars += character
+                break
             elif sys.argv[dev_index] in characters.characters:
                 dev_chars += (sys.argv[dev_index])
             else:
@@ -56,7 +64,7 @@ else:
             if dev_index < arg_len:
                 dev_chars += ','
         for character in characters.characters:
-            if character not in sys.argv:
+            if character not in dev_chars:
                 if non_dev_chars != '':
                     non_dev_chars += ','
                 non_dev_chars += character

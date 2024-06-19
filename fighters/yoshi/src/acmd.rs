@@ -1,5 +1,6 @@
 use super::*;
 
+mod dash;
 mod jump;
 
 mod normals;
@@ -11,6 +12,7 @@ mod escape;
 mod cliff;
 
 pub fn install(agent: &mut Agent) {
+    dash::install(agent);
     jump::install(agent);
 
     normals::install(agent);

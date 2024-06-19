@@ -486,19 +486,19 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, par
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Main)]
-unsafe extern "C" fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.status_Dash_Main_common(0.into()).get_bool() {
-        return 1.into();
-    }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON) {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DASH);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON);
-        }
-    }
-    0.into()
-}
+// #[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Main)]
+// unsafe extern "C" fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     if fighter.status_Dash_Main_common(0.into()).get_bool() {
+//         return 1.into();
+//     }
+//     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+//         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON) {
+//             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DASH);
+//             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON);
+//         }
+//     }
+//     0.into()
+// }
 
 #[no_mangle]
 pub unsafe extern "C" fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -813,71 +813,59 @@ unsafe extern "C" fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighte
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
     }
-    let turn_dash_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
-    if 0 <= turn_dash_frame {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
-        if turn_dash_frame - 1 < 0 {
-            // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
-        }
+
+    if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME, 0) {
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     }
-    let retry_dash_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
-    if 0 <= retry_dash_frame {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
-        if retry_dash_frame - 1 < 0 {
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
-        }
+
+    if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME, 0) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     }
-    let attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME);
-    if 0 <= attack_frame {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME);
-        if attack_frame - 1 < 0 {
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
-            // Enable crouching at the same time as you can attack.
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
-        }
+
+    if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME, 0) {
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+        // Enable crouching at the same time as you can attack.
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
     }
-    let invalid_attack_escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME);
-    if 0 < invalid_attack_escape_frame {
-        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME);
-        if invalid_attack_escape_frame - 1 == 0 {
-            let transitions = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY_DASH,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT
-            ];
-            for val in transitions.iter() {
-                WorkModule::enable_transition_term(fighter.module_accessor, *val);
-            }
+
+    if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME, 0) {
+        let transitions = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY_DASH,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT
+        ];
+        for val in transitions.iter() {
+            WorkModule::enable_transition_term(fighter.module_accessor, *val);
         }
     }
 }
@@ -908,7 +896,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_turndash_sub,
             status_dashcommon,
             status_dash_main_common,
-            status_turndash_main,
+            // status_turndash_main,
             sub_dash_uniq_process_main_internal
         );
     }

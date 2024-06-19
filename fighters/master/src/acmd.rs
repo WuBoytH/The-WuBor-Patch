@@ -1,15 +1,21 @@
 use super::*;
 
+mod dash;
+
 mod normals;
 mod aerials;
 mod specials;
+
 mod escape;
 mod cliff;
 
-pub fn install(acmd: &mut Agent) {
-    normals::install(acmd);
-    aerials::install(acmd);
-    specials::install(acmd);
-    escape::install(acmd);
-    cliff::install(acmd);
+pub fn install(agent: &mut Agent) {
+    dash::install(agent);
+
+    normals::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+
+    escape::install(agent);
+    cliff::install(agent);
 }

@@ -1,5 +1,5 @@
 use super::*;
-use super::super::helper::*;
+use crate::helper::*;
 
 unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
     inkling_generate_squid_helper(agent);

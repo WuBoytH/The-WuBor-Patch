@@ -8,7 +8,7 @@ unsafe extern "C" fn game_dash(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_turndash(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 3.0);
+    frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
     }

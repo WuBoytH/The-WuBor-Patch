@@ -22,6 +22,12 @@ unsafe fn set_parry_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     *ctx.registers[26].x.as_mut() = parry_hitlag as u64;
 }
 
+#[skyline::hook(offset = 0x617aa4, inline)]
+unsafe extern "C" fn reverse_trump_logic(ctx: &mut skyline::hooks::InlineCtx) {
+    let object = *ctx.registers[23].x.as_ref() as *mut BattleObject;
+    WorkModule::on_flag((*object).module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
+}
+
 pub fn install() {
     // Stubs parry hitlag calculation
     skyline::patching::Patch::in_text(0x641d84).nop();
@@ -29,9 +35,14 @@ pub fn install() {
     // Removes Phantom Hits
     skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
 
+    // Removes the vanilla ledge trump check
+    skyline::patching::Patch::in_text(0x617a90).nop();
+    skyline::patching::Patch::in_text(0x617aa4).nop();
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         autoturn_handler,
-        set_parry_hitlag
+        set_parry_hitlag,
+        reverse_trump_logic
     );
 }

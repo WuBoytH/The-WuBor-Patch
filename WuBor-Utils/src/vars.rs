@@ -371,6 +371,11 @@ pub mod ike {
 }
 
 pub mod jack {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_LW_CANCEL : i32 = 0x0150;
+        }
+    }
     pub mod status {
         pub mod flag {
             pub const SPECIAL_N_FIRST : i32 = 0x1150;

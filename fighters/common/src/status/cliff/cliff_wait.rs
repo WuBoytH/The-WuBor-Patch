@@ -32,10 +32,126 @@ unsafe extern "C" fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon
     ((xlu_frame * cliff_hang_invincible_frame).clamp(xlu_min_frame, f32::MAX)).into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_CliffWait_Main)]
+unsafe extern "C" fn status_cliffwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let situation = fighter.global_table[SITUATION_KIND].get_i32();
+
+    if situation == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        return 1.into();
+    }
+
+    if situation == *SITUATION_KIND_AIR
+    || !GroundModule::is_status_cliff(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 1.into();
+    }
+
+    if sv_information::stage_id() == 0x145
+    && FighterUtil::check_cliff_separated(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_DAMAGE_FALL) {
+        fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
+        return 1.into();
+    }
+
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+
+    let robbed = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
+
+    if !robbed
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP_BUTTON)
+    && situation == *SITUATION_KIND_CLIFF
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_JUMP1.into(), true.into());
+        return 1.into();
+    }
+
+    if !robbed
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP)
+    && situation == *SITUATION_KIND_CLIFF
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_JUMP) {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_JUMP1.into(), true.into());
+        return 1.into();
+    }
+
+    if !robbed
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_ATTACK)
+    && situation == *SITUATION_KIND_CLIFF
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ATTACK.into(), true.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_SPEICAL)
+    && situation == *SITUATION_KIND_CLIFF
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ATTACK.into(), true.into());
+        return 1.into();
+    }
+
+    let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_ESCAPE)
+    && situation == *SITUATION_KIND_CLIFF
+    && cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ESCAPE.into(), true.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_CLIMB)
+    && situation == *SITUATION_KIND_CLIFF
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_CLIMB) {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CLIMB.into(), true.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && situation == *SITUATION_KIND_CLIFF
+    && robbed {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ROBBED.into(), false.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && situation == *SITUATION_KIND_CLIFF {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_FALL)
+        || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_RELEASE) {
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUB_FIGHTER) {
+                notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_CLIFF_RELEASE_NUM);
+            }
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 1.into();
+        }
+    }
+
+    fighter.sub_cliff_uniq_process_main();
+    let motion = MotionModule::motion_kind(fighter.module_accessor);
+    if motion == hash40("cliff_catch")
+    && MotionModule::is_end(fighter.module_accessor) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("cliff_wait"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
+
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            get_cliff_wait_hit_xlu_frame
+            get_cliff_wait_hit_xlu_frame,
+            status_cliffwait_main
         );
     }
 }

@@ -5,7 +5,10 @@ unsafe extern "C" fn dolly_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2C
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
     }
     let attr = if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::SPECIAL_CANCEL)
-    && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+    && [
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        vars::dolly::status::ATTACK_DASH_COMMAND
+    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
         0
     }
     else {

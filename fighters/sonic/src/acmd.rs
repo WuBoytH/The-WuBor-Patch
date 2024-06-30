@@ -19,7 +19,7 @@ pub fn install(agent: &mut Agent) {
     dash::install(agent);
 
     normals::install(agent);
-    aerials::isntall(agent);
+    aerials::install(agent);
 
     specials::install(agent);
     trick::install(agent);

@@ -134,13 +134,22 @@ unsafe extern "C" fn sub_update_damage_fly_effect(
             EffectModule::preset_lifetime_rate_partial(fighter.module_accessor, fly_effect_smoke_life_min_rate);
             // </WuBor>
         }
+
+        // <WuBor>
+        let size = if effect_hash.get_u64() == hash40("sys_flyroll_aura") {
+            0.65
+        }
+        else {
+            0.8
+        };
+        // </WuBor>
         effect_id = EffectModule::req_follow(
             fighter.module_accessor,
             Hash40::new_raw(effect_hash.get_u64()),
             Hash40::new_raw(damage_fly_smoke_node),
             &Vector3f{x: damage_fly_smoke_offset_x, y: damage_fly_smoke_offset_y, z: 0.0},
             &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-            1.0,
+            size,
             true,
             0,
             some_val.get_i32(),
@@ -168,6 +177,13 @@ unsafe extern "C" fn sub_update_damage_fly_effect(
             let team_color = FighterUtil::get_effect_team_color(EColorKind(attacker_color.get_i32()), Hash40::new_raw(color_hash));
             EffectModule::set_rgb_partial_last(fighter.module_accessor, team_color.x, team_color.y, team_color.z);
         }
+
+        if effect_hash.get_u64() == hash40("sys_flyroll_smoke") {
+            // <WuBor>
+            EffectModule::set_alpha_last(fighter.module_accessor, 0.6);
+            // </WuBor>
+        }
+
         WorkModule::set_int(fighter.module_accessor, effect_id as i32, effect_const.get_i32());
     }
     effect_id.into()

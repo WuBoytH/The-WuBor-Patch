@@ -10,14 +10,19 @@ unsafe extern "C" fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub unsafe extern "C" fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // let weight = WorkModule::get_param_float(fighter.module_accessor, hash40("weight"), 0);
-    // let damage = DamageModule::damage(fighter.module_accessor, 0);
-    // (weight + param::passive::invalid_passive_damage_add <= damage).into()
     fighter.clear_lua_stack();
-    lua_args!(fighter, hash40("reaction_frame"));
+    lua_args!(fighter, hash40("speed_vec_x"));
     sv_information::damage_log_value(fighter.lua_state_agent);
-    let reaction_frame = fighter.pop_lua_stack(1).get_f32();
-    (reaction_frame >= param::passive::invalid_passive_reaction).into()
+    let speed_vec_x = fighter.pop_lua_stack(1).get_f32();
+
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("speed_vec_y"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let speed_vec_y = fighter.pop_lua_stack(1).get_f32();
+
+    let speed_vector = sv_math::vec2_length(speed_vec_x, speed_vec_y);
+
+    (speed_vector >= param::damage::damage_speed_up_speed_max).into()
 }
 
 // #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]

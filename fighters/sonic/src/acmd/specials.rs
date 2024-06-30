@@ -105,10 +105,13 @@ unsafe extern "C" fn sound_specialairsstart(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairshold(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     game_specialairshold_inner(agent);
     frame(agent.lua_state_agent, 9.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     game_specialairshold_inner(agent);
     frame(agent.lua_state_agent, 15.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     game_specialairshold_inner(agent);
 }
 
@@ -118,11 +121,11 @@ unsafe extern "C" fn game_specialairshold_inner(agent: &mut L2CAgentBase) {
         let status = StatusModule::status_kind(agent.module_accessor) == vars::sonic::status::SPECIAL_AIR_S_END;
         if status
         && last {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 85, 100, 30, 30, 4.0, 0.0, 8.0, 6.0, Some(0.0), Some(8.0), Some(7.0), 0.1, 0.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 85, 100, 30, 30, 4.0, 0.0, 8.0, 6.0, Some(0.0), Some(8.0), Some(7.0), 0.5, 0.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         }
         else {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 368, 100, 10, 30, 4.0, 0.0, 8.0, 6.0, Some(0.0), Some(8.0), Some(7.0), 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-            AttackModule::set_vec_target_pos(agent.module_accessor, 0, Hash40::new("top"), &Vector2f{x: 10.0, y: 6.0}, 6, false);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 368, 100, 10, 30, 4.0, 0.0, 8.0, 6.0, Some(0.0), Some(8.0), Some(7.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+            AttackModule::set_vec_target_pos(agent.module_accessor, 0, Hash40::new("top"), &Vector2f{x: 10.0, y: 3.0}, 6, false);
         }
     }
     wait(agent.lua_state_agent, 1.0);
@@ -133,6 +136,7 @@ unsafe extern "C" fn game_specialairshold_inner(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_CHECK_END);
     }
+    macros::FT_MOTION_RATE(agent, 1.0 / 3.0);
 }
 
 unsafe extern "C" fn effect_specialairshold(agent: &mut L2CAgentBase) {
@@ -204,20 +208,24 @@ unsafe extern "C" fn expression_specialairshold(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialairslaunch(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 6.0 / 11.0);
     frame(agent.lua_state_agent, 12.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         macros::SET_SPEED_EX(agent, 0.8, 1.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 50, 90, 0, 45, 4.0, 0.0, 8.0, 5.0, Some(0.0), Some(15.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 40, 110, 0, 45, 4.0, 0.0, 8.0, 5.0, Some(0.0), Some(15.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::ENABLE_TRICK);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 18.0, -8.0);
 }
 
 unsafe extern "C" fn effect_specialairslaunch(agent: &mut L2CAgentBase) {

@@ -8,7 +8,10 @@ unsafe extern "C" fn sonic_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L
         }
     }
     fighter.status_JumpAerialSub(false.into(), false.into());
-    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH {
+    if [
+        *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH,
+        *FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
+    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
         sonic_set_jumps(fighter);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_JumpAerial_Main as *const () as _))
@@ -16,7 +19,10 @@ unsafe extern "C" fn sonic_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L
 
 unsafe extern "C" fn sonic_screw_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_ItemScrewJumpAerialSub();
-    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH {
+    if [
+        *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH,
+        *FIGHTER_SONIC_STATUS_KIND_SPIN_JUMP
+    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
         sonic_set_jumps(fighter);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_ItemScrewJumpAerial_Main as *const () as _))

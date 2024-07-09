@@ -269,6 +269,155 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_specialairlw2start(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 10.0 / 4.0);
+    frame(agent.lua_state_agent, 5.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 14.0);
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 0.5);
+        VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_TO_LOOP);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("sphere"), 8.0, 80, 40, 0, 95, 5.0, 0.0, 1.5, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+    }
+}
+
+unsafe extern "C" fn effect_specialairlw2start(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 2.0);
+    for _ in 0..2 {
+        if macros::is_excute(agent) {
+            macros::FLASH(agent, 1.0, 1.0, 0.5, 1.0);
+        }
+        wait(agent.lua_state_agent, 1.0);
+        if macros::is_excute(agent) {
+            macros::FLASH(agent, 0.77, 0.77, 0.22, 1.0);
+        }
+        wait(agent.lua_state_agent, 1.0);
+        if macros::is_excute(agent) {
+            macros::COL_NORMAL(agent);
+        }
+        wait(agent.lua_state_agent, 1.0);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sonic_spinblur_max"), Hash40::new("sphere"), 0, 0, 0, 0, 0, 0, 1, false);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sonic_spintrace_max"), Hash40::new("sphere"), 0, 0, 0, 0, 0, 0, 1, false);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+    }
+}
+
+unsafe extern "C" fn sound_specialairlw2start(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_special_s03"));
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_sonic_attack05"));
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_special_s01"));
+    }
+}
+
+unsafe extern "C" fn expression_specialairlw2start(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("footr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("footl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("rot"), *HIT_STATUS_NORMAL);
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
+unsafe extern "C" fn game_specialairlw2bound(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_BOUND_START);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if VarModule::is_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_HIT) {
+        if macros::is_excute(agent) {
+            VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::ENABLE_TRICK);
+        }
+    }
+}
+
+unsafe extern "C" fn effect_specialairlw2bound(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_BOUND_IS_GROUND) {
+        if macros::is_excute(agent) {
+            macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+}
+
+unsafe extern "C" fn sound_specialairlw2bound(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_landing03"));
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_jump01"));
+    }
+}
+
+unsafe extern "C" fn expression_specialairlw2bound(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("footr"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("footl"), *HIT_STATUS_OFF);
+        macros::HIT_NODE(agent, Hash40::new("rot"), *HIT_STATUS_NORMAL);
+    }
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("footr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("footl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(agent, Hash40::new("rot"), *HIT_STATUS_OFF);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnhit", game_specialnhit, Priority::Low);
 
@@ -291,4 +440,14 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("expression_specialairslaunch", expression_specialairslaunch, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
+
+    agent.acmd("game_specialairlw2start", game_specialairlw2start, Priority::Low);
+    agent.acmd("effect_specialairlw2start", effect_specialairlw2start, Priority::Low);
+    agent.acmd("sound_specialairlw2start", sound_specialairlw2start, Priority::Low);
+    agent.acmd("expression_specialairlw2start", expression_specialairlw2start, Priority::Low);
+
+    agent.acmd("game_specialairlw2bound", game_specialairlw2bound, Priority::Low);
+    agent.acmd("effect_specialairlw2bound", effect_specialairlw2bound, Priority::Low);
+    agent.acmd("sound_specialairlw2bound", sound_specialairlw2bound, Priority::Low);
+    agent.acmd("expression_specialairlw2bound", expression_specialairlw2bound, Priority::Low);
 }

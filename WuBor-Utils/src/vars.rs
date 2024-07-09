@@ -880,16 +880,32 @@ pub mod sonic {
             pub const SPECIAL_AIR_S_TO_END : i32 = 0x1152;
             pub const SPECIAL_AIR_S_CHECK_HIT : i32 = 0x1153;
 
+            pub const SPECIAL_AIR_LW_TO_LOOP : i32 = 0x1150;
+            pub const SPECIAL_AIR_LW_HIT : i32 = 0x1151;
+            pub const SPECIAL_AIR_LW_BOUND_START : i32 = 0x1152;
+            pub const SPECIAL_AIR_LW_BOUNDING : i32 = 0x1153;
+            pub const SPECIAL_AIR_LW_BOUND_IS_GROUND : i32 = 0x1154;
+
             pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
             pub const TRICK_ENABLE_CONTROL : i32 = 0x1151;
         }
         pub mod int {
             pub const SPECIAL_AIR_S_HOLD_COUNT_REMAIN : i32 = 0x1150;
+
+            pub const SPECIAL_AIR_LW_JUMP_RESERVE : i32 = 0x1150;
+        }
+        pub mod float {
+            pub const SPECIAL_AIR_LW_BOUND_SPEED_X : i32 = 0x1150;
+            pub const SPECIAL_AIR_LW_BOUND_SPEED_Y : i32 = 0x1151;
+            pub const SPECIAL_AIR_LW_BOUND_ANGLE : i32 = 0x1152;
         }
         pub const SPECIAL_AIR_S_START : i32 = 0x1F3;
         pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F4;
         pub const SPECIAL_AIR_S_END : i32 = 0x1F5;
-        pub const TRICK : i32 = 0x1F6;
+        pub const SPECIAL_AIR_LW_START : i32 = 0x1F6;
+        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1F7;
+        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1F8;
+        pub const TRICK : i32 = 0x1F9;
     }
 }
 

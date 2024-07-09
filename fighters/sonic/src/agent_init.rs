@@ -3,10 +3,13 @@ use super::*;
 extern "C" {
     #[link_name = "specials_pre_generic"]
     pub fn specials_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
+    #[link_name = "speciallw_pre_generic"]
+    pub fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue;
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));
     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(sonic_status_end_control as *const () as _));
 }
 
@@ -15,6 +18,7 @@ unsafe extern "C" fn sonic_status_end_control(fighter: &mut L2CFighterCommon) ->
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
     || status == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::off_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::off_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_LW);
     }
     0.into()
 }

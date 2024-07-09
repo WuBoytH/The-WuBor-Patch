@@ -90,7 +90,7 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
             (2.5, 0.5)
         }
         else if mot == hash40("trick_b") {
-            (-2.0, 1.0)
+            (-1.2, 1.0)
         }
         else {
             (0.0, 2.0)
@@ -147,12 +147,12 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
         sv_kinetic_energy!(
             controller_set_accel_x_add,
             fighter,
-            0.01
+            0.02
         );
         sv_kinetic_energy!(
             controller_set_accel_x_mul,
             fighter,
-            0.01
+            0.02
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }

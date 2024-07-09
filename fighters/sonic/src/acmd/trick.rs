@@ -1,7 +1,10 @@
 use super::*;
 
 unsafe extern "C" fn game_trickhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 8.0 / 13.0);
     frame(agent.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::TRICK_ENABLE_MOVEMENT);
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::TRICK_ENABLE_CONTROL);

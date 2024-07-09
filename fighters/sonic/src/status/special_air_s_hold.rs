@@ -32,6 +32,7 @@ unsafe extern "C" fn sonic_special_air_s_hold_pre(fighter: &mut L2CFighterCommon
 }
 
 unsafe extern "C" fn sonic_special_air_s_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_S);
     VarModule::set_int(fighter.module_accessor, vars::sonic::status::int::SPECIAL_AIR_S_HOLD_COUNT_REMAIN, 15);
     VarModule::on_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_FIRST);
     MotionModule::change_motion(

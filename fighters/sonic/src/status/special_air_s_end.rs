@@ -32,6 +32,7 @@ unsafe extern "C" fn sonic_special_air_s_end_pre(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn sonic_special_air_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_S);
     VarModule::set_int(fighter.module_accessor, vars::sonic::status::int::SPECIAL_AIR_S_HOLD_COUNT_REMAIN, 7);
     sv_kinetic_energy!(
         reset_energy,

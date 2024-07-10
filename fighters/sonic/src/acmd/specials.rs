@@ -301,7 +301,7 @@ unsafe extern "C" fn effect_specialairlw2start(agent: &mut L2CAgentBase) {
         }
         wait(agent.lua_state_agent, 1.0);
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sonic_spinblur_max"), Hash40::new("sphere"), 0, 0, 0, 0, 0, 0, 1, false);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);

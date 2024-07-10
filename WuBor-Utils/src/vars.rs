@@ -885,6 +885,9 @@ pub mod sonic {
             pub const SPECIAL_AIR_LW_BOUND_START : i32 = 0x1152;
             pub const SPECIAL_AIR_LW_BOUNDING : i32 = 0x1153;
             pub const SPECIAL_AIR_LW_BOUND_IS_GROUND : i32 = 0x1154;
+            pub const SPECIAL_AIR_LW_ESCAPE_AIR_RESERVE : i32 = 0x1155;
+            pub const SPECIAL_AIR_LW_SPECIAL_N_FALL_RESERVE : i32 = 0x1156;
+            pub const SPECIAL_AIR_LW_SPECIAL_S_RESERVE : i32 = 0x1157;
 
             pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
             pub const TRICK_ENABLE_CONTROL : i32 = 0x1151;

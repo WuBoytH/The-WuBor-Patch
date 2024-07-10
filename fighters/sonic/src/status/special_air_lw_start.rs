@@ -50,6 +50,15 @@ unsafe extern "C" fn sonic_special_air_lw_start_main(fighter: &mut L2CFighterCom
     let jump_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
     VarModule::set_int(fighter.module_accessor, vars::sonic::status::int::SPECIAL_AIR_LW_JUMP_RESERVE, jump_count);
 
+    let escape_air = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+    VarModule::set_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_ESCAPE_AIR_RESERVE, escape_air);
+
+    let special_n = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SONIC_INSTANCE_WORK_FLAG_SPECIAL_N_FALL);
+    VarModule::set_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_SPECIAL_N_FALL_RESERVE, special_n);
+
+    let special_s = VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_S);
+    VarModule::set_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_SPECIAL_S_RESERVE, special_s);
+
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_lw_2_start"),

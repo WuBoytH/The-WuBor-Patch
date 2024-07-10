@@ -41,9 +41,10 @@ unsafe extern "C" fn sonic_special_air_lw_bound_init(fighter: &mut L2CFighterCom
     };
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(correct));
 
-    let angle = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        let normal = GroundModule::get_touch_normal(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
-        normal.y.atan2(normal.x)
+    let angle = if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+        let normal_x = GroundModule::get_touch_normal_x(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let normal_y = GroundModule::get_touch_normal_y(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        normal_y.atan2(normal_x)
     }
     else {
         90.0_f32.to_radians()

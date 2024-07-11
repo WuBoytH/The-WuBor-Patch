@@ -80,8 +80,29 @@ unsafe extern "C" fn sonic_special_air_lw_start_main_loop(fighter: &mut L2CFight
     0.into()
 }
 
+unsafe extern "C" fn sonic_special_air_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND].get_i32() != vars::sonic::status::SPECIAL_AIR_LW_LOOP {
+        effect!(
+            fighter,
+            MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
+            Hash40::new("sonic_spinblur_max"),
+            true,
+            true
+        );
+        effect!(
+            fighter,
+            MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
+            Hash40::new("sonic_spintrace_max"),
+            true,
+            true
+        );
+    }
+    0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, vars::sonic::status::SPECIAL_AIR_LW_START, sonic_special_air_lw_start_pre);
     agent.status(Init, vars::sonic::status::SPECIAL_AIR_LW_START, sonic_special_air_lw_start_init);
     agent.status(Main, vars::sonic::status::SPECIAL_AIR_LW_START, sonic_special_air_lw_start_main);
+    agent.status(End, vars::sonic::status::SPECIAL_AIR_LW_START, sonic_special_air_lw_start_end);
 }

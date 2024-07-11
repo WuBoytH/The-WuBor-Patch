@@ -218,7 +218,7 @@ unsafe extern "C" fn game_specialairslaunch(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 40, 110, 0, 45, 4.0, 0.0, 8.0, 5.0, Some(0.0), Some(15.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 40, 110, 0, 45, 5.0, 0.0, 8.0, 5.0, Some(0.0), Some(15.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, -5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -301,7 +301,7 @@ unsafe extern "C" fn effect_specialairlw2start(agent: &mut L2CAgentBase) {
         }
         wait(agent.lua_state_agent, 1.0);
     }
-    frame(agent.lua_state_agent, 14.0);
+    frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sonic_spinblur_max"), Hash40::new("sphere"), 0, 0, 0, 0, 0, 0, 1, false);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);

@@ -198,7 +198,7 @@ younglink = { path = "fighters/younglink" }
 zelda = { path = "fighters/zelda" }
 
 [package]
-version = "0.17.0"
+version = "0.17.1"
 name = "wubor"
 authors.workspace = true
 

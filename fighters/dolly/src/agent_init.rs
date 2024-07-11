@@ -236,12 +236,12 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
-    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, 2);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI_COMMAND, 2);
 
     FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::ATTACK_COMMAND1);
 
-    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::ATTACK_COMMAND1, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::ATTACK_COMMAND1, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI2_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_COMMAND, 1);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SUPER_SPECIAL_R_COMMAND, 1);

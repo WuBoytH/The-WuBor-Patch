@@ -73,6 +73,9 @@ if build:
     if os.path.isfile("../target/plugin.nro"):
         os.remove("../target/plugin.nro")
 
+    if os.path.isfile("../target/dev_base.nro"):
+            os.remove("../target/dev_base.nro")
+
     if os.path.isfile("../target/development.nro"):
             os.remove("../target/development.nro")
 
@@ -99,39 +102,39 @@ if build:
             os.system('curl -T ../target/plugin.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
     else:
         if not only_dev:
-            os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev_base")
+            # os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev_base")
             build_command = 'cargo skyline build --release --no-default-features --features=local,main_nro,' + non_dev_chars
             # print(build_command)
             print("Building Base Dev Plugin!")
 
-            if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
-                os.remove("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro")
+            if os.path.isfile("../target/aarch64-skyline-switch/release/libwubor.nro"):
+                os.remove("../target/aarch64-skyline-switch/release/libwubor.nro")
 
             os.system(build_command)
 
-            if os.path.isfile("../target/dev_base/aarch64-skyline-switch/release/libwubor.nro"):
-                print("Plugin built successfully! Copying to the target folder as plugin.nro")
+            if os.path.isfile("../target/aarch64-skyline-switch/release/libwubor.nro"):
+                print("Plugin built successfully! Copying to the target folder as dev_base.nro")
                 shutil.copy(
-                    "../target/dev_base/aarch64-skyline-switch/release/libwubor.nro",
-                    "../target/plugin.nro"
+                    "../target/aarch64-skyline-switch/release/libwubor.nro",
+                    "../target/dev_base.nro"
                 )
             else:
                 print("Something went wrong! Please read any compiler errors you see.")
 
-        os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev")
+        # os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev")
         build_command = 'cargo skyline build --release --no-default-features --features=' + dev_chars
         # print(build_command)
         print("Building development.nro")
 
-        if os.path.isfile("../target/dev/aarch64-skyline-switch/release/libwubor.nro"):
-            os.remove("../target/dev/aarch64-skyline-switch/release/libwubor.nro")
+        if os.path.isfile("../target/aarch64-skyline-switch/release/libwubor.nro"):
+            os.remove("../target/aarch64-skyline-switch/release/libwubor.nro")
 
         os.system(build_command)
 
-        if os.path.isfile("../target/dev/aarch64-skyline-switch/release/libwubor.nro"):
+        if os.path.isfile("../target/aarch64-skyline-switch/release/libwubor.nro"):
             print("Plugin built successfully! Copying to the target folder as development.nro")
             shutil.copy(
-                "../target/dev/aarch64-skyline-switch/release/libwubor.nro",
+                "../target/aarch64-skyline-switch/release/libwubor.nro",
                 "../target/development.nro"
             )
         else:
@@ -140,7 +143,7 @@ if build:
         if ip_index != -1:
             ip = sys.argv[ip_index + 1]
             if not only_dev:
-                os.system('curl -T ../target/plugin.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
+                os.system('curl -T ../target/dev_base.nro ftp://' + ip + ':5000/ultimate/mods/wubor/plugin.nro')
 
             switch_rom_path = "atmosphere/contents/01006a800016e000/romfs"
             development_subpath = "smashline/"

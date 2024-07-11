@@ -22,7 +22,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dedede_dash_start"));
-        macros::SET_PLAY_INHIVIT(agent, Hash40::new("se_dedede_dash_start"), 15);
+        // macros::SET_PLAY_INHIVIT(agent, Hash40::new("se_dedede_dash_start"), 15);
     }
     wait(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -66,7 +66,7 @@ unsafe extern "C" fn sound_turndash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dedede_dash_start"));
-        macros::SET_PLAY_INHIVIT(agent, Hash40::new("se_dedede_dash_start"), 15);
+        // macros::SET_PLAY_INHIVIT(agent, Hash40::new("se_dedede_dash_start"), 15);
     }
     wait(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {

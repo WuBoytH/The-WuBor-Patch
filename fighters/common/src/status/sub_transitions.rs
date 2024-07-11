@@ -82,15 +82,15 @@ unsafe extern "C" fn sub_transition_group_check_ground_catch(fighter: &mut L2CFi
             let cat1 = fighter.global_table[CMD_CAT1].get_i32();
             if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
                 if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
-                    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
-                        fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
-                        return true.into();
+                    let stick_x = fighter.global_table[STICK_X].get_f32();
+                    let lr = PostureModule::lr(fighter.module_accessor);
+                    let status = if stick_x * lr <= -0.5 {
+                        FIGHTER_STATUS_KIND_CATCH_TURN
                     }
-                    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
-                        fighter.change_status(FIGHTER_STATUS_KIND_CATCH_TURN.into(), true.into());
-                        return true.into();
-                    }
-                    fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
+                    else {
+                        FIGHTER_STATUS_KIND_CATCH
+                    };
+                    fighter.change_status(status.into(), true.into());
                     return true.into();
                 }
             }

@@ -13,11 +13,23 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 295, 65, 0, 24, 4.0, 0.0, 13.0, 8.0, Some(0.0), Some(3.0), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+        let attrs = if VarModule::is_flag(agent.module_accessor, vars::mario::instance::flag::BONKER) {
+            ("collision_attr_coin", *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN)
+        }
+        else {
+            ("collision_attr_normal", *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY)
+        };
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 295, 65, 0, 24, 4.0, 0.0, 13.0, 8.0, Some(0.0), Some(3.0), Some(13.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(attrs.0), attrs.1, attrs.2, *ATTACK_REGION_OBJECT);
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 13.0, 295, 65, 0, 24, 4.0, 0.0, 3.0, 13.0, Some(0.0), Some(1.5), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
+        let attrs = if VarModule::is_flag(agent.module_accessor, vars::mario::instance::flag::BONKER) {
+            ("collision_attr_coin", *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN)
+        }
+        else {
+            ("collision_attr_normal", *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY)
+        };
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 13.0, 295, 65, 0, 24, 4.0, 0.0, 3.0, 13.0, Some(0.0), Some(1.5), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(attrs.0), attrs.1, attrs.2, *ATTACK_REGION_OBJECT);
     }
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
@@ -38,7 +50,12 @@ unsafe extern "C" fn effect_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, -1, -3, -11, -140, 1.5, true, *EF_FLIP_YZ);
         macros::LAST_EFFECT_SET_RATE(agent, 0.5);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.196, 0.196, 0.216);
+        if VarModule::is_flag(agent.module_accessor, vars::mario::instance::flag::BONKER) {
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.9, 0.1, 0.1);
+        }
+        else {
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.196, 0.196, 0.216);
+        }
     }
 }
 
@@ -196,7 +213,7 @@ unsafe extern "C" fn sound_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_mario_002"));
         macros::PLAY_SE(agent, Hash40::new("se_mario_attackair_l01"));
-    } 
+    }
 }
 
 unsafe extern "C" fn expression_attackairlw(agent: &mut L2CAgentBase) {

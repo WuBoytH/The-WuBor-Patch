@@ -37,6 +37,11 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
             LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
             &mut *(jack_special_lw_pre as *const () as *mut libc::c_void)
         );
+        fighter.sv_set_status_func(
+            FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
+            LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(),
+            &mut *(jack_special_lw_main as *const () as *mut libc::c_void)
+        );
         0.into()
     } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2 {
         fighter.sv_set_status_func(
@@ -54,10 +59,10 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
 
 unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rebel_gauge = WorkModule::get_float(fighter.module_accessor, 0x4D);
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST)
-    && rebel_gauge < 10.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
-        return 0.into();
-    }
+    // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST)
+    // && rebel_gauge < 10.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+    //     return 0.into();
+    // }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST)
     && rebel_gauge < 1.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
         return 0.into();

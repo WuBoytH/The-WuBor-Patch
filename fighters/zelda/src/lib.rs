@@ -15,11 +15,13 @@ use {
 };
 
 mod acmd;
+mod status;
 mod frame;
 
 pub fn install() {
     let agent = &mut Agent::new("zelda");
     acmd::install(agent);
+    status::install(agent);
     frame::install(agent);
     agent.install();
 }

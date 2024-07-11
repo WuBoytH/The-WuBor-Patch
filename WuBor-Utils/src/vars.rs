@@ -371,6 +371,11 @@ pub mod ike {
 }
 
 pub mod jack {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_LW_CANCEL : i32 = 0x0150;
+        }
+    }
     pub mod status {
         pub mod flag {
             pub const SPECIAL_N_FIRST : i32 = 0x1150;
@@ -630,10 +635,28 @@ pub mod marth {
     }
 }
 
+pub mod mewtwo {
+    pub mod status {
+        pub mod float {
+            pub const SPECIAL_HI_2_SPEED_X : i32 = 0x1150;
+            pub const SPECIAL_HI_2_SPEED_Y : i32 = 0x1151;
+        }
+    }
+}
+
 pub mod packun {
     pub mod status {
         pub mod flag {
             pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod palutena {
+    pub mod status {
+        pub mod float {
+            pub const SPECIAL_HI_2_SPEED_X : i32 = 0x1150;
+            pub const SPECIAL_HI_2_SPEED_Y : i32 = 0x1151;
         }
     }
 }
@@ -691,22 +714,6 @@ pub mod richter {
             pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
 
             pub const SPECIAL_N_SHOOT : i32 = 0x1150;
-        }
-    }
-}
-
-pub mod simon {
-    pub use super::richter::*;
-}
-
-pub mod snake_c4 {
-    pub mod instance {
-        pub mod flag {
-            pub const TRACKER_ENABLED : i32 = 0x0150;
-            pub const TRACKER_VISIBLE : i32 = 0x0151;
-        }
-        pub mod int {
-            pub const TRACKER_EFF : i32 = 0x0150;
         }
     }
 }
@@ -845,6 +852,22 @@ pub mod shizue {
     }
 }
 
+pub mod simon {
+    pub use super::richter::*;
+}
+
+pub mod snake_c4 {
+    pub mod instance {
+        pub mod flag {
+            pub const TRACKER_ENABLED : i32 = 0x0150;
+            pub const TRACKER_VISIBLE : i32 = 0x0151;
+        }
+        pub mod int {
+            pub const TRACKER_EFF : i32 = 0x0150;
+        }
+    }
+}
+
 pub mod szerosuit {
     pub mod status {
         pub mod flag {
@@ -885,6 +908,15 @@ pub mod yoshi {
         }
         pub mod int {
             pub const SPECIAL_HI_START_SITUATION : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod zelda {
+    pub mod status {
+        pub mod float {
+            pub const SPECIAL_HI_2_SPEED_X : i32 = 0x1150;
+            pub const SPECIAL_HI_2_SPEED_Y : i32 = 0x1151;
         }
     }
 }

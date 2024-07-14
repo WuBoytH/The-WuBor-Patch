@@ -15,13 +15,13 @@ use {
 };
 
 mod acmd;
-mod status;
+// mod status;
 mod frame;
 
 pub fn install() {
     let agent = &mut Agent::new("pichu");
     acmd::install(agent);
-    status::install(agent);
+    // status::install(agent);
     frame::install(agent);
     agent.install();
 }

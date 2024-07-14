@@ -263,7 +263,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP); // Was ALWAYS
     }
-    frame(agent.lua_state_agent, 25.0);
+    frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::ENABLE_TRICK);
     }

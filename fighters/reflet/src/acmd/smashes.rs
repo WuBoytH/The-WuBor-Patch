@@ -37,14 +37,7 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         }
         macros::FT_MOTION_RATE(agent, 0.8);
         frame(agent.lua_state_agent, 30.0);
-        if WorkModule::get_int(agent.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT) == 0 {
-            if WorkModule::is_flag(agent.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON) {
-                if macros::is_excute(agent) {
-                    VisibilityModule::set_int64(agent.module_accessor, hash40("sword") as i64, hash40("sword_normal") as i64);
-                    WorkModule::off_flag(agent.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_FLAG_THUNDER_SWORD_ON);
-                }
-            }
-        }
+        check_thunder_sword_depleted(agent);
         frame(agent.lua_state_agent, 38.0);
         if macros::is_excute(agent) {
             FighterSpecializer_Reflet::throwaway_sword(agent.battle_object as *mut Fighter, Vector2f{x: -2.5, y: 7.0}, true);

@@ -2,9 +2,9 @@ use super::*;
 
 unsafe extern "C" fn game_specialnhit(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        KineticModule::add_speed(agent.module_accessor, &Vector3f{x: -0.7, y: 0.0, z: 0.0});
-    }
+    // if macros::is_excute(agent) {
+    //     KineticModule::add_speed(agent.module_accessor, &Vector3f{x: -0.7, y: 0.0, z: 0.0});
+    // }
     macros::FT_MOTION_RATE(agent, 0.6);
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {

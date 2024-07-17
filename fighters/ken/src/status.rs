@@ -19,6 +19,8 @@ mod special_hi;
 
 mod special_lw;
 
+mod r#final;
+
 pub fn install(agent: &mut Agent) {
     dash_back::install(agent);
 
@@ -38,4 +40,6 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
 
     special_lw::install(agent);
+
+    r#final::install(agent);
 }

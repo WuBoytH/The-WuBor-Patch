@@ -312,6 +312,11 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
         }
         return;
     }
+    if status == *FIGHTER_STATUS_KIND_FINAL {
+        if collision_kind != 1 {
+            return;
+        }
+    }
     original!()(vtable, fighter, log, some_float);
 }
 

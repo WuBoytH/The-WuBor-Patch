@@ -18,6 +18,9 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
         FGCModule::clone_command_input(module_accessor, Cat4::SPECIAL_N_COMMAND, Cat4::ATTACK_COMMAND1);
         FGCModule::set_command_input_button(module_accessor, Cat4::ATTACK_COMMAND1, 2);
     }
+    FGCModule::clone_command_input(module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, Cat4::SUPER_SPECIAL_COMMAND);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SUPER_SPECIAL_COMMAND, 1);
+    FGCModule::set_command_input_button(module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);
 }
 
 #[skyline::from_offset(0x646fe0)]

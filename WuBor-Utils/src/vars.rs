@@ -382,6 +382,9 @@ pub mod jack {
 
             pub const SPECIAL_S_FEINT : i32 = 0x1150;
         }
+
+        pub const SPECIAL_S_CATCH : i32 = 0x1FC;
+        pub const SPECIAL_S_CATCH_JUMP : i32 = 0x1FD;
     }
 }
 

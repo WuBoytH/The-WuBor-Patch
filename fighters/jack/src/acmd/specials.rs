@@ -568,7 +568,8 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(agent, 0.8);
         if macros::is_excute(agent) {
             KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-            HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            // HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            macros::CATCH(agent, 1, Hash40::new("top"), 4.0, 0.0, 5.5, 4.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_DIDDY, *COLLISION_SITUATION_MASK_GA);
         }
     }
     frame(agent.lua_state_agent, 18.0);
@@ -587,6 +588,9 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
             AttackModule::clear_all(agent.module_accessor);
+        }
+        else {
+            grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         }
     }
 }
@@ -721,6 +725,51 @@ unsafe extern "C" fn expression_specialairs1(agent: &mut L2CAgentBase) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
         ItemModule::set_attach_item_visibility(agent.module_accessor, true, 0);
         VisibilityModule::set_whole(agent.module_accessor, true);
+    }
+}
+
+unsafe extern "C" fn game_specials1catch(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KNEE);
+        AttackModule::set_catch_only_all(agent.module_accessor, true, false);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
+unsafe extern "C" fn effect_specials1catch(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        lua_args!(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 5, -1.5, -38, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, true, 1, 0, 0);
+        EFFECT_COLOR(agent.lua_state_agent);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+    }
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+unsafe extern "C" fn game_specials1catchjump(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 361, 40, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        macros::CHECK_FINISH_CAMERA(agent, 5, -5);
+        let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_TASK);
+        let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_HIT_NO);
+        macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        macros::CORRECT(agent, *GROUND_CORRECT_KIND_AIR);
+        macros::SA_SET(agent, *SITUATION_KIND_AIR);
+        WorkModule::enable_transition_term(agent.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
+        agent.clear_lua_stack();
+        lua_args!(agent, 1, 1.6);
+        SET_SPEED(agent.lua_state_agent);
     }
 }
 
@@ -975,6 +1024,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairs1", effect_specialairs1, Priority::Low);
     agent.acmd("sound_specialairs1", sound_specialairs1, Priority::Low);
     agent.acmd("expression_specialairs1", expression_specialairs1, Priority::Low);
+
+    agent.acmd("game_specials1catch", game_specials1catch, Priority::Low);
+    agent.acmd("effect_specials1catch", effect_specials1catch, Priority::Low);
+
+    agent.acmd("game_specials1catchjump", game_specials1catchjump, Priority::Low);
 
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 

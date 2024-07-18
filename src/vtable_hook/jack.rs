@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 
 use crate::imports::*;
+use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 #[skyline::hook(offset = 0xb36ee0)]
 pub unsafe extern "C" fn jack_damage_callback(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
@@ -48,6 +49,66 @@ unsafe extern "C" fn jack_on_attack(vtable: u64, fighter: &mut Fighter, log: u64
 #[skyline::from_offset(0xb33d30)]
 unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
+#[skyline::hook(offset = 0xb33820)]
+pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: u64) -> u64 {
+    let event : &mut LinkEvent = std::mem::transmute(log);
+    // param_3 + 0x10
+    if event.link_event_kind.0 == hash40("capture") {
+        let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
+        let module_accessor = fighter.battle_object.module_accessor;
+        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {
+            StatusModule::change_status_request(module_accessor, jack::status::SPECIAL_S_CATCH, false);
+            capture_event.result = true;
+            capture_event.constraint = false;
+            CatchModule::set_catch(module_accessor, capture_event.sender_id);
+            if LinkModule::is_link(module_accessor, *LINK_NO_CAPTURE) {
+                let catch_module = *(module_accessor as *const *const u64).add(0x130 / 8);
+                catch_module_thing(catch_module);
+            }
+            LinkModule::set_attribute(
+                module_accessor,
+                *LINK_NO_CAPTURE,
+                LinkAttribute{_address: *LINK_ATTRIBUTE_REFERENCE_PARENT_COLOR_BLEND as u8},
+                false
+            );
+            let capture_object = MiscModule::get_battle_object_from_id(capture_event.sender_id);
+            let capture_id = (*capture_object).battle_object_id;
+            if capture_id >> 0x1c != 0
+            && capture_id & 0xf0000000 != 0x40000000 {
+                return 0;
+            }
+
+            let constraint = LinkModule::get_model_constraint_flag(module_accessor) as u32;
+            LinkModule::set_model_constraint_flag(module_accessor, constraint | 0x2000); // CONSTRAINT_FLAG_OFFSET_ROT
+
+            let offset = if capture_id >> 0x1c == 0 {
+                diddy_get_special_s_offset(singletons::FighterParamAccessor2(), (*capture_object).kind)
+            }
+            else {
+                0.0
+            };
+
+            let offset = &mut Vector3f{x: offset, y: offset, z: 0.0};
+            if MotionModule::is_flip((*capture_object).module_accessor) {
+                offset.x *= -1.0;
+            }
+            let scale = PostureModule::scale((*capture_object).module_accessor);
+            offset.y *= scale;
+
+            LinkModule::set_constraint_translate_offset(module_accessor, offset);
+
+            return 0;
+        }
+    }
+    original!()(vtable, fighter, log)
+}
+
+#[skyline::from_offset(0x3f0850)]
+fn catch_module_thing(catch_module: *const u64);
+
+#[skyline::from_offset(0x721240)]
+fn diddy_get_special_s_offset(param_accessor_2: *mut smash::app::FighterParamAccessor2, kind: u32) -> f32;
+
 pub fn install() {
     // Disables passive meter gain
     skyline::patching::Patch::in_text(0xb31620).data(0x17FFFF6Eu32);
@@ -59,7 +120,8 @@ pub fn install() {
         jack_damage_callback2,
         jack_damage_callback3,
         jack_handle_gun_dodge_staling,
-        jack_call_summon_dispatch
+        jack_call_summon_dispatch,
+        jack_on_grab
     );
     MiscModule::patch_vtable_function(0x4fc71b8, jack_on_attack as u64);
 }

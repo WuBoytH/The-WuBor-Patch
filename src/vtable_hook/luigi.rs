@@ -8,7 +8,6 @@ pub unsafe extern "C" fn luigi_change_motion_callback(_vtable: u64, _fighter: &m
 #[skyline::hook(offset = 0xca0e70)]
 pub unsafe extern "C" fn luigi_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash_rs::app::LinkEvent) -> u64 {
     if event.link_event_kind.0 == hash40("capture") {
-        SoundModule::play_se(fighter.battle_object.module_accessor, Hash40::new("se_common_cliff_catch"), true, false, false, false, enSEType(0));
         return 1;
     }
     original!()(vtable, fighter, event)

@@ -21,6 +21,7 @@ mod agent_init;
 pub mod helper;
 
 mod hadoken;
+mod shinkuhadoken;
 
 pub fn install() {
     let agent = &mut Agent::new("ryu");
@@ -31,4 +32,5 @@ pub fn install() {
     agent.install();
 
     hadoken::install();
+    shinkuhadoken::install();
 }

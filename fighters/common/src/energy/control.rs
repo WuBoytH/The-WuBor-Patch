@@ -790,7 +790,7 @@ unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type:
                     if limit_speed > ground_speed {
                         limit_speed = ground_speed + ((limit_speed - ground_speed) / 2.0);
                     }
-                    limit_speed
+                    limit_speed.clamp(1.2, 1.7)
                 }
                 else {
                     WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0)

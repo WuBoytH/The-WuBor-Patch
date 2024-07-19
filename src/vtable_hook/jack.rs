@@ -62,8 +62,10 @@ pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: u
             capture_event.constraint = false;
             CatchModule::set_catch(module_accessor, capture_event.sender_id);
             if LinkModule::is_link(module_accessor, *LINK_NO_CAPTURE) {
-                let catch_module = *(module_accessor as *const *const u64).add(0x130 / 8);
-                catch_module_thing(catch_module);
+                let ptr = MiscModule::get_module_vtable_func(module_accessor, 0x130, 0x80);
+                let func: extern "C" fn(catch_module: *mut u64) = std::mem::transmute(ptr);
+                let catch_module = (module_accessor as *mut u64).add(0x130 / 0x8);
+                func(catch_module);
             }
             LinkModule::set_attribute(
                 module_accessor,
@@ -102,9 +104,6 @@ pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: u
     }
     original!()(vtable, fighter, log)
 }
-
-#[skyline::from_offset(0x3f0850)]
-fn catch_module_thing(catch_module: *const u64);
 
 #[skyline::from_offset(0x721240)]
 fn diddy_get_special_s_offset(param_accessor_2: *mut smash::app::FighterParamAccessor2, kind: u32) -> f32;

@@ -1,7 +1,6 @@
 use super::*;
 
 mod jump;
-mod throw;
 
 mod special_s;
 
@@ -19,7 +18,6 @@ mod trick;
 
 pub fn install(agent: &mut Agent) {
     jump::install(agent);
-    throw::install(agent);
 
     special_s::install(agent);
 

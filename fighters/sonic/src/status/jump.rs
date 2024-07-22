@@ -1,5 +1,18 @@
 use super::*;
 
+unsafe extern "C" fn sonic_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_jump_item_rocketbelt();
+    let motion = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
+    && fighter.global_table[STICK_X].get_f32() == 0.0 {
+        Hash40::new("jump_mini")
+    }
+    else {
+        Hash40::new("invalid")
+    };
+    fighter.status_Jump_sub(motion.into(), 0.0_f32.into());
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Jump_Main as *const () as _))
+}
+
 unsafe extern "C" fn sonic_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 1 {
         WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
@@ -47,6 +60,8 @@ unsafe extern "C" fn sonic_screw_jump_aerial_main(fighter: &mut L2CFighterCommon
 // }
 
 pub fn install(agent: &mut Agent) {
+    agent.status(Main, *FIGHTER_STATUS_KIND_JUMP, sonic_jump_main);
+
     agent.status(Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, sonic_jump_aerial_main);
 
     agent.status(Main, *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL, sonic_screw_jump_aerial_main);

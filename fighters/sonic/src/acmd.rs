@@ -1,6 +1,7 @@
 use super::*;
 
 mod dash;
+mod jump;
 
 mod normals;
 mod aerials;
@@ -17,6 +18,7 @@ mod appeal;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+    jump::install(agent);
 
     normals::install(agent);
     aerials::install(agent);

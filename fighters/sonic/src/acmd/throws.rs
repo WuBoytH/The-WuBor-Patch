@@ -1,5 +1,3 @@
-use smash::app::lua_bind;
-
 use super::*;
 
 unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {

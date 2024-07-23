@@ -7,9 +7,9 @@ unsafe extern "C" fn effect_jumpmini(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_jumpmini(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 2.0);
+    // frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_sonic_jump02"));
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_jump_mini"));
     }
 }
 
@@ -23,7 +23,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_jumpmini", sound_jumpmini, Priority::Low);
     agent.acmd("expression_jumpmini", expression_jumpmini, Priority::Low);
 
+    agent.acmd("sound_jumpfrontmini", sound_jumpmini, Priority::Low);
     agent.acmd("expression_jumpfrontmini", expression_jumpmini, Priority::Low);
 
+    agent.acmd("sound_jumpbackmini", sound_jumpmini, Priority::Low);
     agent.acmd("expression_jumpbackmini", expression_jumpmini, Priority::Low);
 }

@@ -29,34 +29,34 @@ unsafe extern "C" fn status_pre_catch_common(fighter: &mut L2CFighterCommon, par
     0.into()
 }
 
-// #[skyline::hook(replace = L2CFighterCommon_status_pre_CatchDash_common)]
-// unsafe extern "C" fn status_pre_catchdash_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-//     StatusModule::init_settings(
-//         fighter.module_accessor,
-//         SituationKind(*SITUATION_KIND_GROUND),
-//         *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP, // was MOTION
-//         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
-//         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-//         true,
-//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-//         0
-//     );
-//     FighterStatusModuleImpl::set_fighter_status_data(
-//         fighter.module_accessor,
-//         false,
-//         *FIGHTER_TREADED_KIND_ENABLE,
-//         false,
-//         true,
-//         false,
-//         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_CATCH as u64,
-//         param_1.get_u32(),
-//         0,
-//         0
-//     );
-//     0.into()
-// }
+#[skyline::hook(replace = L2CFighterCommon_status_pre_CatchDash_common)]
+unsafe extern "C" fn status_pre_catchdash_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP, // was MOTION
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        true,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_CATCH as u64,
+        param_1.get_u32(),
+        0,
+        0
+    );
+    0.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_status_Catch)]
 unsafe extern "C" fn status_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -68,6 +68,13 @@ unsafe extern "C" fn status_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchDash)]
 unsafe extern "C" fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    sv_kinetic_energy!(
+        mul_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.65,
+        0.0
+    );
     ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     fighter.sub_status_CatchDash();
     GrabModule::set_rebound(fighter.module_accessor, true);
@@ -207,7 +214,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_catch_common,
-            // status_pre_catchdash_common,
+            status_pre_catchdash_common,
             status_catch,
             status_catchdash,
             status_catchturn,

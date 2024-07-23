@@ -2,7 +2,7 @@ pub use {
     smash::{
         hash40,
         phx::*,
-        app::{lua_bind::*, *},
+        app::{self, lua_bind::*, *},
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     smash_script::*,

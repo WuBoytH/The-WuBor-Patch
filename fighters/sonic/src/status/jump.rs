@@ -2,8 +2,11 @@ use super::*;
 
 unsafe extern "C" fn sonic_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_jump_item_rocketbelt();
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
     let motion = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
-    && fighter.global_table[STICK_X].get_f32() == 0.0 {
+    && speed_x.abs() <= 0.5 {
         Hash40::new("jump_mini")
     }
     else {

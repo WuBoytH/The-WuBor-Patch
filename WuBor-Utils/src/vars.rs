@@ -796,6 +796,12 @@ pub mod ryu {
     pub const GUARD_SPECIAL_LW_KIND_REVERSAL : i32 = 0x1;
 }
 
+pub mod ryu_shinkuhadoken {
+    pub mod status {
+        pub const FINISH : i32 = 0x2;
+    }
+}
+
 pub mod ken {
     pub mod instance {
         pub mod flag {

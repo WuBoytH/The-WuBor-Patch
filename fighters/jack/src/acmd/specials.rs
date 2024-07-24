@@ -759,7 +759,7 @@ unsafe extern "C" fn effect_specials1catch(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specials1catchjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 45, 40, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 70, 40, 10, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_TASK);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_HIT_GROUP);
@@ -770,7 +770,7 @@ unsafe extern "C" fn game_specials1catchjump(agent: &mut L2CAgentBase) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
         WorkModule::enable_transition_term(agent.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
         agent.clear_lua_stack();
-        lua_args!(agent, 1, 1.6);
+        lua_args!(agent, -0.6, 1.9);
         SET_SPEED(agent.lua_state_agent);
     }
 }

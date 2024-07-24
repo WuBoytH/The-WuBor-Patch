@@ -52,10 +52,17 @@ unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, lo
 #[skyline::hook(offset = 0xb33820)]
 pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
+    let module_accessor = fighter.battle_object.module_accessor;
     // param_3 + 0x10
+    if event.link_event_kind.0 == 0x1653b9bb3a {
+        if StatusModule::status_kind(module_accessor) == jack::status::SPECIAL_S_CATCH_JUMP {
+            CatchModule::set_send_cut_event(module_accessor, false);
+            CatchModule::cling_cut(module_accessor, false);
+            return 0;
+        }
+    }
     if event.link_event_kind.0 == hash40("capture") {
         let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
-        let module_accessor = fighter.battle_object.module_accessor;
         if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {
             StatusModule::change_status_request(module_accessor, jack::status::SPECIAL_S_CATCH, false);
             capture_event.result = true;

@@ -33,6 +33,8 @@ pub unsafe extern "C" fn jack_special_s_catch_jump_pre(fighter: &mut L2CFighterC
 
 pub unsafe extern "C" fn jack_special_s_catch_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::reverse_lr(fighter.module_accessor);
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_s1_catch_jump"),
@@ -44,10 +46,29 @@ pub unsafe extern "C" fn jack_special_s_catch_jump_main(fighter: &mut L2CFighter
         false
     );
 
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_FLAG_JUMP_START);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        jack_special_s_catch_jump_substatus(fighter, false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(jack_special_s_catch_jump_substatus as *const () as _));
+
     let model_flag = LinkModule::get_model_constraint_flag(fighter.module_accessor) as u32;
     LinkModule::set_model_constraint_flag(fighter.module_accessor, model_flag | *CONSTRAINT_FLAG_OFFSET_ROT as u32);
-    // LinkModule::set_constraint_rot_offset_y(fighter.module_accessor, 180.0);
+    LinkModule::set_constraint_rot_offset_y(fighter.module_accessor, 180.0);
     fighter.sub_shift_status_main(L2CValue::Ptr(jack_special_s_catch_jump_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn jack_special_s_catch_jump_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if !param_1.get_bool() {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_FLAG_JUMP_START) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            fighter.set_situation(SITUATION_KIND_AIR.into());
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_FLAG_JUMP_START);
+        }
+    }
+    0.into()
 }
 
 unsafe extern "C" fn jack_special_s_catch_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {

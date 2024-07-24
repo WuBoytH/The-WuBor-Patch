@@ -100,9 +100,9 @@ unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) ->
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-    }
+    // if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+    //     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+    // }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -171,9 +171,6 @@ unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) ->
 
 unsafe extern "C" fn jack_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
-    ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
-    VisibilityModule::set_whole(fighter.module_accessor, true);
-    macros::AFTER_IMAGE_OFF(fighter, 0);
     if [
         *FIGHTER_STATUS_KIND_FALL_SPECIAL,
         *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL

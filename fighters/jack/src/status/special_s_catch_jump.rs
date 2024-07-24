@@ -32,8 +32,6 @@ pub unsafe extern "C" fn jack_special_s_catch_jump_pre(fighter: &mut L2CFighterC
 }
 
 pub unsafe extern "C" fn jack_special_s_catch_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    PostureModule::reverse_lr(fighter.module_accessor);
-    PostureModule::update_rot_y_lr(fighter.module_accessor);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
     MotionModule::change_motion(
         fighter.module_accessor,

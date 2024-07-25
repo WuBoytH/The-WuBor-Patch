@@ -540,7 +540,7 @@ unsafe extern "C" fn game_specialairnshoot(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        // KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         JostleModule::set_status(agent.module_accessor, false);
     }
     if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -582,7 +582,7 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
-            macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+            macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, true, Hash40::new("jack_knife"), Hash40::new("knife"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         }
     }
     frame(agent.lua_state_agent, 18.0);
@@ -594,7 +594,7 @@ unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
-            macros::AFTER_IMAGE_OFF(agent, 0);
+            macros::AFTER_IMAGE_OFF(agent, 5);
         }
     }
     // frame(agent.lua_state_agent, 20.0);
@@ -654,11 +654,11 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, true, Hash40::new("jack_knife"), Hash40::new("knife"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
-        macros::AFTER_IMAGE_OFF(agent, 0);
+        macros::AFTER_IMAGE_OFF(agent, 5);
     }
 }
 

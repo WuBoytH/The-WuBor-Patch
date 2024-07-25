@@ -350,9 +350,9 @@ unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(agent, 0.5);
     wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-    }
+    // if macros::is_excute(agent) {
+    //     WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    // }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
             AttackModule::clear_all(agent.module_accessor);
@@ -367,6 +367,11 @@ unsafe extern "C" fn game_specialairs2(agent: &mut L2CAgentBase) {
         }
     }
     wait(agent.lua_state_agent, 3.0);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT) == 1 {
+        if macros::is_excute(agent) {
+            WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        }
+    }
     if macros::is_excute(agent) {
         AttackModule::set_target_category(agent.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
         AttackModule::set_size(agent.module_accessor, 0, 0.1);
@@ -431,6 +436,7 @@ unsafe extern "C" fn expression_specialairs2(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }

@@ -760,6 +760,7 @@ pub mod ryu {
         pub mod flag {
             pub const DENJIN_CHARGE : i32 = 0x0100;
             pub const DENJIN_RUSH_INHERIT : i32 = 0x0101;
+            pub const SKIP_FINAL_PROX_CHECK : i32 = 0x0102;
         }
         pub mod int {
             pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
@@ -795,10 +796,18 @@ pub mod ryu {
     pub const GUARD_SPECIAL_LW_KIND_REVERSAL : i32 = 0x1;
 }
 
+pub mod ryu_shinkuhadoken {
+    pub mod status {
+        pub const FINISH : i32 = 0x2;
+    }
+}
+
 pub mod ken {
     pub mod instance {
         pub mod flag {
             pub const QUICK_STEP_INHERIT : i32 = 0x0100;
+
+            pub use super::super::super::ryu::instance::flag::SKIP_FINAL_PROX_CHECK;
         }
     }
     pub mod status {

@@ -78,7 +78,7 @@ pub struct KineticEnergy {
     pub speed: PaddedVec2,
     pub rot_speed: PaddedVec2,
     pub enable: bool,
-    pub unk2: [u8; 0xF], // probably padding 
+    pub unk2: [u8; 0xF], // probably padding
     pub accel: PaddedVec2,
     pub speed_max: PaddedVec2,
     pub speed_brake: PaddedVec2,
@@ -115,7 +115,7 @@ pub struct Vec4 {
 
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, module_accessor: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
-        #[skyline::from_offset(0x47b4f0)]        
+        #[skyline::from_offset(0x47b4f0)]
         extern "C" fn adjust_speed_for_ground_normal_internal(speed: Vec2, module_accessor: &mut BattleObjectModuleAccessor) -> Vec2;
 
         unsafe {
@@ -391,7 +391,7 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
             let mut mul = stick.x * energy.accel_mul_x + accel_add_x * stick.x.signum();
             let mut brake = WorkModule::get_param_float(module_accessor, hash40("ground_brake"), 0)
                                     * WorkModule::get_param_float(module_accessor, hash40("common"), hash40("run_brake_brake_mul"));
-            
+
             let ground_module = *(module_accessor as *const BattleObjectModuleAccessor as *const u64).add(0x88 / 0x8);
             let some_float = *(ground_module as *const f32).add(0x130 / 0x8);
             if some_float * energy.lr <= -0.1 {
@@ -445,7 +445,7 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
         },
         SwimDrown => {
             let speed_mul = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("swim_drown_speed_x_mul"))
-                                    * WorkModule::get_param_float(module_accessor, hash40("common"), hash40("swim_speed_mul")); 
+                                    * WorkModule::get_param_float(module_accessor, hash40("common"), hash40("swim_speed_mul"));
             energy.speed_max.x = stick.x * speed_mul;
             energy.speed_max.y = -1.0;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
@@ -498,7 +498,7 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
 
         energy.accel.x = accel_diff;
         let speed_max = energy.speed_max.x * stick.x.abs();
-    
+
         if energy.unk[1] != 0 {
             if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || speed_max.abs() <= energy._x9c.abs()))
             && (stick.x >= 0.0 || energy._xa0 >= 0.0 || speed_max.abs() <= energy._x9c.abs()))
@@ -768,7 +768,7 @@ unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type:
     energy.accel_add_y = 0.0;
     energy.lr = PostureModule::lr(module_accessor);
     energy.unk[3] = 1;
-    
+
     use EnergyControllerResetType::*;
     match reset_type {
         FallAdjust | FallAdjustNoCap | StopCeil | WallJump => {
@@ -781,15 +781,20 @@ unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type:
             && !WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT)
             && energy.unk[2] == 0 {
                 let is_jump = VarModule::is_flag(module_accessor, vars::fighter::instance::flag::JUMP_FROM_SQUAT);
-                let mut limit_speed = if is_jump || StatusModule::prev_situation_kind(module_accessor) == *SITUATION_KIND_AIR {
-                    WorkModule::get_param_float(module_accessor, hash40("jump_speed_x_max"), 0)
+                let break_limit = is_jump || StatusModule::prev_situation_kind(module_accessor) == *SITUATION_KIND_AIR;
+                let limit_speed = if break_limit {
+                    let mut limit_speed = WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0) * 1.4;
+                    let run_speed = WorkModule::get_param_float(module_accessor, hash40("run_speed_max"), 0);
+                    let dash_speed = WorkModule::get_param_float(module_accessor, hash40("dash_speed"), 0);
+                    let ground_speed = run_speed.max(dash_speed);
+                    if limit_speed > ground_speed {
+                        limit_speed = ground_speed + ((limit_speed - ground_speed) / 2.0);
+                    }
+                    limit_speed.clamp(1.2, 1.7)
                 }
                 else {
                     WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0)
                 };
-                if limit_speed < WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0) {
-                    limit_speed = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("air_speed_x_limit"));
-                }
                 if limit_speed < energy.speed.x.abs() {
                     energy.speed = PaddedVec2::new(limit_speed * energy.speed.x.signum(), 0.0);
                 }
@@ -856,7 +861,7 @@ unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type:
         MoveGround => {
             let new_speed = KineticEnergy::adjust_speed_for_ground_normal(&energy.speed, module_accessor);
             energy.speed = new_speed;
-        }        
+        }
         _ => {}
     }
 

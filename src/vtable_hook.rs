@@ -22,6 +22,7 @@ mod wario;
 mod weapon;
 mod mariod_drcapsule;
 mod belmont_cross;
+mod ryu_shinkuhadoken;
 
 pub fn install() {
     fighter::install();
@@ -48,4 +49,5 @@ pub fn install() {
     weapon::install();
     mariod_drcapsule::install();
     belmont_cross::install();
+    ryu_shinkuhadoken::install();
 }

@@ -1,10 +1,5 @@
 use super::*;
 
-extern "C" {
-    #[link_name = "ryu_final_hit_cancel"]
-    pub fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
-}
-
 unsafe extern "C" fn ken_attack_command1_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attr = if VarModule::is_flag(fighter.module_accessor, vars::ken::instance::flag::QUICK_STEP_INHERIT) {
         0
@@ -104,13 +99,6 @@ unsafe extern "C" fn ken_attack_command1_substatus(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn ken_attack_command1_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return 1.into();
-        }
-    }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-        let sitation = fighter.global_table[SITUATION_KIND].get_i32();
-        if ryu_final_hit_cancel(fighter, sitation.into()).get_bool() {
             return 1.into();
         }
     }

@@ -39,6 +39,9 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x617a90).nop();
     skyline::patching::Patch::in_text(0x617aa4).nop();
 
+    // Removes the forced change to HIT_STATUS_OFF during Final Smash
+    skyline::patching::Patch::in_text(0x62d5ac).nop();
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         autoturn_handler,

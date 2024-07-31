@@ -5,7 +5,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
         macros::CHECK_VALID_FINAL_START_CAMERA(agent, 0, 7, 20, 0, 0, 0);
-        macros::SLOW_OPPONENT(agent, 100.0, 50.0);
+        macros::SLOW_OPPONENT(agent, 400.0, 50.0);
     }
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {
         frame(agent.lua_state_agent, 10.0);
@@ -69,7 +69,7 @@ unsafe extern "C" fn game_final(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_final2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-        macros::SLOW_OPPONENT(agent, 100.0, 60.0);
+        macros::SLOW_OPPONENT(agent, 400.0, 60.0);
         macros::CHECK_VALID_FINAL_START_CAMERA(agent, 0, 7, 20, 0, 0, 0);
     }
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_FINAL_START_CAMERA) {

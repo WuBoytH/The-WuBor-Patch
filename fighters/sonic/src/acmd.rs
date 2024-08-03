@@ -1,7 +1,5 @@
 use super::*;
 
-mod look_up;
-
 mod dash;
 mod jump;
 
@@ -19,8 +17,6 @@ mod cliff;
 mod appeal;
 
 pub fn install(agent: &mut Agent) {
-    look_up::install(agent);
-
     dash::install(agent);
     jump::install(agent);
 

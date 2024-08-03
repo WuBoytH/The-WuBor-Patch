@@ -36,6 +36,8 @@ pub mod fighter {
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
 
             pub const PURGED : i32 = 0x000A;
+
+            pub const CAN_LOOK_UP : i32 = 0x000B;
         }
         pub mod int {
             pub const TARGET_ID : i32 = 0x0000;
@@ -179,6 +181,15 @@ pub mod guard {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
         pub const GUARD_OFF_RESERVE_CAT1 : i32 = 0x1051;
         pub const JUST_SHIELD_COUNT : i32 = 0x1052;
+    }
+}
+
+pub mod look_up {
+    pub mod flag {
+        pub const SHIFT_CAMERA : i32 = 0x1050;
+    }
+    pub mod int {
+        pub const HOLD_COUNT : i32 = 0x1050;
     }
 }
 
@@ -911,13 +922,16 @@ pub mod sonic {
             pub const SPECIAL_AIR_LW_BOUND_SPEED_Y : i32 = 0x1151;
             pub const SPECIAL_AIR_LW_BOUND_ANGLE : i32 = 0x1152;
         }
-        pub const SPECIAL_AIR_S_START : i32 = 0x1F3;
-        pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F4;
-        pub const SPECIAL_AIR_S_END : i32 = 0x1F5;
-        pub const SPECIAL_AIR_LW_START : i32 = 0x1F6;
-        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1F7;
-        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1F8;
-        pub const TRICK : i32 = 0x1F9;
+        pub const LOOK_UP : i32 = 0x1F3;
+        pub const LOOK_UP_WAIT : i32 = 0x1F4;
+        pub const LOOK_UP_RV : i32 = 0x1F5;
+        pub const SPECIAL_AIR_S_START : i32 = 0x1F6;
+        pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F7;
+        pub const SPECIAL_AIR_S_END : i32 = 0x1F8;
+        pub const SPECIAL_AIR_LW_START : i32 = 0x1F9;
+        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1FA;
+        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1FB;
+        pub const TRICK : i32 = 0x1FC;
     }
 }
 

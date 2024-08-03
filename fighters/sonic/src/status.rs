@@ -1,6 +1,11 @@
 use super::*;
 
+mod squat;
 mod jump;
+
+mod look_up;
+mod look_up_wait;
+mod look_up_rv;
 
 mod special_s;
 
@@ -17,7 +22,12 @@ mod special_air_lw_bound;
 mod trick;
 
 pub fn install(agent: &mut Agent) {
+    squat::install(agent);
     jump::install(agent);
+
+    look_up::install(agent);
+    look_up_wait::install(agent);
+    look_up_rv::install(agent);
 
     special_s::install(agent);
 

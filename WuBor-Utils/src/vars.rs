@@ -407,6 +407,22 @@ pub mod kirby {
     }
 }
 
+pub mod krool {
+    pub mod status {
+        pub mod int {
+            pub const SPECIAL_HI_MASH_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod krool_backpack {
+    pub mod instance {
+        pub mod int {
+            pub const SPECIAL_HI_MASHED_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod lucario {
     pub mod instance {
         pub mod flag {

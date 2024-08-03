@@ -662,8 +662,8 @@ pub mod mewtwo {
 
 pub mod packun {
     pub mod status {
-        pub mod flag {
-            pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
+        pub mod int {
+            pub const SPECIAL_HI_MASH_COUNT : i32 = 0x1150;
         }
     }
 }

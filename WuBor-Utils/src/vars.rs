@@ -407,6 +407,14 @@ pub mod kirby {
     }
 }
 
+pub mod koopajr {
+    pub mod status {
+        pub mod int {
+            pub const THROW_LW_MASH_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod krool {
     pub mod status {
         pub mod int {

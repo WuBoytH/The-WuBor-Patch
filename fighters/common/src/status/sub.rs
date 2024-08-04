@@ -72,10 +72,25 @@ pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue
     (speed_y >= -dive_speed_y).into()
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_check_command_squat)]
+pub unsafe extern "C" fn sub_check_command_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+
+    let can_look_up = VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::CAN_LOOK_UP);
+
+    let input_up = can_look_up && stick_y >= -squat_stick_y;
+    let input_down = stick_y <= squat_stick_y;
+
+    (input_up || input_down).into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_is_dive
+            sub_is_dive,
+            sub_check_command_squat
         );
     }
 }

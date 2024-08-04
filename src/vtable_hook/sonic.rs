@@ -1,5 +1,9 @@
 use crate::imports::*;
 
+unsafe extern "C" fn sonic_on_init(_vtable: u64, fighter: &mut Fighter) {
+    VarModule::on_flag(fighter.battle_object.module_accessor, fighter::instance::flag::CAN_LOOK_UP);
+}
+
 #[skyline::hook(offset = 0x11d5a00)]
 unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
@@ -24,6 +28,7 @@ unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) 
 }
 
 pub fn install() {
+    let _ = skyline::patching::Patch::in_text(0x5046570).data(sonic_on_init as u64);
     skyline::install_hooks!(
         sonic_on_hit
     );

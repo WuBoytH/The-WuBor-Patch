@@ -85,7 +85,8 @@ unsafe extern "C" fn sonic_special_air_lw_loop_main_loop(fighter: &mut L2CFighte
 
     sonic_special_air_lw_power_handler(fighter);
 
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    || VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_HIT) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
@@ -119,16 +120,7 @@ unsafe extern "C" fn sonic_special_air_lw_check_attack(
     _param_1: &L2CValue,
     _param_2: &L2CValue
 ) -> L2CValue {
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-    let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent).abs();
-    VarModule::set_float(fighter.module_accessor, vars::sonic::status::float::SPECIAL_AIR_LW_BOUND_SPEED_X, speed_x);
-    VarModule::set_float(fighter.module_accessor, vars::sonic::status::float::SPECIAL_AIR_LW_BOUND_SPEED_Y, speed_y);
     VarModule::on_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_HIT);
-    fighter.change_status(vars::sonic::status::SPECIAL_AIR_LW_BOUND.into(), false.into());
     0.into()
 }
 

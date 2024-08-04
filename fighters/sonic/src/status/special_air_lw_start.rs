@@ -1,6 +1,7 @@
 use super::*;
 
 unsafe extern "C" fn sonic_special_air_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let from_trick = VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_FROM_TRICK);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -29,6 +30,7 @@ unsafe extern "C" fn sonic_special_air_lw_start_pre(fighter: &mut L2CFighterComm
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
+    VarModule::set_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_FROM_TRICK, from_trick);
     0.into()
 }
 

@@ -314,6 +314,11 @@ unsafe extern "C" fn effect_specialairlw2start(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_specialairlw2start(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_FROM_TRICK) {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_sonic_trick"));
+        }
+    }
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_sonic_special_s03"));

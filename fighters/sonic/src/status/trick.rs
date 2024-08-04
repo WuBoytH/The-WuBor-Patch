@@ -32,23 +32,25 @@ unsafe extern "C" fn sonic_trick_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-unsafe extern "C" fn sonic_trick_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-    0.into()
-}
-
 unsafe extern "C" fn sonic_trick_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_x = fighter.global_table[STICK_X].get_f32();
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
     let lr = PostureModule::lr(fighter.module_accessor);
-    let mot = if stick_x * lr > 0.5 {
+    let mot = if stick_x * lr >= 0.5 {
         Hash40::new("trick_f")
     }
-    else if stick_x * lr < -0.5 {
+    else if stick_x * lr <= -0.5 {
         Hash40::new("trick_b")
     }
-    else {
+    else if stick_y >= 0.5 {
         Hash40::new("trick_hi")
+    }
+    else {
+        Hash40::new("trick_n")
     };
+    if mot.hash != hash40("trick_n") {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+    }
     MotionModule::change_motion(
         fighter.module_accessor,
         mot,
@@ -161,7 +163,6 @@ unsafe extern "C" fn sonic_trick_exec(fighter: &mut L2CFighterCommon) -> L2CValu
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, vars::sonic::status::TRICK, sonic_trick_pre);
-    agent.status(Init, vars::sonic::status::TRICK, sonic_trick_init);
     agent.status(Main, vars::sonic::status::TRICK, sonic_trick_main);
     agent.status(Exec, vars::sonic::status::TRICK, sonic_trick_exec);
 }

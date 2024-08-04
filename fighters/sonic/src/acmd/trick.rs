@@ -1,5 +1,11 @@
 use super::*;
 
+unsafe extern "C" fn sound_trickn(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_trick"));
+    }
+}
+
 unsafe extern "C" fn game_trickhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 8.0 / 13.0);
@@ -13,6 +19,9 @@ unsafe extern "C" fn game_trickhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_trickhi(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_trick"));
+    }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_01"));
@@ -81,6 +90,9 @@ unsafe extern "C" fn effect_trickf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn sound_trickf(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_trick"));
+    }
     frame(agent.lua_state_agent, 19.0);
     for _ in 0..3 {
         if macros::is_excute(agent) {
@@ -119,6 +131,9 @@ unsafe extern "C" fn expression_trickf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_trickb(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_sonic_trick"));
+    }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::sonic::status::flag::TRICK_ENABLE_MOVEMENT);
@@ -157,6 +172,8 @@ unsafe extern "C" fn expression_trickb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_trickn", sound_trickn, Priority::Low);
+
     agent.acmd("game_trickhi", game_trickhi, Priority::Low);
     agent.acmd("sound_trickhi", sound_trickhi, Priority::Low);
     agent.acmd("expression_trickhi", expression_trickhi, Priority::Low);

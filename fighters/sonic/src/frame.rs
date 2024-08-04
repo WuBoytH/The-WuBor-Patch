@@ -10,6 +10,7 @@ unsafe extern "C" fn check_trick(fighter: &mut L2CFighterCommon) {
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0 {
             VarModule::off_flag(fighter.module_accessor, vars::sonic::status::flag::ENABLE_TRICK);
             if fighter.global_table[STICK_Y].get_f32() <= -0.5 {
+                VarModule::on_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_FROM_TRICK);
                 fighter.change_status(vars::sonic::status::SPECIAL_AIR_LW_START.into(), true.into());
             }
             else {
@@ -18,6 +19,7 @@ unsafe extern "C" fn check_trick(fighter: &mut L2CFighterCommon) {
         }
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
             VarModule::off_flag(fighter.module_accessor, vars::sonic::status::flag::ENABLE_TRICK);
+            VarModule::on_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_FROM_TRICK);
             fighter.change_status(vars::sonic::status::SPECIAL_AIR_LW_START.into(), true.into());
         }
     }

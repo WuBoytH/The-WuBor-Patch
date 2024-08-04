@@ -24,16 +24,19 @@ unsafe extern "C" fn look_up_wait_common(fighter: &mut L2CFighterCommon, start_s
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK);
 
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("look_up_wait"),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("look_up")
+    && MotionModule::is_end(fighter.module_accessor) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("look_up_wait"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+    }
 
     if !StopModule::is_stop(fighter.module_accessor) {
         look_up_wait_substatus(fighter, false.into());
@@ -71,6 +74,20 @@ unsafe extern "C" fn look_up_wait_main_loop_common(fighter: &mut L2CFighterCommo
                 return 1.into();
             }
         }
+    }
+
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("look_up")
+    && MotionModule::is_end(fighter.module_accessor) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("look_up_wait"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }
 
     0.into()

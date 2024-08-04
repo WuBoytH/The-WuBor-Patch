@@ -21,7 +21,8 @@ unsafe extern "C" fn look_up_main_loop_common(fighter: &mut L2CFighterCommon, wa
         return 0.into();
     }
 
-    if MotionModule::is_end(fighter.module_accessor) {
+    if MotionModule::is_end(fighter.module_accessor)
+    || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CHANGE_STATUS_DLAY_MOTION) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             fighter.change_status(wait_status, false.into());
             return 0.into();

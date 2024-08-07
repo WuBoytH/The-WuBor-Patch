@@ -2,7 +2,13 @@ use super::*;
 
 mod wait;
 
+mod walk;
+
 mod dash_back;
+
+mod squat_wait;
+
+mod landing;
 
 mod guard_on;
 mod guard_off;
@@ -36,7 +42,13 @@ mod appeal;
 pub fn install(agent: &mut Agent) {
     wait::install(agent);
 
+    walk::install(agent);
+
     dash_back::install(agent);
+
+    squat_wait::install(agent);
+
+    landing::install(agent);
 
     guard_on::install(agent);
     guard_off::install(agent);

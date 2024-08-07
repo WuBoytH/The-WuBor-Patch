@@ -67,6 +67,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
 }
 
 pub fn install(agent: &mut Agent) {

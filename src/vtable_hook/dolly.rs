@@ -123,6 +123,10 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     0
 }
 
+#[allow(
+    unused_variables,
+    unused_assignments
+)]
 #[skyline::hook(offset = 0x972db0)]
 pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
@@ -175,9 +179,9 @@ pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, f
             PostureModule::update_rot_y_lr(module_accessor);
         }
     }
-    if !skip_reset {
-        ControlModule::reset_special_command(module_accessor, false);
-    }
+    // if !skip_reset {
+    //     ControlModule::reset_special_command(module_accessor, false);
+    // }
     WorkModule::off_flag(module_accessor, 0x200000E6);
     WorkModule::off_flag(module_accessor, 0x200000E5);
 }

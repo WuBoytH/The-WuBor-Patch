@@ -59,6 +59,9 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x974d20).nop();
     let _ = skyline::patching::Patch::in_text(0x21d7cfc).nop();
 
+    // Removes the 3f delay on backdashing for Ryu/Ken/Terry/Kazuya
+    let _ = skyline::patching::Patch::in_text(0x69aef8).data(0x14000008u32);
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,

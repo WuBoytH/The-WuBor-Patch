@@ -1,12 +1,12 @@
 use super::*;
 
-mod wait;
+// mod wait;
 
-mod walk;
+// mod walk;
 
 mod dash_back;
 
-mod squat_wait;
+// mod squat_wait;
 
 mod landing;
 
@@ -40,13 +40,13 @@ mod superspecial;
 mod appeal;
 
 pub fn install(agent: &mut Agent) {
-    wait::install(agent);
+    // wait::install(agent);
 
-    walk::install(agent);
+    // walk::install(agent);
 
     dash_back::install(agent);
 
-    squat_wait::install(agent);
+    // squat_wait::install(agent);
 
     landing::install(agent);
 

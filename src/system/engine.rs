@@ -9,10 +9,21 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-// Turns off Autoturn for Ryu, Ken, Terry, and Kazuya
+// Autoturn for Ryu, Ken, Terry, and Kazuya
 // #[skyline::hook(offset = 0x69a6e0)]
-// unsafe fn autoturn_handler(_module_accessor: *mut BattleObjectModuleAccessor, _some_bool: bool, _some_int: i32, _some_uint: u32) -> f32 {
-//     0.0
+// unsafe fn autoturn_handler(
+//     module_accessor: *mut BattleObjectModuleAccessor,
+//     is_landing_special: bool,
+//     status: i32,
+//     some_uint: u32
+// ) -> f32 {
+//     let kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
+//     if [*FIGHTER_KIND_DOLLY, *FIGHTER_KIND_DEMON].contains(&kind)
+//     && !(0x0..0xA).contains(&status)
+//     && !(0x1E4..0x1EB).contains(&status) {
+//         return 0.0;
+//     }
+//     original!()(module_accessor, is_landing_special, status, some_uint)
 // }
 
 // Forces parry hitlag to be a constant value

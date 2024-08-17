@@ -210,6 +210,16 @@ unsafe extern "C" fn status_landingsub(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_calc_landing_motion_rate)]
+unsafe extern "C" fn sub_calc_landing_motion_rate(_fighter: &mut L2CFighterCommon, end_frame: L2CValue, landing_frame: L2CValue) -> L2CValue {
+    let end_over_landing = end_frame.get_f32() / landing_frame.get_f32();
+    let end_frame_for_some_reason = end_over_landing * landing_frame.get_f32();
+    let huh = end_frame.get_f32() - end_frame_for_some_reason;
+    let end_frame_plus = huh + 0.01;
+    let idk_anymore = end_frame_plus / landing_frame.get_f32();
+    (end_over_landing + idk_anymore).into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -217,7 +227,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_pre_landinglight_param,
             status_pre_landing_fall_special_common,
             sub_landing_uniq_process_init_main_param,
-            status_landingsub
+            status_landingsub,
+            sub_calc_landing_motion_rate
         );
     }
 }

@@ -504,8 +504,9 @@ unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut 
         }
     }
     let opponent_lr = WorkModule::get_float(module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    let lr = PostureModule::lr(module_accessor);
     if opponent_lr != 0.0
-    && PostureModule::lr(module_accessor) != opponent_lr {
+    && lr != opponent_lr {
         return;
     }
 
@@ -516,8 +517,8 @@ unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut 
     }
     else {
         let special_command_lr = ControlModule::get_special_command_lr(module_accessor, command_kind);
-        if opponent_lr != 0.0 && opponent_lr != special_command_lr {
-            PostureModule::set_lr(module_accessor, opponent_lr);
+        if special_command_lr != 0.0 && special_command_lr != lr {
+            PostureModule::set_lr(module_accessor, special_command_lr);
             PostureModule::update_rot_y_lr(module_accessor);
         }
     }

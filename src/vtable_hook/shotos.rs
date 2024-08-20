@@ -446,6 +446,85 @@ unsafe extern "C" fn ryu_ken_frame(vtable: u64, fighter: &mut Fighter) {
 #[skyline::from_offset(0x695c80)]
 fn ryu_ken_check_final_can_cancel(work_module: *const u64) -> bool;
 
+#[skyline::hook(offset = 0x10d6a10)]
+unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut Fighter) {
+    let module_accessor = fighter.battle_object.module_accessor;
+    let status = StatusModule::status_kind(module_accessor);
+    let force_reset;
+    let command_kind;
+    if fighter.battle_object.kind == *FIGHTER_KIND_KIRBY as u32 {
+        if status == *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N2_COMMAND {
+            force_reset = false;
+            command_kind = 1;
+        }
+        else if status == *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N_COMMAND {
+            force_reset = false;
+            command_kind = 0;
+        }
+        else if status == *FIGHTER_KIRBY_STATUS_KIND_RYU_SPECIAL_N {
+            force_reset = false;
+            command_kind = -1;
+        }
+        else {
+            force_reset = true;
+            command_kind = -1;
+        }
+    }
+    else {
+        if [
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_FINAL,
+            *FIGHTER_RYU_STATUS_KIND_FINAL2
+        ].contains(&status) {
+            force_reset = true;
+            command_kind = -1;
+        }
+        else if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND {
+            force_reset = false;
+            command_kind = 0;
+        }
+        else if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND {
+            force_reset = false;
+            command_kind = 1;
+        }
+        else if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND {
+            force_reset = false;
+            command_kind = 2;
+        }
+        else if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND {
+            force_reset = false;
+            command_kind = 3;
+        }
+        else {
+            force_reset = true;
+            command_kind = -1;
+        }
+    }
+    let opponent_lr = WorkModule::get_float(module_accessor, *FIGHTER_SPECIAL_COMMAND_USER_INSTANCE_WORK_ID_FLOAT_OPPONENT_LR_1ON1);
+    if opponent_lr != 0.0
+    && PostureModule::lr(module_accessor) != opponent_lr {
+        return;
+    }
+
+    if command_kind < 0 {
+        if !force_reset {
+            return;
+        }
+    }
+    else {
+        let special_command_lr = ControlModule::get_special_command_lr(module_accessor, command_kind);
+        if opponent_lr != 0.0 && opponent_lr != special_command_lr {
+            PostureModule::set_lr(module_accessor, opponent_lr);
+            PostureModule::update_rot_y_lr(module_accessor);
+        }
+    }
+    
+    // CommandModule::reset_special_command(module_accessor, false);
+}
+
 pub fn install() {
     // Patches the original final smash cancel check
     let _ = skyline::patching::Patch::in_text(0x10d6324).data(0x14000039u32);
@@ -462,6 +541,7 @@ pub fn install() {
         ryu_ken_on_hit_2,
         ryu_ken_on_search,
         ryu_ken_on_damage,
-        ryu_ken_frame
+        ryu_ken_frame,
+        ryu_ken_status_change_callback
     );
 }

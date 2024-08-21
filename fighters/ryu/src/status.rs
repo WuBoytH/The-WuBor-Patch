@@ -2,7 +2,15 @@ use super::*;
 
 mod rebirth;
 
+// mod wait;
+
+// mod walk;
+
 mod dash_back;
+
+// mod squat_wait;
+
+mod landing;
 
 mod guard_on;
 mod guard;
@@ -42,7 +50,15 @@ mod r#final;
 pub fn install(agent: &mut Agent) {
     rebirth::install(agent);
 
+    // wait::install(agent);
+
+    // walk::install(agent);
+
     dash_back::install(agent);
+
+    // squat_wait::install(agent);
+
+    landing::install(agent);
 
     guard_on::install(agent);
     guard::install(agent);

@@ -254,6 +254,7 @@ pub mod dolly {
         pub mod flag {
             pub const SPECIAL_CANCEL : i32 = 0x0100;
             pub const RISING_FORCE : i32 = 0x0101;
+            pub const DISABLE_INPUT_SPECIAL_REVERSE : i32 = 0x0102;
         }
         pub mod int {
             pub const SUPER_SPECIAL_AURA : i32 = 0x0101;

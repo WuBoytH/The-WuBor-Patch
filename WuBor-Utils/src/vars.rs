@@ -245,6 +245,14 @@ pub mod demon {
     pub mod status {
         pub mod flag {
             pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1150;
+
+            pub const ATTACK_STEP_2S_HOLD : i32 = 0x1150;
+            pub const ATTACK_STEP_2S_CHECK_HOLD : i32 = 0x1151;
+            pub const ATTACK_STEP_2S_TO_HEAVENS_GATE : i32 = 0x1152;
+        }
+
+        pub mod int {
+            pub const ATTACK_STEP_2S_TO_HEAVENS_GATE_STEP : i32 = 0x1152;
         }
     }
 }

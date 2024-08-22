@@ -5,10 +5,12 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
-    let guard_trigger = fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0;
-    // println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && guard_trigger {
+    && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < 6 &&
+    (
+        ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) > 20 ||
+        StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
@@ -18,9 +20,6 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
             ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         }
         fighter.FighterStatusGuard__set_just_shield_scale();
-    }
-    if guard_trigger {
-        ControlModule::clear_command(fighter.module_accessor, false);
     }
     // Also Original, but moved down
     let hit_stop_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64u64);

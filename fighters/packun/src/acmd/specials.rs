@@ -23,6 +23,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 3, 0, Hash40::new("arml"), 1.2, 367, 100, 0, 30, 5.0, 1.5, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 4, 0, Hash40::new("armr"), 1.2, 367, 100, 0, 30, 5.0, 1.5, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
     }
+    frame(agent.lua_state_agent, 30.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
     frame(agent.lua_state_agent, 58.0);
     let mash_count = VarModule::get_int(agent.module_accessor, vars::packun::status::int::SPECIAL_HI_MASH_COUNT) as f32;
     macros::FT_MOTION_RATE(agent, (mash_count + 3.0) / 3.0);

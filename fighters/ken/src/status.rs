@@ -1,6 +1,14 @@
 use super::*;
 
+// mod wait;
+
+// mod walk;
+
 mod dash_back;
+
+// mod squat_wait;
+
+mod landing;
 
 mod attack;
 
@@ -22,7 +30,15 @@ mod special_lw;
 mod r#final;
 
 pub fn install(agent: &mut Agent) {
+    // wait::install(agent);
+
+    // walk::install(agent);
+
     dash_back::install(agent);
+
+    // squat_wait::install(agent);
+
+    landing::install(agent);
 
     attack::install(agent);
 

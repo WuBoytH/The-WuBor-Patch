@@ -9,7 +9,8 @@ unsafe extern "C" fn game_catch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("top"), 3.3, 0.0, 6.0, 4.0, Some(0.0), Some(6.0), Some(8.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
-    macros::game_CaptureCutCommon(agent);
+    let animcmd: &mut L2CFighterAnimcmdGameCommon = std::mem::transmute(&mut *agent);
+    L2CFighterAnimcmdGameCommon::game_CaptureCutCommon(animcmd);
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
@@ -28,7 +29,8 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("top"), 2.6, 0.0, 6.0, 4.0, Some(0.0), Some(6.0), Some(10.4), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
-    macros::game_CaptureCutCommon(agent);
+    let animcmd: &mut L2CFighterAnimcmdGameCommon = std::mem::transmute(&mut *agent);
+    L2CFighterAnimcmdGameCommon::game_CaptureCutCommon(animcmd);
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
@@ -47,7 +49,8 @@ unsafe extern "C" fn game_catchturn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("top"), 3.3, 0.0, 6.0, -4.0, Some(0.0), Some(6.0), Some(-14.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
-    macros::game_CaptureCutCommon(agent);
+    let animcmd: &mut L2CFighterAnimcmdGameCommon = std::mem::transmute(&mut *agent);
+    L2CFighterAnimcmdGameCommon::game_CaptureCutCommon(animcmd);
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);

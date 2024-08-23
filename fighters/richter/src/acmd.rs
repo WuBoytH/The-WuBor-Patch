@@ -8,6 +8,8 @@ mod aerials;
 mod specials;
 mod throws;
 
+mod catch;
+
 mod escape;
 mod cliff;
 
@@ -21,6 +23,8 @@ pub fn install(agent: &mut Agent) {
     aerials::install(agent);
     specials::install(agent);
     throws::install(agent);
+
+    catch::install(agent);
 
     escape::install(agent);
     cliff::install(agent);

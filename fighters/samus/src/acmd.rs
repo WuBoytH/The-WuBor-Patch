@@ -4,6 +4,8 @@ mod dash;
 
 mod normals;
 mod specials;
+
+mod catch;
 mod lasso;
 
 mod escape;
@@ -14,6 +16,8 @@ pub fn install(agent: &mut Agent) {
 
     normals::install(agent);
     specials::install(agent);
+
+    catch::install(agent);
     lasso::install(agent);
 
     escape::install(agent);

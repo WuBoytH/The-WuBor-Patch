@@ -546,11 +546,13 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             VarModule::on_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT);
         }
-        macros::FT_MOTION_RATE(agent, 2.5);
+        macros::FT_MOTION_RATE(agent, 12.0 / 6.0);
     }
     else {
-        macros::FT_MOTION_RATE(agent, 2.0);
+        macros::FT_MOTION_RATE(agent,  10.0 / 6.0);
     }
+    frame(agent.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 7.0);
     if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
@@ -560,7 +562,7 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(agent) {
-            macros::CATCH(agent, 1, Hash40::new("top"), 4.0, 0.0, 5.5, 4.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_DIDDY, *COLLISION_SITUATION_MASK_GA);
+            macros::CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 5.5, 4.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_DIDDY, *COLLISION_SITUATION_MASK_GA);
         }
     }
     frame(agent.lua_state_agent, 25.0);
@@ -632,10 +634,13 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
-    macros::FT_MOTION_RATE(agent, 2.0);
+    macros::FT_MOTION_RATE(agent,  10.0 / 6.0);
+    frame(agent.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 7.0);
     if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 70, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(agent.lua_state_agent, 25.0);
@@ -646,7 +651,6 @@ unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(agent, 0.4, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

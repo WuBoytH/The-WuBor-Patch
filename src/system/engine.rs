@@ -63,7 +63,7 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x69aef8).data(0x14000008u32);
 
     // Removes the ledge grab limit
-    let _ = skyline::patching::Patch::in_text(0x618cc8).nop();
+    let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
     let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
 
     skyline::install_hooks!(

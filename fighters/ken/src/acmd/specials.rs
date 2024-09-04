@@ -89,7 +89,7 @@ unsafe extern "C" fn game_specialn2start(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_specialn2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 0.7, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 0.7, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 40.0);
@@ -215,7 +215,7 @@ unsafe extern "C" fn effect_specialn2hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("ken_syoryuken_fire"), false, true);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 0.7, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 0.7, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 22.0);
@@ -283,7 +283,7 @@ unsafe extern "C" fn effect_specialn2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("ken_syoryuken_fire"), false, true);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 180, 0, 0.7, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 180, 0, 0.7, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 22.0);
@@ -443,7 +443,7 @@ unsafe extern "C" fn effect_specialairn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if VarModule::is_flag(agent.module_accessor, vars::ken::status::flag::QUICK_STEP_INHERITED) {
         if macros::is_excute(agent) {
-            macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 0.7, false);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 0.7, true);
             EffectModule::enable_sync_init_pos_last(agent.module_accessor);
         }
     }
@@ -782,7 +782,7 @@ unsafe extern "C" fn effect_specialairs2end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("ken_syoryuken_fire"), false, true);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ken_syoryuken_fire"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 20.0);

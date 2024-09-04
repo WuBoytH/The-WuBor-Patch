@@ -153,19 +153,19 @@ unsafe extern "C" fn ken_attack_command1_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub unsafe extern "C" fn ken_attack_command1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    EffectModule::kill_kind(
-        fighter.module_accessor,
-        Hash40::new("ken_syoryuken_fire"),
-        false,
-        true
-    );
-    0.into()
-}
+// pub unsafe extern "C" fn ken_attack_command1_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     EffectModule::kill_kind(
+//         fighter.module_accessor,
+//         Hash40::new("ken_syoryuken_fire"),
+//         false,
+//         true
+//     );
+//     0.into()
+// }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, ken_attack_command1_pre);
     agent.status(Init, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, ken_attack_command1_init);
     agent.status(Main, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, ken_attack_command1_main);
-    agent.status(End, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, ken_attack_command1_end);
+    // agent.status(End, *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1, ken_attack_command1_end);
 }

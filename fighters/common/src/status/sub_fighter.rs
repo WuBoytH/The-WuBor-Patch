@@ -66,13 +66,13 @@ unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) 
         let status = fighter.global_table[STATUS_KIND].get_i32();
         if VarModule::get_int(fighter.module_accessor, vars::fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS) < 2
         && ![
-            *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
             *FIGHTER_STATUS_KIND_FALL_AERIAL,
             *FIGHTER_STATUS_KIND_FLY,
             *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
-        ].contains(&status) {
+        ].contains(&status)
+       && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
             VarModule::inc_int(fighter.module_accessor, vars::fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS);
         }
         else {

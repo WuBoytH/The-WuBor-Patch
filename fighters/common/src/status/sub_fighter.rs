@@ -36,12 +36,27 @@ unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) 
     // May cause unintended side effects but the logic should be pretty air-tight.
 
     if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::LEDGE_INTANGIBILITY) {
+        let kind = fighter.global_table[KIND].get_i32();
         if ![
             *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
             *FIGHTER_STATUS_KIND_FALL_AERIAL,
-            *FIGHTER_STATUS_KIND_FLY
-        ].contains(&status) {
+            *FIGHTER_STATUS_KIND_FLY,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR
+        ].contains(&status)
+        && !(kind == *FIGHTER_KIND_BAYONETTA && status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F)
+        && !(
+            kind == *FIGHTER_KIND_PICKEL && [
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP_AERIAL,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_FALL,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_FALL_AERIAL,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_LOOP,
+                *FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_END
+            ].contains(&status)
+        )
+        && !(kind == *FIGHTER_KIND_TRAIL && [*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F].contains(&status)) {
             VarModule::off_flag(fighter.module_accessor, vars::fighter::instance::flag::LEDGE_INTANGIBILITY);
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
         }

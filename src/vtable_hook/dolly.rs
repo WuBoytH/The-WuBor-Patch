@@ -215,6 +215,9 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
 unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
+    // Some Kind of Transition Check
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
+
     skyline::install_hooks!(
         dolly_per_frame,
         dolly_check_super_special,

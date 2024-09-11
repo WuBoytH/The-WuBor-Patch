@@ -6,22 +6,26 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
-    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        MotionModule::set_rate(agent.module_accessor, 6.0 / 7.0);
-    }
-    else {
-        MotionModule::set_rate(agent.module_accessor, 3.0 / 2.0);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W {
+        MotionModule::set_rate(agent.module_accessor, 12.0 / 16.0);
     }
     frame(agent.lua_state_agent, 12.0);
-    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+            VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
+        }
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT) {
-            MotionModule::set_rate(agent.module_accessor, 1.0);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+            if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+                MotionModule::set_rate(agent.module_accessor, 1.0);
+            }
+            else {
+                MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
+            }
         }
         else {
             MotionModule::set_rate(agent.module_accessor, 1.5);
@@ -38,16 +42,25 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
-    macros::FT_MOTION_RATE(agent, 0.75);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W {
+        MotionModule::set_rate(agent.module_accessor, 12.0 / 16.0);
+    }
     frame(agent.lua_state_agent, 12.0);
-    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+            VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
+        }
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 1.0);
         if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
+            if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+                MotionModule::set_rate(agent.module_accessor, 1.0);
+            }
+            else {
+                MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
+            }
         }
         else {
             KineticModule::add_speed(agent.module_accessor, &Vector3f {x: 0.0, y: 1.2, z: 0.0});

@@ -34,6 +34,7 @@ unsafe extern "C" fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CVal
 
 #[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init_common)]
 unsafe extern "C" fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINISH_CAMERA_TARGET);
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();

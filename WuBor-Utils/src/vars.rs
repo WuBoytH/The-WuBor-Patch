@@ -427,6 +427,12 @@ pub mod kirby {
     }
 }
 
+pub mod koopa_breath {
+    pub mod status {
+        pub const HIT : i32 = 0x1;
+    }
+}
+
 pub mod lucario {
     pub mod instance {
         pub mod flag {

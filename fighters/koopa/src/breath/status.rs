@@ -51,8 +51,52 @@ unsafe extern "C" fn koopa_breath_move_fastshift(weapon: &mut L2CWeaponCommon) -
     if life <= 0 {
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
-    if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_ALL)
-    || GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+    if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+        weapon.change_status(vars::koopa_breath::status::HIT.into(), false.into());
+    }
+    0.into()
+}
+
+unsafe extern "C" fn koopa_breath_hit_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    StatusModule::init_settings(
+        weapon.module_accessor,
+        SituationKind(*SITUATION_KIND_AIR),
+        *WEAPON_KINETIC_TYPE_NORMAL,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(0),
+        false,
+        0,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
+unsafe extern "C" fn koopa_breath_hit_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let pos = PostureModule::pos(weapon.module_accessor);
+    EffectModule::req(
+        weapon.module_accessor,
+        Hash40::new("sys_bomb_b"),
+        pos,
+        &vars::ZERO_VECTOR,
+        1.0,
+        0,
+        -1,
+        false,
+        0
+    );
+    SoundModule::play_se(weapon.module_accessor, Hash40::new("se_common_bomb_m"), true, false, false, false, enSEType(0));
+    notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    weapon.fastshift(L2CValue::Ptr(koopa_breath_hit_fastshift as *const () as _))
+}
+
+unsafe extern "C" fn koopa_breath_hit_fastshift(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let life = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+    if life <= 0 {
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    }
+    if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
         let pos = PostureModule::pos(weapon.module_accessor);
         EffectModule::req(
             weapon.module_accessor,
@@ -73,4 +117,7 @@ unsafe extern "C" fn koopa_breath_move_fastshift(weapon: &mut L2CWeaponCommon) -
 
 pub fn install(agent: &mut Agent) {
     agent.status(Main, *WEAPON_KOOPA_BREATH_STATUS_KIND_MOVE, koopa_breath_move_main);
+
+    agent.status(Pre, vars::koopa_breath::status::HIT, koopa_breath_hit_pre);
+    agent.status(Main, vars::koopa_breath::status::HIT, koopa_breath_hit_main);
 }

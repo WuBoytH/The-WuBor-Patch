@@ -533,6 +533,10 @@ pub fn install() {
     // Allows any status over 0x1de to be final smash cancelable
     let _ = skyline::patching::Patch::in_text(0x10d67d8).data(0x1400000Au32);
 
+    // Some Kind of Transition Check
+    // Ryu
+    let _ = skyline::patching::Patch::in_text(0x5033eb0 + 0x1F8).data(1u8);
+
     skyline::install_hooks!(
         ryu_ken_init,
         ryu_ken_move_strength_autoturn_handler,

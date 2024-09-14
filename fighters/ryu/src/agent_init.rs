@@ -30,7 +30,6 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
         }
     }
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE)
-    && !fighter.global_table[IS_STOP].get_bool()
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();

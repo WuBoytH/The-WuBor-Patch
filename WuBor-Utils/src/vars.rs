@@ -297,9 +297,9 @@ pub mod dolly {
 }
 
 pub mod dolly_wave {
-    pub mod instance {
+    pub mod status {
         pub mod flag {
-            pub const FROM_CANCEL : i32 = 0x0100;
+            pub const FINAL_HIT : i32 = 0x1150;
         }
     }
 }

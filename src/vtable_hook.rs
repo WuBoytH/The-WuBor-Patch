@@ -20,9 +20,10 @@ mod sonic;
 mod wario;
 
 mod weapon;
+mod belmont_cross;
+mod dolly_wave;
 mod koopa_breath;
 mod mariod_drcapsule;
-mod belmont_cross;
 mod ryu_shinkuhadoken;
 
 pub fn install() {
@@ -48,8 +49,9 @@ pub fn install() {
     wario::install();
 
     weapon::install();
+    belmont_cross::install();
+    dolly_wave::install();
     koopa_breath::install();
     mariod_drcapsule::install();
-    belmont_cross::install();
     ryu_shinkuhadoken::install();
 }

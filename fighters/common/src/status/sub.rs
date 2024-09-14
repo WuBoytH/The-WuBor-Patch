@@ -26,11 +26,11 @@ pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue
         return false.into();
     }
 
-    let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
-    let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
-    if cliff_dive_count_max < cliff_count {
-        return false.into();
-    }
+    // let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
+    // let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
+    // if cliff_dive_count_max < cliff_count {
+    //     return false.into();
+    // }
 
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         return false.into();

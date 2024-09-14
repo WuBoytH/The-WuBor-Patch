@@ -20,7 +20,7 @@ mod status;
 pub mod agent_init;
 pub mod helper;
 
-// mod wave;
+mod wave;
 // mod burst;
 
 pub fn install() {
@@ -32,6 +32,6 @@ pub fn install() {
     smashline::add_param_object("dolly", "param_misc");
     agent.install();
 
-    // wave::install();
+    wave::install();
     // burst::install();
 }

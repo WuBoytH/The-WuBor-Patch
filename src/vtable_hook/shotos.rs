@@ -30,14 +30,14 @@ extern "C" fn what_is_this(fighter: &mut Fighter) -> *const u64;
 extern "C" fn what_is_this_2(param_1: i32, param_2: i32, param_3: u64, module_accessor: *mut BattleObjectModuleAccessor, huh: *const u64);
 
 #[skyline::from_offset(0x69ae40)]
-extern "C" fn ryu_ken_transition_handler(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32, param_2: u32);
+extern "C" fn ryu_ken_autoturn_handler(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32, param_2: u32);
 
 #[skyline::hook(offset = 0x10d4df0)]
 unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
-    let mut transition_bool = 0;
+    let mut prevent_turn = 0;
     match status {
         0x1dc | 0x1eb | 0x1ec => ryu_ken_handle_special_strength(object, hash40("param_special_n")),
         0x1dd | 0x1ef => ryu_ken_handle_special_strength(object, hash40("param_special_s")),
@@ -45,7 +45,7 @@ unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighte
             if !WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH) {
                 ryu_ken_handle_special_strength(object, hash40("param_special_hi"));
             },
-        0x1df | 0x1f5 => transition_bool = 1,
+        // 0x1df | 0x1f5 => prevent_turn = 1,
         _ => ()
     }
     match status {
@@ -55,10 +55,10 @@ unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighte
         0x2c => ryu_ken_handle_light_normals(fighter, hash40("attack_lw3_s"), hash40("attack_lw3_w")),
         _ => ()
     };
-    if transition_bool == 0 {
-        transition_bool = StopModule::is_damage(module_accessor) as u32;
+    if prevent_turn == 0 {
+        prevent_turn = StopModule::is_damage(module_accessor) as u32;
     }
-    ryu_ken_transition_handler(module_accessor, transition_bool & 1, 0);
+    ryu_ken_autoturn_handler(module_accessor, prevent_turn & 1, 0);
     // The rest of the function is proximity normal nonsense I don't want.
 }
 
@@ -532,6 +532,10 @@ pub fn install() {
 
     // Allows any status over 0x1de to be final smash cancelable
     let _ = skyline::patching::Patch::in_text(0x10d67d8).data(0x1400000Au32);
+
+    // Some Kind of Transition Check
+    // Ryu
+    let _ = skyline::patching::Patch::in_text(0x5033eb0 + 0x1F8).data(1u8);
 
     skyline::install_hooks!(
         ryu_ken_init,

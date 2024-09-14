@@ -62,6 +62,11 @@ pub fn install() {
     // Removes the 3f delay on backdashing for Ryu/Ken/Terry/Kazuya
     let _ = skyline::patching::Patch::in_text(0x69aef8).data(0x14000008u32);
 
+    // Removes the ledge grab limit
+    let _ = skyline::patching::Patch::in_text(0x618cc8).data(0x14000054u32);
+    let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
+    let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,

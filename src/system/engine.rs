@@ -67,6 +67,10 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
     let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
 
+    // Resets projectile lifetime on parry, rather than using remaining lifetime
+    let _ = skyline::patching::Patch::in_text(0x33bdfd8).nop();
+    let _ = skyline::patching::Patch::in_text(0x33bdfdc).data(0x2a0a03e1);
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,

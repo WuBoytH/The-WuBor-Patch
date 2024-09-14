@@ -162,9 +162,9 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2
     if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
         ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
         ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
-        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+        // if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
             ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-        }
+        // }
     }
     if status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {

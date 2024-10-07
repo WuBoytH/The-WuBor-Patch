@@ -46,7 +46,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);

@@ -1,10 +1,5 @@
 use super::*;
 
-extern "C" {
-    #[link_name = "ryu_final_hit_cancel"]
-    pub fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue;
-}
-
 unsafe extern "C" fn ken_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -140,13 +135,6 @@ unsafe extern "C" fn ken_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
             return 1.into();
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-        let sitation = fighter.global_table[SITUATION_KIND].get_i32();
-        if ryu_final_hit_cancel(fighter, sitation.into()).get_bool() {
-            return 1.into();
-        }
-    }
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && VarModule::is_flag(fighter.module_accessor, vars::ken::status::flag::SPECIAL_N2_AIR_ENABLE_LANDING) {
@@ -163,19 +151,19 @@ unsafe extern "C" fn ken_special_n2_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub unsafe extern "C" fn ken_special_n2_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    EffectModule::kill_kind(
-        fighter.module_accessor,
-        Hash40::new("ken_syoryuken_fire"),
-        false,
-        true
-    );
-    0.into()
-}
+// pub unsafe extern "C" fn ken_special_n2_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     EffectModule::kill_kind(
+//         fighter.module_accessor,
+//         Hash40::new("ken_syoryuken_fire"),
+//         false,
+//         true
+//     );
+//     0.into()
+// }
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_pre);
     agent.status(Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_init);
     agent.status(Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_main);
-    agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_end);
+    // agent.status(End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, ken_special_n2_command_end);
 }

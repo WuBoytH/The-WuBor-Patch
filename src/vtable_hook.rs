@@ -16,12 +16,14 @@ mod reflet;
 mod rockman;
 mod shotos;
 mod shulk;
-// mod sonic;
+mod sonic;
 mod wario;
 
 mod weapon;
-mod mariod_drcapsule;
 mod belmont_cross;
+mod dolly_wave;
+mod mariod_drcapsule;
+mod ryu_shinkuhadoken;
 
 pub fn install() {
     fighter::install();
@@ -42,10 +44,12 @@ pub fn install() {
     rockman::install();
     shotos::install();
     shulk::install();
-    // sonic::install();
+    sonic::install();
     wario::install();
 
     weapon::install();
-    mariod_drcapsule::install();
     belmont_cross::install();
+    dolly_wave::install();
+    mariod_drcapsule::install();
+    ryu_shinkuhadoken::install();
 }

@@ -100,6 +100,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::yoshi::status::flag::SPECIAL_HI_RISE_CUT);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
 

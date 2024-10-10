@@ -102,6 +102,21 @@ unsafe extern "C" fn dolly_attack_dash_end(fighter: &mut L2CFighterCommon) -> L2
         }
         VarModule::off_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE);
     }
+    if [
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B,
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,
+        vars::dolly::status::SPECIAL_N_COMMAND
+    ].contains(&status) {
+        sv_kinetic_energy!(
+            mul_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            0.4
+        );
+    }
     fighter.status_end_AttackDash();
     0.into()
 }

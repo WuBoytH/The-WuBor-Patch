@@ -123,61 +123,74 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     0
 }
 
+#[allow(
+    unused_variables,
+    unused_assignments
+)]
 #[skyline::hook(offset = 0x972db0)]
 pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
-    let mut some_bool = false;
-    let mut some_int = -1;
-    let mut some_bool2 = false;
+    let mut reverse_special_input = false;
+    let mut command_kind = -1;
+    let mut force_reset = false;
     // if 0x1E >= status - 0x1DC {
         match status {
-            0x1DC..=0x1E0 => some_bool2 = true,
-            0x1EB => some_int = 6,
-            0x1EF => some_int = 2,
-            0x1F5 => some_int = 7,
-            0x1F6 => some_int = 3,
+            0x1DC..=0x1E0 => force_reset = true,
+            0x1EB => command_kind = 6,
+            0x1EF => command_kind = 2,
+            0x1F5 => command_kind = 7,
+            0x1F6 => command_kind = 3,
             0x1F9 => {
                 let cat = WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_CAT4_SPECIAL_COMMAND);
-                some_bool = cat & 0x300 == 0x200;
-                some_int = 8
+                reverse_special_input = cat & 0x300 == 0x200;
+                command_kind = 8;
+                if reverse_special_input {
+                    command_kind += 1;
+                }
             },
             0x1FA => {
                 let cat = WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_CAT4_SPECIAL_COMMAND);
-                some_bool = cat & 0xC00 == 0x800;
-                some_int = 10;
-                if some_bool {
-                    some_int += 1;
+                reverse_special_input = cat & 0xC00 == 0x800;
+                command_kind = 10;
+                if reverse_special_input {
+                    command_kind += 1;
                 }
             },
             // 0x204 => some_int = 0,
             _ => {}
         }
     // }
+    // println!("command: {}", command_kind);
     let lr = PostureModule::lr(module_accessor);
+    // println!("lr: {}", lr);
     let mut skip_reset = false;
-    if some_int < 0 {
-        if !some_bool2 {
+    if command_kind < 0
+    || VarModule::is_flag(module_accessor, dolly::instance::flag::DISABLE_INPUT_SPECIAL_REVERSE) {
+        if !force_reset {
             skip_reset = true;
         }
+        VarModule::off_flag(module_accessor, dolly::instance::flag::DISABLE_INPUT_SPECIAL_REVERSE);
     }
     else {
-        let special_command_lr = ControlModule::get_special_command_lr(module_accessor, some_int);
-        let new_lr = if some_bool {
+        let special_command_lr = ControlModule::get_special_command_lr(module_accessor, command_kind);
+        // println!("command LR: {}", special_command_lr);
+        let new_lr = if reverse_special_input {
             -special_command_lr
         }
         else {
             special_command_lr
         };
+        // println!("command LR post reverse: {}", special_command_lr);
         if new_lr != 0.0 && new_lr != lr {
             PostureModule::set_lr(module_accessor, new_lr);
             PostureModule::update_rot_y_lr(module_accessor);
         }
     }
-    if !skip_reset {
-        ControlModule::reset_special_command(module_accessor, false);
-    }
+    // if !skip_reset {
+    //     ControlModule::reset_special_command(module_accessor, false);
+    // }
     WorkModule::off_flag(module_accessor, 0x200000E6);
     WorkModule::off_flag(module_accessor, 0x200000E5);
 }
@@ -202,6 +215,9 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
 unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
+    // Some Kind of Transition Check
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
+
     skyline::install_hooks!(
         dolly_per_frame,
         dolly_check_super_special,

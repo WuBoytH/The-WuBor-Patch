@@ -9,11 +9,22 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-// Turns off Autoturn for Ryu, Ken, Terry, and Kazuya
-#[skyline::hook(offset = 0x69a6e0)]
-unsafe fn autoturn_handler(_module_accessor: *mut BattleObjectModuleAccessor, _some_bool: bool, _some_int: i32, _some_uint: u32) -> f32 {
-    0.0
-}
+// Autoturn for Ryu, Ken, Terry, and Kazuya
+// #[skyline::hook(offset = 0x69a6e0)]
+// unsafe fn autoturn_handler(
+//     module_accessor: *mut BattleObjectModuleAccessor,
+//     is_landing_special: bool,
+//     status: i32,
+//     some_uint: u32
+// ) -> f32 {
+//     let kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
+//     if [*FIGHTER_KIND_DOLLY, *FIGHTER_KIND_DEMON].contains(&kind)
+//     && !(0x0..0xA).contains(&status)
+//     && !(0x1E4..0x1EB).contains(&status) {
+//         return 0.0;
+//     }
+//     original!()(module_accessor, is_landing_special, status, some_uint)
+// }
 
 // Forces parry hitlag to be a constant value
 #[skyline::hook(offset = 0x641d84, inline)]
@@ -30,18 +41,35 @@ unsafe extern "C" fn reverse_trump_logic(ctx: &mut skyline::hooks::InlineCtx) {
 
 pub fn install() {
     // Stubs parry hitlag calculation
-    skyline::patching::Patch::in_text(0x641d84).nop();
+    let _ = skyline::patching::Patch::in_text(0x641d84).nop();
 
     // Removes Phantom Hits
-    skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
+    let _ = skyline::patching::Patch::in_text(0x3e6d08).data(0x14000012u32);
 
     // Removes the vanilla ledge trump check
-    skyline::patching::Patch::in_text(0x617a90).nop();
-    skyline::patching::Patch::in_text(0x617aa4).nop();
+    let _ = skyline::patching::Patch::in_text(0x617a90).nop();
+    let _ = skyline::patching::Patch::in_text(0x617aa4).nop();
+
+    // Removes the forced change to HIT_STATUS_OFF during Final Smash
+    let _ = skyline::patching::Patch::in_text(0x62d5ac).nop();
+
+    // The following disables the reversed stick values when autoturn runs
+    let _ = skyline::patching::Patch::in_text(0x69ae20).nop();
+    let _ = skyline::patching::Patch::in_text(0x934a6c).nop();
+    let _ = skyline::patching::Patch::in_text(0x974d20).nop();
+    let _ = skyline::patching::Patch::in_text(0x21d7d1c).nop();
+
+    // Removes the 3f delay on backdashing for Ryu/Ken/Terry/Kazuya
+    let _ = skyline::patching::Patch::in_text(0x69aef8).data(0x14000008u32);
+
+    // Removes the ledge grab limit
+    let _ = skyline::patching::Patch::in_text(0x618cc8).data(0x14000054u32);
+    let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
+    let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
 
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
-        autoturn_handler,
+        // autoturn_handler,
         set_parry_hitlag,
         reverse_trump_logic
     );

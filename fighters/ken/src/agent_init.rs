@@ -7,6 +7,28 @@ extern "C" {
 
 pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL) {
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND != 0 {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x229a8a3811));
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            if fighter.pop_lua_stack(1).get_bool() {
+                VarModule::on_flag(fighter.module_accessor, vars::ken::instance::flag::SKIP_FINAL_PROX_CHECK);
+                fighter.change_status(FIGHTER_RYU_STATUS_KIND_FINAL2.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0 {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x229a8a3811));
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            if fighter.pop_lua_stack(1).get_bool() {
+                VarModule::on_flag(fighter.module_accessor, vars::ken::instance::flag::SKIP_FINAL_PROX_CHECK);
+                fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+                return true.into();
+            }
+        }
+    }
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND)
     && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_S_UNIQ].clone()).get_bool() {
@@ -45,6 +67,7 @@ pub unsafe extern "C" fn ken_check_special_command(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ken_check_special_command as *const () as _));
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
 }
 
 pub fn install(agent: &mut Agent) {

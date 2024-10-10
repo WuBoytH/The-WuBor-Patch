@@ -123,6 +123,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+        VarModule::on_flag(agent.module_accessor, vars::dolly::instance::flag::DISABLE_INPUT_SPECIAL_REVERSE);
     }
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -184,6 +185,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, true);
         AttackModule::clear_all(agent.module_accessor);
+        VarModule::off_flag(agent.module_accessor, vars::dolly::instance::flag::DISABLE_INPUT_SPECIAL_REVERSE);
     }
     if VarModule::get_int(agent.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
         macros::FT_MOTION_RATE(agent, 1.5);

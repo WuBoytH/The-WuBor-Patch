@@ -26,11 +26,11 @@ pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue
         return false.into();
     }
 
-    let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
-    let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
-    if cliff_dive_count_max < cliff_count {
-        return false.into();
-    }
+    // let cliff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT);
+    // let cliff_dive_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x189f0b0c96);
+    // if cliff_dive_count_max < cliff_count {
+    //     return false.into();
+    // }
 
     if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         return false.into();
@@ -72,10 +72,25 @@ pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue
     (speed_y >= -dive_speed_y).into()
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_check_command_squat)]
+pub unsafe extern "C" fn sub_check_command_squat(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
+
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+
+    let can_look_up = VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::CAN_LOOK_UP);
+
+    let input_up = can_look_up && stick_y >= -squat_stick_y;
+    let input_down = stick_y <= squat_stick_y;
+
+    (input_up || input_down).into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_is_dive
+            sub_is_dive,
+            sub_check_command_squat
         );
     }
 }

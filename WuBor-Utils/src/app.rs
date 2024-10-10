@@ -51,8 +51,8 @@ impl ShieldDataResource {
         shield_type: u8
     ) -> Self {
         ShieldDataResource {
-            offset: smash_rs::cpp::simd::Vector3{x: x, y: y, z: z},
-            offset2: smash_rs::cpp::simd::Vector3{x: x2, y: y2, z: z2},
+            offset: smash_rs::cpp::simd::Vector3{vec: [x, y, z]},
+            offset2: smash_rs::cpp::simd::Vector3{vec: [x2, y2, z2]},
             size: size,
             x24: 0,
             joint: joint,
@@ -149,8 +149,8 @@ impl ShieldData {
         shield_type: u8
     ) -> Self {
         ShieldData {
-            offset: smash_rs::cpp::simd::Vector3{x: x, y: y, z: z},
-            offset2: smash_rs::cpp::simd::Vector3{x: x2, y: y2, z: z2},
+            offset: smash_rs::cpp::simd::Vector3{vec: [x, y, z]},
+            offset2: smash_rs::cpp::simd::Vector3{vec: [x2, y2, z2]},
             size: size,
             x24: 0,
             joint: joint,

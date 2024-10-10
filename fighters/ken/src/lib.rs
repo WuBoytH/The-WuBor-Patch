@@ -20,6 +20,7 @@ mod frame;
 mod agent_init;
 
 mod hadoken;
+mod shinryuken;
 
 pub fn install() {
     let agent = &mut Agent::new("ken");
@@ -30,4 +31,5 @@ pub fn install() {
     agent.install();
 
     hadoken::install();
+    shinryuken::install();
 }

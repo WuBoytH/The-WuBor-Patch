@@ -29,7 +29,7 @@ pub unsafe fn battleobjectmoduleaccessor__start_modules(module_accessor: *mut Ba
     VarModule::start(module_accessor);
 }
 
-#[skyline::hook(offset = 0x33a0a20)]
+#[skyline::hook(offset = 0x33a0a40)]
 pub unsafe fn weapon_init_hook(weapon: &mut smash::app::Weapon, param_2: u64) {
     original!()(weapon, param_2);
     MiscModule::get_vars_from_pocket(weapon.battle_object.module_accessor);

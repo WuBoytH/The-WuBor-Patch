@@ -315,10 +315,10 @@ unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2C
 unsafe extern "C" fn sub_damage_uniq_process_mainstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ELEC) {
-        let stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
-        if stop_frame == 1 {
-            fighter.FighterStatusDamage__req_fly_roll_smoke_first();
-        }
+        // let stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
+        // if stop_frame == 1 {
+        //     fighter.FighterStatusDamage__req_fly_roll_smoke_first();
+        // }
         fighter.sub_FighterStatusDamage_correctDamageVectorExecStop();
     }
     // else {
@@ -354,9 +354,9 @@ unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
         WorkModule::set_int(fighter.module_accessor, hit_stop_frame, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
     }
     let damage_stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
-    if damage_stop_frame == 1 {
-        fighter.FighterStatusDamage__req_fly_roll_smoke_first();
-    }
+    // if damage_stop_frame == 1 {
+    //     fighter.FighterStatusDamage__req_fly_roll_smoke_first();
+    // }
     fighter.sub_FighterStatusDamage_correctDamageVectorExecStop();
     
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KOZUKATA_DAMAGE) {

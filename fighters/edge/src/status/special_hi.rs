@@ -213,7 +213,7 @@ unsafe extern "C" fn edge_special_hi_set_dir_handle(fighter: &mut L2CFighterComm
         );
         let color = FighterUtil::get_team_color(fighter.module_accessor);
         let effect_color = FighterUtil::get_effect_team_color(EColorKind(color as i32), Hash40::new("direction_effect_color"));
-        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_color.x, effect_color.y, 0.0);
+        EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_color.value[0], effect_color.value[1], 0.0);
         WorkModule::set_int(fighter.module_accessor, effect as i32, *FIGHTER_EDGE_STATUS_SPECIAL_HI_INT_DIRECTION_EFFECT_HANDLE);
     }
     let visible = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DIRECTION_EFFECT_VISIBLE);

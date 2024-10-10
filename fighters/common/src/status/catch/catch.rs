@@ -210,6 +210,11 @@ unsafe extern "C" fn fighterstatuscapture_set_invalid_capture(_fighter: &mut L2C
     // Haha there's nothing here now
 }
 
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusCapture_set_invalid_capture_SwingGaogaen)]
+unsafe extern "C" fn fighterstatuscapture_set_invalid_capture_swinggaogaen(_fighter: &mut L2CFighterCommon) {
+    // Haha there's nothing here now
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -220,7 +225,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_catchturn,
             status_pre_catchdashpull,
             catchcont,
-            fighterstatuscapture_set_invalid_capture
+            fighterstatuscapture_set_invalid_capture,
+            fighterstatuscapture_set_invalid_capture_swinggaogaen
         );
     }
 }

@@ -57,7 +57,7 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x69ae20).nop();
     let _ = skyline::patching::Patch::in_text(0x934a6c).nop();
     let _ = skyline::patching::Patch::in_text(0x974d20).nop();
-    let _ = skyline::patching::Patch::in_text(0x21d7cfc).nop();
+    let _ = skyline::patching::Patch::in_text(0x21d7d1c).nop();
 
     // Removes the 3f delay on backdashing for Ryu/Ken/Terry/Kazuya
     let _ = skyline::patching::Patch::in_text(0x69aef8).data(0x14000008u32);

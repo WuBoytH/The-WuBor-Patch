@@ -181,7 +181,7 @@ unsafe extern "C" fn syoryuken_eff_handler(
     let eff = EffectModule::req(
         module_accessor,
         eff,
-        &Vector3f{x: pos.x, y: pos.y, z: pos.z},
+        &Vector3f{x: pos.vec[0], y: pos.vec[1], z: pos.vec[2]},
         &Vector3f{x: 0.0, y: 0.0, z: rot},
         1.0,
         0,

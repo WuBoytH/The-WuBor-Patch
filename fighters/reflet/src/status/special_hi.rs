@@ -80,7 +80,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
         lua_bind::KineticEnergy::reset_energy(
             grav_energy,
             *ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-            &Vector2f{x: 0.0, y: speed.y},
+            &Vector2f{x: 0.0, y: speed.value[1]},
             &Vector3f{x: 0.0, y: 0.0, z: 0.0},
             fighter.module_accessor
         );
@@ -106,7 +106,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            speed.x,
+            speed.value[0],
             0.0
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);

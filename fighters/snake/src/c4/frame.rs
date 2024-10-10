@@ -41,7 +41,7 @@ unsafe extern "C" fn c4_marker(weapon: &mut L2CWeaponCommon) {
             let module_accessor = sv_battle_object::module_accessor(owner_id);
             let team = FighterUtil::get_team_color(module_accessor);
             let colors = FighterUtil::get_effect_team_color(EColorKind(team as i32), Hash40::new("shield_effect_color"));
-            Some(SnakeC4Color{r: colors.x, g: colors.y, b: colors.z})
+            Some(SnakeC4Color{r: colors.value[0], g: colors.value[1], b: colors.value[2]})
         }
         else {
             None

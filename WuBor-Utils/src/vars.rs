@@ -36,6 +36,8 @@ pub mod fighter {
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
 
             pub const PURGED : i32 = 0x000A;
+
+            pub const CAN_LOOK_UP : i32 = 0x000B;
         }
         pub mod int {
             pub const TARGET_ID : i32 = 0x0000;
@@ -182,6 +184,15 @@ pub mod guard {
     }
 }
 
+pub mod look_up {
+    pub mod flag {
+        pub const SHIFT_CAMERA : i32 = 0x1050;
+    }
+    pub mod int {
+        pub const HOLD_COUNT : i32 = 0x1050;
+    }
+}
+
 pub mod thrown {
     pub mod flag {
         pub const FORCE_LAUNCHED : i32 = 0x1051;
@@ -234,6 +245,14 @@ pub mod demon {
     pub mod status {
         pub mod flag {
             pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1150;
+
+            pub const ATTACK_STEP_2S_HOLD : i32 = 0x1150;
+            pub const ATTACK_STEP_2S_CHECK_HOLD : i32 = 0x1151;
+            pub const ATTACK_STEP_2S_TO_HEAVENS_GATE : i32 = 0x1152;
+        }
+
+        pub mod int {
+            pub const ATTACK_STEP_2S_TO_HEAVENS_GATE_STEP : i32 = 0x1152;
         }
     }
 }
@@ -243,6 +262,7 @@ pub mod dolly {
         pub mod flag {
             pub const SPECIAL_CANCEL : i32 = 0x0100;
             pub const RISING_FORCE : i32 = 0x0101;
+            pub const DISABLE_INPUT_SPECIAL_REVERSE : i32 = 0x0102;
         }
         pub mod int {
             pub const SUPER_SPECIAL_AURA : i32 = 0x0101;
@@ -277,9 +297,9 @@ pub mod dolly {
 }
 
 pub mod dolly_wave {
-    pub mod instance {
+    pub mod status {
         pub mod flag {
-            pub const FROM_CANCEL : i32 = 0x0100;
+            pub const FINAL_HIT : i32 = 0x1150;
         }
     }
 }
@@ -764,6 +784,7 @@ pub mod ryu {
         pub mod flag {
             pub const DENJIN_CHARGE : i32 = 0x0100;
             pub const DENJIN_RUSH_INHERIT : i32 = 0x0101;
+            pub const SKIP_FINAL_PROX_CHECK : i32 = 0x0102;
         }
         pub mod int {
             pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
@@ -799,10 +820,18 @@ pub mod ryu {
     pub const GUARD_SPECIAL_LW_KIND_REVERSAL : i32 = 0x1;
 }
 
+pub mod ryu_shinkuhadoken {
+    pub mod status {
+        pub const FINISH : i32 = 0x2;
+    }
+}
+
 pub mod ken {
     pub mod instance {
         pub mod flag {
             pub const QUICK_STEP_INHERIT : i32 = 0x0100;
+
+            pub use super::super::super::ryu::instance::flag::SKIP_FINAL_PROX_CHECK;
         }
     }
     pub mod status {
@@ -869,6 +898,54 @@ pub mod snake_c4 {
         pub mod int {
             pub const TRACKER_EFF : i32 = 0x0150;
         }
+    }
+}
+
+pub mod sonic {
+    pub mod status {
+        pub mod flag {
+            pub const ENABLE_TRICK : i32 = 0x1100;
+
+            pub const DASH_FROM_THROW_LW : i32 = 0x1150;
+
+            pub const SPECIAL_AIR_S_FIRST : i32 = 0x1150;
+            pub const SPECIAL_AIR_S_CHECK_END : i32 = 0x1151;
+            pub const SPECIAL_AIR_S_TO_END : i32 = 0x1152;
+            pub const SPECIAL_AIR_S_CHECK_HIT : i32 = 0x1153;
+
+            pub const SPECIAL_AIR_LW_TO_LOOP : i32 = 0x1150;
+            pub const SPECIAL_AIR_LW_HIT : i32 = 0x1151;
+            pub const SPECIAL_AIR_LW_BOUND_START : i32 = 0x1152;
+            pub const SPECIAL_AIR_LW_BOUNDING : i32 = 0x1153;
+            pub const SPECIAL_AIR_LW_BOUND_IS_GROUND : i32 = 0x1154;
+            pub const SPECIAL_AIR_LW_ESCAPE_AIR_RESERVE : i32 = 0x1155;
+            pub const SPECIAL_AIR_LW_SPECIAL_N_FALL_RESERVE : i32 = 0x1156;
+            pub const SPECIAL_AIR_LW_SPECIAL_S_RESERVE : i32 = 0x1157;
+            pub const SPECIAL_AIR_LW_FROM_TRICK : i32 = 0x1158;
+
+            pub const TRICK_ENABLE_MOVEMENT : i32 = 0x1150;
+            pub const TRICK_ENABLE_CONTROL : i32 = 0x1151;
+        }
+        pub mod int {
+            pub const SPECIAL_AIR_S_HOLD_COUNT_REMAIN : i32 = 0x1150;
+
+            pub const SPECIAL_AIR_LW_JUMP_RESERVE : i32 = 0x1150;
+        }
+        pub mod float {
+            pub const SPECIAL_AIR_LW_BOUND_SPEED_X : i32 = 0x1150;
+            pub const SPECIAL_AIR_LW_BOUND_SPEED_Y : i32 = 0x1151;
+            pub const SPECIAL_AIR_LW_BOUND_ANGLE : i32 = 0x1152;
+        }
+        pub const LOOK_UP : i32 = 0x1F3;
+        pub const LOOK_UP_WAIT : i32 = 0x1F4;
+        pub const LOOK_UP_RV : i32 = 0x1F5;
+        pub const SPECIAL_AIR_S_START : i32 = 0x1F6;
+        pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F7;
+        pub const SPECIAL_AIR_S_END : i32 = 0x1F8;
+        pub const SPECIAL_AIR_LW_START : i32 = 0x1F9;
+        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1FA;
+        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1FB;
+        pub const TRICK : i32 = 0x1FC;
     }
 }
 

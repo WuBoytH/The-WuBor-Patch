@@ -109,7 +109,7 @@ unsafe extern "C" fn pikmin_attack_hi3_main_loop(fighter: &mut L2CFighterCommon)
         return 1.into();
     }
     let trans = MotionModule::trans_move_speed(fighter.module_accessor);
-    if trans.y < -0.001 {
+    if trans.value[1] < -0.001 {
         if fighter.sub_transition_group_check_air_landing().get_bool() {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_LIGHT);
             return 0.into();

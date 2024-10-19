@@ -232,9 +232,9 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
                 event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("throw")));
                 let callable: extern "C" fn() -> *mut smash::app::LinkEvent = std::mem::transmute(event["new_instance_lua_"].get_ptr());
                 let link_event = callable();
-                smash::app::lua_bind::LinkEvent::load_from_l2c_table(link_event, &event);
+                lua_bind::LinkEvent::load_from_l2c_table(link_event, &event);
                 LinkModule::send_event_nodes_struct(fighter.module_accessor, *LINK_NO_CAPTURE, link_event, 0);
-                event = smash::app::lua_bind::LinkEvent::store_l2c_table(link_event);
+                event = lua_bind::LinkEvent::store_l2c_table(link_event);
                 let deleter: extern "C" fn(*mut smash::app::LinkEvent) = std::mem::transmute(*((*(link_event as *const u64) + 0x8) as *const u64));
                 deleter(link_event);
     

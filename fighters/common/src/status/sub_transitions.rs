@@ -457,16 +457,17 @@ unsafe extern "C" fn sub_transition_group_check_ground(fighter: &mut L2CFighterC
             fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
             return true.into();
         }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
-        && fighter.sub_check_command_squat().get_bool() {
-            let status = if to_squat_wait.get_bool() {
-                FIGHTER_STATUS_KIND_SQUAT_WAIT
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT) {
+            if to_squat_wait.get_bool()
+            && fighter.global_table[STICK_Y].get_f32() < 0.0
+            && fighter.sub_check_command_squat().get_bool() {
+                fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), true.into());
+                return true.into();
             }
-            else {
-                FIGHTER_STATUS_KIND_SQUAT
-            };
-            fighter.change_status(status.into(), true.into());
-            return true.into();
+            if fighter.sub_check_command_squat().get_bool() {
+                fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());
+                return true.into();
+            }
         }
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN) {

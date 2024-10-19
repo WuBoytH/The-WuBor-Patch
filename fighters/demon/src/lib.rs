@@ -17,6 +17,7 @@ use {
 mod acmd;
 mod status;
 mod frame;
+mod agent_init;
 pub mod helper;
 
 pub fn install() {
@@ -24,5 +25,6 @@ pub fn install() {
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);
+    agent_init::install(agent);
     agent.install();
 }

@@ -31,9 +31,9 @@ unsafe extern "C" fn capturepulledcommon(fighter: &mut L2CFighterCommon) {
         let parent_id = LinkModule::get_parent_id(fighter.module_accessor, *LINK_NO_CAPTURE, true) as u32;
         if lua_bind::BattleObjectManager::is_active_find_battle_object(singletons::BattleObjectManager(), parent_id) {
             let kind = sv_battle_object::kind(parent_id);
-            if kind == *FIGHTER_KIND_LUIGI {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_CAPTURE_PULLED_SE);
-            }
+            // if kind == *FIGHTER_KIND_LUIGI {
+            //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_CAPTURE_PULLED_SE);
+            // }
             if kind == *FIGHTER_KIND_LUCARIO {
                 let lucario_boma = sv_battle_object::module_accessor(parent_id);
                 if [

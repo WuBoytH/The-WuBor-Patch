@@ -6,6 +6,8 @@ mod normals;
 mod smashes;
 mod aerials;
 mod specials;
+
+mod catch;
 mod lasso;
 
 mod escape;
@@ -18,6 +20,8 @@ pub fn install(agent: &mut Agent) {
     smashes::install(agent);
     aerials::install(agent);
     specials::install(agent);
+
+    catch::install(agent);
     lasso::install(agent);
 
     escape::install(agent);

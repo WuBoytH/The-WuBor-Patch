@@ -1,3 +1,5 @@
+#![allow(static_mut_refs)]
+
 use std::sync::atomic::{Ordering, AtomicBool};
 use crate::is_on_ryujinx;
 
@@ -9,7 +11,7 @@ unsafe fn calc_nnsdk_offset() -> u64 {
 
 static mut DUMMY_BLOCK: [u8; 0x100] = [0; 0x100];
 
-#[skyline::hook(offset = 0x374777c, inline)]
+#[skyline::hook(offset = 0x374779c, inline)]
 unsafe fn run_scene_update(_: &skyline::hooks::InlineCtx) {
     while !RUN.swap(false, Ordering::SeqCst) {
         skyline::nn::hid::GetNpadFullKeyState(DUMMY_BLOCK.as_mut_ptr() as _, &0);
@@ -28,7 +30,7 @@ unsafe fn set_interval_2(ctx: &mut skyline::hooks::InlineCtx) {
 
 static mut RUN: AtomicBool = AtomicBool::new(false);
 
-#[skyline::hook(offset = 0x3810664, inline)]
+#[skyline::hook(offset = 0x3810684, inline)]
 unsafe fn vsync_count_thread(_: &skyline::hooks::InlineCtx) {
     RUN.store(true, Ordering::SeqCst);
 }

@@ -60,26 +60,35 @@ unsafe extern "C" fn status_cliffwait_main(fighter: &mut L2CFighterCommon) -> L2
 
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
 
-    let robbed = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
+    if fighter.global_table[STATUS_FRAME].get_f32() < 1.0 {
+        return 0.into();
+    }
 
-    if !robbed
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP_BUTTON)
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+        && situation == *SITUATION_KIND_CLIFF {
+            fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ROBBED.into(), false.into());
+            return 1.into();
+        }
+
+        return 0.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP_BUTTON)
     && situation == *SITUATION_KIND_CLIFF
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_JUMP1.into(), true.into());
         return 1.into();
     }
 
-    if !robbed
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP)
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP)
     && situation == *SITUATION_KIND_CLIFF
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_JUMP) {
         fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_JUMP1.into(), true.into());
         return 1.into();
     }
 
-    if !robbed
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_ATTACK)
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_ATTACK)
     && situation == *SITUATION_KIND_CLIFF
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ATTACK.into(), true.into());
@@ -106,13 +115,6 @@ unsafe extern "C" fn status_cliffwait_main(fighter: &mut L2CFighterCommon) -> L2
     && situation == *SITUATION_KIND_CLIFF
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_CLIMB) {
         fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CLIMB.into(), true.into());
-        return 1.into();
-    }
-
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-    && situation == *SITUATION_KIND_CLIFF
-    && robbed {
-        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ROBBED.into(), false.into());
         return 1.into();
     }
 

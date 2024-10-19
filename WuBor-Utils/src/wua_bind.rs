@@ -771,9 +771,7 @@ pub mod MiscModule {
     /// ````
     pub unsafe fn add_shield_group(module_accessor: *mut BattleObjectModuleAccessor, resource: *mut ShieldGroupResource, group_id: i32) {
         // Get Vtable Function
-        let shield_module = (module_accessor as *mut u64).add(0x100 / 8);
-        let vtable = *shield_module as *const u64;
-        let ptr = *((*vtable + 0x58) as *const u64);
+        let ptr = get_module_vtable_func(module_accessor, 0x100, 0x58);
         let set_shield_group: extern "C" fn(*mut u64, *mut ShieldGroupResource, i32) = std::mem::transmute(ptr);
 
         // Redefine ShieldModule
@@ -825,9 +823,7 @@ pub mod MiscModule {
     /// ````
     pub unsafe fn add_reflector_group(module_accessor: *mut BattleObjectModuleAccessor, resource: *mut ShieldGroupResource2, group_id: i32) {
         // Get Vtable Function
-        let reflector_module = (module_accessor as *mut u64).add(0x108 / 8);
-        let vtable = *reflector_module as *const u64;
-        let ptr = *((*vtable + 0x60) as *const u64);
+        let ptr = get_module_vtable_func(module_accessor, 0x108, 0x60);
         let set_shield_group2: extern "C" fn(*mut u64, *mut ShieldGroupResource2, i32) = std::mem::transmute(ptr);
 
         // Redefine ReflectorModule
@@ -840,6 +836,13 @@ pub mod MiscModule {
                 ReflectorModule::set_status(module_accessor, x, ShieldStatus(*SHIELD_STATUS_NONE), group_id);
             }
         }
+    }
+
+    /// Used to get the pointer for a vtable function within a specific module.
+    pub unsafe fn get_module_vtable_func(module_accessor: *mut BattleObjectModuleAccessor, module_offset: usize, func_offset: u64) -> u64 {
+        let module = (module_accessor as *mut u64).add(module_offset / 0x8);
+        let vtable = *module as *const u64;
+        *((*vtable + func_offset) as *const u64)
     }
 }
 

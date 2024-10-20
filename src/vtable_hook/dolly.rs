@@ -30,7 +30,7 @@ pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let thing = match status {
-        0x29 | 0x203 => {
+        0x29 | 0x204 => {
             if !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH) {
                 let special_pad_release_w = WorkModule::get_param_int(module_accessor, hash40("param_private"), hash40("special_pad_release_w"));
                 let strength = VarModule::get_int(module_accessor, dolly::status::int::ATTACK_DASH_STRENGTH);
@@ -42,7 +42,7 @@ pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
             }
             NoSpecial{no: -1, special: -1}
         }
-        0x1dc | 0x204 => dolly_handle_special_strength(module_accessor, 0, 0),
+        0x1dc | 0x205 => dolly_handle_special_strength(module_accessor, 0, 0),
         0x1dd | 0x1eb => dolly_handle_special_strength(module_accessor, 0, 1),
         0x1de | 0x1f5 => dolly_handle_special_strength(module_accessor, 0, 2),
         0x1df | 0x1f6 => dolly_handle_special_strength(module_accessor, 0, 3),
@@ -215,8 +215,12 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
 unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
+    // Max Status Terms?
+    let _ = skyline::patching::Patch::in_text(0x4fa7e40).data(6u8);
     // Some Kind of Transition Check
     let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x204).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x205).data(1u8);
 
     skyline::install_hooks!(
         dolly_per_frame,

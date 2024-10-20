@@ -41,7 +41,7 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let terms = [
+    let mut terms = vec![
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
@@ -54,32 +54,21 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
     ];
+    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH
+    || fighter.global_table[STATUS_KIND].get_i32() == vars::dolly::status::ATTACK_DASH_COMMAND {
+        if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
+            terms = vec![*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND];
+        }
+        else {
+            terms.remove(5);
+        }
+    }
     let mut enableds = [false; 13];
     for x in 0..terms.len() {
         enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }
     for val in terms.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *val);
-    }
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH
-    || fighter.global_table[STATUS_KIND].get_i32() == vars::dolly::status::ATTACK_DASH_COMMAND {
-        if VarModule::is_flag(fighter.module_accessor, vars::dolly::instance::flag::RISING_FORCE) {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
-        }
-        else if VarModule::get_int(fighter.module_accessor, vars::dolly::status::int::ATTACK_DASH_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_S {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
-            // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
-            // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        }
     }
     let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
         fighter.sub_transition_group_check_air_special()

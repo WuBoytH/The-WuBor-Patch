@@ -27,12 +27,8 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
     runs-on: ubuntu-20.04
     container:
-      image: hewdrawremix/hewdraw-builder:latest
+      image: wuboyth/skyline-plugin-builder:latest
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: '3.9'
       - uses: actions/checkout@v4.1.4
       - name: Download ROMFS
         uses: dsaltares/fetch-gh-release-asset@master
@@ -61,12 +57,8 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
     runs-on: ubuntu-20.04
     container:
-      image: hewdrawremix/hewdraw-builder:latest
+      image: wuboyth/skyline-plugin-builder:latest
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: '3.9'
       - uses: actions/checkout@v4.1.4
       - name: Download ROMFS
         uses: dsaltares/fetch-gh-release-asset@master

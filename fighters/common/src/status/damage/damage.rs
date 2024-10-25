@@ -457,6 +457,12 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             exec_damage_elec_hit_stop,
             fighterstatusdamage__requestvectoradjusteffect
         );
+
+        unsafe {
+            let common_offset = (*info.module.ModuleObject).module_base as usize;
+            // Disables the mechanic letting you ASDI up if you get hit enough times on the ground.
+            skyline::patching::patch_pointer((common_offset + 0xab880) as *const u8, &0x14000035u32);
+        }
     }
 }
 

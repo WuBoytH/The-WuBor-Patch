@@ -198,9 +198,10 @@ younglink = { path = "fighters/younglink" }
 zelda = { path = "fighters/zelda" }
 
 [package]
-version = "0.17.1"
+version = "0.17.2"
 name = "wubor"
 authors.workspace = true
+edition.workspace = true
 
 [package.metadata.skyline]
 titleid = "01006A800016E000"

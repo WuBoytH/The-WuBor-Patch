@@ -158,7 +158,7 @@ pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, f
                     command_kind += 1;
                 }
             },
-            // 0x204 => some_int = 0,
+            0x205 => command_kind = 0,
             _ => {}
         }
     // }

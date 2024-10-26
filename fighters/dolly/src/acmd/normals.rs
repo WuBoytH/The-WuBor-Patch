@@ -472,7 +472,8 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn effect_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 4, 2, 9, -5, 0, 0.45, true, *EF_FLIP_YZ, 0.6);
+        macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 7, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FLIP_ALPHA(agent, Hash40::new("dolly_attack_speedline2"), Hash40::new("dolly_attack_speedline2"), Hash40::new("top"), 3, 4, 8, 20, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ, 0.7);
     }
 }
 

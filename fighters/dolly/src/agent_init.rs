@@ -235,7 +235,8 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
-    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
+    FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_N_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N2_COMMAND, 2);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, 2);
     FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_HI_COMMAND, 2);
 

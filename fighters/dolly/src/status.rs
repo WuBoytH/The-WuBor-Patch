@@ -24,6 +24,7 @@ mod attack_s3;
 mod attack_hi3;
 
 mod attack_lw3;
+mod attack_lw32;
 
 mod attack_air;
 
@@ -64,6 +65,7 @@ pub fn install(agent: &mut Agent) {
     attack_hi3::install(agent);
 
     attack_lw3::install(agent);
+    attack_lw32::install(agent);
 
     attack_air::install(agent);
 

@@ -26,6 +26,18 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
     let guard_off_disable_shield_recovery = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_disable_shield_recovery"));
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
+
+    // Clear buffer manually
+    ControlModule::reset_trigger(fighter.module_accessor);
+    ControlModule::reset_flick_x(fighter.module_accessor);
+    ControlModule::reset_flick_y(fighter.module_accessor);
+    ControlModule::clear_command(fighter.module_accessor, false);
+    fighter.global_table[FLICK_X].assign(&L2CValue::I32(0xFE));
+    fighter.global_table[FLICK_Y].assign(&L2CValue::I32(0xFE));
+    fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT2].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT3].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT4].assign(&L2CValue::I32(0));
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]

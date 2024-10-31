@@ -59,6 +59,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
+    VarModule::on_flag(fighter.module_accessor, vars::fighter::status::flag::SKIP_HITLAG_BUFFER_CHECK);
+
     let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
     // println!("shield power: {}", shield_power);
     let shield_setoff_mul_status = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_SETOFF_MUL);

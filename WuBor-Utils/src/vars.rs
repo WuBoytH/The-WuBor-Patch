@@ -71,6 +71,7 @@ pub mod fighter {
             pub const ENABLE_AERIAL_STRING : i32 = 0x1004;
             pub const IS_DASH_CANCEL : i32 = 0x1005;
             pub const FORCE_ESCAPE_AIR_SLIDE_IN_STATUS : i32 = 0x1006;
+            pub const SKIP_HITLAG_BUFFER_CHECK : i32 = 0x1007;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;

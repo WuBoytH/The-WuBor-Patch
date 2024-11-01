@@ -81,7 +81,12 @@ unsafe extern "C" fn richter_holywater_something(_item: &mut L2CAgent) -> L2CVal
 #[skyline::hook(replace = RICHTER_HOLYWATER_BORN_LOOP)]
 unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValue {
     original!()(item);
-    if GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+    if GroundModule::is_touch(item.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
+        item.clear_lua_stack();
+        lua_args!(item, 0.0, 0.0);
+        func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: 0.0, y: 0.0});
+    }
+    else if GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
         let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let normal_y = GroundModule::get_touch_normal_y(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let angle = normal_x.atan2(normal_y);
@@ -89,12 +94,6 @@ unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValu
         let speed_x = speed * angle.cos();
         let speed_y = speed * angle.sin();
         let lr = PostureModule::lr(item.module_accessor);
-        item.clear_lua_stack();
-        lua_args!(item, speed, speed);
-        func_links::KineticEnergyControl::set_stable_speed(item.lua_state_agent, &Vector2f{x: speed, y: speed});
-        item.clear_lua_stack();
-        lua_args!(item, speed, speed);
-        func_links::KineticEnergyControl::set_limit_speed(item.lua_state_agent, &Vector2f{x: speed, y: speed});
         item.clear_lua_stack();
         lua_args!(item, speed_x.abs() * lr, -speed_y * lr);
         func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: speed_x.abs() * lr, y: -speed_y * lr});
@@ -105,8 +104,9 @@ unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValu
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "item" {
         unsafe {
-            RICHTER_HOLYWATER_BORN += (*info.module.ModuleObject).module_base as usize;
-            RICHTER_HOLYWATER_BORN_LOOP += (*info.module.ModuleObject).module_base as usize;
+            let base = (*info.module.ModuleObject).module_base as usize;
+            RICHTER_HOLYWATER_BORN += base;
+            RICHTER_HOLYWATER_BORN_LOOP += base;
             skyline::install_hooks!(
                 richter_holywater_born_some_status,
                 richter_holywater_born_loop

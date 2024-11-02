@@ -79,6 +79,11 @@ pub mod fighter {
         pub mod float {
             pub const HIT_FRAME : i32 = 0x1000;
         }
+
+        pub const GUARD_CANCEL_ATTACK : i32 = 0x37D;
+        pub const GUARD_CANCEL_ESCAPE_F : i32 = 0x37E;
+        pub const GUARD_CANCEL_ESCAPE_B : i32 = 0x37F;
+        pub const GUARD_CANCEL_PASS : i32 = 0x380;
     }
 }
 

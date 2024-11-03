@@ -386,10 +386,10 @@ unsafe extern "C" fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1
             }
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
         }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-        }
+        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+        //     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+        //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        // }
         EffectModule::req_on_joint(
             fighter.module_accessor,
             Hash40::new("sys_windwave"),
@@ -460,6 +460,103 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighte
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_execStop_common)]
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstop_common(fighter: &mut L2CFighterCommon) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        fighter.FighterStatusGuard__set_just_shield_scale();
+        return;
+    }
+
+    let prev_scale_frame = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME, 0);
+    if prev_scale_frame {
+        // let effect_handle = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE) as u32;
+        // if effect_handle != 0 {
+        //     EffectModule::set_scale();
+        // }
+
+        let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+        let scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+
+        EffectModule::detach_kind(fighter.module_accessor, Hash40::new_raw(0x12c9377e3d), 5);
+
+        let hit_stop_real = StopModule::get_hit_stop_real_frame(fighter.module_accessor) as i32;
+        WorkModule::set_int(fighter.module_accessor, hit_stop_real, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SCALE_FADE_START_FRAME);
+    }
+
+    let scale;
+    if prev_scale_frame {
+        let shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        scale = fighter.FighterStatusGuard__calc_shield_scale(shield.into()).get_f32();
+        let effect_handle = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE) as u32;
+        if effect_handle != 0 {
+            let fade_start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SCALE_FADE_START_FRAME);
+            let lerp = if fade_start_frame > 0 {
+                let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+                let hit_stop_real = StopModule::get_hit_stop_real_frame(fighter.module_accessor) as i32;
+                let ratio = (hit_stop_real - 1) as f32 / fade_start_frame as f32;
+                let shield_ratio = shield / prev_shield;
+                fighter.lerp(1.0f32.into(), shield_ratio.into(), ratio.into()).get_f32()
+            }
+            else {
+                1.0
+            };
+            EffectModule::set_scale(fighter.module_accessor, effect_handle, &Vector3f{x: 0.1 * lerp, y: 0.1 * lerp, z: 0.1 * lerp});
+        }
+    }
+    else {
+        let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+        scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
+    }
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+}
+
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusUniqProcessGuardDamage_leave_stop)]
+unsafe extern "C" fn fighterstatusuniqprocessguarddamage_leave_stop(fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        let just_shield_motion = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("just_shield_motion"));
+        if just_shield_motion == 0 {
+            let rate = MotionModule::rate(fighter.module_accessor);
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("guard_off"),
+                0.0,
+                rate,
+                false,
+                0.0,
+                false,
+                false
+            );
+
+            // redundant just shield check?
+            // if !fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
+            //     CancelModule::enable_cancel(fighter.module_accessor);
+            // }
+        }
+
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            // Global 10 frames of intangibility after parrying something
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 10, 0);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        }
+
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE) {
+            let frame = SlowModule::whole_frame(fighter.module_accessor);
+            if frame > 0 {
+                SlowModule::clear_whole(fighter.module_accessor);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE);
+            }
+        }
+    }
+
+    effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x113434cb66), false, false);
+    effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x12be304eab), false, false);
+    effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x12c9377e3d), false, false);
+
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_exitStatus_common)]
 unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighter: &mut L2CFighterCommon) {
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
@@ -468,8 +565,6 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighte
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-            // Extends intangibiltiy for X frames into the next action.
-            HitModule::set_xlu_frame_global(fighter.module_accessor, 8, 0);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
         }
         EffectModule::remove_common(fighter.module_accessor, Hash40::new("just_shield"));
@@ -492,6 +587,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_guarddamageuniq,
             status_guarddamage_main,
             sub_ftstatusuniqprocessguarddamage_execstatus_common,
+            sub_ftstatusuniqprocessguarddamage_execstop_common,
+            fighterstatusuniqprocessguarddamage_leave_stop,
             sub_ftstatusuniqprocessguarddamage_exitstatus_common
         );
     }

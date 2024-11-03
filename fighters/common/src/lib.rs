@@ -13,6 +13,7 @@ use {
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     smash_script::*,
+    smashline::*,
     custom_var::*,
     custom_cancel::*,
     wubor_utils::{cancels::*, wua_bind::*, vars, table_const::*}

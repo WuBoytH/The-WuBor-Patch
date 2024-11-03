@@ -44,6 +44,31 @@ unsafe extern "C" fn force_reflect_full_lifetime(ctx: &mut skyline::hooks::Inlin
     *ctx.registers[8].x.as_mut() = 0;
 }
 
+#[skyline::hook(offset = 0x6416e8, inline)]
+unsafe extern "C" fn shield_break_lr_set(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let lr = *(fighter as *const f32).add(0xf738 / 0x4);
+    WorkModule::set_float(module_accessor, lr, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+}
+
+#[skyline::hook(offset = 0x614b9c, inline)]
+unsafe extern "C" fn shield_health_recovery_only_in_burnout(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    if VarModule::is_flag(module_accessor, fighter::instance::flag::BURNOUT) {
+        let shield_recovery1 = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("shield_recovery1"));
+        let shield_recovery = WorkModule::get_param_float(module_accessor, hash40("shield_recovery"), 0);
+        let mut shield_health = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        let shield_health_max = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+        shield_health = (shield_health + (shield_recovery1 * shield_recovery)).min(shield_health_max);
+        if shield_health >= shield_health_max {
+            VarModule::off_flag(module_accessor, fighter::instance::flag::BURNOUT);
+        }
+        WorkModule::set_float(module_accessor, shield_health, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+    }
+}
+
 pub fn install() {
     // Stubs parry hitlag calculation
     let _ = skyline::patching::Patch::in_text(0x641d84).nop();
@@ -72,11 +97,17 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
     let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
 
+    // Patches shield health recovery
+    let _ = skyline::patching::Patch::in_text(0x614b9c).nop();
+    let _ = skyline::patching::Patch::in_text(0x614ba0).data(0x1400001Au32);
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,
         set_parry_hitlag,
         reverse_trump_logic,
-        force_reflect_full_lifetime
+        force_reflect_full_lifetime,
+        shield_break_lr_set,
+        shield_health_recovery_only_in_burnout
     );
 }

@@ -38,6 +38,8 @@ pub mod fighter {
             pub const PURGED : i32 = 0x000A;
 
             pub const CAN_LOOK_UP : i32 = 0x000B;
+
+            pub const BURNOUT : i32 = 0x000C;
         }
         pub mod int {
             pub const TARGET_ID : i32 = 0x0000;

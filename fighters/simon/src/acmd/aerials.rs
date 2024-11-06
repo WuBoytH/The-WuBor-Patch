@@ -2,12 +2,9 @@ use super::*;
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(agent.lua_state_agent, 10.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_CLIFF_RAY_CHECK);
@@ -58,12 +55,9 @@ unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_attackairfhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(agent.lua_state_agent, 10.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_CLIFF_RAY_CHECK);
@@ -114,12 +108,9 @@ unsafe extern "C" fn game_attackairfhi(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_attackairflw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    frame(agent.lua_state_agent, 10.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_CLIFF_RAY_CHECK);
@@ -188,10 +179,6 @@ unsafe extern "C" fn sound_attackairf(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 8.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -237,6 +224,10 @@ unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 11.0 / 9.0);
+    frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

@@ -252,22 +252,14 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                     VarModule::on_flag(module_accessor, flag);
                 }
             }
-            else if VarModule::get_int(module_accessor, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_REVERSAL {
-                if collision_kind == 1 {
-                    let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-                    if (*opponent_object).battle_object_id >> 0x1c == 0
-                    && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
-                        syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.3, 0.1, 0.1, 0.75);
-                    }
-                }
-            }
         }
-        if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
-            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-            let opponent_module_accessor = (*opponent_object).module_accessor;
-            let slow_frame = SlowModule::frame(opponent_module_accessor, 0);
-            if slow_frame < 10 {
-                SlowModule::set(opponent_module_accessor, 0, 50, 10, false, 0x50000000);
+        if status == fighter::status::GUARD_CANCEL_ATTACK {
+            if collision_kind == 1 {
+                let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+                if (*opponent_object).battle_object_id >> 0x1c == 0
+                && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                    syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.3, 0.1, 0.1, 0.75);
+                }
             }
         }
     }

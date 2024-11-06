@@ -187,6 +187,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         //         ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         //     }
         // }
+
+        add_shield_health(fighter, 0.2);
     }
     else {
         ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
@@ -420,25 +422,62 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
     if fighter.status_guard_damage_main_common_air().get_bool() {
         return 0.into();
     }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
-        //     fighter.status_guard_damage_main_common();
-        //     return 0.into();
-        // }
-        let is_hit = StopModule::is_hit(fighter.module_accessor);
-        if is_hit {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
-        }
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-            && is_hit {
-                StopModule::cancel_hit_stop(fighter.module_accessor);
-                return 0.into();
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
+            //     fighter.status_guard_damage_main_common();
+            //     return 0.into();
+            // }
+            let is_hit = StopModule::is_hit(fighter.module_accessor);
+            if is_hit {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
+            }
+            if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+                && is_hit {
+                    StopModule::cancel_hit_stop(fighter.module_accessor);
+                    return 0.into();
+                }
+            }
+            if is_hit {
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
             }
         }
-        if is_hit {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
+        else {
+            // Guard Cancel Actions
+            if !fighter.global_table[IS_STOP].get_bool() {
+                // Guard Cancel Taunt
+                let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+                if cat2 & (
+                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
+                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
+                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
+                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
+                ) != 0
+                && {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                    fighter.pop_lua_stack(1).get_bool()
+                } {
+                    fighter.change_status(vars::fighter::status::GUARD_CANCEL_APPEAL.into(), false.into());
+                    return 0.into();
+                }
+
+                // Guard Cancel Roll
+                let status = VarModule::get_int(fighter.module_accessor, vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS);
+                if status != 0 {
+                    fighter.change_status(status.into(), true.into());
+                    return 0.into();
+                }
+
+                // Guard Cancel Attack
+                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0
+                && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
+                    fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
+                    return 0.into();
+                }
+            }
         }
     }
     fighter.status_guard_damage_main_common();
@@ -468,6 +507,33 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstop_common(fighter:
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         fighter.FighterStatusGuard__set_just_shield_scale();
         return;
+    }
+    else {
+        // Guard Cancel Roll only bufferable during hitstop
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
+            VarModule::set_int(
+                fighter.module_accessor,
+                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
+                vars::fighter::status::GUARD_CANCEL_ESCAPE_F
+            );
+        }
+
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
+            VarModule::set_int(
+                fighter.module_accessor,
+                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
+                vars::fighter::status::GUARD_CANCEL_ESCAPE_B
+            );
+        }
+
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0
+        && GroundModule::is_passable_ground(fighter.module_accessor) {
+            VarModule::set_int(
+                fighter.module_accessor,
+                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
+                vars::fighter::status::GUARD_CANCEL_PASS
+            );
+        }
     }
 
     let prev_scale_frame = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME, 0);

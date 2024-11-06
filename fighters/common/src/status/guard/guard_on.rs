@@ -6,6 +6,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
+    && !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT)
     && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < 6 &&
     (
         ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) > 20 ||
@@ -155,6 +156,21 @@ unsafe extern "C" fn sub_status_end_guard_on_common(fighter: &mut L2CFighterComm
     else if !param_1.get_bool() {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
+
+    let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
+        *SHIELD_TYPE_GUARD
+    }
+    else {
+        *SHIELD_TYPE_UNDEFINED
+    };
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
+        ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+        ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+        }
+    }
+    ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
 }
 
 #[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]

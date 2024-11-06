@@ -151,33 +151,33 @@ unsafe extern "C" fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_exitStatus)]
-unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
-        *SHIELD_TYPE_GUARD
-    }
-    else {
-        *SHIELD_TYPE_UNDEFINED
-    };
-    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
-        ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
-        ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
-        // if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
-            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-        // }
-    }
-    if status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        effect!(
-            fighter,
-            MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
-            Hash40::new("sys_shield"),
-            true,
-            true
-        );
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
-    }
-    ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_exitstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    // let status = fighter.global_table[STATUS_KIND].get_i32();
+    // let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
+    //     *SHIELD_TYPE_GUARD
+    // }
+    // else {
+    //     *SHIELD_TYPE_UNDEFINED
+    // };
+    // if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
+    //     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+    //     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+    //     if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+    //         ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+    //     }
+    // }
+    // if status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    // && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+    //     effect!(
+    //         fighter,
+    //         MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND,
+    //         Hash40::new("sys_shield"),
+    //         true,
+    //         true
+    //     );
+    //     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
+    // }
+    // ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
     0.into()
 }
 

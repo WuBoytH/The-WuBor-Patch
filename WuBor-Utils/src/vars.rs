@@ -58,6 +58,8 @@ pub mod fighter {
             // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
             // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
             pub const JUMP_FROM_SQUAT_COUNT_STATUS : i32 = 0x000B;
+
+            pub const GUARD_CANCEL_PASS_FRAME : i32 = 0x000C;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;
@@ -86,6 +88,7 @@ pub mod fighter {
         pub const GUARD_CANCEL_ESCAPE_F : i32 = 0x37E;
         pub const GUARD_CANCEL_ESCAPE_B : i32 = 0x37F;
         pub const GUARD_CANCEL_PASS : i32 = 0x380;
+        pub const GUARD_CANCEL_APPEAL : i32 = 0x381;
     }
 }
 
@@ -189,6 +192,8 @@ pub mod guard {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
         pub const GUARD_OFF_RESERVE_CAT1 : i32 = 0x1051;
         pub const JUST_SHIELD_COUNT : i32 = 0x1052;
+
+        pub const DAMAGE_STOP_ESCAPE_STATUS : i32 = 0x1053;
     }
 }
 

@@ -71,6 +71,15 @@ unsafe extern "C" fn shield_health_recovery_only_in_burnout(ctx: &mut skyline::h
     }
 }
 
+#[skyline::hook(offset = 0x614630)]
+unsafe extern "C" fn fighter_global_per_frame(fighter: &mut Fighter) {
+    original!()(fighter);
+    let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
+    if *battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0 {
+        VarModule::countdown_int(fighter.battle_object.module_accessor, fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
+    }
+}
+
 pub fn install() {
     // Stubs parry hitlag calculation
     let _ = skyline::patching::Patch::in_text(0x641d84).nop();
@@ -110,6 +119,7 @@ pub fn install() {
         reverse_trump_logic,
         force_reflect_full_lifetime,
         shield_break_lr_set,
-        shield_health_recovery_only_in_burnout
+        shield_health_recovery_only_in_burnout,
+        fighter_global_per_frame
     );
 }

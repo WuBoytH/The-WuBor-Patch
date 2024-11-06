@@ -81,7 +81,10 @@ unsafe extern "C" fn richter_holywater_something(_item: &mut L2CAgent) -> L2CVal
 #[skyline::hook(replace = RICHTER_HOLYWATER_BORN_LOOP)]
 unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValue {
     original!()(item);
-    if GroundModule::is_touch(item.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
+    item.clear_lua_stack();
+    let speed_x= func_links::KineticEnergyControl::get_speed_x(item.lua_state_agent);
+    if (GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32) && speed_x.signum() < 0.0)
+    || (GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32) && speed_x.signum() > 0.0) {
         item.clear_lua_stack();
         lua_args!(item, 0.0, 0.0);
         func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: 0.0, y: 0.0});

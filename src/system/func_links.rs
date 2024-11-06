@@ -43,6 +43,9 @@ pub mod KineticEnergyControl {
 
         #[link_name = "\u{1}_ZN3app22kinetic_energy_control9set_speedEP9lua_StateRKN3phx8Vector2fE"]
         pub fn set_speed(lua_state: u64, accel: *const Vector2f);
+
+        #[link_name = "\u{1}_ZN3app22kinetic_energy_control11get_speed_xEP9lua_State"]
+        pub fn get_speed_x(lua_state: u64) -> f32;
     }
 }
 

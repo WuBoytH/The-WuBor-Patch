@@ -198,7 +198,7 @@ younglink = { path = "fighters/younglink" }
 zelda = { path = "fighters/zelda" }
 
 [package]
-version = "0.17.2"
+version = "0.17.3"
 name = "wubor"
 authors.workspace = true
 edition.workspace = true
@@ -309,6 +309,8 @@ wubor_utils = { path = "./WuBor-Utils" }
 custom_var = { path = "./custom-var" }
 smash_singletons = { git = "https://github.com/WuBoytH/smash_singletons.git" }
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
+indexmap = { version = "1.9.3", features = ["std"] }
+runtime-motion-patcher = { git = "https://github.com/blu-dev/runtime-motion-patcher" }
 
 [patch.crates-io]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }

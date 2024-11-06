@@ -300,12 +300,11 @@ pub mod dolly {
         }
         pub mod int {
             pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;
-
-            pub const D_TILT_CHAIN_COUNT : i32 = 0x1150;
         }
 
-        pub const ATTACK_DASH_COMMAND : i32 = 0x203;
-        pub const SPECIAL_N_COMMAND : i32 = 0x204;
+        pub const ATTACK_LW32 : i32 = 0x203;
+        pub const ATTACK_DASH_COMMAND : i32 = 0x204;
+        pub const SPECIAL_N_COMMAND : i32 = 0x205;
     }
 }
 

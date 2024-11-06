@@ -75,6 +75,9 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     }
     shield_stiff_frame += WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_add"));
     // println!("plus 3.0 for good measure: {}", shield_stiff_frame);
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        shield_stiff_frame += param::damage::burnout_stun_penalty;
+    }
     let shield_stiff_frame_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_frame_max"));
     if shield_stiff_frame_max < shield_stiff_frame {
         shield_stiff_frame = shield_stiff_frame_max;

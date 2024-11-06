@@ -7,6 +7,7 @@ mod menu;
 mod music;
 mod fighterspecializer;
 mod engine;
+// mod effects;
 pub mod controller;
 mod modules;
 mod one_frame;
@@ -21,6 +22,7 @@ pub fn install() {
     music::install();
     fighterspecializer::install();
     engine::install();
+    // effects::install();
     controller::install();
     modules::install();
     one_frame::install();

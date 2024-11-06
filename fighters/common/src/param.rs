@@ -20,6 +20,8 @@ pub mod jump {
 pub mod damage {
     pub const damage_speed_up_speed_min : f32 = 3.5;
     pub const damage_speed_up_speed_max : f32 = 6.0;
+
+    pub const burnout_stun_penalty : f32 = 4.0;
 }
 
 // Command Input Params

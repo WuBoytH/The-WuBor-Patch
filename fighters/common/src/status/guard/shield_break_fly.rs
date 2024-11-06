@@ -33,6 +33,9 @@ unsafe extern "C" fn status_pre_shieldbreakfly(fighter: &mut L2CFighterCommon) -
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_shield_break_fly_common)]
 unsafe extern "C" fn sub_status_shield_break_fly_common(fighter: &mut L2CFighterCommon, arg_1: L2CValue) {
+    if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        EffectModule::req_common(fighter.module_accessor, Hash40::new("burnout"), 0.0);
+    }
     VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT);
 
     WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
@@ -48,7 +51,7 @@ unsafe extern "C" fn sub_status_shield_break_fly_common(fighter: &mut L2CFighter
         fighter.module_accessor,
         Hash40::new("rebound"),
         0.0,
-        cancel_frame / 50.0,
+        cancel_frame / 60.0,
         false,
         0.0,
         false,

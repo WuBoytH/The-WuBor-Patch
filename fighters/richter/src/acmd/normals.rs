@@ -223,7 +223,7 @@ unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
+    macros::FT_MOTION_RATE(agent, 1.0 / 3.0);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 12.0);

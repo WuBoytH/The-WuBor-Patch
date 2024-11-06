@@ -32,6 +32,9 @@ unsafe extern "C" fn guard_cancel_attack_pre(fighter: &mut L2CFighterCommon) -> 
 }
 
 unsafe extern "C" fn guard_cancel_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
+
     HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
 
     add_shield_health(fighter, -0.2);

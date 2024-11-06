@@ -2,6 +2,7 @@ use super::*;
 
 unsafe extern "C" fn guard_cancel_escape_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
 
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ESCAPE_F);
     1.into()
@@ -9,6 +10,7 @@ unsafe extern "C" fn guard_cancel_escape_f_pre(fighter: &mut L2CFighterCommon) -
 
 unsafe extern "C" fn guard_cancel_escape_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
 
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ESCAPE_B);
     1.into()
@@ -27,6 +29,8 @@ unsafe extern "C" fn guard_cancel_pass_main(fighter: &mut L2CFighterCommon) -> L
 
     VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 20);
 
+    HitModule::set_xlu_frame_global(fighter.module_accessor, 20, 0);
+
     fighter.status_Pass_common();
 
     fighter.sub_shift_status_main(L2CValue::Ptr(guard_cancel_pass_main_loop as *const () as _))
@@ -44,6 +48,10 @@ unsafe extern "C" fn guard_cancel_pass_main_loop(fighter: &mut L2CFighterCommon)
             return 0.into();
         }
 
+        if fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
@@ -59,6 +67,8 @@ unsafe extern "C" fn guard_cancel_pass_end(fighter: &mut L2CFighterCommon) -> L2
     let status = fighter.global_table[STATUS_KIND].get_i32();
 
     if status != *FIGHTER_STATUS_KIND_FALL {
+        HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+
         VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
     }
 

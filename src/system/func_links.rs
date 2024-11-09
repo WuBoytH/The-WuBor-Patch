@@ -13,6 +13,15 @@ pub mod HOLYWATER {
 
         #[link_name = "\u{1}_ZN3app9holywater29HOLYWATER_FIRE_PILLAR_SPEED_YENS_11FighterKindE"]
         pub fn FIRE_PILLAR_SPEED_Y(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater26HOLYWATER_THROW_ANGLE_SIDEENS_11FighterKindE"]
+        pub fn THROW_ANGLE_SIDE(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater19HOLYWATER_ROT_SPEEDENS_11FighterKindE"]
+        pub fn ROT_SPEED(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater34HOLYWATER_REFLECT_SHIELD_ROT_SPEEDENS_11FighterKindE"]
+        pub fn REFLECT_SHIELD_ROT_SPEED(kind: FighterKind) -> f32;
     }
 }
 
@@ -20,6 +29,9 @@ pub mod Item {
     extern "C" {
         #[link_name = "\u{1}_ZN3app4item12disable_areaEP9lua_Statei"]
         pub fn disable_area(lua_state: u64, area_kind: i32);
+
+        #[link_name = "\u{1}_ZN3app4item26reset_gravity_energy_brakeEP9lua_State"]
+        pub fn reset_gravity_energy_brake(lua_state: u64);
     }
 }
 

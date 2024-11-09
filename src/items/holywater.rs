@@ -115,7 +115,7 @@ unsafe extern "C" fn holywater_throw_internal_internal(item: &mut L2CAgent, spee
 
 #[skyline::hook(replace = RICHTER_HOLYWATER_BORN)]
 unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> L2CValue {
-    let table = (item as *mut L2CAgent).add(0x458 / 0x8) as *mut L2CValue;
+    let table = &mut *(((item as *const L2CAgent as u64) + 0x458) as *mut L2CValue);
     (*table)[0x1257816e00 as u64].assign(&L2CValue::I32(0));
     item.clear_lua_stack();
     lua_args!(item, ITEM_AREA_KIND_BODY);

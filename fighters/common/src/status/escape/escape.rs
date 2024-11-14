@@ -113,6 +113,7 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
         // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
     let status_kind_interrupt = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+    let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     let mut hit_xlu_frame = 0.0;
     let mut hit_normal_frame = 0.0;
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
@@ -166,6 +167,27 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
     }
+
+    if [vars::fighter::status::GUARD_CANCEL_ESCAPE_F, vars::fighter::status::GUARD_CANCEL_ESCAPE_B].contains(&status_kind) {
+        let eff = EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("sys_flash"),
+            Hash40::new("hip"),
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            1.4,
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            false,
+            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            *EFFECT_FLIP_NONE,
+            1
+        ) as u32;
+        EffectModule::set_rgb(fighter.module_accessor, eff, 0.2, 0.2, 0.8);
+
+        SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guard_cancel_roll"), true, false, false, false, enSEType(0));
+    }
+
     WorkModule::set_int(fighter.module_accessor, hit_xlu_frame as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
     WorkModule::set_int(fighter.module_accessor, hit_normal_frame as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {

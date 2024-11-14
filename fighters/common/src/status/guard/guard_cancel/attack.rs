@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn guard_cancel_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -31,7 +31,7 @@ unsafe extern "C" fn guard_cancel_attack_pre(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-unsafe extern "C" fn guard_cancel_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
 
@@ -67,7 +67,7 @@ unsafe extern "C" fn guard_cancel_attack_main(fighter: &mut L2CFighterCommon) ->
     fighter.sub_shift_status_main(L2CValue::Ptr(guard_cancel_attack_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn guard_cancel_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
@@ -83,13 +83,4 @@ unsafe extern "C" fn guard_cancel_attack_main_loop(fighter: &mut L2CFighterCommo
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
     }
     0.into()
-}
-
-pub fn install() {
-    let agent = &mut Agent::new("fighter");
-
-    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_pre);
-    agent.status(Main, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_main);
-
-    agent.install();
 }

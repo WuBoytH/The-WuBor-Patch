@@ -14,7 +14,7 @@ mod guard;
 mod guard_off;
 mod guard_damage;
 
-mod guard_cancel;
+pub mod guard_cancel;
 
 mod shield_break_fly;
 
@@ -23,8 +23,6 @@ pub fn install() {
     guard::install();
     guard_off::install();
     guard_damage::install();
-
-    guard_cancel::install();
 
     shield_break_fly::install();
 }

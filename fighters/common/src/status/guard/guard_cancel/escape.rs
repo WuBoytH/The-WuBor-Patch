@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn guard_cancel_escape_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_escape_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
 
@@ -8,7 +8,7 @@ unsafe extern "C" fn guard_cancel_escape_f_pre(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
-unsafe extern "C" fn guard_cancel_escape_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_escape_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
 
@@ -16,15 +16,15 @@ unsafe extern "C" fn guard_cancel_escape_b_pre(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
-unsafe extern "C" fn guard_cancel_pass_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Pass()
 }
 
-unsafe extern "C" fn guard_cancel_pass_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_uniq_process_Pass_init()
 }
 
-unsafe extern "C" fn guard_cancel_pass_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
 
     VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 20);
@@ -36,7 +36,7 @@ unsafe extern "C" fn guard_cancel_pass_main(fighter: &mut L2CFighterCommon) -> L
     fighter.sub_shift_status_main(L2CValue::Ptr(guard_cancel_pass_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn guard_cancel_pass_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_PASS_WORK_INT_FRAME) == 0 {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_PASS_FLAG_IS_SET_PASS) {
             if fighter.end_pass_ground().get_bool() {
@@ -59,11 +59,11 @@ unsafe extern "C" fn guard_cancel_pass_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn guard_cancel_pass_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_uniq_process_Pass_exec_status()
 }
 
-unsafe extern "C" fn guard_cancel_pass_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn guard_cancel_pass_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
 
     if status != *FIGHTER_STATUS_KIND_FALL {
@@ -73,20 +73,4 @@ unsafe extern "C" fn guard_cancel_pass_end(fighter: &mut L2CFighterCommon) -> L2
     }
 
     0.into()
-}
-
-pub fn install() {
-    let agent = &mut Agent::new("fighter");
-
-    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ESCAPE_F, guard_cancel_escape_f_pre);
-
-    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ESCAPE_B, guard_cancel_escape_b_pre);
-
-    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_pre);
-    agent.status(Init, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_init);
-    agent.status(Main, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_main);
-    agent.status(Exec, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_exec);
-    agent.status(End, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_end);
-
-    agent.install();
 }

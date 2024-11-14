@@ -7,7 +7,7 @@ pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, l
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let event_kind = event.link_event_kind.0;
-    println!("event: {:#x}", event_kind);
+    // println!("event: {:#x}", event_kind);
     if event_kind == hash40("capture") {
         let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
         if status == *FIGHTER_STATUS_KIND_SPECIAL_HI && capture_event.status == *FIGHTER_STATUS_KIND_CLUNG_GANON {

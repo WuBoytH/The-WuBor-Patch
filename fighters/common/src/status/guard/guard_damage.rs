@@ -465,17 +465,17 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
                 }
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
-                    // Guard Cancel Roll
-                    let status = VarModule::get_int(fighter.module_accessor, vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS);
-                    if status != 0 {
-                        fighter.change_status(status.into(), true.into());
-                        return 0.into();
-                    }
-
                     // Guard Cancel Attack
                     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0
                     && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
                         fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
+                        return 0.into();
+                    }
+
+                    // Guard Cancel Roll
+                    let status = VarModule::get_int(fighter.module_accessor, vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS);
+                    if status != 0 {
+                        fighter.change_status(status.into(), true.into());
                         return 0.into();
                     }
                 }

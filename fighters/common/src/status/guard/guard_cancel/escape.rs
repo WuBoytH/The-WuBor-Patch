@@ -27,6 +27,24 @@ pub unsafe extern "C" fn guard_cancel_pass_init(fighter: &mut L2CFighterCommon) 
 pub unsafe extern "C" fn guard_cancel_pass_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     add_shield_health(fighter, -0.4);
 
+    let eff = EffectModule::req_on_joint(
+        fighter.module_accessor,
+        Hash40::new("sys_flash"),
+        Hash40::new("hip"),
+        &vars::ZERO_VECTOR,
+        &vars::ZERO_VECTOR,
+        1.4,
+        &vars::ZERO_VECTOR,
+        &vars::ZERO_VECTOR,
+        false,
+        *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+        *EFFECT_FLIP_NONE,
+        1
+    ) as u32;
+    EffectModule::set_rgb(fighter.module_accessor, eff, 0.2, 0.2, 0.8);
+
+    SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guard_cancel_roll"), true, false, false, false, enSEType(0));
+
     VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 20);
 
     HitModule::set_xlu_frame_global(fighter.module_accessor, 20, 0);

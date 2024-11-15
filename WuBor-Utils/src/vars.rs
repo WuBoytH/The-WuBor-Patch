@@ -60,6 +60,8 @@ pub mod fighter {
             pub const JUMP_FROM_SQUAT_COUNT_STATUS : i32 = 0x000B;
 
             pub const GUARD_CANCEL_PASS_FRAME : i32 = 0x000C;
+
+            pub const BURNOUT_EFF_FRAME: i32 = 0x000D;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;

@@ -64,7 +64,17 @@ unsafe extern "C" fn shield_health_recovery_only_in_burnout(ctx: &mut skyline::h
         shield_health = (shield_health + (shield_recovery1 * shield_recovery)).min(shield_health_max);
         if shield_health >= shield_health_max {
             EffectModule::remove_common(module_accessor, Hash40::new("burnout"));
-            // Play SFX to indicate burnout ends
+            SoundModule::play_se(
+                module_accessor,
+                Hash40::new("se_common_burnout_recover"),
+                true,
+                false,
+                false,
+                false,
+                enSEType(0)
+            );
+            ColorBlendModule::cancel_main_color(module_accessor, 0);
+            VarModule::set_int(module_accessor, fighter::instance::int::BURNOUT_EFF_FRAME, 0);
             VarModule::off_flag(module_accessor, fighter::instance::flag::BURNOUT);
         }
         WorkModule::set_float(module_accessor, shield_health, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);

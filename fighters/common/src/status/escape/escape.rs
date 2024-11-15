@@ -216,38 +216,38 @@ unsafe extern "C" fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CVa
             return 0.into();
         }
     }
-    if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
-        let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-        && normal_frame == 1 {
-            let cat = fighter.global_table[CMD_CAT1].get_i32();
-            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
-                return 0.into();
-            }
-            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
-                return 0.into();
-            }
-            // if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0 {
-            //     VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-            //     fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
-            //     return 0.into();
-            // }
-        }
-        // let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
-        // if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
-        //     let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0;
-        //     if !is_catch
-        //     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-        //         return 0.into();
-        //     }
-        // }
-    }
+    // if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
+    //     let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
+    //     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    //     && normal_frame == 1 {
+    //         let cat = fighter.global_table[CMD_CAT1].get_i32();
+    //         if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
+    //             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+    //             VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+    //             return 0.into();
+    //         }
+    //         if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
+    //             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+    //             VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+    //             return 0.into();
+    //         }
+    //         // if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0 {
+    //         //     VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //         //     fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+    //         //     return 0.into();
+    //         // }
+    //     }
+    //     // let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
+    //     // if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
+    //     //     let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0;
+    //     //     if !is_catch
+    //     //     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+    //     //         return 0.into();
+    //     //     }
+    //     // }
+    // }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor)
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

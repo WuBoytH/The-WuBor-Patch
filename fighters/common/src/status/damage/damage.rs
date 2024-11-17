@@ -25,7 +25,10 @@ unsafe extern "C" fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CVal
         false,
         false,
         0,
-        *FIGHTER_STATUS_ATTR_DAMAGE as u32,
+        (
+            *FIGHTER_STATUS_ATTR_DAMAGE |
+            *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY
+        ) as u32,
         0,
         0
     );

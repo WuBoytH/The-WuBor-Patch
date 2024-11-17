@@ -52,9 +52,19 @@ unsafe extern "C" fn shield_break_lr_set(ctx: &mut skyline::hooks::InlineCtx) {
     WorkModule::set_float(module_accessor, lr, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
 }
 
-#[skyline::hook(offset = 0x614b9c, inline)]
-unsafe extern "C" fn shield_health_recovery_only_in_burnout(ctx: &mut skyline::hooks::InlineCtx) {
+#[skyline::hook(offset = 0x614c0c, inline)]
+unsafe extern "C" fn shield_health_recovery_check_max(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    shield_recovery_burnout_check(fighter);
+}
+
+#[skyline::hook(offset = 0x614b9c, inline)]
+unsafe extern "C" fn shield_health_recovery_check_less_than_max(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    shield_recovery_burnout_check(fighter);
+}
+
+unsafe extern "C" fn shield_recovery_burnout_check(fighter: *mut Fighter) {
     let module_accessor = (*fighter).battle_object.module_accessor;
     if VarModule::is_flag(module_accessor, fighter::instance::flag::BURNOUT) {
         let shield_recovery1 = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("shield_recovery1"));
@@ -135,7 +145,8 @@ pub fn install() {
         reverse_trump_logic,
         force_reflect_full_lifetime,
         shield_break_lr_set,
-        shield_health_recovery_only_in_burnout,
+        shield_health_recovery_check_max,
+        shield_health_recovery_check_less_than_max,
         fighter_global_per_frame
     );
 }

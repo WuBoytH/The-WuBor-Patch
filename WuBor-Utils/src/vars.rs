@@ -91,6 +91,7 @@ pub mod fighter {
         pub const GUARD_CANCEL_ESCAPE_B : i32 = 0x37F;
         pub const GUARD_CANCEL_PASS : i32 = 0x380;
         pub const GUARD_CANCEL_APPEAL : i32 = 0x381;
+        pub const GUARD_CRUSH : i32 = 0x382;
     }
 }
 

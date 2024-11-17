@@ -16,6 +16,8 @@ mod guard_damage;
 
 pub mod guard_cancel;
 
+pub mod guard_crush;
+
 mod shield_break_fly;
 
 pub fn install() {

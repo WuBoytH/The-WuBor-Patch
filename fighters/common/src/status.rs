@@ -20,10 +20,13 @@ mod sub_fighter;
 use {
     escape::escape_air_slide::*,
     cliff::cliff_jump1::*,
-    guard::guard_cancel::{
-        attack::*,
-        escape::*,
-        appeal::*
+    guard::{
+        guard_crush::*,
+        guard_cancel::{
+            attack::*,
+            escape::*,
+            appeal::*
+        }
     },
 };
 
@@ -69,6 +72,10 @@ pub fn install() {
     agent.status(End, vars::fighter::status::GUARD_CANCEL_PASS, guard_cancel_pass_end);
 
     agent.status(Pre, vars::fighter::status::GUARD_CANCEL_APPEAL, guard_cancel_appeal_pre);
+
+    agent.status(Pre, vars::fighter::status::GUARD_CRUSH, guard_crush_pre);
+    agent.status(Init, vars::fighter::status::GUARD_CRUSH, guard_crush_init);
+    agent.status(Main, vars::fighter::status::GUARD_CRUSH, guard_crush_main);
 
     agent.install();
 }

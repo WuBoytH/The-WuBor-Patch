@@ -6,6 +6,11 @@ unsafe extern "C" fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CVal
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
         return false.into();
     }
+
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        return false.into();
+    }
+
     true.into()
 }
 

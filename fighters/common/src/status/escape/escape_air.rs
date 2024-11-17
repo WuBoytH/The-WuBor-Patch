@@ -121,11 +121,9 @@ pub unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFigh
         return 1.into();
     }
 
-    // // early return if airdashing
-
-    // if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
-    //     return 0.into();
-    // }
+    if !fighter.is_enable_passive().get_bool() {
+        return 0.into();
+    }
 
     let air_escape_passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame"));
     let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);

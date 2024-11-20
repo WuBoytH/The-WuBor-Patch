@@ -552,7 +552,7 @@ unsafe extern "C" fn effect_attacklw32(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::PLAY_SEQUENCE(agent, Hash40::new("seq_dolly_rnd_attack_s"));
+        macros::PLAY_SE(agent, Hash40::new("vc_dolly_attack_lw32"));
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_l01"));
     }
 }

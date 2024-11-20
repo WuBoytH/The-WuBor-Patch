@@ -283,6 +283,8 @@ pub mod dolly {
         pub mod int {
             pub const SUPER_SPECIAL_AURA : i32 = 0x0101;
             pub const SUPER_SPECIAL_AURA2 : i32 = 0x0102;
+
+            pub const GUARD_CANCEL_ATTACK_VC_TYPE : i32 = 0x0103;
         }
         pub mod float {
             pub const GO_METER : i32 = 0x0100;

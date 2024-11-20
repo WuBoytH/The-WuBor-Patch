@@ -1,5 +1,21 @@
 use super::*;
 
+unsafe extern "C" fn sound_guarddamage(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_guard"));
+    }
+}
+
+unsafe extern "C" fn sound_justshieldoff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        let rand = sv_math::rand(hash40("fighter"), 10);
+        if rand < 3 {
+            macros::PLAY_SE(agent, Hash40::new("vc_dolly_just_shield"));
+        }
+    }
+}
+
 unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -27,9 +43,21 @@ unsafe extern "C" fn sound_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_guard_cancel_attack"));
     }
-    frame(agent.lua_state_agent, 17.0);
+    frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("vc_dolly_attack06"));
+        let mut vc_type = VarModule::get_int(agent.module_accessor, vars::dolly::instance::int::GUARD_CANCEL_ATTACK_VC_TYPE);
+        let vc = if vc_type == 0 {
+            hash40("vc_dolly_guard_cancel_attack01")
+        }
+        else {
+            hash40("vc_dolly_guard_cancel_attack02")
+        };
+        vc_type += 1;
+        if vc_type > 1 {
+            vc_type = 0;
+        }
+        VarModule::set_int(agent.module_accessor, vars::dolly::instance::int::GUARD_CANCEL_ATTACK_VC_TYPE, vc_type);
+        macros::PLAY_SE(agent, Hash40::new_raw(vc));
     }
 }
 
@@ -45,6 +73,10 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("sound_guarddamage", sound_guarddamage, Priority::Low);
+
+    agent.acmd("sound_justshieldoff", sound_justshieldoff, Priority::Low);
+
     agent.acmd("game_guardcancelattack", game_guardcancelattack, Priority::Low);
     agent.acmd("effect_guardcancelattack", effect_guardcancelattack, Priority::Low);
     agent.acmd("sound_guardcancelattack", sound_guardcancelattack, Priority::Low);

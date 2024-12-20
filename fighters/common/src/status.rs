@@ -58,8 +58,8 @@ pub fn install() {
 
     agent.status(Exec, *FIGHTER_STATUS_KIND_CLIFF_JUMP1, sub_cliff_jump1_uniq_process_exec);
 
-    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_pre);
-    agent.status(Main, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_main);
+    agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_pre_common);
+    agent.status(Main, vars::fighter::status::GUARD_CANCEL_ATTACK, guard_cancel_attack_main_common);
 
     agent.status(Pre, vars::fighter::status::GUARD_CANCEL_ESCAPE_F, guard_cancel_escape_f_pre);
 

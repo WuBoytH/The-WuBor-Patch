@@ -2,6 +2,8 @@ use super::*;
 
 mod dash;
 
+mod guard;
+
 mod normals;
 mod aerials;
 mod throws;
@@ -16,6 +18,8 @@ mod appeal;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     aerials::install(agent);

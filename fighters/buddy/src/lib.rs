@@ -17,9 +17,13 @@ use {
 mod acmd;
 mod frame;
 
+mod partner;
+
 pub fn install() {
     let agent = &mut Agent::new("buddy");
     acmd::install(agent);
     frame::install(agent);
     agent.install();
+
+    partner::install();
 }

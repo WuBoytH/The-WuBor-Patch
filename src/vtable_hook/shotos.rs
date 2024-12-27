@@ -253,15 +253,6 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                 }
             }
         }
-        if status == fighter::status::GUARD_CANCEL_ATTACK {
-            if collision_kind == 1 {
-                let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-                if (*opponent_object).battle_object_id >> 0x1c == 0
-                && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
-                    syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.3, 0.1, 0.1, 0.75);
-                }
-            }
-        }
     }
     if [
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
@@ -307,6 +298,21 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     if status == *FIGHTER_STATUS_KIND_FINAL {
         if collision_kind != 1 {
             return;
+        }
+    }
+    if status == fighter::status::GUARD_CANCEL_ATTACK {
+        if collision_kind == 1 {
+            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+            if (*opponent_object).battle_object_id >> 0x1c == 0
+            && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                let eff = if kind == 0x3c {
+                    Hash40::new("ryu_syoryuken_hit")
+                }
+                else {
+                    Hash40::new("ken_syoryuken_hit")
+                };
+                syoryuken_eff_handler(module_accessor, collision_log, eff, 0.3, 0.1, 0.1, 0.75);
+            }
         }
     }
     original!()(vtable, fighter, log, some_float);

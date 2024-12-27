@@ -92,6 +92,7 @@ pub mod fighter {
         pub const GUARD_CANCEL_PASS : i32 = 0x380;
         pub const GUARD_CANCEL_APPEAL : i32 = 0x381;
         pub const GUARD_CRUSH : i32 = 0x382;
+        pub const COMMON_STATUS_EXTEND_MAX : i32 = 0x382;
     }
 }
 
@@ -440,7 +441,7 @@ pub mod kirby {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
 
-        pub const DOLLY_SPECIAL_N_COMMAND : i32 = 0x37D;
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
     }
 }
 

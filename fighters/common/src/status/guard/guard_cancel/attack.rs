@@ -33,6 +33,13 @@ pub unsafe extern "C" fn guard_cancel_attack_pre_common(fighter: &mut L2CFighter
 
 #[no_mangle]
 pub unsafe extern "C" fn guard_cancel_attack_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    guard_cancel_attack_common(fighter);
+
+    fighter.sub_shift_status_main(L2CValue::Ptr(guard_cancel_attack_main_loop_common as *const () as _))
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn guard_cancel_attack_common(fighter: &mut L2CFighterCommon) {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
 
@@ -65,9 +72,9 @@ pub unsafe extern "C" fn guard_cancel_attack_main_common(fighter: &mut L2CFighte
 
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE, fighter.module_accessor);
 
-    fighter.sub_shift_status_main(L2CValue::Ptr(guard_cancel_attack_main_loop_common as *const () as _))
 }
 
+#[no_mangle]
 pub unsafe extern "C" fn guard_cancel_attack_main_loop_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

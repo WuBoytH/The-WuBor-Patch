@@ -466,7 +466,7 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
                     // Guard Cancel Attack
-                    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0
+                    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
                     && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
                         fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
                         return 0.into();

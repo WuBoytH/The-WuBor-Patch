@@ -735,6 +735,9 @@ pub mod pikmin {
     pub mod status {
         pub mod flag {
             pub const ATTACK_HI3_DRIFT : i32 = 0x1150;
+
+            pub const GUARD_CANCEL_ATTACK_SHOOT : i32 = 0x1150;
+            pub const GUARD_CANCEL_ATTACK_DONE : i32 = 0x1151;
         }
         pub mod int {
             pub const ATTACK_S3_STEP : i32 = 0x1150;
@@ -743,6 +746,13 @@ pub mod pikmin {
     pub const ATTACK_S3_STEP_START : i32 = 0;
     pub const ATTACK_S3_STEP_LOOP : i32 = 1;
     pub const ATTACK_S3_STEP_END : i32 = 2;
+}
+
+pub mod pikmin_pikmin {
+    pub mod status {
+        pub const GUARD_CANCEL_ATTACK_START : i32 = 0x44;
+        pub const GUARD_CANCEL_ATTACK : i32 = 0x45;
+    }
 }
 
 pub mod richter {

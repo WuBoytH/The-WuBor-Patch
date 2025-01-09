@@ -809,6 +809,12 @@ pub mod rockman_airshooter {
     }
 }
 
+pub mod rosetta_tico {
+    pub mod status {
+        pub const GUARD_CANCEL_ATTACK : i32 = 0x33;
+    }
+}
+
 pub mod ryu {
     pub mod instance {
         pub mod flag {

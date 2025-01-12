@@ -1,15 +1,11 @@
 use super::*;
 
-unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, vars::mario::status::SPECIAL_AIR_LW_START);
-        return 1.into();
-    }
+unsafe extern "C" fn special_air_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
-        SituationKind(*SITUATION_KIND_GROUND),
+        SituationKind(*SITUATION_KIND_AIR),
         *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_GROUND as u32,
+        *GROUND_CORRECT_KIND_AIR as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
@@ -36,10 +32,10 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-unsafe extern "C" fn mario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_lw_start"),
+        Hash40::new("special_air_lw_start"),
         0.0,
         1.0,
         false,
@@ -47,17 +43,17 @@ unsafe extern "C" fn mario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(mario_special_lw_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_air_lw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn mario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_air_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(vars::mario::status::SPECIAL_LW_JUMP.into(), false.into());
+        fighter.change_status(vars::mario::status::SPECIAL_AIR_LW_FALL.into(), false.into());
     }
     0.into()
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, mario_special_lw_main);
+    agent.status(Pre, vars::mario::status::SPECIAL_AIR_LW_START, special_air_lw_pre);
+    agent.status(Main, vars::mario::status::SPECIAL_AIR_LW_START, special_air_lw_main);
 }

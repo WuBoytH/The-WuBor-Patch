@@ -1,9 +1,10 @@
 use crate::imports::*;
 use crate::system::func_links;
 
-pub static mut RICHTER_HOLYWATER : usize = 0x758e00;
+pub static mut RICHTER_HOLYWATER_BORN : usize = 0x758e00;
+pub static mut RICHTER_HOLYWATER_BORN_LOOP : usize = 0x759600;
 
-#[skyline::hook(replace = RICHTER_HOLYWATER)]
+#[skyline::hook(replace = RICHTER_HOLYWATER_BORN)]
 unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> L2CValue {
     // (item.unk20 as L2CValue)[0x1257816e00 as u64].assign(&L2CValue::I32(0));
     item.clear_lua_stack();
@@ -39,7 +40,15 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
     }
     // <WuBor>
     if !GroundModule::is_touch(item.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
-        let speed_x = 0.4;
+        let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let normal_y = GroundModule::get_touch_normal_y(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        // println!("normal: {}, {}", normal_x, normal_y);
+        let angle = normal_x.atan2(normal_y);
+        // println!("angle: {}", angle.to_degrees());
+        let speed = 0.4;
+        let speed_x = speed * angle.cos();
+        let speed_y = speed * angle.sin();
+        // println!("speed: {}, {}", speed_x, speed_y);
         let lr = PostureModule::lr(item.module_accessor);
         item.clear_lua_stack();
         lua_args!(item, 0, 0);
@@ -48,14 +57,14 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
         lua_args!(item, 0, 0);
         func_links::KineticEnergyControl::set_brake(item.lua_state_agent, &Vector2f{x: 0.0, y: 0.0});
         item.clear_lua_stack();
-        lua_args!(item, speed_x * lr, 0);
-        func_links::KineticEnergyControl::set_stable_speed(item.lua_state_agent, &Vector2f{x: speed_x * lr, y: 0.0});
+        lua_args!(item, speed, speed);
+        func_links::KineticEnergyControl::set_stable_speed(item.lua_state_agent, &Vector2f{x: speed, y: speed});
         item.clear_lua_stack();
-        lua_args!(item, speed_x * lr, 0);
-        func_links::KineticEnergyControl::set_limit_speed(item.lua_state_agent, &Vector2f{x: speed_x * lr, y: 0.0});
+        lua_args!(item, speed, speed);
+        func_links::KineticEnergyControl::set_limit_speed(item.lua_state_agent, &Vector2f{x: speed, y: speed});
         item.clear_lua_stack();
-        lua_args!(item, speed_x * lr, 0);
-        func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: speed_x * lr, y: 0.0});
+        lua_args!(item, speed_x.abs() * lr, -speed_y * lr);
+        func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: speed_x.abs() * lr, y: -speed_y * lr});
         item.clear_lua_stack();
         func_links::KineticEnergyControl::enable(item.lua_state_agent);
     }
@@ -69,12 +78,38 @@ unsafe extern "C" fn richter_holywater_something(_item: &mut L2CAgent) -> L2CVal
     0x44.into()
 }
 
+#[skyline::hook(replace = RICHTER_HOLYWATER_BORN_LOOP)]
+unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValue {
+    original!()(item);
+    if GroundModule::is_touch(item.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
+        item.clear_lua_stack();
+        lua_args!(item, 0.0, 0.0);
+        func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: 0.0, y: 0.0});
+    }
+    else if GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+        let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let normal_y = GroundModule::get_touch_normal_y(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        let angle = normal_x.atan2(normal_y);
+        let speed = 0.4;
+        let speed_x = speed * angle.cos();
+        let speed_y = speed * angle.sin();
+        let lr = PostureModule::lr(item.module_accessor);
+        item.clear_lua_stack();
+        lua_args!(item, speed_x.abs() * lr, -speed_y * lr);
+        func_links::KineticEnergyControl::set_speed(item.lua_state_agent, &Vector2f{x: speed_x.abs() * lr, y: -speed_y * lr});
+    }
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "item" {
         unsafe {
-            RICHTER_HOLYWATER += (*info.module.ModuleObject).module_base as usize;
+            let base = (*info.module.ModuleObject).module_base as usize;
+            RICHTER_HOLYWATER_BORN += base;
+            RICHTER_HOLYWATER_BORN_LOOP += base;
             skyline::install_hooks!(
-                richter_holywater_born_some_status
+                richter_holywater_born_some_status,
+                richter_holywater_born_loop
             );
         }
     }

@@ -52,6 +52,10 @@ pub mod KineticEnergyControlRot {
         #[link_name = "\u{1}_ZN3app26kinetic_energy_control_rot12set_rotationEP9lua_StateRKN3phx8Vector3fE"]
         pub fn set_rotation(lua_state: u64, rotation: *const Vector3f);
     }
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app26kinetic_energy_control_rot6enableEP9lua_State"]
+        pub fn enable(lua_state: u64);
+    }
 }
 
 pub mod KineticEnergyGravity {

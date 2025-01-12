@@ -1,3 +1,5 @@
+#![allow(static_mut_refs)]
+
 use std::sync::atomic::{Ordering, AtomicBool};
 use crate::is_on_ryujinx;
 

@@ -583,11 +583,7 @@ pub mod luigi {
 pub mod mario {
     pub mod instance {
         pub mod flag {
-            pub const SPECIAL_LW_BLJ_PREV : i32 = 0x0100;
-            pub const BONKER : i32 = 0x0101;
-        }
-        pub mod int {
-            pub const SPECIAL_LW_KIND : i32 = 0x0100;
+            pub const BONKER : i32 = 0x0100;
         }
     }
     pub mod status {
@@ -598,21 +594,16 @@ pub mod mario {
             pub const SPECIAL_S_HOP : i32 = 0x1151;
             pub const SPECIAL_S_ENABLE_CONTROL : i32 = 0x1152;
 
-            pub const SPECIAL_LW_LANDING : i32 = 0x1150;
-            pub const SPECIAL_LW_BLJ : i32 = 0x1151;
+            pub const SPECIAL_LW_IS_BLJ : i32 = 0x1150;
         }
-        pub mod int {
-            pub const SPECIAL_LW_LONG_JUMP_KIND : i32 = 0x1150;
-        }
-    }
-    pub const SPECIAL_LW_KIND_LONG_JUMP : i32 = 0;
-    pub const SPECIAL_LW_KIND_GROUND_POUND : i32 = 1;
-    pub const SPECIAL_LW_KIND_GROUND_POUND_CANCEL : i32 = 2;
 
-    pub const LONG_JUMP_W : i32 = 0;
-    pub const LONG_JUMP_M : i32 = 1;
-    pub const LONG_JUMP_S : i32 = 2;
-    pub const LONG_JUMP_B : i32 = 3;
+        pub const SPECIAL_LW_JUMP : i32 = 0x1E3;
+        pub const SPECIAL_LW_LANDING : i32 = 0x1E4;
+        pub const SPECIAL_AIR_LW_START : i32 = 0x1E5;
+        pub const SPECIAL_AIR_LW_FALL : i32 = 0x1E6;
+        pub const SPECIAL_AIR_LW_LANDING : i32 = 0x1E7;
+        pub const SPECIAL_AIR_LW_CANCEL : i32 = 0x1E8;
+    }
 }
 
 pub mod mariod {

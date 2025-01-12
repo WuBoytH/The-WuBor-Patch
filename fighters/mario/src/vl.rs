@@ -7,13 +7,8 @@ pub mod param_special_s {
 }
 
 pub mod param_special_lw {
-    pub const long_jump_speed_weak_x : f32 = 1.1;
-    pub const long_jump_speed_weak_y : f32 = 1.4;
-    pub const long_jump_speed_mid_x : f32 = 1.4;
-    pub const long_jump_speed_mid_y : f32 = 1.4;
-    pub const long_jump_speed_strong_x : f32 = 1.7;
-    pub const long_jump_speed_strong_y : f32 = 1.6;
-    pub const long_jump_air_accel_x_mul : f32 = 0.6;
-    pub const long_jump_air_accel_y_mul : f32 = 0.4;
+    pub const long_jump_speed_min_x : f32 = 0.8;
+    pub const long_jump_speed_y : f32 = 1.6;
+    pub const long_jump_speed_y_back : f32 = 0.2;
     pub const ground_pound_fall_speed : f32 = 4.0;
 }

@@ -2,6 +2,8 @@ use super::*;
 
 mod dash;
 
+mod landing;
+
 mod guard;
 
 mod normals;
@@ -15,6 +17,8 @@ mod cliff;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+
+    landing::install(agent);
 
     guard::install(agent);
 

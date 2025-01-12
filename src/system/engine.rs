@@ -134,6 +134,34 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x62f0b4).nop();
     let _ = skyline::patching::Patch::in_text(0x62f0b8).nop();
 
+    // Use fall speed for vertical launchers
+    let accel = [
+        0x6c3988,
+        0x6d2480,
+        0x6d590c
+    ];
+    for idx in 0..accel.len() {
+        let _ = skyline::patching::Patch::in_text(accel[idx]).data(0xD28AFB21u32);
+        let _ = skyline::patching::Patch::in_text(accel[idx] + 0x4).data(0xF2B43001u32);
+        let offset = if idx == 1 {
+            0xC
+        }
+        else {
+            0x8
+        };
+        let _ = skyline::patching::Patch::in_text(accel[idx] + offset).data(0xF2C00161u32);
+    }
+    let speed = [
+        0x6c39b0,
+        0x6d24ac,
+        0x6d5934
+    ];
+    for idx in 0..speed.len() {
+        let _ = skyline::patching::Patch::in_text(speed[idx]).data(0xD284DFC1u32);
+        let _ = skyline::patching::Patch::in_text(speed[idx] + 0x4).data(0xF2BD8AC1u32);
+        let _ = skyline::patching::Patch::in_text(speed[idx] + 0x8).data(0xF2C00241u32);
+    }
+
     // Patches shield health recovery
     let _ = skyline::patching::Patch::in_text(0x614b9c).nop();
     let _ = skyline::patching::Patch::in_text(0x614ba0).data(0x1400001Au32);

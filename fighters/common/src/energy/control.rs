@@ -312,9 +312,6 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
 
     let accel_diff = match reset_type {
         FallAdjust | FallAdjustNoCap | FlyAdjust | ShootDash | ShootBackDash | RevolveSlashAir | MoveGround | MoveAir => {
-            if energy.speed.x.abs() > energy.speed_max.x {
-                energy.speed_brake.x *= 1.5;
-            }
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         WallJump => {

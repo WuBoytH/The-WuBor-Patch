@@ -828,7 +828,7 @@ unsafe extern "C" fn game_specialhithrow(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_f"), false, -1.0);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 34.0);
     frame(agent.lua_state_agent, 37.0);
@@ -840,7 +840,7 @@ unsafe extern "C" fn game_specialairhif(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhib(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WING, Hash40::new("special_hi2_b"), false, -1.0);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 34.0);
     frame(agent.lua_state_agent, 37.0);

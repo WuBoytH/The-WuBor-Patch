@@ -48,6 +48,13 @@ pub fn smashline_install() {
 #[cfg(feature = "main_nro")]
 #[skyline::hook(replace = change_version_string)]
 fn change_version_string_hook(arg: u64, string: *const c_char) {
+    unsafe {
+        static mut RUN_MOTION_PATCHES : bool = false;
+        if !RUN_MOTION_PATCHES {
+            RUN_MOTION_PATCHES = true;
+            runtime_motion_patcher::run(true);
+        }
+    }
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let version = if cfg!(feature = "pr") {

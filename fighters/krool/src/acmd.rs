@@ -2,9 +2,11 @@ use super::*;
 
 mod dash;
 
+mod landing;
+
 mod normals;
 mod smashes;
-// mod aerials;
+mod aerials;
 
 mod catch;
 
@@ -14,9 +16,11 @@ mod cliff;
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
 
+    landing::install(agent);
+
     normals::install(agent);
     smashes::install(agent);
-    // aerials::install(agent);
+    aerials::install(agent);
 
     catch::install(agent);
 

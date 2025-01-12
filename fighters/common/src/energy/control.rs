@@ -312,9 +312,6 @@ unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_acc
 
     let accel_diff = match reset_type {
         FallAdjust | FallAdjustNoCap | FlyAdjust | ShootDash | ShootBackDash | RevolveSlashAir | MoveGround | MoveAir => {
-            if energy.speed.x.abs() > energy.speed_max.x {
-                energy.speed_brake.x *= 1.5;
-            }
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         WallJump => {
@@ -757,21 +754,25 @@ unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type:
             if reset_type != FallAdjustNoCap
             && !WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT)
             && energy.unk[2] == 0 {
-                let is_jump = VarModule::is_flag(module_accessor, vars::fighter::instance::flag::JUMP_FROM_SQUAT);
-                let break_limit = is_jump || StatusModule::prev_situation_kind(module_accessor) == *SITUATION_KIND_AIR;
-                let limit_speed = if break_limit {
-                    let mut limit_speed = WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0) * 1.4;
-                    let run_speed = WorkModule::get_param_float(module_accessor, hash40("run_speed_max"), 0);
-                    let dash_speed = WorkModule::get_param_float(module_accessor, hash40("dash_speed"), 0);
-                    let ground_speed = run_speed.max(dash_speed);
-                    if limit_speed > ground_speed {
-                        limit_speed = ground_speed + ((limit_speed - ground_speed) / 2.0);
-                    }
-                    limit_speed.clamp(1.2, 1.7)
-                }
-                else {
-                    WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0)
-                };
+                // let is_jump = VarModule::is_flag(module_accessor, vars::fighter::instance::flag::JUMP_FROM_SQUAT);
+                // let break_limit = is_jump || StatusModule::prev_situation_kind(module_accessor) == *SITUATION_KIND_AIR;
+                // let limit_speed = if break_limit {
+                //     let mut limit_speed = WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0) * 1.4;
+                //     let run_speed = WorkModule::get_param_float(module_accessor, hash40("run_speed_max"), 0);
+                //     let dash_speed = WorkModule::get_param_float(module_accessor, hash40("dash_speed"), 0);
+                //     let ground_speed = run_speed.max(dash_speed);
+                //     if limit_speed > ground_speed {
+                //         limit_speed = ground_speed + ((limit_speed - ground_speed) / 2.0);
+                //     }
+                //     limit_speed.clamp(1.2, 1.7)
+                // }
+                // else {
+                //     WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0)
+                // };
+                // if limit_speed < energy.speed.x.abs() {
+                //     energy.speed = PaddedVec2::new(limit_speed * energy.speed.x.signum(), 0.0);
+                // }
+                let limit_speed = WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0);
                 if limit_speed < energy.speed.x.abs() {
                     energy.speed = PaddedVec2::new(limit_speed * energy.speed.x.signum(), 0.0);
                 }

@@ -57,12 +57,12 @@ else:
                     dev_chars += character
                 break
             elif sys.argv[dev_index] in characters.characters:
+                if dev_chars != '':
+                    dev_chars += ','
                 dev_chars += (sys.argv[dev_index])
             else:
                 break
             dev_index += 1
-            if dev_index < arg_len:
-                dev_chars += ','
         for character in characters.characters:
             if character not in dev_chars:
                 if non_dev_chars != '':
@@ -123,7 +123,7 @@ if build:
 
         # os.environ["CARGO_TARGET_DIR"] = os.path.join("../target", "dev")
         build_command = 'cargo skyline build --release --no-default-features --features=' + dev_chars
-        # print(build_command)
+        print(build_command)
         print("Building development.nro")
 
         if os.path.isfile("../target/aarch64-skyline-switch/release/libwubor.nro"):

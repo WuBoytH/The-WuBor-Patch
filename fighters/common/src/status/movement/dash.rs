@@ -37,7 +37,7 @@ unsafe extern "C" fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CV
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
         *FIGHTER_KINETIC_TYPE_MOTION,
-        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,

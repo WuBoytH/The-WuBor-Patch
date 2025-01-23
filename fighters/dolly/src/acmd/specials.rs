@@ -24,7 +24,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
             MotionModule::set_rate(agent.module_accessor, 1.0);
         }
         else {
-            MotionModule::set_rate(agent.module_accessor, 1.5);
+            MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
         }
     }
     frame(agent.lua_state_agent, 25.0);
@@ -855,22 +855,9 @@ unsafe extern "C" fn expression_specialhicommand(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_speciallwstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        JostleModule::set_status(agent.module_accessor, false);
-    }
-    frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        let output = dolly_calc_special_cancel(agent, 4.5, 30);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 65, 30, 30, 73, 5.0, 0.0, 10.0, 7.5, Some(0.0), Some(6.0), Some(7.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
-        VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        JostleModule::set_status(agent.module_accessor, true);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.5, 72, 30, 30, 73, 5.0, 0.0, 10.0, 7.5, Some(0.0), Some(6.0), Some(7.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
     }
 }
 
@@ -881,36 +868,26 @@ unsafe extern "C" fn effect_speciallwstart(agent: &mut L2CAgentBase) {
             macros::LAST_EFFECT_SET_RATE(agent, 1.3);
         }
     }
-    frame(agent.lua_state_agent, 7.0);
+    frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("dolly_down_start"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(agent.lua_state_agent, 9.0);
-    if VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK) {
-        if macros::is_excute(agent) {
-            macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-            macros::LAST_EFFECT_SET_COLOR(agent, 0.4, 0.4, 0.7);
-        }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("kneer"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-unsafe extern "C" fn sound_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_specialairlwstart(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_dolly_command_success"));
+            macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 8, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            macros::LAST_EFFECT_SET_RATE(agent, 1.3);
         }
     }
-    frame(agent.lua_state_agent, 9.0);
-    if VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK) {
-        if macros::is_excute(agent) {
-            let rand = sv_math::rand(hash40("fighter"), 10);
-            if rand < 1 {
-                macros::PLAY_SE(agent, Hash40::new("vc_dolly_special_l03"));
-            }
-            else {
-                macros::PLAY_SE(agent, Hash40::new("vc_dolly_ottotto"));
-            }
-        }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_attack_impact"), Hash40::new("kneer"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -919,7 +896,7 @@ unsafe extern "C" fn expression_speciallwstart(agent: &mut L2CAgentBase) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
-    frame(agent.lua_state_agent, 9.0);
+    wait(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
             agent.module_accessor,
@@ -934,7 +911,7 @@ unsafe extern "C" fn expression_speciallwstart(agent: &mut L2CAgentBase) {
             macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
         }
     }
-    frame(agent.lua_state_agent, 9.0);
+    frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
@@ -1268,6 +1245,63 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallwbreaking(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
+    }
+}
+
+unsafe extern "C" fn effect_speciallwbreaking(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.3, 0.3, 0.8);
+    }
+    for _ in 0..5 {
+        if macros::is_excute(agent) {
+            macros::FLASH(agent, 0.1, 0.1, 1, 0.5);
+        }
+        wait(agent.lua_state_agent, 1.0);
+        if macros::is_excute(agent) {
+            macros::FLASH_FRM(agent, 2, 0.1, 0.1, 0.9, 0);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::COL_NORMAL(agent);
+        }
+        wait(agent.lua_state_agent, 1.0);
+    }
+}
+
+unsafe extern "C" fn sound_speciallwbreaking(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        let rand = sv_math::rand(hash40("fighter"), 10);
+        if rand < 1 {
+            macros::PLAY_SE(agent, Hash40::new("vc_dolly_special_l03"));
+        }
+        else {
+            macros::PLAY_SE(agent, Hash40::new("vc_dolly_ottotto"));
+        }
+    }
+}
+
+unsafe extern "C" fn expression_speciallwbreaking(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        ControlModule::set_rumble(
+            agent.module_accessor,
+            Hash40::new("rbkind_rush"),
+            8,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("sound_specialn", sound_specialn, Priority::Low);
@@ -1275,7 +1309,16 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairn", game_specialairn, Priority::Low);
     agent.acmd("sound_specialairn", sound_specialn, Priority::Low);
 
+    agent.acmd("game_specialsfstart", game_specialsfstart, Priority::Low);
+
+    agent.acmd("game_specialairsfstart", game_specialsfstart, Priority::Low);
+
     agent.acmd("game_specialsfattack", game_specialsfattack, Priority::Low);
+
+    agent.acmd("game_specialffeint", game_specialffeint, Priority::Low);
+    agent.acmd("effect_specialffeint", effect_specialffeint, Priority::Low);
+    agent.acmd("sound_specialffeint", sound_specialffeint, Priority::Low);
+    agent.acmd("expression_specialffeint", expression_specialffeint, Priority::Low);
 
     agent.acmd("game_specialsbattackw", game_specialsbattackw, Priority::Low);
 
@@ -1300,12 +1343,20 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
-    agent.acmd("sound_speciallwstart", sound_speciallwstart, Priority::Low);
     agent.acmd("expression_speciallwstart", expression_speciallwstart, Priority::Low);
+
+    agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
+    agent.acmd("effect_specialairlwstart", effect_specialairlwstart, Priority::Low);
+    agent.acmd("expression_specialairlwstart", expression_speciallwstart, Priority::Low);
 
     agent.acmd("game_specialairlwrisew", game_specialairlwrisew, Priority::Low);
 
     agent.acmd("game_specialairlwrise", game_specialairlwrise, Priority::Low);
 
     agent.acmd("game_specialairlw", game_specialairlw, Priority::Low);
+
+    agent.acmd("game_speciallwbreaking", game_speciallwbreaking, Priority::Low);
+    agent.acmd("effect_speciallwbreaking", effect_speciallwbreaking, Priority::Low);
+    agent.acmd("sound_speciallwbreaking", sound_speciallwbreaking, Priority::Low);
+    agent.acmd("expression_speciallwbreaking", expression_speciallwbreaking, Priority::Low);
 }

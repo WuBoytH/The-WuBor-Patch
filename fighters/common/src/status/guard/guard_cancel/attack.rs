@@ -43,6 +43,18 @@ pub unsafe extern "C" fn guard_cancel_attack_common(fighter: &mut L2CFighterComm
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
 
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+
     HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
 
     add_shield_health(fighter, -0.2);
@@ -63,18 +75,6 @@ pub unsafe extern "C" fn guard_cancel_attack_common(fighter: &mut L2CFighterComm
         0.0,
         false,
         false
-    );
-
-    sv_kinetic_energy!(
-        reset_energy,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
     );
 
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE, fighter.module_accessor);

@@ -3,6 +3,15 @@ use super::*;
 unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 9.0 / 11.0);
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        sv_kinetic_energy!(
+            set_speed_mul,
+            agent,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            1.5
+        );
+    }
     frame(agent.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
@@ -52,7 +61,6 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
-        macros::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
     frame(agent.lua_state_agent, 34.0);

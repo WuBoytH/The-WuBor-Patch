@@ -2,6 +2,12 @@ use super::*;
 
 unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
+    sv_kinetic_energy!(
+        set_speed_mul,
+        agent,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        1.5
+    );
     macros::FT_MOTION_RATE(agent, 9.0 / 3.0);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -15,6 +21,12 @@ unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(agent.module_accessor);
+        sv_kinetic_energy!(
+            set_speed_mul,
+            agent,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            1.0
+        );
     }
 }
 

@@ -8,15 +8,17 @@ unsafe extern "C" fn game_superspecial(agent: &mut L2CAgentBase) {
         dolly_check_super_special_pre(agent.module_accessor, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 4.0, 4.0);
 
-        macros::SLOW_OPPONENT(agent, 30.0, 30.0);
-        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+        // macros::SLOW_OPPONENT(agent, 30.0, 30.0);
+        // HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
     }
-    macros::FT_MOTION_RATE(agent, 30.0 / 4.0);
-    frame(agent.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(agent, 18.0 / 10.0);
+    // frame(agent.lua_state_agent, 4.0);
+    // macros::FT_MOTION_RATE(agent, 1.0);
+    // if macros::is_excute(agent) {
+    //     HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+    // }
+    frame(agent.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(agent, 1.0);
-    if macros::is_excute(agent) {
-        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-    }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DOLLY_GENERATE_ARTICLE_BURST, false, -1);
@@ -55,7 +57,7 @@ unsafe extern "C" fn effect_superspecial(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_superspecial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_super_kof"));
-        macros::PLAY_SEQUENCE(agent, Hash40::new("seq_dolly_rnd_special_ss01"));
+        macros::PLAY_SE(agent, Hash40::new("vc_dolly_superspecial01_01"));
         macros::PLAY_SE(agent, Hash40::new("se_dolly_superspecial01_01"));
     }
     frame(agent.lua_state_agent, 12.0);
@@ -73,26 +75,24 @@ unsafe extern "C" fn game_superspecial2start(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(agent.module_accessor, -100.0, 200.0, vars::dolly::instance::float::GO_METER);
         dolly_check_super_special_pre(agent.module_accessor, 0);
-        // damage!(agent, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
-        // MotionModule::set_rate(agent.module_accessor, 2.0);
+        damage!(agent, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
 
-        macros::SLOW_OPPONENT(agent, 20.0, 20.0);
-        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+        // macros::SLOW_OPPONENT(agent, 20.0, 20.0);
+        // HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
     }
-    macros::FT_MOTION_RATE(agent, 20.0 / 8.0);
-    frame(agent.lua_state_agent, 8.0);
+    macros::FT_MOTION_RATE(agent, 10.0 / 12.0);
+    frame(agent.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 20.0);
-    macros::FT_MOTION_RATE(agent, 13.0 / 10.0);
     if macros::is_excute(agent) {
-        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+        // HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 45, 100, 100, 30, 6.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(7.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         AttackModule::set_no_dead_all(agent.module_accessor, true, false);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 45, 100, 100, 30, 6.0, 0.0, 8.0, 8.0, Some(0.0), Some(8.0), Some(7.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DOLLY_GENERATE_ARTICLE_FIRE, false, -1);
     }
     frame(agent.lua_state_agent, 30.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
+    // macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
@@ -142,6 +142,9 @@ unsafe extern "C" fn sound_superspecial2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_superspecial02_03"));
+    }
+    frame(agent.lua_state_agent, 40.0);
+    if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_dolly_superspecial02_miss"));
     }
 }

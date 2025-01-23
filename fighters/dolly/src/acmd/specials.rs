@@ -16,23 +16,12 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
             MotionModule::set_rate(agent.module_accessor, 10.0 / 14.0);
         }
     }
-    frame(agent.lua_state_agent, 12.0);
-    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-            VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
-        }
-    }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT) {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-            if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-                MotionModule::set_rate(agent.module_accessor, 1.0);
-            }
-            else {
-                MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
-            }
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            MotionModule::set_rate(agent.module_accessor, 1.0);
         }
         else {
             MotionModule::set_rate(agent.module_accessor, 1.5);
@@ -98,26 +87,39 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
             MotionModule::set_rate(agent.module_accessor, 10.0 / 14.0);
         }
     }
-    frame(agent.lua_state_agent, 12.0);
-    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-            VarModule::on_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT);
-        }
-    }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_FEINT) {
-            WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
-            if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-                MotionModule::set_rate(agent.module_accessor, 1.0);
-            }
-            else {
-                MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
+        if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            MotionModule::set_rate(agent.module_accessor, 1.0);
+        }
+        else {
+            MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
+        }
+    }
+}
+
+unsafe extern "C" fn game_specialsfstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 5.0 / 7.0);
+    }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 1.0);
+        VarModule::off_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_F_CHECK_FEINT);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    if !VarModule::is_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_F_FEINT) {
+        if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(agent) {
+                MotionModule::set_rate(agent.module_accessor, 1.3);
             }
         }
         else {
-            KineticModule::add_speed(agent.module_accessor, &Vector3f {x: 0.0, y: 1.2, z: 0.0});
-            MotionModule::set_rate(agent.module_accessor, 1.5);
+            if macros::is_excute(agent) {
+                MotionModule::set_rate(agent.module_accessor, 0.75);
+            }
         }
     }
 }
@@ -189,6 +191,63 @@ unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
             let output = dolly_calc_special_cancel(agent, 12.0, 52);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 40, 78, 0, output.bkb, 4.8, 0.0, 11.0, 14.0, Some(0.0), Some(11.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 20, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         }
+    }
+}
+
+unsafe extern "C" fn game_specialffeint(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 1.0);
+        VarModule::off_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_F_CHECK_FEINT);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 0.75);
+    }
+}
+
+unsafe extern "C" fn effect_specialffeint(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(agent) {
+            macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 13, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::EFFECT(agent, Hash40::new("dolly_drive_flash"), Hash40::new("top"), 10, 12, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+            macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+        }
+    }
+    frame(agent.lua_state_agent, 8.0);
+    if macros::is_excute(agent) {
+        macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+    }
+}
+
+unsafe extern "C" fn sound_specialffeint(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_dolly_command_success"));
+        }
+    }
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_special_sf01"));
+    }
+}
+
+unsafe extern "C" fn expression_specialffeint(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

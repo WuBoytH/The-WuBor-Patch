@@ -298,11 +298,10 @@ pub mod dolly {
 
             pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
 
-            pub const SPECIAL_N_FEINT : i32 = 0x1150;
+            pub const SPECIAL_F_CHECK_FEINT : i32 = 0x1150;
+            pub const SPECIAL_F_FEINT : i32 = 0x1151;
 
-            pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1150;
-            pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1151;
-            pub const SPECIAL_LW_BREAK : i32 = 0x1152;
+            pub const SPECIAL_LW_BREAK : i32 = 0x1150;
         }
         pub mod int {
             pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;
@@ -311,6 +310,7 @@ pub mod dolly {
         pub const ATTACK_LW32 : i32 = 0x203;
         pub const ATTACK_DASH_COMMAND : i32 = 0x204;
         pub const SPECIAL_N_COMMAND : i32 = 0x205;
+        pub const SPECIAL_LW_BREAKING : i32 = 0x206;
     }
 }
 

@@ -198,6 +198,7 @@ pub mod guard {
         pub const JUST_SHIELD_COUNT : i32 = 0x1052;
 
         pub const DAMAGE_STOP_ESCAPE_STATUS : i32 = 0x1053;
+        pub const JUST_SHIELD_XLU_COUNT : i32 = 0x1054;
     }
 }
 

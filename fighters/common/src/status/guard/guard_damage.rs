@@ -311,6 +311,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_ESCAPE_FRAME);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        VarModule::set_int(fighter.module_accessor, vars::guard::int::JUST_SHIELD_XLU_COUNT, 2);
         // let just_shield_precede_extension = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("just_shield_precede_extension"));
         // ControlModule::set_command_life_extend(fighter.module_accessor, just_shield_precede_extension as u8);
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_JUST_SHIELD);
@@ -378,6 +379,16 @@ unsafe extern "C" fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1
             ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         }
     }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            if VarModule::countdown_int(fighter.module_accessor, vars::guard::int::JUST_SHIELD_XLU_COUNT, 0) {
+                HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+            }
+        }
+    }
+
     if !WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME, 0) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
             CancelModule::enable_cancel(fighter.module_accessor);
@@ -391,10 +402,6 @@ unsafe extern "C" fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1
             }
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
         }
-        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-        //     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-        // }
         EffectModule::req_on_joint(
             fighter.module_accessor,
             Hash40::new("sys_windwave"),
@@ -608,13 +615,6 @@ unsafe extern "C" fn fighterstatusuniqprocessguarddamage_leave_stop(fighter: &mu
             // }
         }
 
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-            // Global 10 frames of intangibility after parrying something
-            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-            HitModule::set_xlu_frame_global(fighter.module_accessor, 10, 0);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-        }
-
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD_SLOW_WHOLE) {
             let frame = SlowModule::whole_frame(fighter.module_accessor);
             if frame > 0 {
@@ -638,9 +638,12 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighte
     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            // Global 6 frames of intangibility after parrying something
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 6, 0);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
         }
+
         EffectModule::remove_common(fighter.module_accessor, Hash40::new("just_shield"));
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {

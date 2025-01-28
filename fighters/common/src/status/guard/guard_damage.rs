@@ -445,7 +445,7 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
         }
         else {
             // Guard Cancel Actions
-            if !fighter.global_table[IS_STOP].get_bool() {
+            if !fighter.global_table[IS_STOP].get_bool() && fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
                 // Guard Cancel Taunt
                 let cat2 = fighter.global_table[CMD_CAT2].get_i32();
                 if cat2 & (
@@ -466,7 +466,10 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
                     // Guard Cancel Attack
-                    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY != 0
+                    if fighter.global_table[CMD_CAT1].get_i32() & (
+                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
+                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S
+                    ) != 0
                     && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
                         fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
                         return 0.into();

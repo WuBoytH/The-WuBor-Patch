@@ -12,11 +12,6 @@ pub mod passive {
     pub const invalid_passive_reaction : f32 = 45.0;
 }
 
-pub mod jump {
-    pub const special_jump_control_mul : f32 = 0.5;
-    pub const super_jump_speed_x_mul : f32 = 0.8;
-}
-
 pub mod damage {
     pub const damage_speed_up_speed_min : f32 = 3.5;
     pub const damage_speed_up_speed_max : f32 = 6.0;

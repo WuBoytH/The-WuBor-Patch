@@ -18,9 +18,16 @@ use {
     },
     wubor_utils::controls::*,
     custom_var::*,
-    wubor_utils::vars,
-    super::super::param
+    wubor_utils::vars
 };
+
+pub mod param {   
+    #[allow(non_upper_case_globals)]
+    pub mod jump {
+        pub const special_jump_control_mul : f32 = 0.5;
+        pub const super_jump_speed_x_mul : f32 = 0.8;
+    }
+}
 
 #[repr(C)]
 pub struct KineticEnergyVTable {

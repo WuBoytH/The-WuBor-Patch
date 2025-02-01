@@ -1,5 +1,14 @@
 use super::*;
 
+pub unsafe extern "C" fn dolly_super_special_end_helper(fighter: &mut L2CFighterCommon, hash: L2CValue) {
+    let param = hash.get_u64();
+    let map_coll_joint = WorkModule::get_param_int64(fighter.module_accessor, param, hash40("map_coll_joint"));
+    let offx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SUPER_SPECIAL_WORK_FLOAT_MAP_COLL_OFFSET_X);
+    let offy = WorkModule::get_float(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SUPER_SPECIAL_WORK_FLOAT_MAP_COLL_OFFSET_Y);
+    let offz = WorkModule::get_float(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SUPER_SPECIAL_WORK_FLOAT_MAP_COLL_OFFSET_Z);
+    GroundModule::set_shape_data_rhombus_modify_node_offset(fighter.module_accessor, Hash40::new_raw(map_coll_joint), &Vector3f{x: offx, y: offy, z: offz});
+}
+
 // mod wait;
 
 // mod walk;
@@ -37,7 +46,8 @@ mod special_hi;
 mod special_lw;
 mod special_lw_breaking;
 
-mod superspecial;
+mod super_special;
+mod super_special2;
 
 mod appeal;
 
@@ -79,7 +89,8 @@ pub fn install(agent: &mut Agent) {
     special_lw::install(agent);
     special_lw_breaking::install(agent);
 
-    superspecial::install(agent);
+    super_special::install(agent);
+    super_special2::install(agent);
 
     appeal::install(agent);
 }

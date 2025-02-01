@@ -23,6 +23,7 @@ mod wario;
 mod weapon;
 mod belmont_cross;
 mod dolly_wave;
+mod dolly_burst;
 mod koopa_breath;
 mod mariod_drcapsule;
 mod ryu_shinkuhadoken;
@@ -53,6 +54,7 @@ pub fn install() {
     weapon::install();
     belmont_cross::install();
     dolly_wave::install();
+    dolly_burst::install();
     koopa_breath::install();
     mariod_drcapsule::install();
     ryu_shinkuhadoken::install();

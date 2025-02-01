@@ -303,9 +303,14 @@ pub mod dolly {
             pub const SPECIAL_F_FEINT : i32 = 0x1151;
 
             pub const SPECIAL_LW_BREAK : i32 = 0x1150;
+
+            pub const SUPER_SPECIAL_TRY_TRIPLE : i32 = 0x1150;
+            pub const SUPER_SPECIAL_CHECK_TRIPLE : i32 = 0x1151;
         }
         pub mod int {
             pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;
+
+            pub const SUPER_SPECIAL_TRIPLE_COUNT : i32 = 0x1150;
         }
 
         pub const ATTACK_LW32 : i32 = 0x203;

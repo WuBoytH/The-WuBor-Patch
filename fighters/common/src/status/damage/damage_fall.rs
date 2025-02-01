@@ -49,7 +49,7 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
     || fighter.check_damage_fall_transition().get_bool() {
         return 0.into();
     }
-    
+
     if fighter.is_enable_passive().get_bool() {
         let tech = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) {
             let trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("ganon_special_s_passive_trigger_frame"));
@@ -57,7 +57,9 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
             fighter.sub_check_passive_button((trigger_frame as f32 * frame_mul).into()).get_bool()
         }
         else {
-            ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+            let passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("passive_trigger_frame")) as f32;
+            let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
+            fighter.sub_check_passive_button((passive_trigger_frame * passive_trigger_frame_mul).into()).get_bool()
         };
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
         && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)

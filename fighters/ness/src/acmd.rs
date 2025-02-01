@@ -3,6 +3,7 @@ use super::*;
 mod dash;
 
 mod normals;
+mod smashes;
 mod catch;
 
 mod escape;
@@ -12,6 +13,7 @@ pub fn install(agent: &mut Agent) {
     dash::install(agent);
 
     normals::install(agent);
+    smashes::install(agent);
     catch::install(agent);
 
     escape::install(agent);

@@ -641,7 +641,6 @@ unsafe extern "C" fn sub_transition_group_check_air_escape(fighter: &mut L2CFigh
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
-    && !MiscModule::is_damage_check(fighter.module_accessor, false)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
         let stick_x = fighter.global_table[STICK_X].get_f32();

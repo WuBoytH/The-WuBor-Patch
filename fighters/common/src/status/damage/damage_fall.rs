@@ -86,39 +86,39 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_set_damage_fall_transition)]
-unsafe extern "C" fn set_damage_fall_transition(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    if !param_1.get_bool() {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION) {
-            return;
-        }
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_WALL_JUMP);
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
-        // WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-        WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION);
-    }
-    else {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION) {
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
-                if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_WORK_INT_NO_TRANSITION_FRAME) > 0 {
-                    return;
-                }
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_WALL_JUMP);
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
-                // WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
-                WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION);
-            }
-        }
-    }
-}
+// #[skyline::hook(replace = L2CFighterCommon_set_damage_fall_transition)]
+// unsafe extern "C" fn set_damage_fall_transition(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+//     if !param_1.get_bool() {
+//         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION) {
+//             return;
+//         }
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_WALL_JUMP);
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
+//         // WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+//         WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
+//         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION);
+//     }
+//     else {
+//         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION) {
+//             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+//                 if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_WORK_INT_NO_TRANSITION_FRAME) > 0 {
+//                     return;
+//                 }
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_WALL_JUMP);
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_JUMP_AERIAL);
+//                 // WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+//                 WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
+//                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FALL_FLAG_TRANSITION);
+//             }
+//         }
+//     }
+// }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
@@ -127,7 +127,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             bind_address_call_status_damagefall,
             status_damagefall,
             status_damagefall_main,
-            set_damage_fall_transition
+            // set_damage_fall_transition
         );
     }
 }

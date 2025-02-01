@@ -166,6 +166,9 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x614b9c).nop();
     let _ = skyline::patching::Patch::in_text(0x614ba0).data(0x1400001Au32);
 
+    // Disables getting airdodge back on hit
+    let _ = skyline::patching::Patch::in_text(0x632530).nop();
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,

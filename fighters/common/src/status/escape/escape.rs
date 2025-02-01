@@ -110,7 +110,7 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
                 );
             }
         }
-        // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
     let status_kind_interrupt = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();

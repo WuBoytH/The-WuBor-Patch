@@ -34,6 +34,8 @@ unsafe extern "C" fn game_attacklw3cancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
+    frame(agent.lua_state_agent, 18.0);
+    MiscModule::calc_motion_rate_from_end_frame(agent, 18.0, -11.0);
 }
 
 pub fn install(agent: &mut Agent) {

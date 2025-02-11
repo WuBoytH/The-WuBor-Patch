@@ -42,6 +42,9 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon
         false,
         false
     );
+
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
+
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_lw3_cancel_main_loop as *const () as _))
 }
 
@@ -90,7 +93,7 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterC
         return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), false.into());
         return 1.into();
     }
     0.into()

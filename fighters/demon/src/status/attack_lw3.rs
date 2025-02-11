@@ -11,18 +11,8 @@ unsafe extern "C" fn demon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     if !StatusModule::is_changing(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
             let mut status = -1;
-            let cat4 = fighter.global_table[CMD_CAT4].get_i32();
             if fighter.sub_check_command_guard().get_bool() {
                 status = *FIGHTER_STATUS_KIND_GUARD_ON;
-            }
-            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3;
-            }
-            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_2 != 0 {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_2;
-            }
-            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1;
             }
             if status != -1 {
                 WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
@@ -63,11 +53,14 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterC
         if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
             status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3;
         }
-        else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_2 != 0 {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_2;
-        }
-        else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
             status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1;
+        }
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6;
+        }
+        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_9 != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2;
         }
         if status != -1 {
             WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);

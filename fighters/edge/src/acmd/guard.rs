@@ -7,6 +7,8 @@ unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+        let hold_max = WorkModule::get_param_int(agent.module_accessor, hash40("param_special_s"), hash40("hold_max"));
+        WorkModule::set_int(agent.module_accessor, hold_max * 2, *FIGHTER_EDGE_STATUS_SPECIAL_S_INT_HOLD_FRAME);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_EDGE_GENERATE_ARTICLE_FLARE1, false, -1);
     }
 }

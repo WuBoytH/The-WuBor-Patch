@@ -341,6 +341,14 @@ pub mod edge {
     }
 }
 
+pub mod edge_flare1 {
+    pub mod instance {
+        pub mod flag {
+            pub const IS_GUARD_CANCEL : i32 = 0x0100;
+        }
+    }
+}
+
 pub mod element {
     pub mod status {
         pub mod flag {

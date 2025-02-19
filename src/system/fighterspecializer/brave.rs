@@ -32,61 +32,112 @@ unsafe fn set_command_for_slot(object: &mut BattleObject, slot: usize, id: i32) 
     *(*(object as *mut _ as *const u64).add(0xd8 / 8) as *mut u8).add(slot) = id as u8;
 }
 
-// [Command ID List]
-// 0x0 - Heal
-// 0x1 - Sizz
-// 0x2 - Sizzle
-// 0x3 - Bang
-// 0x4 - Kaboom
-// 0x5 - Whack
-// 0x6 - Thwack
-// 0x7 - Magic Burst
-// 0x8 - Kamikazee
-// 0x9 - Kaclang
-// 0xA - Acceleratle
-// 0xB - Oomph
-// 0xC - Bounce
-// 0xD - Snooze
-// 0xE - Hocus Pocus
-// 0xF - Zoom
-// 0x10 - Flame Slash
-// 0x11 - Kacrackle Slash
-// 0x12 - Metal Slash
-// 0x13 - Hatchet Man
-// 0x14 - Psyche Up
+#[allow(dead_code)]
+#[derive(PartialEq, Clone, Copy)]
+pub enum BraveSpellKind {
+    HEAL = 0,
+    SIZZ,
+    SIZZLE,
+    BANG,
+    KABOOM,
+    WHACK,
+    THWACK,
+    MAGICBURST,
+    KAMIKAZEE,
+    KACLANG,
+    ACCELERATTLE,
+    OOMPH,
+    BOUNCE,
+    SNOOZE,
+    HOCUSPOCUS,
+    ZOOM,
+    FLAMESLASH,
+    KACRACKLESLASH,
+    METALSLASH,
+    HATCHETMAN,
+    PSYCHEUP
+}
+
+impl BraveSpellKind {
+    fn from_i32(value: i32) -> BraveSpellKind {
+        match value {
+            0 => BraveSpellKind::HEAL,
+            1 => BraveSpellKind::SIZZ,
+            2 => BraveSpellKind::SIZZLE,
+            3 => BraveSpellKind::BANG,
+            4 => BraveSpellKind::KABOOM,
+            5 => BraveSpellKind::WHACK,
+            6 => BraveSpellKind::THWACK,
+            7 => BraveSpellKind::MAGICBURST,
+            8 => BraveSpellKind::KAMIKAZEE,
+            9 => BraveSpellKind::KACLANG,
+            10 => BraveSpellKind::ACCELERATTLE,
+            11 => BraveSpellKind::OOMPH,
+            12 => BraveSpellKind::BOUNCE,
+            13 => BraveSpellKind::SNOOZE,
+            14 => BraveSpellKind::HOCUSPOCUS,
+            15 => BraveSpellKind::ZOOM,
+            16 => BraveSpellKind::FLAMESLASH,
+            17 => BraveSpellKind::KACRACKLESLASH,
+            18 => BraveSpellKind::METALSLASH,
+            19 => BraveSpellKind::HATCHETMAN,
+            20 => BraveSpellKind::PSYCHEUP,
+            _ => panic!("Unknown BraveSpellKind: {}", value),
+        }
+    }
+}
+
+pub unsafe fn check_linked_spells(spell_kind: i32, current_spells_mask: i32) -> Option<i32> {
+    let mut mask = current_spells_mask;
+    match BraveSpellKind::from_i32(spell_kind) {
+        BraveSpellKind::SIZZ => mask |= 1 << BraveSpellKind::SIZZLE as i32,
+        BraveSpellKind::SIZZLE => mask |= 1 << BraveSpellKind::SIZZ as i32,
+        BraveSpellKind::BANG => mask |= 1 << BraveSpellKind::KABOOM as i32,
+        BraveSpellKind::KABOOM => mask |= 1 << BraveSpellKind::BANG as i32,
+        BraveSpellKind::WHACK => mask |= 1 << BraveSpellKind::THWACK as i32,
+        BraveSpellKind::THWACK => mask |= 1 << BraveSpellKind::WHACK as i32,
+        BraveSpellKind::ACCELERATTLE => mask |= 1 << BraveSpellKind::OOMPH as i32,
+        BraveSpellKind::OOMPH => mask |= 1 << BraveSpellKind::ACCELERATTLE as i32,
+        BraveSpellKind::FLAMESLASH => mask |= 1 << BraveSpellKind::KACRACKLESLASH as i32,
+        BraveSpellKind::KACRACKLESLASH => mask |= 1 << BraveSpellKind::FLAMESLASH as i32,
+        _v => return None
+    }
+    Some(mask)
+}
+
 pub unsafe fn roll_spell(mask: i32, current_spells_mask: i32) -> i32 {
     let spell_list_full = [
-        (0x0, 10),
-        (0x1, 20),
-        (0x2, 15),
-        (0x3, 20),
-        (0x4, 10),
-        (0x5, 7),
-        (0x6, 3),
-        (0x7, 5),
-        (0x8, 1),
-        (0x9, 4),
-        (0xA, 15),
-        (0xB, 15),
-        (0xC, 20),
-        (0xD, 5),
-        (0xF, 10),
-        (0x10, 10),
-        (0x11, 10),
-        (0x12, 10),
-        (0x13, 5),
-        (0x14, 5)
+        (BraveSpellKind::HEAL, 10),
+        (BraveSpellKind::SIZZ, 20),
+        (BraveSpellKind::SIZZLE, 15),
+        (BraveSpellKind::BANG, 20),
+        (BraveSpellKind::KABOOM, 10),
+        (BraveSpellKind::WHACK, 7),
+        (BraveSpellKind::THWACK, 3),
+        (BraveSpellKind::MAGICBURST, 5),
+        (BraveSpellKind::KAMIKAZEE, 1),
+        (BraveSpellKind::KACLANG, 4),
+        (BraveSpellKind::ACCELERATTLE, 15),
+        (BraveSpellKind::OOMPH, 15),
+        (BraveSpellKind::BOUNCE, 20),
+        (BraveSpellKind::SNOOZE, 5),
+        (BraveSpellKind::ZOOM, 10),
+        (BraveSpellKind::FLAMESLASH, 10),
+        (BraveSpellKind::KACRACKLESLASH, 10),
+        (BraveSpellKind::METALSLASH, 10),
+        (BraveSpellKind::HATCHETMAN, 5),
+        (BraveSpellKind::PSYCHEUP, 5)
     ];
     let mut rand_max = 0;
     let mut spell_list = vec![];
     let mut hocus_chance = 0;
     let ignore_hocus = sv_math::rand(hash40("object"), 100) < 50;
     for spell in spell_list_full.iter() {
-        if (mask | current_spells_mask) & (1 << spell.0) == 0 {
+        if (mask | current_spells_mask) & (1 << spell.0 as i32) == 0 {
             rand_max += spell.1;
             spell_list.push(*spell);
         }
-        else if mask & (1 << spell.0) != 0 && !ignore_hocus {
+        else if mask & (1 << spell.0 as i32) != 0 && !ignore_hocus && check_linked_spells(spell.0 as i32, mask).is_none() {
             hocus_chance += spell.1;
         }
     }
@@ -95,11 +146,11 @@ pub unsafe fn roll_spell(mask: i32, current_spells_mask: i32) -> i32 {
     for spell in spell_list.iter() {
         // println!("Roll {} vs Spell {:#x} cost {}", roll, spell.0, spell.1);
         if roll < spell.1 {
-            return spell.0;
+            return spell.0 as i32;
         }
         roll -= spell.1;
     }
-    0xE
+    BraveSpellKind::HOCUSPOCUS as i32
 }
 
 #[skyline::hook(replace = FighterSpecializer_Brave::special_lw_open_command)]
@@ -121,7 +172,6 @@ unsafe fn special_lw_open_command_hook(object: &mut BattleObject) {
 
     let mut rolls = vec![];
     // println!("Getting saved spell list...");
-    let mask = VarModule::get_int(object.module_accessor, brave::instance::int::USED_SPELL_MASK);
     let mut current_spells = 0;
     for x in 0..4 {
         let mut spell = VarModule::get_int(object.module_accessor, brave::instance::int::SPELL_SLOT_1 + x);
@@ -136,10 +186,14 @@ unsafe fn special_lw_open_command_hook(object: &mut BattleObject) {
         rolls.push(spell);
     }
     for x in 0..4 {
+        let mask = VarModule::get_int(object.module_accessor, brave::instance::int::USED_SPELL_MASK);
         let mut spell = rolls[x];
         if spell == -1 {
             spell = roll_spell(mask, current_spells);
             current_spells |= 1 << spell;
+            if let Some(new_mask) = check_linked_spells(spell, mask) {
+                VarModule::set_int(object.module_accessor, brave::instance::int::USED_SPELL_MASK, new_mask);
+            }
         }
         rolls[x] = spell;
         set_command_for_slot(object, x as usize, spell);
@@ -156,7 +210,7 @@ unsafe fn special_lw_open_command_hook(object: &mut BattleObject) {
 
 #[skyline::hook(replace = FighterSpecializer_Brave::get_special_lw_command_sp_cost)]
 unsafe fn get_special_lw_command_sp_cost_hook(module_accessor: *mut BattleObjectModuleAccessor, command: i32, something: bool) -> f32 {
-    if command == 0x8 {
+    if command == BraveSpellKind::KAMIKAZEE as i32 {
         let mut mp = WorkModule::get_float(module_accessor, 0x53);
         if mp <= 1.0 {
             mp = 1.0;

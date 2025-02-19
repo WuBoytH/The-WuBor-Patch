@@ -98,7 +98,7 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
     }
     else {
         attack_frame = 14.0;
-        cancel_frame = 28.0;
+        cancel_frame = 14.0;
     }
     AirDashParams{attack_frame, cancel_frame}
 }

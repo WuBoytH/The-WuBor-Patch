@@ -96,6 +96,8 @@ pub unsafe fn check_linked_spells(spell_kind: i32, current_spells_mask: i32) -> 
         BraveSpellKind::KABOOM => mask |= 1 << BraveSpellKind::BANG as i32,
         BraveSpellKind::WHACK => mask |= 1 << BraveSpellKind::THWACK as i32,
         BraveSpellKind::THWACK => mask |= 1 << BraveSpellKind::WHACK as i32,
+        BraveSpellKind::MAGICBURST => mask |= 1 << BraveSpellKind::KAMIKAZEE as i32,
+        BraveSpellKind::KAMIKAZEE => mask |= 1 << BraveSpellKind::MAGICBURST as i32,
         BraveSpellKind::ACCELERATTLE => mask |= 1 << BraveSpellKind::OOMPH as i32,
         BraveSpellKind::OOMPH => mask |= 1 << BraveSpellKind::ACCELERATTLE as i32,
         BraveSpellKind::FLAMESLASH => mask |= 1 << BraveSpellKind::KACRACKLESLASH as i32,

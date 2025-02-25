@@ -130,11 +130,11 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
             if hit_normal_frame <= 0.0 {
                 hit_normal_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("escape_b"));
             }
-            hit_normal_frame -= 6.0;
+            hit_normal_frame -= 8.0;
         }
         else {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_penalty_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_penalty_hit_normal_frame"));
+            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_xlu_frame"));
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_normal_frame"));
         }
         if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("escape_b")) {
             hit_xlu_frame -= 1.0;
@@ -147,11 +147,11 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
             if hit_normal_frame <= 0.0 {
                 hit_normal_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("escape_f"));
             }
-            hit_normal_frame -= 6.0;
+            hit_normal_frame -= 8.0;
         }
         else {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_penalty_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_penalty_hit_normal_frame"));
+            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_xlu_frame"));
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_normal_frame"));
         }
         if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("escape_f")) {
             hit_xlu_frame -= 1.0;

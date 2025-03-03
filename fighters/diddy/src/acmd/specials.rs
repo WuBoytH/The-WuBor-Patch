@@ -20,7 +20,7 @@ unsafe extern "C" fn game_specialairsjump(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_HI_FLAG_BOBY_ROLL_START);
         GroundModule::select_cliff_hangdata(agent.module_accessor, *FIGHTER_DIDDY_CLIFF_HANG_DATA_SPECIAL_HI as u32);
     }

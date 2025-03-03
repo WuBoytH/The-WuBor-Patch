@@ -78,7 +78,21 @@ unsafe extern "C" fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValu
     ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     fighter.sub_status_CatchDash();
     GrabModule::set_rebound(fighter.module_accessor, true);
+
+    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
+
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_CatchDash_Main as *const () as _))
+}
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_CatchDash)]
+unsafe extern "C" fn bind_address_call_status_end_catchdash(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_CatchDash()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_CatchDash)]
+unsafe extern "C" fn status_end_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
+    0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchTurn)]
@@ -222,6 +236,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_pre_catchdash_common,
             status_catch,
             status_catchdash,
+            bind_address_call_status_end_catchdash,
+            status_end_catchdash,
             status_catchturn,
             status_pre_catchdashpull,
             catchcont,

@@ -873,6 +873,22 @@ unsafe extern "C" fn effect_specialairlwstart(agent: &mut L2CAgentBase) {
     }
 }
 
+
+unsafe extern "C" fn sound_speciallwstart(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 6.0);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("vc_dolly_special_l01"));
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("vc_dolly_special_l02"));
+        }
+    }
+}
+
+
 unsafe extern "C" fn expression_speciallwstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -944,6 +960,13 @@ unsafe extern "C" fn game_specialairlwrisew(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn sound_specialairlwrisew(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_special_l01"));
+    }
+}
+
 unsafe extern "C" fn game_specialairlwrise(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -986,6 +1009,20 @@ unsafe extern "C" fn game_specialairlwrise(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.3, y: -1.5, z: 0.0});
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+    }
+}
+
+unsafe extern "C" fn sound_specialairlwrise(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_dolly_special_l04"));
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_dolly_special_l01"));
+        }
     }
 }
 
@@ -1325,10 +1362,12 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_speciallwstart", game_speciallwstart, Priority::Low);
     agent.acmd("effect_speciallwstart", effect_speciallwstart, Priority::Low);
+    agent.acmd("sound_speciallwstart", sound_speciallwstart, Priority::Low);
     agent.acmd("expression_speciallwstart", expression_speciallwstart, Priority::Low);
 
     agent.acmd("game_specialairlwstart", game_speciallwstart, Priority::Low);
     agent.acmd("effect_specialairlwstart", effect_specialairlwstart, Priority::Low);
+    agent.acmd("sound_specialairlwstart", sound_speciallwstart, Priority::Low);
     agent.acmd("expression_specialairlwstart", expression_speciallwstart, Priority::Low);
 
     agent.acmd("game_specialairlwrisew", game_specialairlwrisew, Priority::Low);

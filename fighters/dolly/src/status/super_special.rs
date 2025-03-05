@@ -99,9 +99,9 @@ unsafe extern "C" fn dolly_super_special_main_loop(fighter: &mut L2CFighterCommo
                 false
             );
 
-            VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT);
+            // VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT);
 
-            WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+            // WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
         }
     }
 

@@ -996,7 +996,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 1.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: -0.3, z: 0.0 });
         }
@@ -1007,35 +1007,35 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
-        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 11.0, 80);
+                let output = dolly_calc_special_cancel(agent, 12.0, 80);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 70, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
         else {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 12.0, 80);
+                let output = dolly_calc_special_cancel(agent, 11.0, 80);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 65, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
     }
     else {
-        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 11.0, 80);
+                let output = dolly_calc_special_cancel(agent, 12.0, 80);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 75, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             }
         }
         else {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 12.0, 80);
+                let output = dolly_calc_special_cancel(agent, 11.0, 80);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 70, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
     }
     frame(agent.lua_state_agent, 2.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &vars::ZERO_VECTOR);
         }
@@ -1046,7 +1046,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 4.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1058,15 +1058,15 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 5.0);
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
-        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+        if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 14.0, 60);
+                let output = dolly_calc_special_cancel(agent, 12.0, 60);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 80, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
         else {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 14.0, 60);
+                let output = dolly_calc_special_cancel(agent, 11.0, 60);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 80, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
@@ -1074,18 +1074,18 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     else {
         if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 14.0, 30);
+                let output = dolly_calc_special_cancel(agent, 12.0, 30);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 310, 95, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             }
         }
         else {
             if macros::is_excute(agent) {
-                let output = dolly_calc_special_cancel(agent, 14.0, 60);
+                let output = dolly_calc_special_cancel(agent, 11.0, 60);
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), output.dmg, 50, 80, 0, output.bkb, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
     }
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             MotionModule::set_rate(agent.module_accessor, 1.2);
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
@@ -1098,7 +1098,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 6.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1109,7 +1109,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 7.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1121,7 +1121,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 8.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1133,7 +1133,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 9.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1145,7 +1145,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 10.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1157,7 +1157,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 11.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
@@ -1169,7 +1169,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 12.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &vars::ZERO_VECTOR);
         }
@@ -1181,7 +1181,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 13.0);
-    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
+    if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &vars::ZERO_VECTOR);
         }

@@ -29,6 +29,36 @@ unsafe extern "C" fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValu
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_EscapeAir_Main as *const () as _))
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common)]
+unsafe extern "C" fn sub_escape_air_common(fighter: &mut L2CFighterCommon) {
+    // ControlModule::reset_trigger(fighter.module_accessor);
+
+    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
+    WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+    }
+    else {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+    }
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL);
+
+    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_NO_WATER_INOUT_FRAME);
+
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_escape_air_uniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_escape_air_uniq as *const () as _));
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
 unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -121,75 +151,76 @@ pub unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFigh
         return 1.into();
     }
 
-    // if !fighter.is_enable_passive().get_bool() {
-    //     return 0.into();
-    // }
+    if !fighter.is_enable_passive().get_bool() {
+        return 0.into();
+    }
 
-    // let air_escape_passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame"));
-    // let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
-    // let passive_frame = air_escape_passive_trigger_frame as f32 * passive_trigger_frame_mul;
+    let air_escape_passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame"));
+    let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
+    let passive_frame = air_escape_passive_trigger_frame as f32 * passive_trigger_frame_mul;
 
-    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
-    //     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
-    //     && {
-    //         let stick_x = fighter.global_table[STICK_X].get_f32();
-    //         let passive_fb_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
-    //         passive_fb_cont_value <= stick_x.abs()
-    //     }
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
-    //         return 1.into();
-    //     }
+    let passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("passive_trigger_frame")) as f32;
+    let tech = fighter.sub_check_passive_button_for_damage((passive_trigger_frame * passive_trigger_frame_mul).into()).get_bool();
+
+    if escape_frame as f32 >= passive_frame
+    || !tech {
+        return 0.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
+        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
+        && {
+            let stick_x = fighter.global_table[STICK_X].get_f32();
+            let passive_fb_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
+            passive_fb_cont_value <= stick_x.abs()
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
+            return 1.into();
+        }
         
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
-    //     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE.into(), true.into());
-    //         return 1.into();
-    //     }
-    // }
-    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR) {
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON)
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32)
-    //     && {
-    //         let jump_trigger_count = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP as u8);
-    //         ((jump_trigger_count & 0xff) as f32) < passive_frame
-    //     }
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP.into(), true.into());
-    //         return 1.into();
-    //     }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
+        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE.into(), true.into());
+            return 1.into();
+        }
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON)
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32)
+        && {
+            let jump_trigger_count = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP as u8);
+            ((jump_trigger_count & 0xff) as f32) < passive_frame
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP.into(), true.into());
+            return 1.into();
+        }
 
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP)
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32)
-    //     && {
-    //         let stick_y = fighter.global_table[STICK_Y].get_f32();
-    //         let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-    //         jump_stick_y <= stick_y
-    //     }
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP.into(), true.into());
-    //         return 1.into();
-    //     }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP)
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32)
+        && {
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
+            jump_stick_y <= stick_y
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP.into(), true.into());
+            return 1.into();
+        }
 
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL)
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32)
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL.into(), false.into());
-    //         return 1.into();
-    //     }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL)
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_WALL.into(), false.into());
+            return 1.into();
+        }
 
-    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL)
-    //     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_UP as u32)
-    //     && (escape_frame as f32) < passive_frame {
-    //         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_CEIL.into(), false.into());
-    //         return 1.into();
-    //     }
-    // }
-
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL)
+        && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_UP as u32) {
+            fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_CEIL.into(), false.into());
+            return 1.into();
+        }
+    }
     0.into()
 }
 
@@ -572,6 +603,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_escapeair,
+            sub_escape_air_common,
             sub_escape_air_common_main,
             sub_escape_air_common_strans_main,
             sub_escape_air_uniq,

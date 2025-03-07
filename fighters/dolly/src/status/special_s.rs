@@ -180,6 +180,110 @@ unsafe extern "C" fn dolly_special_b_attack_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
+unsafe extern "C" fn special_f_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
+        ) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    0.into()
+}
+
+unsafe extern "C" fn dolly_special_f_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_f_end") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_f_end") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
+
+    let func = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1b620).unwrap();
+    let func2 = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1ad80).unwrap();
+    let func3 = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1aee0).unwrap();
+    let func : fn(&mut L2CFighterCommon, L2CValue, L2CValue, L2CValue, L2CValue, L2CValue, L2CValue) = std::mem::transmute(func);
+    let func2 : fn(&mut smash::lib::L2CAgent) -> L2CValue = std::mem::transmute(func2);
+    let func3 : fn(&mut smash::lib::L2CAgent) -> L2CValue = std::mem::transmute(func3);
+    func(
+        fighter,
+        true.into(),
+        true.into(),
+        true.into(),
+        L2CValue::Ptr(func2 as *const () as _),
+        L2CValue::Ptr(func3 as *const () as _),
+        true.into()
+    );
+
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_special_f_end_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn dolly_special_f_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 0.into();
+    }
+
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
+    }
+
+    if MotionModule::is_end(fighter.module_accessor) {
+        let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            FIGHTER_STATUS_KIND_WAIT
+        }
+        else {
+            FIGHTER_STATUS_KIND_FALL
+        };
+        fighter.change_status(status.into(), false.into());
+        return 0.into();
+    }
+
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        let func = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1b620).unwrap();
+        let func2 = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1ad80).unwrap();
+        let func3 = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1aee0).unwrap();
+        let func : fn(&mut L2CFighterCommon, L2CValue, L2CValue, L2CValue, L2CValue, L2CValue, L2CValue) = std::mem::transmute(func);
+        let func2 : fn(&mut smash::lib::L2CAgent) -> L2CValue = std::mem::transmute(func2);
+        let func3 : fn(&mut smash::lib::L2CAgent) -> L2CValue = std::mem::transmute(func3);
+        func(
+            fighter,
+            false.into(),
+            true.into(),
+            true.into(),
+            L2CValue::Ptr(func2 as *const () as _),
+            L2CValue::Ptr(func3 as *const () as _),
+            true.into()
+        );
+    }
+
+    let attack_stop_cliff_offset_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("attack_stop_cliff_offset_y"));
+    let func = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1a3e0).unwrap();
+    let func : fn(&mut L2CFighterCommon, L2CValue, L2CValue, L2CValue) = std::mem::transmute(func);
+    func(fighter, false.into(), 0.into(), attack_stop_cliff_offset_y.into());
+
+    0.into()
+}
+
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, special_s_pre);
     agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND, special_s_pre);
@@ -196,4 +300,7 @@ pub fn install(agent: &mut Agent) {
     // agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND, dolly_special_s_end);
 
     agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_ATTACK, dolly_special_b_attack_end);
+
+    agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, special_f_end_pre);
+    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END, dolly_special_f_end_main);
 }

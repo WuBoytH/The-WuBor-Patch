@@ -409,7 +409,7 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
                 escape_air_slide_speed * dir_x * airdash_mul,
-                escape_air_slide_speed * dir_y * airdash_mul * 0.65
+                escape_air_slide_speed * dir_y * airdash_mul * 0.75
             );
             let brake_x = dir_x.abs() * 0.15;
             let brake_y: f32 = if dir_y < 0.0 {

@@ -5,11 +5,15 @@ unsafe extern "C" fn start_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let speed_x_max = WorkModule::get_param_float(weapon.module_accessor, hash40("param_poisonbreath"), hash40("speed_x_max"));
     let lr = PostureModule::lr(weapon.module_accessor);
 
+    let charge_ratio = WorkModule::get_float(weapon.module_accessor, *WEAPON_PACKUN_POISONBREATH_INSTANCE_WORK_ID_FLOAT_CHARGE_RATIO);
+
+    let speed = speed_x + ((speed_x_max - speed_x) * charge_ratio);
+
     sv_kinetic_energy!(
         set_speed,
         weapon,
         WEAPON_PACKUN_POISONBREATH_KINETIC_ENERGY_ID_NORMAL,
-        speed_x * lr,
+        speed * lr,
         0.0
     );
     sv_kinetic_energy!(
@@ -40,8 +44,13 @@ unsafe extern "C" fn start_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
     VarModule::set_int(weapon.module_accessor, vars::packun_poisonbreath::instance::int::INIT_LIFE, init_life);
 
-    WorkModule::set_int(weapon.module_accessor, 300, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    WorkModule::set_int(weapon.module_accessor, 300, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
+    let base_life = 120;
+    let max_life = 240;
+    let charge_ratio = WorkModule::get_float(weapon.module_accessor, *WEAPON_PACKUN_POISONBREATH_INSTANCE_WORK_ID_FLOAT_CHARGE_RATIO);
+
+    let life = base_life + ((max_life - base_life) as f32 * charge_ratio) as i32;
+    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
+    WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
 
     let start_scale_mul = WorkModule::get_param_float(weapon.module_accessor, hash40("param_poisonbreath"), hash40("start_scale_mul"));
     let base_scale = PostureModule::base_scale(weapon.module_accessor);
@@ -69,16 +78,14 @@ unsafe extern "C" fn start_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 unsafe extern "C" fn start_substatus(weapon: &mut L2CWeaponCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        WorkModule::count_down_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE, 0);
+        if WorkModule::count_down_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE, 0) {
+            notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+        }
     }
     0.into()
 }
 
-unsafe extern "C" fn start_fastshift(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE) <= 0 {
-        weapon.change_status(vars::packun_poisonbreath::status::BURST.into(), false.into());
-    }
-
+unsafe extern "C" fn start_fastshift(_weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
@@ -160,7 +167,27 @@ unsafe extern "C" fn shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-unsafe extern "C" fn shoot_init(_weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
+    let speed_x = WorkModule::get_param_float(weapon.module_accessor, hash40("param_poisonbreath"), hash40("speed_x"));
+    let brake_x = WorkModule::get_param_float(weapon.module_accessor, hash40("param_poisonbreath"), hash40("brake_x"));
+    sv_kinetic_energy!(
+        set_stable_speed,
+        weapon,
+        WEAPON_PACKUN_POISONBREATH_KINETIC_ENERGY_ID_NORMAL,
+        speed_x,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_brake,
+        weapon,
+        WEAPON_PACKUN_POISONBREATH_KINETIC_ENERGY_ID_NORMAL,
+        brake_x,
+        0.0
+    );
+
+    KineticModule::enable_energy(weapon.module_accessor, *WEAPON_PACKUN_POISONBREATH_KINETIC_ENERGY_ID_NORMAL);
+    KineticModule::enable_energy(weapon.module_accessor, *WEAPON_PACKUN_POISONBREATH_KINETIC_ENERGY_ID_ENV_WIND);
+
     0.into()
 }
 

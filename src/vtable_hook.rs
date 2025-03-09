@@ -27,6 +27,7 @@ mod dolly_burst;
 mod edge_flare1;
 mod koopa_breath;
 mod mariod_drcapsule;
+mod packun_poisonbreath;
 mod ryu_shinkuhadoken;
 
 pub fn install() {
@@ -59,5 +60,6 @@ pub fn install() {
     edge_flare1::install();
     koopa_breath::install();
     mariod_drcapsule::install();
+    packun_poisonbreath::install();
     ryu_shinkuhadoken::install();
 }

@@ -701,6 +701,17 @@ pub mod packun {
     }
 }
 
+pub mod packun_poisonbreath {
+    pub mod instance {
+        pub mod int {
+            pub const INIT_LIFE : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub const BURST : i32 = 2;
+    }
+}
+
 pub mod palutena {
     pub mod status {
         pub mod float {

@@ -84,8 +84,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     }
     // println!("final shield_stiff_frame: {}", shield_stiff_frame as i32);
     let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
-    if object_id != *BATTLE_OBJECT_ID_INVALID {
-        capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
+    // if object_id != *BATTLE_OBJECT_ID_INVALID {
+        // capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         let mut invalid_capture_frame = shield_stiff_frame;
         // println!("invalid_capture_frame: {}", invalid_capture_frame);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
@@ -93,12 +93,12 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
             // println!("invalid_capture_frame with cancel frame: {}", invalid_capture_frame);
         }
         // invalid_capture_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_ignore_capture_rate"));
-        invalid_capture_frame += param::shield::guard_off_invalid_capture_frame_add as f32;
+        // invalid_capture_frame += param::shield::guard_off_invalid_capture_frame_add as f32;
         // println!("invalid_capture_frame: {}", invalid_capture_frame);
         WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
         WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CAPTURE_FRAME);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CHECK_CATCH);
-    }
+    // }
     WorkModule::set_int(fighter.module_accessor, shield_stiff_frame as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME);
     // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
     //     let shield_setoff_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_setoff_catch_frame"));

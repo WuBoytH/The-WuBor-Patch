@@ -88,8 +88,8 @@ unsafe extern "C" fn burst_on_hit(_vtable: u64, weapon: *mut app::Weapon) -> u64
             return 0;
         }
 
-        let hit_slow_mag = WorkModule::get_param_int(module_accessor, hash40("param_super_special"), hash40("hit_slow_mag"));
-        let hit_slow_frame = WorkModule::get_param_int(module_accessor, hash40("param_super_special"), hash40("hit_slow_frame"));
+        let hit_slow_mag = WorkModule::get_param_int(module_accessor, hash40("param_burst"), hash40("hit_slow_mag"));
+        let hit_slow_frame = WorkModule::get_param_int(module_accessor, hash40("param_burst"), hash40("hit_slow_frame"));
         SlowModule::set(module_accessor, 0, hit_slow_mag, hit_slow_frame, true, 0x50000000);
         WorkModule::on_flag(module_accessor, 0x20000006);
 

@@ -502,7 +502,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
@@ -549,7 +549,7 @@ unsafe extern "C" fn game_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
@@ -728,48 +728,6 @@ unsafe extern "C" fn game_speciallwimpactonshield(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_speciallwreversal(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 0, 0, 80, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-    }
-    wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        AttackModule::clear_all(agent.module_accessor);
-    }
-}
-
-unsafe extern "C" fn effect_speciallwreversal(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.0, 12.0, 6.0, 0.0, 0.0, 0.0, 1.4, true);
-        ryu_saving_aura_handler(agent, 0.3, 0.1, 0.1);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    ryu_saving_aura_remover(agent);
-}
-
-unsafe extern "C" fn sound_speciallwreversal(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_reversal"));
-    }
-    frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("vc_ryu_drive_reversal"));
-    }
-}
-
-unsafe extern "C" fn expression_speciallwreversal(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
-    }
-}
-
 unsafe extern "C" fn game_speciallwrush(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -887,11 +845,6 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_speciallwimpactarmor", effect_speciallwimpactarmor, Priority::Low);
 
     agent.acmd("game_speciallwimpactonshield", game_speciallwimpactonshield, Priority::Low);
-
-    agent.acmd("game_speciallwreversal", game_speciallwreversal, Priority::Low);
-    agent.acmd("effect_speciallwreversal", effect_speciallwreversal, Priority::Low);
-    agent.acmd("sound_speciallwreversal", sound_speciallwreversal, Priority::Low);
-    agent.acmd("expression_speciallwreversal", expression_speciallwreversal, Priority::Low);
 
     agent.acmd("game_speciallwrush", game_speciallwrush, Priority::Low);
     agent.acmd("effect_speciallwrush", effect_speciallwrush, Priority::Low);

@@ -6,7 +6,7 @@ unsafe extern "C" fn pikmin_special_hi_wait_pre(fighter: &mut L2CFighterCommon) 
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_AIR_STOP,
         *GROUND_CORRECT_KIND_AIR as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES), // Was ALWAYS_BOTH_SIDES
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES),
         false,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_PIKMIN_SPECIAL_HI_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_PIKMIN_SPECIAL_HI_INT,

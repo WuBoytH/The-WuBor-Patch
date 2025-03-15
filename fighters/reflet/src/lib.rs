@@ -19,6 +19,8 @@ mod status;
 mod frame;
 mod agent_init;
 
+mod gigafire;
+
 pub fn install() {
     let agent = &mut Agent::new("reflet");
     acmd::install(agent);
@@ -26,4 +28,6 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    gigafire::install();
 }

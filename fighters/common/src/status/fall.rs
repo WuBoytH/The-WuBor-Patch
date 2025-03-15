@@ -19,11 +19,24 @@ unsafe extern "C" fn status_pre_fall(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.status_pre_Fall_main()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Fall)]
+unsafe extern "C" fn bind_address_call_status_end_fall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_Fall()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_Fall)]
+unsafe extern "C" fn status_end_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             bind_address_call_status_pre_fall,
-            status_pre_fall
+            status_pre_fall,
+            bind_address_call_status_end_fall,
+            status_end_fall
         );
     }
 }

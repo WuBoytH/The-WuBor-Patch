@@ -3,6 +3,7 @@ mod brave;
 mod dolly;
 mod eflame;
 mod elight;
+mod gamewatch;
 mod ganon;
 mod gaogaen;
 mod ike;
@@ -22,7 +23,11 @@ mod wario;
 mod weapon;
 mod belmont_cross;
 mod dolly_wave;
+mod dolly_burst;
+mod edge_flare1;
+mod koopa_breath;
 mod mariod_drcapsule;
+mod packun_poisonbreath;
 mod ryu_shinkuhadoken;
 
 pub fn install() {
@@ -31,6 +36,7 @@ pub fn install() {
     dolly::install();
     eflame::install();
     elight::install();
+    gamewatch::install();
     ganon::install();
     gaogaen::install();
     ike::install();
@@ -50,6 +56,10 @@ pub fn install() {
     weapon::install();
     belmont_cross::install();
     dolly_wave::install();
+    dolly_burst::install();
+    edge_flare1::install();
+    koopa_breath::install();
     mariod_drcapsule::install();
+    packun_poisonbreath::install();
     ryu_shinkuhadoken::install();
 }

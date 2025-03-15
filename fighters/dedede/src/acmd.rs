@@ -4,6 +4,8 @@ mod dash;
 
 mod landing;
 
+mod guard;
+
 mod normals;
 mod smashes;
 mod aerials;
@@ -18,6 +20,8 @@ pub fn install(agent: &mut Agent) {
     dash::install(agent);
 
     landing::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     smashes::install(agent);

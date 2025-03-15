@@ -7,7 +7,7 @@ on:
 
 jobs:
   get-version:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4.1.4
       - name: Get Plugin Version
@@ -17,15 +17,16 @@ jobs:
         uses: dante-signal31/rust-app-version@v1.2.0
       - name: Get Branch Name
         id: branch-name
-        uses: tj-actions/branch-names@v7.0.1
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
     outputs:
       version: ${{ steps.plugin-version.outputs.app_version }}
-      branch: ${{ steps.branch-name.outputs.current_branch }}
+      branch: ${{ steps.branch-name.outputs.branch }}
 
   package-main:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: wuboyth/skyline-plugin-builder:latest
     steps:
@@ -55,7 +56,7 @@ jobs:
   package-dev:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container:
       image: wuboyth/skyline-plugin-builder:latest
     steps:
@@ -83,7 +84,7 @@ jobs:
           path: The_WuBor_Patch_Dev.zip
 
   upload-main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [ package-main, get-version ]
     steps:
       - name: Download all artifacts
@@ -109,7 +110,7 @@ jobs:
           files: >
             The_WuBor_Patch/*
   upload-dev:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [ package-dev, get-version ]
     steps:
       # - name: Delete Version Dev Build

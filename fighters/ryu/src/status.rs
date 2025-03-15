@@ -14,7 +14,6 @@ mod landing;
 
 mod guard_on;
 mod guard;
-mod guard_damage;
 
 mod attack;
 
@@ -62,7 +61,6 @@ pub fn install(agent: &mut Agent) {
 
     guard_on::install(agent);
     guard::install(agent);
-    guard_damage::install(agent);
 
     attack::install(agent);
 

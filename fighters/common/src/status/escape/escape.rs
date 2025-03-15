@@ -110,9 +110,10 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
                 );
             }
         }
-        // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
     }
     let status_kind_interrupt = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+    let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     let mut hit_xlu_frame = 0.0;
     let mut hit_normal_frame = 0.0;
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
@@ -123,26 +124,34 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
         }
     }
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_B {
-        if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_normal_frame"));
+        if status_kind == vars::fighter::status::GUARD_CANCEL_ESCAPE_B {
+            hit_xlu_frame = 2.0;
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_cancel_frame"));
+            if hit_normal_frame <= 0.0 {
+                hit_normal_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("escape_b"));
+            }
+            hit_normal_frame -= 8.0;
         }
         else {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_penalty_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_penalty_hit_normal_frame"));
+            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_xlu_frame"));
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_b_hit_normal_frame"));
         }
         if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("escape_b")) {
             hit_xlu_frame -= 1.0;
         }
     }
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_F {
-        if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_normal_frame"));
+        if status_kind == vars::fighter::status::GUARD_CANCEL_ESCAPE_F {
+            hit_xlu_frame = 2.0;
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_cancel_frame"));
+            if hit_normal_frame <= 0.0 {
+                hit_normal_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("escape_f"));
+            }
+            hit_normal_frame -= 8.0;
         }
         else {
-            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_penalty_hit_xlu_frame"));
-            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_penalty_hit_normal_frame"));
+            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_xlu_frame"));
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_f_hit_normal_frame"));
         }
         if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("escape_f")) {
             hit_xlu_frame -= 1.0;
@@ -166,6 +175,27 @@ unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
     }
+
+    if [vars::fighter::status::GUARD_CANCEL_ESCAPE_F, vars::fighter::status::GUARD_CANCEL_ESCAPE_B].contains(&status_kind) {
+        let eff = EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("sys_flash"),
+            Hash40::new("hip"),
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            1.4,
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            false,
+            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            *EFFECT_FLIP_NONE,
+            1
+        ) as u32;
+        EffectModule::set_rgb(fighter.module_accessor, eff, 0.2, 0.2, 0.8);
+
+        SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guard_cancel_roll"), true, false, false, false, enSEType(0));
+    }
+
     WorkModule::set_int(fighter.module_accessor, hit_xlu_frame as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
     WorkModule::set_int(fighter.module_accessor, hit_normal_frame as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
@@ -186,38 +216,38 @@ unsafe extern "C" fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CVa
             return 0.into();
         }
     }
-    if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
-        let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-        && normal_frame == 1 {
-            let cat = fighter.global_table[CMD_CAT1].get_i32();
-            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
-                return 0.into();
-            }
-            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
-                return 0.into();
-            }
-            // if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0 {
-            //     VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
-            //     fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
-            //     return 0.into();
-            // }
-        }
-        // let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
-        // if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
-        //     let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0;
-        //     if !is_catch
-        //     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-        //         return 0.into();
-        //     }
-        // }
-    }
+    // if !VarModule::is_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL) {
+    //     let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
+    //     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    //     && normal_frame == 1 {
+    //         let cat = fighter.global_table[CMD_CAT1].get_i32();
+    //         if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
+    //             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+    //             VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+    //             return 0.into();
+    //         }
+    //         if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
+    //             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+    //             VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //             fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+    //             return 0.into();
+    //         }
+    //         // if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0 {
+    //         //     VarModule::on_flag(fighter.module_accessor, vars::escape::flag::DODGE_CANCEL);
+    //         //     fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+    //         //     return 0.into();
+    //         // }
+    //     }
+    //     // let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
+    //     // if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
+    //     //     let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0;
+    //     //     if !is_catch
+    //     //     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+    //     //         return 0.into();
+    //     //     }
+    //     // }
+    // }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor)
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

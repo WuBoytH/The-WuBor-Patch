@@ -5,6 +5,8 @@ mod look_up;
 mod dash;
 mod jump;
 
+mod guard;
+
 mod normals;
 mod aerials;
 
@@ -23,6 +25,8 @@ pub fn install(agent: &mut Agent) {
 
     dash::install(agent);
     jump::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     aerials::install(agent);

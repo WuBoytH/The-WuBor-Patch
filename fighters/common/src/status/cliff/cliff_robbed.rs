@@ -1,6 +1,6 @@
 use super::*;
 
-pub static CLIFF_ROBBED_FALL_FRAME : f32 = 18.0;
+pub static CLIFF_ROBBED_FALL_FRAME : f32 = 24.0;
 
 #[skyline::hook(replace = L2CFighterCommon_status_CliffRobbed)]
 unsafe extern "C" fn status_cliffrobbed(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -77,7 +77,7 @@ unsafe extern "C" fn status_cliffrobbed(fighter: &mut L2CFighterCommon) -> L2CVa
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
 
     let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-    let speed_y = (cliff_robbed_speed_y - 0.5 * -air_accel_y * (CLIFF_ROBBED_FALL_FRAME * CLIFF_ROBBED_FALL_FRAME)) / CLIFF_ROBBED_FALL_FRAME;
+    let speed_y = (cliff_robbed_speed_y - (0.5 * -air_accel_y * CLIFF_ROBBED_FALL_FRAME * CLIFF_ROBBED_FALL_FRAME)) / CLIFF_ROBBED_FALL_FRAME;
 
     sv_kinetic_energy!(
         set_stable_speed,

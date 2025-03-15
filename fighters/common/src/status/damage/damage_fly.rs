@@ -10,7 +10,7 @@ unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2C
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL);
         return 1.into();
     }
-    let mut attr = *FIGHTER_STATUS_ATTR_DAMAGE;
+    let mut attr = *FIGHTER_STATUS_ATTR_DAMAGE | *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY;
     let mut flag_keep = *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLY_FLAG;
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if [

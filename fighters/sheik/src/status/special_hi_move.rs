@@ -26,8 +26,7 @@ unsafe extern "C" fn sheik_special_hi_move_main(fighter: &mut L2CFighterCommon) 
 
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_SHEIK_SPECIAL_HI_MOVE);
 
-    // I'M REWRITING THIS ENTIRE STATUS JUST TO GET RID OF THIS ONE LINE RAAAAAAAAAAAAGH
-    // fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
+    fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
 
     if !StopModule::is_stop(fighter.module_accessor) {
         sheik_special_hi_move_substatus(fighter, false.into());

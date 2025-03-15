@@ -74,6 +74,14 @@ unsafe extern "C" fn status_cliffwait_main(fighter: &mut L2CFighterCommon) -> L2
         return 0.into();
     }
 
+    // Sure it's a feature now
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+    && situation == *SITUATION_KIND_CLIFF {
+        fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_ROBBED.into(), false.into());
+        return 1.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CLIFF_JUMP_BUTTON)
     && situation == *SITUATION_KIND_CLIFF
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {

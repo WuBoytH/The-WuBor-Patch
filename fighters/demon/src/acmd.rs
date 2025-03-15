@@ -2,6 +2,8 @@ use super::*;
 
 mod dash;
 
+mod guard;
+
 mod jabs;
 mod normals;
 mod smashes;
@@ -21,6 +23,8 @@ mod appeal;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+
+    guard::install(agent);
 
     jabs::install(agent);
     normals::install(agent);

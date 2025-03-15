@@ -50,13 +50,11 @@ unsafe extern "C" fn donkey_special_s_main_loop(fighter: &mut L2CFighterCommon) 
 /// If there are more than (# of owned barrels allowed)
 /// existing at a time, DK will be unable to pull out a barrel.
 pub unsafe extern "C" fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    if sv_information::stage_id() == *StageID::Yoshi_Island {
-        return true;
-    }
     let itemmanager = smash_rs::app::ItemManager::instance().unwrap();
     let barrel_count_max = WorkModule::get_param_int(module_accessor, hash40("param_barrel"), hash40("barrel_count_max"));
-    let barrels = smash_rs::app::ItemManager::get_num_of_ownered_item(itemmanager, (*module_accessor).battle_object_id, smash_rs::app::ItemKind::Barrel);
-    barrels < barrel_count_max as usize
+    smash_rs::app::ItemManager::get_num_of_ownered_item(itemmanager, (*module_accessor).battle_object_id, smash_rs::app::ItemKind::Barrel)
+    <
+    barrel_count_max as usize
 }
 
 pub fn install(agent: &mut Agent) {

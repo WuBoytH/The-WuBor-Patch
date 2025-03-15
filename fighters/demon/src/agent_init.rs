@@ -4,6 +4,7 @@ unsafe extern "C" fn check_attack_3_uniq(fighter: &mut L2CFighterCommon) -> L2CV
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     if [
         *FIGHTER_STATUS_KIND_SQUAT_WAIT,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL,
         *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1,
         *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_2,

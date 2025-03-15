@@ -17,10 +17,11 @@ jobs:
         uses: dante-signal31/rust-app-version@v1.2.0
       - name: Get Branch Name
         id: branch-name
-        uses: tj-actions/branch-names@v7.0.1
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
     outputs:
       version: ${{ steps.plugin-version.outputs.app_version }}
-      branch: ${{ steps.branch-name.outputs.current_branch }}
+      branch: ${{ steps.branch-name.outputs.branch }}
 
   package-main:
     needs: get-version

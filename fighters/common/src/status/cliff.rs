@@ -7,6 +7,8 @@ mod cliff_wait;
 pub mod cliff_jump1;
 mod cliff_jump2;
 
+mod cliff_robbed;
+
 #[skyline::hook(replace = L2CFighterCommon_sub_cliff_uniq_process_exit_Common)]
 unsafe extern "C" fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF) {
@@ -48,4 +50,6 @@ pub fn install() {
 
     cliff_jump1::install();
     cliff_jump2::install();
+
+    cliff_robbed::install();
 }

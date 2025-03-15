@@ -483,6 +483,41 @@ unsafe extern "C" fn sub_transition_group_check_ground(fighter: &mut L2CFighterC
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_air_check_fall_common)]
+unsafe extern "C" fn sub_air_check_fall_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_landing().get_bool() {
+        return true.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
+        fighter.change_status(FIGHTER_STATUS_KIND_HAMMER_FALL.into(), false.into());
+        return true.into();
+    }
+
+    if fighter.sub_transition_group_check_air_landing().get_bool()
+    || fighter.sub_transition_group_check_air_cliff().get_bool()
+    || fighter.sub_rocketbelt_hover_check().get_bool() {
+        return true.into();
+    }
+
+    if VarModule::get_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME) > 0 {
+        return false.into();
+    }
+
+    if fighter.sub_transition_group_check_air_special().get_bool()
+    || fighter.sub_transition_group_check_air_item_throw().get_bool()
+    || fighter.sub_transition_group_check_air_lasso().get_bool()
+    || fighter.sub_transition_group_check_air_escape().get_bool()
+    || fighter.sub_transition_group_check_air_attack().get_bool()
+    || fighter.sub_transition_group_check_air_tread_jump().get_bool()
+    || fighter.sub_transition_group_check_air_wall_jump().get_bool()
+    || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        return true.into();
+    }
+
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_attack)]
 unsafe extern "C" fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_ATTACK_UNIQ].get_bool() {
@@ -764,6 +799,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground_special,
             sub_transition_group_check_ground,
+
+            sub_air_check_fall_common,
 
             sub_transition_group_check_air_attack,
             sub_transition_group_check_air_special,

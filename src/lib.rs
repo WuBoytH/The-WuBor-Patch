@@ -93,6 +93,8 @@ pub fn is_on_ryujinx() -> bool {
 pub fn main() {
     #[cfg(feature = "main_nro")]
     {
+        println!("Running wubor::main");
+
         system::install();
         custom_vars::install();
         vtable_hook::install();

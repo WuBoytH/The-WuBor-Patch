@@ -30,6 +30,23 @@ unsafe extern "C" fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, pa
 
 #[skyline::hook(replace = L2CFighterCommon_status_Appeal_common_uniq)]
 unsafe extern "C" fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    if fighter.global_table[STATUS_KIND].get_i32() == vars::fighter::status::GUARD_CANCEL_APPEAL {
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("sys_flash"),
+            Hash40::new("hip"),
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            1.4,
+            &vars::ZERO_VECTOR,
+            &vars::ZERO_VECTOR,
+            false,
+            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            *EFFECT_FLIP_NONE,
+            1
+        ) as u32;
+        SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_guardbreak"), true, false, false, false, enSEType(0));
+    }
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1a0473b26e));
     let mut appeal_kind = *FIGHTER_APPEAL_KIND_U;
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_APPEAL_RANDOM) {

@@ -16,10 +16,12 @@ use {
 
 mod acmd;
 mod frame;
+mod agent_init;
 
 pub fn install() {
     let agent = &mut Agent::new("pzenigame");
     acmd::install(agent);
     frame::install(agent);
+    agent_init::install(agent);
     agent.install();
 }

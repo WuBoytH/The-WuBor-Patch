@@ -35,6 +35,7 @@ mod attack;
 mod attack_s3;
 mod attack_lw3;
 
+mod attack_stand_1;
 mod attack_stand_2;
 
 mod attack_squat_2;
@@ -61,6 +62,7 @@ pub fn install(agent: &mut Agent) {
     attack_s3::install(agent);
     attack_lw3::install(agent);
 
+    attack_stand_1::install(agent);
     attack_stand_2::install(agent);
 
     attack_squat_2::install(agent);

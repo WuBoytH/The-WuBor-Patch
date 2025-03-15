@@ -12,6 +12,8 @@ pub unsafe extern "C" fn check_thunder_sword_depleted(agent: &mut L2CAgentBase) 
 
 mod dash;
 
+mod guard;
+
 mod normals;
 mod smashes;
 mod specials;
@@ -23,6 +25,8 @@ mod cliff;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     smashes::install(agent);

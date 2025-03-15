@@ -1,3 +1,5 @@
+#![feature(simd_ffi)]
+
 #[allow(unused_imports)]
 use {
     smash::{

@@ -71,10 +71,7 @@ unsafe extern "C" fn dolly_special_lw_main_inner(fighter: &mut L2CFighterCommon)
         *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_08
     };
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, additions - 1);
-    if !StopModule::is_stop(fighter.module_accessor) {
-        dolly_special_lw_substatus(fighter, false.into());
-    }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(dolly_special_lw_substatus as *const () as _));
+
     fighter.sub_shift_status_main(L2CValue::Ptr(dolly_special_lw_main_loop as *const () as _))
 }
 
@@ -131,15 +128,6 @@ unsafe extern "C" fn dolly_special_lw_mot_helper(fighter: &mut L2CFighterCommon,
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(correct));
 }
 
-unsafe extern "C" fn dolly_special_lw_substatus(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
-    let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_INT_START_SITUATION);
-    if start_sit == *SITUATION_KIND_GROUND
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_ENABLE_BREAK);
-    }
-    0.into()
-}
-
 unsafe extern "C" fn dolly_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
@@ -156,12 +144,19 @@ unsafe extern "C" fn dolly_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
             fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_lw").into());
         }
     }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP)
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+        VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK);
+    }
+
     if !fighter.global_table[IS_STOP].get_bool()
-    && MotionModule::is_end(fighter.module_accessor)
-    || VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_CHECK_BREAK) {
+    && MotionModule::is_end(fighter.module_accessor) {
         if VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK) {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            return 0.into()
+            VarModule::off_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK);
+            fighter.change_status(vars::dolly::status::SPECIAL_LW_BREAKING.into(), true.into());
+            return 0.into();
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP) {
             let frame = MotionModule::frame(fighter.module_accessor);
@@ -169,35 +164,33 @@ unsafe extern "C" fn dolly_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
             fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK.into(), false.into());
             return 0.into();
         }
-        if !VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_ENABLE_BREAK) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP);
-            fighter.set_situation(SITUATION_KIND_AIR.into());
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DOLLY_SPECIAL_LW_JUMP);
-            let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
-            let mot = if strength == *FIGHTER_DOLLY_STRENGTH_W {
-                Hash40::new("special_lw_w")
-            }
-            else {
-                Hash40::new("special_lw")
-            };
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                mot,
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
+
+        if MotionModule::frame(fighter.module_accessor) == fighter.global_table[STATUS_FRAME].get_f32() {
+            return 0.into();
+        }
+
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP);
+        fighter.set_situation(SITUATION_KIND_AIR.into());
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DOLLY_SPECIAL_LW_JUMP);
+        let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
+        let mot = if strength == *FIGHTER_DOLLY_STRENGTH_W {
+            Hash40::new("special_lw_w")
         }
         else {
-            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-            VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_BREAK);
-        }
-        VarModule::off_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
+            Hash40::new("special_lw")
+        };
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            mot,
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }
     0.into()
 }
@@ -207,6 +200,156 @@ unsafe extern "C" fn dolly_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
     if status != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK {
         VarModule::off_flag(fighter.module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL);
     }
+    0.into()
+}
+
+unsafe extern "C" fn dolly_special_lw_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
+        ) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+    0.into()
+}
+
+unsafe extern "C" fn dolly_special_lw_attack_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
+    let (stable_x, stable_y, speed_x, speed_y, brake) = if strength != *FIGHTER_DOLLY_STRENGTH_W {
+        (1.2, 2.0, 1.7, 2.8, 0.05)
+    }
+    else {
+        (1.0, 2.0, 1.3, 2.2, 0.05)
+    };
+
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        stable_y
+    );
+
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        speed_y
+    );
+
+    sv_kinetic_energy!(
+        set_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        -speed_y
+    );
+
+    sv_kinetic_energy!(
+        set_accel,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+        brake
+    );
+
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        ENERGY_STOP_RESET_TYPE_AIR,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        stable_x,
+        -1.0
+    );
+
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        speed_x,
+        -1.0
+    );
+
+    let lr = PostureModule::lr(fighter.module_accessor);
+    sv_kinetic_energy!(
+        set_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        speed_x * lr,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_accel,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        brake,
+        0.0
+    );
+
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+
     0.into()
 }
 
@@ -291,6 +434,8 @@ pub fn install(agent: &mut Agent) {
     agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_end);
     agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_end);
 
+    agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_pre);
+    agent.status(Init, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_init);
     agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_main);
     agent.status(End, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, dolly_special_lw_attack_end);
 }

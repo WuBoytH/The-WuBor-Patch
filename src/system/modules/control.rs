@@ -4,7 +4,8 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    wubor_utils::controls::*
+    custom_var::*,
+    wubor_utils::{controls::*, vars}
 };
 
 // #[repr(C)]
@@ -288,6 +289,13 @@ unsafe fn set_release_value_internal(ctx: &mut skyline::hooks::InlineCtx) {
 //     }
 // }
 
+#[skyline::hook(offset = 0x6bd4a0, inline)]
+unsafe extern "C" fn check_skip_hitlag_buffer(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
+    let skip_hitlag_buffer = VarModule::is_flag(module_accessor, vars::fighter::status::flag::SKIP_HITLAG_BUFFER_CHECK) as u64;
+    *ctx.registers[22].x.as_mut() = skip_hitlag_buffer;
+}
+
 pub fn install() {
     // Prevents buffered C-stick aerials from triggering nair
     skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
@@ -304,7 +312,7 @@ pub fn install() {
     // Custom buffer-state handling
     // Always uses the hitlag handling that cat4 uses
     skyline::patching::Patch::in_text(0x6bd448).nop();
-    skyline::patching::Patch::in_text(0x6bd4a4).nop();
+    skyline::patching::Patch::in_text(0x6bd4a0).data(0xF10002DFu32);
     // Stubs the check if the buffer value is 1 and the button is held
     skyline::patching::Patch::in_text(0x6bd5b0).nop();
     // Stubs setting the buffer lifetime to 2 if held
@@ -319,6 +327,7 @@ pub fn install() {
         set_hold_buffer_value,
         set_release_value_in_hitlag,
         set_release_value,
-        // get_buffer_value
+        // get_buffer_value,
+        check_skip_hitlag_buffer
     );
 }

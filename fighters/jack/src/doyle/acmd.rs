@@ -39,8 +39,28 @@ unsafe extern "C" fn effect_return(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_guardcancelattack(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 6.0 / 1.0);
+    frame(agent.lua_state_agent, 2.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+}
+
+unsafe extern "C" fn effect_guardcancelattack(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_magic_flash"), Hash40::new("handl"), 2, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FLIP(agent, Hash40::new("jack_doyle_crow_line"), Hash40::new("jack_doyle_crow_line"), Hash40::new("top"), 1, 21, 3, 26, -20, -4, 1, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("effect_appear", effect_appear, Priority::Low);
 
     agent.acmd("effect_return", effect_return, Priority::Low);
+
+    agent.acmd("game_guardcancelattack", game_guardcancelattack, Priority::Low);
+    agent.acmd("effect_guardcancelattack", effect_guardcancelattack, Priority::Low);
 }

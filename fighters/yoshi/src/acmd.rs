@@ -3,6 +3,8 @@ use super::*;
 mod dash;
 mod jump;
 
+mod guard;
+
 mod normals;
 mod smashes;
 mod aerials;
@@ -16,6 +18,8 @@ mod cliff;
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
     jump::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     smashes::install(agent);

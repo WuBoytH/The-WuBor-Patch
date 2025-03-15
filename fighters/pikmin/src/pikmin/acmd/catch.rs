@@ -18,13 +18,5 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
-
-    agent.acmd("game_catchdash_b", game_catchdash, Priority::Low);
-
-    agent.acmd("game_catchdash_y", game_catchdash, Priority::Low);
-
-    agent.acmd("game_catchdash_v", game_catchdash, Priority::Low);
-
-    agent.acmd("game_catchdash_w", game_catchdash, Priority::Low);
+    pikmin_acmd(agent, "game_catchdash", game_catchdash);
 }

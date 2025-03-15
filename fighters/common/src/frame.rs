@@ -76,45 +76,69 @@ unsafe fn purged_handler(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn acd(fighter: &mut L2CFighterCommon) {
-    // Jabs and Tilts cancel into roll on hit or block
-    // (Potentially) half distance when canceled into
-    // Normal intangibility
+// unsafe extern "C" fn acd(fighter: &mut L2CFighterCommon) {
+//     // Jabs and Tilts cancel into roll on hit or block
+//     // (Potentially) half distance when canceled into
+//     // Normal intangibility
 
-    // Status system
-    // Every specific action has a unique status kind (most of the time)
-    // ex richter bounce on hit is still considered an aerial
-    // but greninja's just goes straight into double jump
-    // ??????????
+//     // Status system
+//     // Every specific action has a unique status kind (most of the time)
+//     // ex richter bounce on hit is still considered an aerial
+//     // but greninja's just goes straight into double jump
+//     // ??????????
 
-    // Check what status we're in
-    // either through StatusModule::status_kind(fighter.module_accessor);
-    // OR
-    // fighter.global_table[0xB].get_i32()
+//     // Check what status we're in
+//     // either through StatusModule::status_kind(fighter.module_accessor);
+//     // OR
+//     // fighter.global_table[0xB].get_i32()
 
-    let status = fighter.global_table[0xB].get_i32();
+//     let status = fighter.global_table[0xB].get_i32();
 
-    // check status
-    if [
-        *FIGHTER_STATUS_KIND_ATTACK, // Jab
-    ].contains(&status) {
-        // Now we check if we hit something
-        // and check if we're not in hitlag
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !fighter.global_table[IS_STOP].get_bool() {
-            let escape = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
-            let escape_f = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
+//     // check status
+//     if [
+//         *FIGHTER_STATUS_KIND_ATTACK, // Jab
+//     ].contains(&status) {
+//         // Now we check if we hit something
+//         // and check if we're not in hitlag
+//         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+//         && !fighter.global_table[IS_STOP].get_bool() {
+//             let escape = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
+//             let escape_f = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
 
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
-            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
-            fighter.sub_transition_group_check_ground_escape();
+//             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
+//             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
+//             fighter.sub_transition_group_check_ground_escape();
 
-            if !escape {
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
-            }
-            if !escape_f {
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
-            }
+//             if !escape {
+//                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
+//             }
+//             if !escape_f {
+//                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
+//             }
+//         }
+//     }
+// }
+
+unsafe extern "C" fn burnout_flash_scuffed(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        VarModule::sub_int(fighter.module_accessor, vars::fighter::instance::int::BURNOUT_EFF_FRAME, 1);
+        let frame = VarModule::get_int(fighter.module_accessor, vars::fighter::instance::int::BURNOUT_EFF_FRAME);
+        if frame <= 0 {
+            VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::BURNOUT_EFF_FRAME, 10);
+        }
+        else if frame % 5 == 0 {
+            ColorBlendModule::set_main_color(
+                fighter.module_accessor,
+                &Vector4f{ x: 0.85, y: 0.85, z: 0.85, w: 0.2},
+                &Vector4f{ x: 0.9907, y: 0.02, z: 0.0251, w: 0.8},
+                0.21,
+                2.2,
+                5,
+                true
+            );
+        }
+        else if frame % 5 == 2 {
+            ColorBlendModule::cancel_main_color(fighter.module_accessor, 0);
         }
     }
 }
@@ -125,6 +149,7 @@ pub extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         hit_cancel_frame_set(fighter);
         special_jump_stick_flick(fighter);
         purged_handler(fighter);
-        acd(fighter);
+        // acd(fighter);
+        burnout_flash_scuffed(fighter);
     }
 }

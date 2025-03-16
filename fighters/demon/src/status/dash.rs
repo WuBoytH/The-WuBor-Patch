@@ -8,6 +8,6 @@ extern "C" {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, fgc_dashback_pre);
-    agent.status(Main, *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, fgc_dashback_main);
+    agent.status(Pre, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK, fgc_dashback_pre);
+    agent.status(Main, *FIGHTER_DEMON_STATUS_KIND_DASH_BACK, fgc_dashback_main);
 }

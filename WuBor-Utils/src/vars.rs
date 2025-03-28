@@ -308,6 +308,7 @@ pub mod dolly {
 
             pub const SUPER_SPECIAL_TRY_TRIPLE : i32 = 0x1150;
             pub const SUPER_SPECIAL_CHECK_TRIPLE : i32 = 0x1151;
+            pub const SUPER_SPECIAL_TRIPLE : i32 = 0x1152;
         }
         pub mod int {
             pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;

@@ -262,6 +262,8 @@ pub mod chrom {
 pub mod demon {
     pub mod status {
         pub mod flag {
+            pub const ATTACK_S3_FROM_JAB : i32 = 0x1150;
+
             pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1150;
 
             pub const ATTACK_STEP_2S_HOLD : i32 = 0x1150;
@@ -306,6 +308,7 @@ pub mod dolly {
 
             pub const SUPER_SPECIAL_TRY_TRIPLE : i32 = 0x1150;
             pub const SUPER_SPECIAL_CHECK_TRIPLE : i32 = 0x1151;
+            pub const SUPER_SPECIAL_TRIPLE : i32 = 0x1152;
         }
         pub mod int {
             pub const ATTACK_DASH_STRENGTH : i32 = 0x1150;

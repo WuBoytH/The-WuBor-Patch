@@ -24,7 +24,7 @@ use {
 pub mod param {   
     #[allow(non_upper_case_globals)]
     pub mod jump {
-        pub const special_jump_control_mul : f32 = 0.5;
+        pub const special_jump_control_mul : f32 = 1.0;
         pub const super_jump_speed_x_mul : f32 = 0.8;
     }
 }

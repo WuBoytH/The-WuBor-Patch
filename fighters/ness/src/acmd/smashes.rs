@@ -10,6 +10,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
+        // ReflectorModule::set_hop(agent.module_accessor, true, 0.0, 3);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_NESS_STATUS_ATTACK_S4_FLAG_REFLECT_START);
     }
     frame(agent.lua_state_agent, 21.0);
@@ -42,8 +43,8 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
+        // ReflectorModule::set_hop(agent.module_accessor, true, 42.0, 3);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_NESS_STATUS_ATTACK_S4_FLAG_REFLECT_START);
-
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
@@ -75,6 +76,7 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
+        // ReflectorModule::set_hop(agent.module_accessor, true, 347.0, 3);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_NESS_STATUS_ATTACK_S4_FLAG_REFLECT_START);
     }
     frame(agent.lua_state_agent, 21.0);

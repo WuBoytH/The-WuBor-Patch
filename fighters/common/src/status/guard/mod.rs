@@ -7,7 +7,7 @@ pub unsafe extern "C" fn init_shield_hurtbox(fighter: &mut L2CFighterCommon) {
         0,
         &Vector3f{x: 0.0, y: 0.0, z: 0.0},
         &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-        0.9,
+        0.8,
         Hash40::new("throw"),
         CollisionPart(*COLLISION_PART_BODY),
         HitHeight(*HIT_HEIGHT_CENTER),

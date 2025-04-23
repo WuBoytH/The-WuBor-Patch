@@ -25,6 +25,7 @@ mod belmont_cross;
 mod dolly_wave;
 mod dolly_burst;
 mod edge_flare1;
+mod inkling_rollerink;
 mod koopa_breath;
 mod mariod_drcapsule;
 mod packun_poisonbreath;
@@ -58,6 +59,7 @@ pub fn install() {
     dolly_wave::install();
     dolly_burst::install();
     edge_flare1::install();
+    inkling_rollerink::install();
     koopa_breath::install();
     mariod_drcapsule::install();
     packun_poisonbreath::install();

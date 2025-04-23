@@ -77,9 +77,6 @@ unsafe extern "C" fn sound_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_wolf_swing_l"));
-    }
-    wait(agent.lua_state_agent, 14.0);
-    if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_wolf_attack03"));
     }
 }

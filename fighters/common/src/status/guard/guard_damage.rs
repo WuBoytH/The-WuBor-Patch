@@ -195,12 +195,12 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         ControlModule::clear_command(fighter.module_accessor, false);
     }
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
-        let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
+        // let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
+        // let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
         let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
         // let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
         // println!("setoff_speed: {}", setoff_speed);
-        let mut setoff_speed = (shield_power * shield_setoff_speed_mul + 0.5) * shield_lr;
+        let mut setoff_speed = (shield_power * 0.05 + 0.5) * shield_lr;
         // println!("shield_power {} * mul {} + 0.5", shield_power, shield_setoff_speed_mul);
         // println!("setoff_speed: {}", setoff_speed);
 
@@ -225,7 +225,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
             ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
-            setoff_speed.clamp(-shield_setoff_speed_max, shield_setoff_speed_max),
+            setoff_speed.clamp(-2.5, 2.5),
             0.0,
             0.0,
             0.0,

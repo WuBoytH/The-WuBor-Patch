@@ -207,7 +207,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
         let current_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        if current_x.signum() == setoff_speed.signum() {
+        if current_x.signum() == setoff_speed.signum() && current_x.abs() > setoff_speed.abs() {
             let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_DAMAGE);
             let mul = if count > 0 {
                 0.2

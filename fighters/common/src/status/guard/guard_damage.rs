@@ -50,6 +50,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut
             let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
             EffectModule::set_scale(fighter.module_accessor, shield_eff, &Vector3f{x: ratio, y: ratio, z: ratio});
         }
+
+        init_shield_hurtbox(fighter);
     }
     else {
         fighter.FighterStatusGuard__set_just_shield_scale();
@@ -653,6 +655,9 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighte
         }
         ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     }
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

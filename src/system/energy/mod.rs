@@ -1,159 +1,170 @@
+#![allow(
+    unused_unsafe,
+    dead_code,
+    unused_unsafe,
+    unused_assignments,
+    improper_ctypes_definitions,
+    clippy::needless_lifetimes,
+    clippy::needless_return,
+    clippy::transmute_ptr_to_ref
+)]
+
 use crate::imports::*;
-use wubor_utils::controls::*;
-use std::arch::asm;
 
-#[skyline::hook(offset = 0x6ce6d8, inline)]
-unsafe extern "C" fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
-    }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+#[repr(C)]
+pub struct KineticEnergyVTable {
+    pub destructor: extern "C" fn(&mut KineticEnergy),
+    pub deleter: extern "C" fn(*mut KineticEnergy),
+    pub unk: extern "C" fn(&mut KineticEnergy, &mut BattleObjectModuleAccessor),
+    pub update: extern "C" fn(&mut KineticEnergy, &mut BattleObjectModuleAccessor),
+    pub get_speed: extern "C" fn(&mut KineticEnergy) -> *mut PaddedVec2,
+    pub initialize: extern "C" fn(&mut KineticEnergy, &mut BattleObjectModuleAccessor),
+    pub get_some_flag: extern "C" fn(&mut KineticEnergy) -> bool,
+    pub set_some_flag: extern "C" fn(&mut KineticEnergy, bool),
+    pub setup_energy: extern "C" fn(&mut KineticEnergy, u32, &Vector3f, u64, &mut BattleObjectModuleAccessor),
+    pub clear_energy: extern "C" fn(&mut KineticEnergy),
+    pub unk2: extern "C" fn(&mut KineticEnergy),
+    pub set_speed: extern "C" fn (&mut KineticEnergy, &Vector2f),
+    pub mul_accel: extern "C" fn(&mut KineticEnergy, &Vector2f),
+    // ...
+
 }
 
-#[skyline::hook(offset = 0x6d19c4, inline)]
-unsafe extern "C" fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
-    }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+#[derive(Debug, Copy, Clone)]
+#[repr(C)]
+pub struct PaddedVec2 {
+    pub x: f32,
+    pub y: f32,
+    pub padding: u64
 }
 
-#[skyline::hook(offset = 0x6d1b10, inline)]
-unsafe extern "C" fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
+impl PaddedVec2 {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self {
+            x,
+            y,
+            padding: 0
+        }
     }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+
+    pub fn zeros() -> Self {
+        Self {
+            x: 0.0,
+            y: 0.0,
+            padding: 0
+        }
+    }
+
+    pub fn mag(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
 }
 
-#[skyline::hook(offset = 0x6d0454, inline)]
-unsafe extern "C" fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
-    }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+#[repr(C)]
+pub struct KineticEnergy {
+    pub vtable: &'static KineticEnergyVTable,
+    pub _x8: u64, // probably padding
+    pub speed: PaddedVec2,
+    pub rot_speed: PaddedVec2,
+    pub enable: bool,
+    pub unk2: [u8; 0xF], // probably padding
+    pub accel: PaddedVec2,
+    pub speed_max: PaddedVec2,
+    pub speed_brake: PaddedVec2,
+    pub speed_limit: PaddedVec2,
+    pub _x80: u8,
+    pub consider_ground_friction: bool,
+    pub active_flag: bool, // no clue?
+    pub _x83: u8,
+    pub energy_reset_type: u32,
 }
 
-#[skyline::hook(offset = 0x6ce7d0, inline)]
-unsafe extern "C" fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
-    }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
-}
+impl KineticEnergy {
+    pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, module_accessor: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
+        #[skyline::from_offset(0x47b4f0)]
+        extern "C" fn adjust_speed_for_ground_normal_internal(speed: smash_rs::cpp::simd::Vector2, module_accessor: &mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector2;
 
-#[skyline::hook(offset = 0x6d05cc, inline)]
-unsafe extern "C" fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
+        unsafe {
+            let result = adjust_speed_for_ground_normal_internal(smash_rs::cpp::simd::Vector2 { vec: [speed.x, speed.y] }, module_accessor);
+            PaddedVec2::new(result.vec[0], result.vec[1])
+        }
     }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
-}
 
-#[skyline::hook(offset = 0x6d117c, inline)]
-unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
+    pub fn process(&mut self, module_accessor: &mut BattleObjectModuleAccessor) {
+        unsafe {
+            #[skyline::from_offset(0x47bf90)]
+            extern "C" fn process_energy(energy: &mut KineticEnergy, module_accessor: &mut BattleObjectModuleAccessor);
+
+            process_energy(self, module_accessor)
+        }
     }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
-}
 
-#[skyline::hook(offset = 0x6ce28c, inline)]
-unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[0].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);    
-    let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-        ControlModule::get_sub_stick_x(boma)
+    pub fn update(&mut self, module_accessor: &mut BattleObjectModuleAccessor) {
+        unsafe {
+            (self.vtable.update)(self, module_accessor)
+        }
     }
-    else {
-        ControlModule::get_stick_x(boma)
-    };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
-}
 
-#[skyline::hook(offset = 0x6d253c, inline)]
-unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
-    let work_module = *ctx.registers[0].x.as_ref();
-    let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let mul = if VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP) {
-        1.2
+    pub fn get_speed<'a>(&'a mut self) -> &'a mut PaddedVec2 {
+        unsafe {
+            std::mem::transmute((self.vtable.get_speed)(self))
+        }
     }
-    else {
-        1.0
-    };
-    let jump_y = callable(work_module, hash40("jump_speed_y"), 0) * mul;
-    asm!("fmov s0, w8", in("w8") jump_y)
-}
 
+    pub fn initialize(&mut self, module_accessor: &mut BattleObjectModuleAccessor) {
+        unsafe {
+            (self.vtable.initialize)(self, module_accessor)
+        }
+    }
+
+    pub fn get_some_flag(&mut self) -> bool {
+        unsafe {
+            (self.vtable.get_some_flag)(self)
+        }
+    }
+
+    pub fn set_some_flag(&mut self, flag: bool) {
+        unsafe {
+            (self.vtable.set_some_flag)(self, flag)
+        }
+    }
+
+    pub fn setup_energy(&mut self, reset_type: u32, incoming_speed: &Vector3f, some: u64, module_accessor: &mut BattleObjectModuleAccessor) {
+        unsafe {
+            (self.vtable.setup_energy)(self, reset_type, incoming_speed, some, module_accessor)
+        }
+    }
+
+    pub fn clear_energy(&mut self) {
+        unsafe {
+            (self.vtable.clear_energy)(self)
+        }
+    }
+
+    pub fn unk2(&mut self) {
+        unsafe {
+            (self.vtable.unk2)(self)
+        }
+    }
+
+    pub fn set_speed(&mut self, speed: &Vector2f) {
+        unsafe {
+            (self.vtable.set_speed)(self, speed)
+        }
+    }
+
+    pub fn mul_accel(&mut self, mul: &Vector2f) {
+        unsafe {
+            (self.vtable.mul_accel)(self, mul)
+        }
+    }
+
+}
 
 mod control;
+mod damage;
 
 pub fn install() {
-    // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
-    skyline::patching::Patch::in_text(0x6ce6d8).nop();
-    skyline::patching::Patch::in_text(0x6d19c4).nop();
-    skyline::patching::Patch::in_text(0x6d1b10).nop();
-    skyline::patching::Patch::in_text(0x6d0454).nop();
-
-    // Same as above but for double jumps
-    skyline::patching::Patch::in_text(0x6ce7d0).nop();
-    skyline::patching::Patch::in_text(0x6d05cc).nop();
-    skyline::patching::Patch::in_text(0x6d117c).nop();
-    skyline::patching::Patch::in_text(0x6ce28c).nop();
-
-    // Super Jump Speed Multiplier
-    skyline::patching::Patch::in_text(0x6d253c).nop();
-
-    // Always use Jump Speed Y
-    skyline::patching::Patch::in_text(0x6d217c).data(0x140000EBu32);
-
-    skyline::install_hooks!(
-        jump1_stick_x_hook,
-        jump2_stick_x_hook,
-        jump3_stick_x_hook,
-        jump4_stick_x_hook,
-        jump_aerial_stick_x_hook,
-        jump_aerial_2_stick_x_hook,
-        jump_aerial_3_stick_x_hook,
-        jump_aerial_4_stick_x_hook,
-        jump_speed_y_hook
-    );
-
     control::install();
+    damage::install();
 }

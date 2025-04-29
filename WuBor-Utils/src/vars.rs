@@ -1031,6 +1031,21 @@ pub mod wario {
     }
 }
 
+pub mod wolf {
+    pub mod status {
+        pub mod int {
+            pub const SPECIAL_N_MOTION : i32 = 0x1150;
+            pub const SPECIAL_N_MOTION_AIR : i32 = 0x1151;
+        }
+        pub mod flag {
+            pub const SPECIAL_N_CHECK_ANGLE : i32 = 0x1150;
+            pub const SPECIAL_N_ENABLE_LANDING : i32 = 0x1151;
+        }
+
+        pub const SPECIAL_N_CANCEL : i32 = 0x1EA;
+    }
+}
+
 pub mod yoshi {
     pub mod status {
         pub mod flag {

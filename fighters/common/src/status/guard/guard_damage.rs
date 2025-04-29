@@ -201,16 +201,16 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         // let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
         // println!("setoff_speed: {}", setoff_speed);
         let mut setoff_speed = (shield_power * 0.05 + 0.5) * shield_lr;
-        // println!("shield_power {} * mul {} + 0.5", shield_power, shield_setoff_speed_mul);
+        // println!("shield_power {} * mul 0.05 + 0.5", shield_power);
         // println!("setoff_speed: {}", setoff_speed);
 
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
         let current_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        if current_x.signum() == setoff_speed.signum() && current_x.abs() > setoff_speed.abs() {
+        if current_x.signum() == setoff_speed.signum() {
             let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_DAMAGE);
             let mul = if count > 0 {
-                0.2
+                0.4
             }
             else {
                 1.0

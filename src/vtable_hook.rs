@@ -12,6 +12,7 @@ mod koopa;
 mod lucario;
 mod lucina;
 mod luigi;
+// mod ness;
 mod pickel;
 mod reflet;
 mod rockman;
@@ -45,6 +46,7 @@ pub fn install() {
     lucario::install();
     lucina::install();
     luigi::install();
+    // ness::install();
     pickel::install();
     reflet::install();
     rockman::install();

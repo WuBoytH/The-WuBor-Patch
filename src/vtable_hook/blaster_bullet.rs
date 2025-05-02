@@ -44,6 +44,9 @@ unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::Inl
 }
 
 pub fn install() {
+    // Patches offsetting the ecb
+    let _ = skyline::patching::Patch::in_text(0x33fad5c).data(0x1e2703e0);
+
     skyline::install_hooks!(
         blaster_bullet_generate_angle
     );

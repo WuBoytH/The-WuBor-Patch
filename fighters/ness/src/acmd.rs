@@ -5,6 +5,7 @@ mod dash;
 mod guard;
 
 mod normals;
+mod smashes;
 mod catch;
 
 mod escape;
@@ -16,6 +17,7 @@ pub fn install(agent: &mut Agent) {
     guard::install(agent);
 
     normals::install(agent);
+    smashes::install(agent);
     catch::install(agent);
 
     escape::install(agent);

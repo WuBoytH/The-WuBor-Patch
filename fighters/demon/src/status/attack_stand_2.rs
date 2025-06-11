@@ -1,5 +1,4 @@
 use super::*;
-use super::super::helper::*;
 
 unsafe extern "C" fn demon_attack_stand_2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !demon_attack_common(fighter).get_bool() {

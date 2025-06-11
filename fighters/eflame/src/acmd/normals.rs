@@ -229,7 +229,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
-    MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, -5.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, -15.0);
 }
 
 unsafe extern "C" fn effect_attackhi3(agent: &mut L2CAgentBase) {

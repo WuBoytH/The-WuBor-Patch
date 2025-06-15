@@ -268,7 +268,29 @@ pub struct CommandInputState {
     pub input_allow: InputAllow,
     pub max_timer: u8,
     pub enable_timer: u8,
-    pub lr: i8,
+    pub lr: i8
+}
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct CommandInputStateHold {
+    pub input_state: CommandInputState,
+    pub hold_timer_max: u16,
+    pub hold_timer: u16
+}
+
+impl core::ops::Deref for CommandInputStateHold {
+    type Target = CommandInputState;
+
+    fn deref(&self) -> &Self::Target {
+        &self.input_state
+    }
+}
+
+impl core::ops::DerefMut for CommandInputStateHold {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.input_state
+    }
 }
 
 bitflags! {

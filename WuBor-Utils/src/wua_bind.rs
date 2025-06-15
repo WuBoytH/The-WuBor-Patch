@@ -426,6 +426,12 @@ pub mod FGCModule {
         }
     }
 
+    /// Gets the corresponding CommandInputState class.
+    pub unsafe fn get_command_input_state(module_accessor: *mut BattleObjectModuleAccessor, command: usize) -> *mut CommandInputState {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        *control_module.add((0x7f0 + (command * 8)) / 8) as *mut CommandInputState
+    }
+
     /// Sets a command input to only use certain buttons.
     pub unsafe fn set_command_input_button(module_accessor: *mut BattleObjectModuleAccessor, command: usize, buttons: u8) {
         let buttons = InputAllow::from_bits(buttons).unwrap();

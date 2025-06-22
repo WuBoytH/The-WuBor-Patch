@@ -19,7 +19,9 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
             }
         }
     }
+    macros::FT_MOTION_RATE(agent, 5.0 / 8.0);
     frame(agent.lua_state_agent, 12.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if has_sword {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 12.0, 60, 25, 0, 75, 2.5, 2.0, 0.0, -1.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
@@ -40,7 +42,7 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
             AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 2.0, false);
         }
     }
-    frame(agent.lua_state_agent, 17.0);
+    frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
@@ -56,7 +58,9 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
             }
         }
     }
+    macros::FT_MOTION_RATE(agent, 17.0 / 21.0);
     frame(agent.lua_state_agent, 40.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -84,7 +88,7 @@ unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
             macros::LAST_EFFECT_SET_RATE(agent, 0.25);
         }
     }
-    frame(agent.lua_state_agent, 15.0);
+    frame(agent.lua_state_agent, 17.0);
     if has_sword {
         if macros::is_excute(agent) {
             macros::EFFECT_OFF_KIND(agent, Hash40::new("eflame_sword_beam_m2"), true, true);

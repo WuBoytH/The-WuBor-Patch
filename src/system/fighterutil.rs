@@ -24,6 +24,9 @@ unsafe extern "C" fn get_cliff_xlu_frame(module_accessor: *mut BattleObjectModul
 extern "C" fn get_motion_data(motion_module: u64, motion: u64, param_3: u32) -> f32;
 
 pub fn install() {
+    // Removed the Diddy fighter kind check from the diddy unlink node FighterUtil function
+    let _ = skyline::patching::Patch::in_text(0x6938b4).nop();
+
     skyline::install_hooks!(
         get_just_shield_se,
         get_cliff_xlu_frame

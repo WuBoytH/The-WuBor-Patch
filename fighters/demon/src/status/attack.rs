@@ -200,11 +200,11 @@ unsafe extern "C" fn demon_attack_combo_main_loop_helper_second(fighter: &mut L2
                 status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
             }
         }
-        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623BLONG != 0 {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
-            }
-        }
+        // if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623BLONG != 0 {
+        //     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
+        //         status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
+        //     }
+        // }
     }
     status
 }

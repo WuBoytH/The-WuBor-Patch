@@ -46,6 +46,7 @@ mod attack_stand_2;
 
 mod attack_squat_2;
 
+mod attack_step;
 mod attack_step_2s;
 
 mod landing_attack_air;
@@ -74,6 +75,7 @@ pub fn install(agent: &mut Agent) {
 
     attack_squat_2::install(agent);
 
+    attack_step::install(agent);
     attack_step_2s::install(agent);
 
     landing_attack_air::install(agent);

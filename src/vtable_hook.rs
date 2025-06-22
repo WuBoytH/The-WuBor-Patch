@@ -12,6 +12,7 @@ mod koopa;
 mod lucario;
 mod lucina;
 mod luigi;
+// mod ness;
 mod pickel;
 mod reflet;
 mod rockman;
@@ -21,6 +22,7 @@ mod sonic;
 mod wario;
 
 mod weapon;
+mod blaster_bullet;
 mod belmont_cross;
 mod dolly_wave;
 mod dolly_burst;
@@ -46,6 +48,7 @@ pub fn install() {
     lucario::install();
     lucina::install();
     luigi::install();
+    // ness::install();
     pickel::install();
     reflet::install();
     rockman::install();
@@ -55,6 +58,7 @@ pub fn install() {
     wario::install();
 
     weapon::install();
+    blaster_bullet::install();
     belmont_cross::install();
     dolly_wave::install();
     dolly_burst::install();

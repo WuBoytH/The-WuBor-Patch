@@ -133,6 +133,7 @@ pub mod appeal {
 pub mod attack {
     pub mod flag {
         pub const INVALID_HOLD_INPUT : i32 = 0x1051;
+        pub const ATTACK_S3_IS_REVERSE : i32 = 0x1052;
     }
 }
 
@@ -436,7 +437,11 @@ pub mod jack {
             pub const SPECIAL_N_FIRST : i32 = 0x1150;
 
             pub const SPECIAL_S_FEINT : i32 = 0x1150;
+            pub const SPECIAL_S_CATCH_THROW : i32 = 0x1151;
         }
+
+        pub const SPECIAL_S_CATCH : i32 = 0x1FC;
+        pub const SPECIAL_S_CATCH_JUMP : i32 = 0x1FD;
     }
 }
 
@@ -1028,6 +1033,21 @@ pub mod wario {
             pub const THROW_B_MOVE : i32 = 0x1150;
             pub const THROW_B_CONTROL_RESET : i32 = 0x1151;
         }
+    }
+}
+
+pub mod wolf {
+    pub mod status {
+        pub mod int {
+            pub const SPECIAL_N_MOTION : i32 = 0x1150;
+            pub const SPECIAL_N_MOTION_AIR : i32 = 0x1151;
+        }
+        pub mod flag {
+            pub const SPECIAL_N_CHECK_ANGLE : i32 = 0x1150;
+            pub const SPECIAL_N_ENABLE_LANDING : i32 = 0x1151;
+        }
+
+        pub const SPECIAL_N_CANCEL : i32 = 0x1EA;
     }
 }
 

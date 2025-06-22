@@ -78,9 +78,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
             );
         }
     }
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
@@ -131,7 +128,10 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
             );
         }
     }
-    frame(agent.lua_state_agent, 8.0);
+    macros::FT_MOTION_RATE(agent, 12.0 / 9.0);
+    frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }

@@ -2,7 +2,7 @@ use super::*;
 
 unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.9);
+    macros::FT_MOTION_RATE(agent, 0.8);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
         agent.clear_lua_stack();

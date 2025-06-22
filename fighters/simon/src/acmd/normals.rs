@@ -146,10 +146,6 @@ unsafe extern "C" fn expression_attackdash(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 10.0, 5.0, Some(0.0), Some(10.0), Some(34.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
@@ -189,10 +185,6 @@ unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 13.0, 5.0, Some(0.0), Some(24.0), Some(33.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
@@ -232,10 +224,6 @@ unsafe extern "C" fn game_attacks3hi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attacks3lw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 10.0, 9.0, Some(0.0), Some(1.0), Some(33.5), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
@@ -320,7 +308,10 @@ unsafe extern "C" fn expression_attacks3(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 12.0 / 9.0);
     frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(34.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
     }

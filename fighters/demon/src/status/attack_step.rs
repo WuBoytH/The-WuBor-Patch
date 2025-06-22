@@ -123,7 +123,6 @@ unsafe extern "C" fn demon_attack_step_main_loop(fighter: &mut L2CFighterCommon)
         let stick_y = fighter.global_table[STICK_Y].get_f32();
         let vec = fighter.Vector2__create(stick_x.into(), stick_y.into());
         let len = fighter.Vector2__length(vec).get_f32();
-        println!("len: {}", len);
         let special_command_neutral_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("special_command_neutral_threshold"));
         if len <= special_command_neutral_threshold {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STEP_FLAG_NEUTRAL);

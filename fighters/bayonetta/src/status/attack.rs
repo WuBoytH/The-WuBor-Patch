@@ -5,6 +5,11 @@ extern "C" {
     pub fn only_jabs(fighter: &mut L2CFighterCommon) -> bool;
 }
 
+extern "Rust" {
+    #[link_name = "get_jab_cancel_transitions"]
+    pub fn get_jab_cancel_transitions(fighter: &mut L2CFighterCommon) -> Vec<i32>;
+}
+
 unsafe extern "C" fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     let combo_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_type"), 0);
@@ -89,13 +94,17 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
             return 0.into();
         }
     }
+
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        let allow = cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0
+        && PostureModule::lr(fighter.module_accessor).signum() == fighter.global_table[STICK_X].get_f32().signum();
+        VarModule::set_flag(fighter.module_accessor, vars::attack::flag::ATTACK_S3_IS_REVERSE, !allow);
+    }
+
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-        let normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
-        ].to_vec();
+        let normal_cancels = get_jab_cancel_transitions(fighter);
         if normal_cancel_common(fighter, normal_cancels).get_bool() {
             return 1.into();
         }

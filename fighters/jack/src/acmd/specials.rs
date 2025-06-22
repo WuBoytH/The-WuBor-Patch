@@ -538,12 +538,7 @@ unsafe extern "C" fn game_specialairnshoot(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    }
-    frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -551,81 +546,74 @@ unsafe extern "C" fn game_specials1(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             VarModule::on_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT);
         }
-        macros::FT_MOTION_RATE(agent, 5.0);
+        macros::FT_MOTION_RATE(agent, 12.0 / 6.0);
     }
     else {
-        macros::FT_MOTION_RATE(agent, 1.0);
+        macros::FT_MOTION_RATE(agent,  10.0 / 6.0);
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(agent.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 18.0);
+    macros::FT_MOTION_RATE(agent, 5.0 / 7.0);
     if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
-        macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {
-            KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 80, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     else {
-        macros::FT_MOTION_RATE(agent, 0.8);
         if macros::is_excute(agent) {
-            KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-            HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            macros::CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 5.5, 4.0, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_DIDDY, *COLLISION_SITUATION_MASK_GA);
         }
     }
-    frame(agent.lua_state_agent, 18.0);
-    if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
-            macros::FT_MOTION_RATE(agent, 0.5);
-            HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        }
-        JostleModule::set_status(agent.module_accessor, true);
-    }
-    frame(agent.lua_state_agent, 19.0);
-    if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 25.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 29.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
             AttackModule::clear_all(agent.module_accessor);
         }
+        else {
+            grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        }
+        JostleModule::set_status(agent.module_accessor, true);
     }
 }
 
 unsafe extern "C" fn effect_specials1(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
-            macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+            macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, true, Hash40::new("jack_knife"), Hash40::new("knife"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         }
     }
-    frame(agent.lua_state_agent, 12.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
         }
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
         if !VarModule::is_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_FEINT) {
-            macros::AFTER_IMAGE_OFF(agent, 0);
+            macros::AFTER_IMAGE_OFF(agent, 5);
         }
     }
-    frame(agent.lua_state_agent, 20.0);
-    for _ in 0..2 {
-        if macros::is_excute(agent) {
-            macros::FOOT_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 7, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
-        }
-        wait(agent.lua_state_agent, 3.0);
-    }
+    // frame(agent.lua_state_agent, 20.0);
+    // for _ in 0..2 {
+    //     if macros::is_excute(agent) {
+    //         macros::FOOT_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 7, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+    //     }
+    //     wait(agent.lua_state_agent, 3.0);
+    // }
 }
 
 unsafe extern "C" fn sound_specials1(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_jack_attackhard_l01"));
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_jack_rnd_attack_l"));
     }
@@ -635,73 +623,61 @@ unsafe extern "C" fn expression_specials1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        ItemModule::set_attach_item_visibility(agent.module_accessor, false, 0);
-        VisibilityModule::set_whole(agent.module_accessor, false);
-    }
-    frame(agent.lua_state_agent, 21.0);
+    frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
-        ItemModule::set_attach_item_visibility(agent.module_accessor, true, 0);
-        VisibilityModule::set_whole(agent.module_accessor, true);
     }
 }
 
 unsafe extern "C" fn game_specialairs1(agent: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        JostleModule::set_status(agent.module_accessor, false);
     }
-    frame(agent.lua_state_agent, 9.0);
+    macros::FT_MOTION_RATE(agent,  10.0 / 6.0);
+    frame(agent.lua_state_agent, 14.0);
     macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 13.0);
+    frame(agent.lua_state_agent, 18.0);
+    macros::FT_MOTION_RATE(agent, 5.0 / 7.0);
     if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 70, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    frame(agent.lua_state_agent, 19.0);
-    if macros::is_excute(agent) {
-        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 25.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 29.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 21.0);
+    frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(agent, 0.4, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    frame(agent.lua_state_agent, 34.0);
+    frame(agent.lua_state_agent, 39.0);
     if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
     }
-    macros::FT_MOTION_RATE(agent, 2.0);
 }
 
 unsafe extern "C" fn effect_specialairs1(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
-        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
+        macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, true, Hash40::new("jack_knife"), Hash40::new("knife"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
-        macros::AFTER_IMAGE_OFF(agent, 0);
+        macros::AFTER_IMAGE_OFF(agent, 5);
     }
 }
 
 unsafe extern "C" fn sound_specialairs1(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_jack_attackhard_l01"));
     }
-    frame(agent.lua_state_agent, 13.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_jack_rnd_attack_l"));
     }
@@ -711,16 +687,61 @@ unsafe extern "C" fn expression_specialairs1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        ItemModule::set_attach_item_visibility(agent.module_accessor, false, 0);
-        VisibilityModule::set_whole(agent.module_accessor, false);
-    }
-    frame(agent.lua_state_agent, 21.0);
+    frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
-        ItemModule::set_attach_item_visibility(agent.module_accessor, true, 0);
-        VisibilityModule::set_whole(agent.module_accessor, true);
+    }
+}
+
+unsafe extern "C" fn game_specials1catch(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 20.0);
+    macros::FT_MOTION_RATE(agent, 5.0 / 20.0);
+    if macros::is_excute(agent) {
+        macros::REVERSE_LR(agent);
+        // macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 2.5, 361, 0, 0, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 10, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_THROW);
+        // AttackModule::set_catch_only_all(agent.module_accessor, true, false);
+    }
+    wait(agent.lua_state_agent, 20.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 10.0, 361, 0, 0, 0, 5.0, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_THROW);
+        AttackModule::set_catch_only_all(agent.module_accessor, true, false);
+        VarModule::on_flag(agent.module_accessor, vars::jack::status::flag::SPECIAL_S_CATCH_THROW);
+        let entry_id = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+        FighterSpecializer_Jack::add_rebel_gauge(agent.module_accessor, FighterEntryID(entry_id), 25.0);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+    macros::FT_MOTION_RATE(agent, 0.75);
+}
+
+unsafe extern "C" fn effect_specials1catch(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 20.0);
+    for _ in 0..4 {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("jack_eiha_finger"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, false);
+        }
+        wait(agent.lua_state_agent, 5.0);
+    }
+}
+
+unsafe extern "C" fn game_specials1catchjump(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 70, 40, 40, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 2.0, 361, 50, 0, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_TASK);
+        let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_HIT_GROUP);
+        let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_DIDDY_STATUS_MONKEY_FLIP_WORK_INT_TARGET_HIT_NO);
+        macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        macros::CORRECT(agent, *GROUND_CORRECT_KIND_AIR);
+        macros::SA_SET(agent, *SITUATION_KIND_AIR);
+        WorkModule::enable_transition_term(agent.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_S_TRANSITION_TERM_ID_GROUND);
+        agent.clear_lua_stack();
+        lua_args!(agent, -0.6, 1.9);
+        SET_SPEED(agent.lua_state_agent);
     }
 }
 
@@ -975,6 +996,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairs1", effect_specialairs1, Priority::Low);
     agent.acmd("sound_specialairs1", sound_specialairs1, Priority::Low);
     agent.acmd("expression_specialairs1", expression_specialairs1, Priority::Low);
+
+    agent.acmd("game_specials1catch", game_specials1catch, Priority::Low);
+    agent.acmd("effect_specials1catch", effect_specials1catch, Priority::Low);
+
+    agent.acmd("game_specials1catchjump", game_specials1catchjump, Priority::Low);
 
     agent.acmd("game_specialairhi", game_specialairhi, Priority::Low);
 

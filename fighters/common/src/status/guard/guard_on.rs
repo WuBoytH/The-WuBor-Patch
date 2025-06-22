@@ -39,6 +39,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     fighter.global_table[CMD_CAT2].assign(&L2CValue::I32(0));
     fighter.global_table[CMD_CAT3].assign(&L2CValue::I32(0));
     fighter.global_table[CMD_CAT4].assign(&L2CValue::I32(0));
+
+    init_shield_hurtbox(fighter);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]
@@ -171,6 +173,9 @@ unsafe extern "C" fn sub_status_end_guard_on_common(fighter: &mut L2CFighterComm
         }
     }
     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
 }
 
 #[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]

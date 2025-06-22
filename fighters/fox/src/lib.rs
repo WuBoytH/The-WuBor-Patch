@@ -18,10 +18,14 @@ mod acmd;
 mod status;
 mod frame;
 
+mod blaster_bullet;
+
 pub fn install() {
     let agent = &mut Agent::new("fox");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);
     agent.install();
+
+    blaster_bullet::install();
 }

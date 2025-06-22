@@ -15,7 +15,13 @@ unsafe extern "C" fn game_specialhi1(agent: &mut L2CAgentBase) {
         let rush_angle = WorkModule::get_float(agent.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_RUSH_DEGREE).abs();
         let angle_ratio = 1.0 - (rush_angle / 90.0).clamp(0.0, 1.0);
         let angle = 125.0 - (35.0 * angle_ratio).clamp(0.0, 35.0);
-        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 7.0, angle as u64, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        let bkb = if VarModule::get_int(agent.module_accessor, vars::edge::instance::int::SPECIAL_HI_CANCEL_COUNT) > 0 {
+            90
+        }
+        else {
+            70
+        };
+        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 7.0, angle as u64, 60, 0, bkb, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.5);
     }
     frame(agent.lua_state_agent, 6.0);

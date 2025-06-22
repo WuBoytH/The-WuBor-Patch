@@ -192,7 +192,7 @@ pub fn install() {
     // skyline::patching::Patch::in_text(0x1165864).data(0x37000140u32);
 
     // Disables a weird check that forces you to go into wait/fall while holding Special, probably for the Art Wheel
-    // skyline::patching::Patch::in_text(0x1167170).data(0x14000499u32);
+    skyline::patching::Patch::in_text(0x1167170).data(0x14000499u32);
 
     // Disables a check that delays the art being selected by holding Special
     // skyline::patching::Patch::in_text(0x1165dd4).data(0x14000004u32);

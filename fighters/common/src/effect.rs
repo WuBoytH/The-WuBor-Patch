@@ -32,7 +32,7 @@ unsafe extern "C" fn bind_hash_call_effect_GuardCancel(
     _string: *const u8,
     _va_list: u32,
 ) {
-    println!("what's up");
+    // println!("what's up");
     effect_GuardCancel(fighter);
     let cstr = variadic.get_format();
     if !cstr.is_null() {
@@ -46,7 +46,7 @@ unsafe extern "C" fn bind_hash_call_effect_GuardCancel(
 
 #[allow(non_snake_case)]
 unsafe extern "C" fn effect_GuardCancel(fighter: &mut L2CFighterAnimcmdEffectCommon) {
-    println!("we are in the beam");
+    // println!("we are in the beam");
     let agent = &mut fighter.agent;
     loop {
         agent.clear_lua_stack();

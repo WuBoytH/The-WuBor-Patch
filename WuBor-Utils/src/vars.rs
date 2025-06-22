@@ -133,6 +133,7 @@ pub mod appeal {
 pub mod attack {
     pub mod flag {
         pub const INVALID_HOLD_INPUT : i32 = 0x1051;
+        pub const ATTACK_S3_IS_REVERSE : i32 = 0x1052;
     }
 }
 

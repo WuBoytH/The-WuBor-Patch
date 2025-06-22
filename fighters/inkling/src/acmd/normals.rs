@@ -59,10 +59,30 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
+// unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
+//     frame(agent.lua_state_agent, 3.0);
+//     for _ in 0..10 {
+//         if macros::is_excute(agent) {
+//             let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
+//             FighterSpecializer_Inkling::generate_rollerink(object as *mut Fighter);
+//             FighterSpecializer_Inkling::request_paint(
+//                 object as *mut Fighter,
+//                 Hash40::new("top"),
+//                 &Vector3f{x: 0.0, y: 0.0, z: 4.0},
+//                 &Vector2f{x: 4.0, y: 10.0},
+//                 6.0
+//             );
+//         }
+//         wait(agent.lua_state_agent, 2.0);
+//     }
+// }
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11, Priority::Low);
 
     agent.acmd("game_attack12", game_attack12, Priority::Low);
 
     agent.acmd("game_attack13", game_attack13, Priority::Low);
+
+    // agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 }

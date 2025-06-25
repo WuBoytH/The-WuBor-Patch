@@ -216,16 +216,16 @@ unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, l
 
 pub fn install() {
     // Max Status Terms?
-    let _ = skyline::patching::Patch::in_text(0x4fa7e40).data(6u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa6e40).data(6u8);
     // Some Kind of Transition Check
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x204).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x205).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x203).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x204).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x205).data(1u8);
 
     skyline::install_hooks!(
         dolly_per_frame,
         dolly_check_super_special,
         dolly_handle_special_command_turnaround
     );
-    MiscModule::patch_vtable_function(0x4fa7a28, dolly_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fa6a28, dolly_on_attack as u64);
 }

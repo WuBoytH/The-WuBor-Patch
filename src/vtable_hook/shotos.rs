@@ -533,7 +533,7 @@ pub fn install() {
 
     // Some Kind of Transition Check
     // Ryu
-    let _ = skyline::patching::Patch::in_text(0x5033eb0 + 0x1F8).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x5032eb0 + 0x1F8).data(1u8);
 
     skyline::install_hooks!(
         ryu_ken_init,

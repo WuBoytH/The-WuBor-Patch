@@ -129,5 +129,5 @@ pub fn install() {
         jack_call_summon_dispatch,
         jack_on_grab
     );
-    MiscModule::patch_vtable_function(0x4fc71b8, jack_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fc61b8, jack_on_attack as u64);
 }

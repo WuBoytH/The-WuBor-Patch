@@ -11,9 +11,9 @@ unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: *mut app::Weapon, 
     normal_weapon_hit_handler(vtable, weapon, something)
 }
 
-#[skyline::from_offset(0x33bdc30)]
+#[skyline::from_offset(0x33bd9c0)]
 unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut app::Weapon, something: u32) -> u64;
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51f6f90).data(poisonbreath_on_hit as u64);
+    let _ = skyline::patching::Patch::in_text(0x51f5f90).data(poisonbreath_on_hit as u64);
 }

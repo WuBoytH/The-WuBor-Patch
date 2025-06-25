@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-#[skyline::hook(offset = 0x33ecf60)]
+#[skyline::hook(offset = 0x33eccf0)]
 unsafe extern "C" fn flare1_init(vtable: u64, weapon: *mut app::Weapon, something: u64) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 

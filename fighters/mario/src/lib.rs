@@ -31,8 +31,8 @@ pub fn install() {
     agent_init::install(agent);
     agent.install();
 
-    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4630, smash::hash40("trans"));
-    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e4638, smash::hash40("trans"));
+    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e3630, smash::hash40("trans"));
+    wubor_utils::wua_bind::MiscModule::patch_vtable_function(0x51e3638, smash::hash40("trans"));
 
     mantle::install();
 }

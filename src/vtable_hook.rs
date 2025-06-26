@@ -8,6 +8,7 @@ mod ganon;
 mod gaogaen;
 mod ike;
 mod jack;
+mod kirby;
 mod koopa;
 mod lucario;
 mod lucina;
@@ -44,6 +45,7 @@ pub fn install() {
     gaogaen::install();
     ike::install();
     jack::install();
+    kirby::install();
     koopa::install();
     lucario::install();
     lucina::install();

@@ -1,5 +1,6 @@
 mod fighter;
 mod brave;
+mod captain;
 mod dolly;
 mod eflame;
 mod elight;
@@ -37,6 +38,7 @@ mod ryu_shinkuhadoken;
 pub fn install() {
     fighter::install();
     brave::install();
+    captain::install();
     dolly::install();
     eflame::install();
     elight::install();

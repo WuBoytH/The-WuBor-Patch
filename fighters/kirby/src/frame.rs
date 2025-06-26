@@ -40,11 +40,50 @@ unsafe extern "C" fn kirby_taunt_movement(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe extern "C" fn kirby_boost_power_handler(fighter: &mut L2CFighterCommon) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY) {
+        return;
+    }
+    if [
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_STANDBY,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+    ].contains(&fighter.global_table[0xB].get_i32()) {
+        VarModule::off_flag(fighter.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
+        VarModule::set_float(fighter.module_accessor, vars::captain::instance::float::BOOST_POWER, 0.0);
+    }
+
+    if VarModule::is_flag(fighter.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
+        let eff_handle = VarModule::get_int(fighter.module_accessor, vars::captain::instance::int::BOOST_POWER_EFF) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("captain_appeal_hi"),
+                Hash40::new("hip"),
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                0.85,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff_handle = EffectModule::get_last_handle(fighter.module_accessor);
+            VarModule::set_int(fighter.module_accessor, vars::captain::instance::int::BOOST_POWER_EFF, eff_handle as i32);
+        }
+    }
+}
+
 unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     kirby_gaogaen_lariat_jump_cancel(fighter);
     kirby_ganon_special_n_reset(fighter);
     kirby_taunt_movement(fighter);
+    kirby_boost_power_handler(fighter);
 }
 
 pub fn install(agent: &mut Agent) {

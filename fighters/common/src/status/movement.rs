@@ -1,5 +1,7 @@
 use super::*;
 
+mod squat;
+
 mod look_up;
 mod look_up_wait;
 mod look_up_rv;
@@ -22,6 +24,8 @@ mod pass;
 mod tread_jump;
 
 pub fn install() {
+    squat::install();
+
     turn::install();
 
     dash::install();

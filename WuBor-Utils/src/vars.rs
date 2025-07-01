@@ -246,9 +246,6 @@ pub mod brave {
 
 pub mod captain {
     pub mod instance {
-        pub mod flag {
-            pub const HAS_BOOST_POWER : i32 = 0x0100;
-        }
         pub mod int {
             pub const BOOST_POWER_EFF : i32 = 0x0100;
         }
@@ -266,6 +263,9 @@ pub mod captain {
             pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
         }
     }
+
+    pub const BOOST_POWER_THRESHOLD : f32 = 50.0;
+    pub const BOOST_POWER_MAX : f32 = 100.0;
 }
 
 pub mod chrom {

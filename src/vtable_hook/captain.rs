@@ -9,7 +9,14 @@ pub unsafe extern "C" fn captain_on_attack(vtable: u64, fighter: &mut Fighter, l
     let object = (*fighter).battle_object;
     let module_accessor = object.module_accessor;
     let kind = object.kind;
-    captain_check_boost_power(module_accessor, damage);
+    let collision_log = log as *mut CollisionLogScuffed;
+    if (*collision_log).collision_kind == *COLLISION_KIND_HIT as u8 {
+        let opponent_object = MiscModule::get_battle_object_from_id((*collision_log).opponent_object_id);
+        if (*opponent_object).battle_object_id >> 0x1c == 0
+        && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+            captain_check_boost_power(module_accessor, damage);
+        }
+    }
 
     if kind == *FIGHTER_KIND_CAPTAIN as u32 {
         let status = StatusModule::status_kind(module_accessor);

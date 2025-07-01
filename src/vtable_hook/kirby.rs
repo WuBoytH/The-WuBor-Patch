@@ -1,5 +1,10 @@
 use crate::imports::*;
 
+extern "C" {
+    #[link_name = "captain_update_boost_power"]
+    pub fn captain_update_boost_power(module_accessor: *mut BattleObjectModuleAccessor);
+}
+
 #[skyline::hook(offset = 0xb96770)]
 pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1: u32) {
     let module_accessor = fighter.battle_object.module_accessor;
@@ -9,6 +14,10 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
         if copy_kind == *FIGHTER_KIND_DOLLY as u32 {
             WorkModule::off_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
             ControlModule::reset_special_command(module_accessor, true);
+        }
+        if copy_kind == *FIGHTER_KIND_CAPTAIN as u32 {
+            VarModule::set_float(module_accessor, captain::instance::float::BOOST_POWER, 0.0);
+            captain_update_boost_power(module_accessor);
         }
     }
     original!()(fighter, param_1);

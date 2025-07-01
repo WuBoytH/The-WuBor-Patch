@@ -20,20 +20,36 @@ mod frame;
 
 #[no_mangle]
 pub unsafe extern "C" fn captain_check_boost_power(module_accessor: *mut BattleObjectModuleAccessor, damage: f32) {
-    if !VarModule::is_flag(module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        VarModule::add_float(module_accessor, vars::captain::instance::float::BOOST_POWER, damage);
-        if VarModule::get_float(module_accessor, vars::captain::instance::float::BOOST_POWER) <= 0.0 {
-            VarModule::set_float(module_accessor, vars::captain::instance::float::BOOST_POWER, 0.0);
+    let boost_power_current = VarModule::get_float(module_accessor, vars::captain::instance::float::BOOST_POWER);
+    let boost_power_new = (boost_power_current + damage).clamp(0.0, vars::captain::BOOST_POWER_MAX);
+    VarModule::set_float(module_accessor, vars::captain::instance::float::BOOST_POWER, boost_power_new);
+    if (boost_power_current / vars::captain::BOOST_POWER_THRESHOLD) as i32
+    != (boost_power_new / vars::captain::BOOST_POWER_THRESHOLD) as i32 {
+        if boost_power_new > boost_power_current {
+            SoundModule::play_se(module_accessor, Hash40::new("se_captain_boostpower"), true, false, false, false, enSEType(0));
         }
-        if VarModule::get_float(module_accessor, vars::captain::instance::float::BOOST_POWER) >= 50.0 {
-            VarModule::set_float(module_accessor, vars::captain::instance::float::BOOST_POWER, 0.0);
-            SoundModule::play_se_no3d(
-                module_accessor,
-                Hash40::new("se_captain_boostpower"),
-                false,
-                false
-            );
-            VarModule::on_flag(module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
+        captain_update_boost_power(module_accessor);
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn captain_update_boost_power(module_accessor: *mut BattleObjectModuleAccessor) {
+    let boost_power = VarModule::get_float(module_accessor, vars::captain::instance::float::BOOST_POWER);
+    let level = (boost_power / vars::captain::BOOST_POWER_THRESHOLD) as i32;
+    match level {
+        0 => MiscModule::disable_lightweight(module_accessor),
+        _ => {
+            let mul = 1.0 + (0.1 * level as f32);
+
+            let mut changes = Vec::new();
+            changes.push(StatChange::new(hash40("dash_speed"), mul));
+            changes.push(StatChange::new(hash40("run_speed_max"), mul));
+            // changes.push(StatChange::new(hash40("ground_brake"), mul));
+            changes.push(StatChange::new(hash40("air_speed_x_stable"), mul));
+            // changes.push(StatChange::new(hash40("air_brake_x"), mul));
+            changes.push(StatChange::new(hash40("air_speed_y_stable"), mul));
+            changes.push(StatChange::new(hash40("dive_speed_y"), mul));
+            MiscModule::set_lightweight(module_accessor, changes);
         }
     }
 }

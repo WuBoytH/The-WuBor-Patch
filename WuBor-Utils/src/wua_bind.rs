@@ -861,6 +861,69 @@ pub mod MiscModule {
         let vtable = *module as *const u64;
         *((*vtable + func_offset) as *const u64)
     }
+
+    /// Sets and enables lightweight
+    pub unsafe fn set_lightweight(module_accessor: *mut BattleObjectModuleAccessor, mut changes: Vec<StatChange>) {
+        let ptr = changes.as_mut_ptr();
+        let len = changes.len();
+        let end_ptr = ptr.add(len);
+
+        // static mut STAT_CHANGE_GROUP_ALLOCATOR : *mut StatChangeGroup = 0 as *mut StatChangeGroup;
+        // if STAT_CHANGE_GROUP_ALLOCATOR as u64 == 0 {
+        //     let memory = allocator(0x10, 0x60);
+        //     for i in 0..12 {
+        //         *memory.add(i) = 0;
+        //     }
+        //     STAT_CHANGE_GROUP_ALLOCATOR = memory as *mut StatChangeGroup;
+        // }
+        let memory = allocator(0x10, 0x60);
+        for i in 0..12 {
+            *memory.add(i) = 0;
+        }
+        let memory = memory as *mut StatChangeGroup;
+        // println!("group ptr: {:p}", (*stat_change_group).group);
+        // println!("StatChange size: {}", std::mem::size_of::<StatChange>());
+        set_lightweight_data(memory, ptr, end_ptr);
+        // if !ptr.is_null() {
+        //     set_lightweight_data_post(ptr);
+        // }
+        // println!("stat_change_group ptr: {:#x}", stat_change_group as *mut StatChangeGroup as u64);
+        // for change in (*stat_change_group.group).iter() {
+        //     println!("lightweight data:");
+        //     println!("      hash: {:#x}", change.param_hash);
+        //     println!("      mul: {}", change.mul);
+        // }
+        let work_module = (module_accessor as *mut u64).add(0xf1c0 / 0x8);
+        // Fix this later
+        *((*work_module as *mut *mut StatChangeGroup).add(0x58 / 0x8)) = memory;
+        *((*work_module as *mut u64).add(0x88 / 0x8)) = 0;
+        WorkModule::on_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_LIGHT_WEIGHT);
+        let ptr = get_module_vtable_func(module_accessor, 0xf1c0, 0x280);
+        let handle_attach_item: extern "C" fn(work_module: *mut u64, param_1: u64, param_2: u8) = std::mem::transmute(ptr);
+        handle_attach_item(*work_module as *mut u64, 0, 1);
+    }
+
+    /// Removes and disables lightweight
+    pub unsafe fn disable_lightweight(module_accessor: *mut BattleObjectModuleAccessor) {
+        let work_module = (module_accessor as *mut u64).add(0xf1c0 / 0x8);
+        // Fix this later
+        *((*work_module as *mut u64).add(0x58 / 0x8)) = 0;
+        *((*work_module as *mut u64).add(0x88 / 0x8)) = 0;
+        WorkModule::off_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_LIGHT_WEIGHT);
+        let ptr = get_module_vtable_func(module_accessor, 0xf1c0, 0x280);
+        let handle_attach_item: extern "C" fn(work_module: *mut u64, param_1: u64, param_2: u8) = std::mem::transmute(ptr);
+        handle_attach_item(*work_module as *mut u64, 0, 1);
+    }
+
+    #[skyline::from_offset(0x392dce0)]
+    unsafe extern "C" fn allocator(align: i32, size: i32) -> *mut u64;
+
+    #[skyline::from_offset(0x75d8f0)]
+    unsafe extern "C" fn set_lightweight_data(group_ptr: *mut StatChangeGroup, stat_change_vec: *mut StatChange, end_ptr: *mut StatChange);
+
+    #[skyline::from_offset(0x392e590)]
+    unsafe extern "C" fn set_lightweight_data_post(stat_change_vec: *mut StatChange);
+
 }
 
 extern "C" {

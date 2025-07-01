@@ -2,12 +2,7 @@ use super::*;
 
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_TURN);
@@ -115,12 +110,7 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.0, y: 0.2, z: 0.0});
     }
     frame(agent.lua_state_agent, 1.0);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_TURN);
@@ -270,12 +260,7 @@ unsafe extern "C" fn game_specialairnturn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     // macros::FT_MOTION_RATE(agent, 0.75);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     frame(agent.lua_state_agent, 9.0);
     // macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
@@ -320,8 +305,9 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
         frame(agent.lua_state_agent, 6.0);
         macros::FT_MOTION_RATE(agent, 3.0 / 1.0);
         if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("handl"), 5.0, 367, 100, 0, 0, 6.0, 0.0, -2.0, -1.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 367, 100, 0, 0, 5.5, 0.0, 9.0, 5.5, Some(0.0), Some(9.0), Some(12.5), 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("handl"), 5.0, 368, 100, 0, 0, 6.0, 0.0, -2.0, -1.0, None, None, None, 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 368, 100, 0, 0, 5.5, 0.0, 9.0, 5.5, Some(0.0), Some(9.0), Some(12.5), 3.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 4, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            AttackModule::set_vec_target_pos(agent.module_accessor, 0, Hash40::new("top"), &Vector2f{x: 5.5, y: 11.0}, 4, false);
         }
         wait(agent.lua_state_agent, 1.0 / 3.0);
         if macros::is_excute(agent) {
@@ -369,12 +355,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
         JostleModule::set_status(agent.module_accessor, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
     }
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     frame(agent.lua_state_agent, 9.0);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
@@ -477,12 +458,7 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         frame(agent.lua_state_agent, 13.0);
         if macros::is_excute(agent) {
@@ -500,14 +476,10 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         wait(agent.lua_state_agent, 1.0);
         if macros::is_excute(agent) {
             AttackModule::clear_all(agent.module_accessor);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 60, 100, 180, 0, 3.0, 0.0, 6.5, 2.5, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.6, 92, 100, 170, 0, 3.8, 0.0, 6.5, 8.0, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.6, 60, 100, 110, 0, 3.0, 0.0, 11.5, 2.5, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 3, 0, Hash40::new("top"), 0.6, 92, 100, 110, 0, 3.8, 0.0, 11.5, 8.5, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 367, 100, 85, 0, 5.0, 0.0, 15.0, 4.0, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.6, 367, 100, 85, 0, 4.0, 0.0, 11.0, 4.0, None, None, None, 0.7, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
             AttackModule::set_no_finish_camera(agent.module_accessor, 0, true, false);
             AttackModule::set_no_finish_camera(agent.module_accessor, 1, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 2, true, false);
-            AttackModule::set_no_finish_camera(agent.module_accessor, 3, true, false);
             AttackModule::set_no_damage_fly_smoke_all(agent.module_accessor, true, false);
         }
         frame(agent.lua_state_agent, 19.0);
@@ -598,12 +570,7 @@ unsafe extern "C" fn game_specialhithrow(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         macros::FT_MOTION_RATE(agent, 0.857);
         frame(agent.lua_state_agent, 15.0);
@@ -660,12 +627,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if VarModule::is_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER) {
-        if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::instance::flag::HAS_BOOST_POWER);
-            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER);
-        }
-    }
+    spend_boost_power(agent);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         macros::FT_MOTION_RATE(agent, 0.867);
         frame(agent.lua_state_agent, 16.0);
@@ -711,10 +673,9 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_speciallwwallend(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 1.0);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
-            CancelModule::enable_cancel(agent.module_accessor);
             sv_kinetic_energy!(
                 reset_energy,
                 agent,
@@ -727,6 +688,12 @@ unsafe extern "C" fn game_speciallwwallend(agent: &mut L2CAgentBase) {
                 0.0
             );
             KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        }
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
+        if macros::is_excute(agent) {
+            CancelModule::enable_cancel(agent.module_accessor);
         }
     }
 }

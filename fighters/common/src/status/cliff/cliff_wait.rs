@@ -1,5 +1,61 @@
 use super::*;
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_CliffWait)]
+unsafe extern "C" fn status_pre_cliffwait(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let (flag, int, float) = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_CLIFF_CATCH {
+        (
+            // *FIGHTER_STATUS_WORK_KEEP_FLAG_CLIFF_WAIT_FLAG,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_CLIFF_WAIT_INT,
+            *FIGHTER_STATUS_WORK_KEEP_FLAG_CLIFF_WAIT_FLOAT
+        )
+    }
+    else {
+        (0, 0, 0)
+    };
+
+    let succeeds = if MotionModule::motion_kind(fighter.module_accessor) == hash40("cliff_catch")
+    && !MotionModule::is_end(fighter.module_accessor) {
+        *FS_SUCCEEDS_KEEP_VISIBILITY
+    }
+    else {
+        0
+    };
+
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_CLIFF),
+        *FIGHTER_KINETIC_TYPE_MOTION_CLIFF,
+        *GROUND_CORRECT_KIND_CLIFF as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        flag,
+        int,
+        float,
+        succeeds
+    );
+
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        (
+            *FIGHTER_STATUS_ATTR_CLEAR_MOTION_ENERGY |
+            *FIGHTER_STATUS_ATTR_DISABLE_TURN_DAMAGE |
+            *FIGHTER_STATUS_ATTR_ENABLE_ROCKETBELT_EJECT |
+            *FIGHTER_STATUS_ATTR_DISABLE_INTERRUPT_WARP
+        ) as u32,
+        0,
+        0
+    );
+
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_get_cliff_wait_hit_xlu_frame)]
 unsafe extern "C" fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon) -> L2CValue {
     let air_xlu_max_frame = WorkModule::get_param_int(
@@ -160,6 +216,7 @@ unsafe extern "C" fn status_cliffwait_main(fighter: &mut L2CFighterCommon) -> L2
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_cliffwait,
             get_cliff_wait_hit_xlu_frame,
             status_cliffwait_main
         );

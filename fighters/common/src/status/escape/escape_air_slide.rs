@@ -91,7 +91,7 @@ pub struct AirDashParams {
 
 pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
-    let cancel_frame: f32;
+    let mut cancel_frame: f32;
     if get_airdash_tier(fighter) == AirDashTier::Teleport {
         attack_frame = 24.0;
         cancel_frame = 34.0;
@@ -99,6 +99,18 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
     else {
         attack_frame = 14.0;
         cancel_frame = 14.0;
+    }
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if [
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
+    ].contains(&prev_status) {
+        cancel_frame += 10.0;
     }
     AirDashParams{attack_frame, cancel_frame}
 }

@@ -89,7 +89,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
         let airdash_params = get_airdash_params(fighter);
-        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.attack_frame
+        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.cancel_frame
         && !VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_ENABLE_ATTACK) {
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);

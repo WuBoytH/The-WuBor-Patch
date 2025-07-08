@@ -7,11 +7,14 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
     u64::from([
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_WALK_BRAKE, // new
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_TURN,
         *FIGHTER_STATUS_KIND_TURN_DASH,
         *FIGHTER_STATUS_KIND_TURN_RUN,
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_JUMP_SQUAT, // new
         *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -81,11 +84,14 @@ pub unsafe extern "C" fn shulk_check_can_activate_art_wheel(fighter: *mut Fighte
     u64::from([
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_WALK_BRAKE, // new
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_TURN,
         *FIGHTER_STATUS_KIND_TURN_DASH,
         *FIGHTER_STATUS_KIND_TURN_RUN,
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_JUMP_SQUAT, // new
         *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -142,6 +148,42 @@ pub unsafe extern "C" fn shulk_check_can_activate_art_wheel(fighter: *mut Fighte
         // *FIGHTER_STATUS_KIND_DOWN_STAND_FB,
         // *FIGHTER_STATUS_KIND_DOWN_STAND_ATTACK,
         *FIGHTER_STATUS_KIND_OTTOTTO_WAIT,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SHULK_SPECIAL_N
+    ].contains(&status))
+}
+
+#[skyline::hook(offset = 0x116b7f0)]
+pub unsafe extern "C" fn shulk_can_transition_to_special_n(fighter: *mut Fighter) -> u64 {
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let status = StatusModule::status_kind(module_accessor);
+    u64::from([
+        *FIGHTER_STATUS_KIND_WAIT,
+        *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
+        *FIGHTER_STATUS_KIND_TURN, // new
+        *FIGHTER_STATUS_KIND_TURN_DASH, // new
+        *FIGHTER_STATUS_KIND_TURN_RUN, // new
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
+        *FIGHTER_STATUS_KIND_JUMP,
+        *FIGHTER_STATUS_KIND_JUMP_AERIAL,
+        *FIGHTER_STATUS_KIND_FLY,
+        *FIGHTER_STATUS_KIND_FALL,
+        *FIGHTER_STATUS_KIND_FALL_AERIAL,
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+        // *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        // *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+        *FIGHTER_STATUS_KIND_OTTOTTO_WAIT,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_FALL,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_FALL,
+        *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP,
+        *FIGHTER_STATUS_KIND_ITEM_ROCKETBELT_HOVER_KEEP,
+        *FIGHTER_STATUS_KIND_KILLER_JUMP,
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_KIRBY_STATUS_KIND_SHULK_SPECIAL_N
     ].contains(&status))
@@ -207,6 +249,7 @@ pub fn install() {
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,
         shulk_check_can_activate_art_wheel,
+        shulk_can_transition_to_special_n,
         shulk_inc_arts_wheel_button_timer,
         // shulk_on_attack,
         // shulk_shield_art_hit_decrease

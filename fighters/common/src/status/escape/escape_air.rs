@@ -460,6 +460,8 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             EffectModule::set_rate(fighter.module_accessor, line, 0.5);
 
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_airdash"), true, false, false, false, enSEType(0));
+
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES.into());
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             let tier = get_airdash_tier(fighter);

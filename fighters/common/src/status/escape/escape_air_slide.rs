@@ -108,6 +108,7 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
         *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
     ].contains(&prev_status) {
         cancel_frame += 10.0;

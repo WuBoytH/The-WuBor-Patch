@@ -91,7 +91,7 @@ pub struct AirDashParams {
 
 pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
-    let cancel_frame: f32;
+    let mut cancel_frame: f32;
     if get_airdash_tier(fighter) == AirDashTier::Teleport {
         attack_frame = 24.0;
         cancel_frame = 34.0;
@@ -99,6 +99,9 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
     else {
         attack_frame = 14.0;
         cancel_frame = 14.0;
+    }
+    if VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE) {
+        cancel_frame += 10.0;
     }
     AirDashParams{attack_frame, cancel_frame}
 }
@@ -155,6 +158,20 @@ pub unsafe extern "C" fn escape_air_slide_init(fighter: &mut L2CFighterCommon) -
             0.0
         );
     }
+
+    if [
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
+    ].contains(&prev_status) {
+        VarModule::on_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE);
+    }
+
     // if [
     //     *FIGHTER_STATUS_KIND_DAMAGE_FALL,
     //     *FIGHTER_STATUS_KIND_TREAD_FALL

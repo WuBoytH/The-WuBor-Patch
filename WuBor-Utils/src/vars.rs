@@ -185,6 +185,7 @@ pub mod escape_air {
     pub mod flag {
         pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
         pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+        pub const SLIDE_IS_FROM_DAMAGE : i32 = 0x1052;
     }
 }
 

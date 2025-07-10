@@ -13,6 +13,7 @@ mod koopa;
 mod lucario;
 mod lucina;
 mod luigi;
+mod mariod;
 // mod ness;
 mod pickel;
 mod reflet;
@@ -50,6 +51,7 @@ pub fn install() {
     lucario::install();
     lucina::install();
     luigi::install();
+    mariod::install();
     // ness::install();
     pickel::install();
     reflet::install();

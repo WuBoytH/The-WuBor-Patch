@@ -1,8 +1,10 @@
 use super::*;
 
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_TURN);
@@ -109,8 +111,10 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.0, y: 0.2, z: 0.0});
     }
-    frame(agent.lua_state_agent, 1.0);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_TURN);
@@ -260,7 +264,10 @@ unsafe extern "C" fn game_specialairnturn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     // macros::FT_MOTION_RATE(agent, 0.75);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     frame(agent.lua_state_agent, 9.0);
     // macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
@@ -355,7 +362,10 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
         JostleModule::set_status(agent.module_accessor, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_NONE);
     }
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     frame(agent.lua_state_agent, 9.0);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
@@ -457,8 +467,10 @@ unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         frame(agent.lua_state_agent, 13.0);
         if macros::is_excute(agent) {
@@ -569,10 +581,12 @@ unsafe extern "C" fn game_specialhithrow(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
-        macros::FT_MOTION_RATE(agent, 0.857);
+        macros::FT_MOTION_RATE(agent, 4.0 / 7.0);
         frame(agent.lua_state_agent, 15.0);
         macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {
@@ -598,7 +612,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
         }
     }
     else {
-        macros::FT_MOTION_RATE(agent, 0.857);
+        // macros::FT_MOTION_RATE(agent, 4.0 / 7.0);
         frame(agent.lua_state_agent, 15.0);
         macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {
@@ -626,10 +640,12 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    spend_boost_power(agent);
+    frame(agent.lua_state_agent, 8.0);
+    if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        spend_boost_power(agent);
+    }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
-        macros::FT_MOTION_RATE(agent, 0.867);
+        macros::FT_MOTION_RATE(agent, 5.0 / 8.0);
         frame(agent.lua_state_agent, 16.0);
         macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {
@@ -650,7 +666,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
         }
     }
     else {
-        macros::FT_MOTION_RATE(agent, 0.867);
+        // macros::FT_MOTION_RATE(agent, 0.867);
         frame(agent.lua_state_agent, 16.0);
         macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {

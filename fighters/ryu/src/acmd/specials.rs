@@ -87,6 +87,21 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
+#[no_mangle]
+unsafe extern "C" fn ryu_game_specialn2(agent: &mut L2CAgentBase) {
+    game_specialn2(agent);
+}
+
+#[no_mangle]
+unsafe extern "C" fn ryu_effect_specialn2(agent: &mut L2CAgentBase) {
+    effect_specialn2(agent);
+}
+
+#[no_mangle]
+unsafe extern "C" fn ryu_expression_specialn2(agent: &mut L2CAgentBase) {
+    expression_specialn2(agent);
+}
+
 unsafe extern "C" fn game_specialn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 8.0 / 14.0);

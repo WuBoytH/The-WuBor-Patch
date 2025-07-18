@@ -47,6 +47,7 @@ pub unsafe extern "C" fn captain_update_boost_power(module_accessor: *mut Battle
             // changes.push(StatChange::new(hash40("ground_brake"), mul));
             changes.push(StatChange::new(hash40("air_speed_x_stable"), mul));
             // changes.push(StatChange::new(hash40("air_brake_x"), mul));
+            changes.push(StatChange::new(hash40("air_accel_y"), mul));
             changes.push(StatChange::new(hash40("air_speed_y_stable"), mul));
             changes.push(StatChange::new(hash40("dive_speed_y"), mul));
             MiscModule::set_lightweight(module_accessor, changes);

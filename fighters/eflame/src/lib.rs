@@ -18,6 +18,7 @@ mod acmd;
 mod status;
 mod frame;
 mod agent_init;
+mod fgc;
 
 mod esword;
 mod firepillar;
@@ -29,6 +30,7 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+    fgc::install();
 
     esword::install();
     firepillar::install();

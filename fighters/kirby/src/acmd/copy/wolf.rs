@@ -1,26 +1,6 @@
 use super::*;
 
-#[no_mangle]
-unsafe extern "C" fn wolf_game_specialn(agent: &mut L2CAgentBase) {
-    game_specialn(agent);
-}
-
-#[no_mangle]
-unsafe extern "C" fn wolf_game_specialairn(agent: &mut L2CAgentBase) {
-    game_specialairn(agent);
-}
-
-#[no_mangle]
-unsafe extern "C" fn wolf_sound_specialn(agent: &mut L2CAgentBase) {
-    sound_specialn(agent);
-}
-
-#[no_mangle]
-unsafe extern "C" fn wolf_expression_specialn(agent: &mut L2CAgentBase) {
-    expression_specialn(agent);
-}
-
-unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_wolfspecialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, -1);
@@ -61,7 +41,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_wolfspecialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_WOLF_GENERATE_ARTICLE_BLASTER, false, -1);
@@ -104,7 +84,7 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_wolfspecialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -132,7 +112,7 @@ unsafe extern "C" fn effect_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_wolfspecialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -155,7 +135,7 @@ unsafe extern "C" fn effect_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_wolfspecialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_wolf_special_n03"));
@@ -167,7 +147,7 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_wolfspecialn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -194,7 +174,7 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn game_wolfspecialncancel(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 7.0, 60, 37, 0, 80, 2.5, 0.0, 0.0, -3.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -217,7 +197,7 @@ unsafe extern "C" fn game_specialncancel(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn effect_specialncancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn effect_wolfspecialncancel(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("wolf_bayonet"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -230,14 +210,14 @@ unsafe extern "C" fn effect_specialncancel(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_specialncancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_wolfspecialncancel(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_wolf_special_n03"));
     }
 }
 
-unsafe extern "C" fn expression_specialncancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_wolfspecialncancel(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -258,63 +238,29 @@ unsafe extern "C" fn expression_specialncancel(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_inflict_kind_status(agent.module_accessor);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 15.0, 28, 85, 0, 30, 7.0, 0.0, 5.5, 5.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_PUNCH);
-    }
-    frame(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-    frame(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-    frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        JostleModule::set_status(agent.module_accessor, true);
-    }
-    frame(agent.lua_state_agent, 18.0);
-    if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        if macros::is_excute(agent) {
-            CancelModule::enable_cancel(agent.module_accessor);
-        }
-    }
-}
-
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_specialn", game_specialn, Priority::Low);
-
-    agent.acmd("game_specialairn", game_specialairn, Priority::Low);
-
-    agent.acmd("game_specialnhi", game_specialn, Priority::Low);
-    agent.acmd("effect_specialnhi", effect_specialn, Priority::Low);
-    agent.acmd("sound_specialnhi", sound_specialn, Priority::Low);
-    agent.acmd("expression_specialnhi", expression_specialn, Priority::Low);
+    agent.acmd("game_wolfspecialnhi", game_wolfspecialn, Priority::Low);
+    agent.acmd("effect_wolfspecialnhi", effect_wolfspecialn, Priority::Low);
+    agent.acmd("sound_wolfspecialnhi", sound_wolfspecialn, Priority::Low);
+    agent.acmd("expression_wolfspecialnhi", expression_wolfspecialn, Priority::Low);
     
-    agent.acmd("game_specialairnhi", game_specialairn, Priority::Low);
-    agent.acmd("effect_specialairnhi", effect_specialairn, Priority::Low);
-    agent.acmd("sound_specialairnhi", sound_specialn, Priority::Low);
-    agent.acmd("expression_specialairnhi", expression_specialn, Priority::Low);
+    agent.acmd("game_wolfspecialairnhi", game_wolfspecialairn, Priority::Low);
+    agent.acmd("effect_wolfspecialairnhi", effect_wolfspecialairn, Priority::Low);
+    agent.acmd("sound_wolfspecialairnhi", sound_wolfspecialn, Priority::Low);
+    agent.acmd("expression_wolfspecialairnhi", expression_wolfspecialn, Priority::Low);
 
-    agent.acmd("game_specialnlw", game_specialn, Priority::Low);
-    agent.acmd("effect_specialnlw", effect_specialn, Priority::Low);
-    agent.acmd("sound_specialnlw", sound_specialn, Priority::Low);
-    agent.acmd("expression_specialnlw", expression_specialn, Priority::Low);
+    agent.acmd("game_wolfspecialnlw", game_wolfspecialn, Priority::Low);
+    agent.acmd("effect_wolfspecialnlw", effect_wolfspecialn, Priority::Low);
+    agent.acmd("sound_wolfspecialnlw", sound_wolfspecialn, Priority::Low);
+    agent.acmd("expression_wolfspecialnlw", expression_wolfspecialn, Priority::Low);
     
-    agent.acmd("game_specialairnlw", game_specialairn, Priority::Low);
-    agent.acmd("effect_specialairnlw", effect_specialairn, Priority::Low);
-    agent.acmd("sound_specialairnlw", sound_specialn, Priority::Low);
-    agent.acmd("expression_specialairnlw", expression_specialn, Priority::Low);
+    agent.acmd("game_wolfspecialairnlw", game_wolfspecialairn, Priority::Low);
+    agent.acmd("effect_wolfspecialairnlw", effect_wolfspecialairn, Priority::Low);
+    agent.acmd("sound_wolfspecialairnlw", sound_wolfspecialn, Priority::Low);
+    agent.acmd("expression_wolfspecialairnlw", expression_wolfspecialn, Priority::Low);
 
-    agent.acmd("game_specialncancel", game_specialncancel, Priority::Low);
-    agent.acmd("effect_specialncancel", effect_specialncancel, Priority::Low);
-    agent.acmd("sound_specialncancel", sound_specialncancel, Priority::Low);
-    agent.acmd("expression_specialncancel", expression_specialncancel, Priority::Low);
-
-    agent.acmd("game_specialsend", game_specialsend, Priority::Low);
-
-    agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
+    agent.acmd("game_wolfspecialncancel", game_wolfspecialncancel, Priority::Low);
+    agent.acmd("effect_wolfspecialncancel", effect_wolfspecialncancel, Priority::Low);
+    agent.acmd("sound_wolfspecialncancel", sound_wolfspecialncancel, Priority::Low);
+    agent.acmd("expression_wolfspecialncancel", expression_wolfspecialncancel, Priority::Low);
 }

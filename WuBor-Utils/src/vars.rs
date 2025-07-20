@@ -185,6 +185,7 @@ pub mod escape_air {
     pub mod flag {
         pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
         pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+        pub const SLIDE_IS_FROM_DAMAGE : i32 = 0x1052;
     }
 }
 
@@ -463,7 +464,8 @@ pub mod kirby {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
 
-        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const WOLF_SPECIAL_N_CANCEL : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 2;
     }
 }
 

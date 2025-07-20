@@ -16,7 +16,9 @@ unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) 
                 *FIGHTER_STATUS_KIND_SPECIAL_N,
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
                 *FIGHTER_STATUS_KIND_SPECIAL_HI,
-                *FIGHTER_STATUS_KIND_SPECIAL_LW
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR, // new
+                *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE // new
             ].contains(&status) {
                 let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
                 sv_kinetic_energy!(

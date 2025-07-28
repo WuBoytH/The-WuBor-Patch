@@ -193,8 +193,6 @@ pub mod guard {
     pub mod flag {
         pub const ADD_BUFFER : i32 = 0x1050;
         pub const SET_SHIELD_LOW_SMOKE : i32 = 0x1051;
-        pub const GUARD_CANCEL_ATTACK_OK : i32 = 0x1052;
-        pub const GUARD_CANCEL_TAUNT_OK : i32 = 0x1053;
     }
     pub mod int {
         pub const SHIELD_EFF_ID : i32 = 0x1050;

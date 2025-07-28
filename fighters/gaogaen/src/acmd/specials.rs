@@ -324,7 +324,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        // GrabModule::set_rebound(agent.module_accessor, true);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -335,7 +335,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        // GrabModule::set_rebound(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 39.0);
     if macros::is_excute(agent) {
@@ -370,7 +370,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        // GrabModule::set_rebound(agent.module_accessor, true);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -381,7 +381,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        // GrabModule::set_rebound(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 39.0);
     if macros::is_excute(agent) {

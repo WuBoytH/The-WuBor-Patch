@@ -471,7 +471,8 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
             if !fighter.global_table[IS_STOP].get_bool() && fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
                 // Guard Cancel Taunt
                 let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-                if cat2 & (
+                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+                && cat2 & (
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
@@ -489,7 +490,8 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
                     // Guard Cancel Attack
-                    if fighter.global_table[CMD_CAT1].get_i32() & (
+                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+                    && fighter.global_table[CMD_CAT1].get_i32() & (
                         *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
                         *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S
                     ) != 0

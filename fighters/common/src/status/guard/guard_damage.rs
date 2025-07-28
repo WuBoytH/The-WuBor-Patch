@@ -467,17 +467,21 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
             }
         }
         else {
+            let is_shield = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+                VarModule::set_flag(fighter.module_accessor, vars::guard::flag::GUARD_CANCEL_TAUNT_OK, is_shield);
+            }
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+            && fighter.global_table[STICK_Y].get_f32() == 0.0 {
+                VarModule::set_flag(fighter.module_accessor, vars::guard::flag::GUARD_CANCEL_ATTACK_OK, is_shield);
+            }
             // Guard Cancel Actions
             if !fighter.global_table[IS_STOP].get_bool() && fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
                 // Guard Cancel Taunt
-                let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-                && cat2 & (
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
-                ) != 0
+                if VarModule::is_flag(fighter.module_accessor, vars::guard::flag::GUARD_CANCEL_TAUNT_OK)
                 && {
                     fighter.clear_lua_stack();
                     lua_args!(fighter, Hash40::new_raw(0x1daca540be));
@@ -490,11 +494,7 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
                     // Guard Cancel Attack
-                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-                    && fighter.global_table[CMD_CAT1].get_i32() & (
-                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
-                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S
-                    ) != 0
+                    if VarModule::is_flag(fighter.module_accessor, vars::guard::flag::GUARD_CANCEL_ATTACK_OK)
                     && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
                         fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
                         return 0.into();

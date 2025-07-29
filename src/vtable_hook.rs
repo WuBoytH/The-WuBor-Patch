@@ -1,6 +1,7 @@
 mod fighter;
 mod brave;
 mod captain;
+mod demon;
 mod dolly;
 mod eflame;
 mod elight;
@@ -14,6 +15,7 @@ mod koopa;
 mod lucario;
 mod lucina;
 mod luigi;
+mod mariod;
 // mod ness;
 mod pickel;
 mod reflet;
@@ -39,6 +41,7 @@ pub fn install() {
     fighter::install();
     brave::install();
     captain::install();
+    demon::install();
     dolly::install();
     eflame::install();
     elight::install();
@@ -52,6 +55,7 @@ pub fn install() {
     lucario::install();
     lucina::install();
     luigi::install();
+    mariod::install();
     // ness::install();
     pickel::install();
     reflet::install();

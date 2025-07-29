@@ -185,6 +185,7 @@ pub mod escape_air {
     pub mod flag {
         pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
         pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+        pub const SLIDE_IS_FROM_DAMAGE : i32 = 0x1052;
     }
 }
 
@@ -192,6 +193,8 @@ pub mod guard {
     pub mod flag {
         pub const ADD_BUFFER : i32 = 0x1050;
         pub const SET_SHIELD_LOW_SMOKE : i32 = 0x1051;
+        pub const VALID_GUARD_CANCEL_ATTACK_INPUT : i32 = 0x1052;
+        pub const VALID_GUARD_CANCEL_TAUNT_INPUT : i32 = 0x1053;
     }
     pub mod int {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
@@ -474,12 +477,15 @@ pub mod kirby {
     pub mod status {
         pub mod flag {
             pub const ATTACK_LW3_BOUNCE : i32 = 0x1150;
+            pub const ATTACK_LW3_HIT : i32 = 0x1151;
         }
         pub mod int {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
 
-        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const ATTAK_LW3_BOUNCE : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const WOLF_SPECIAL_N_CANCEL : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 2;
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 3;
     }
 }
 
@@ -627,6 +633,7 @@ pub mod mario {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
+            pub const ATTACK_AIR_LW_LAST : i32 = 0x1150;
 
             pub const SPECIAL_S_TRY_HOP : i32 = 0x1150;
             pub const SPECIAL_S_HOP : i32 = 0x1151;

@@ -89,7 +89,7 @@ unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) 
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
         let airdash_params = get_airdash_params(fighter);
-        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.attack_frame
+        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.cancel_frame
         && !VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_ENABLE_ATTACK) {
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
@@ -457,9 +457,16 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0,
                 0
             ) as u32;
-            EffectModule::set_rate(fighter.module_accessor, line, 0.5);
+            if VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE) {
+                EffectModule::set_rgb(fighter.module_accessor, line, 0.8, 0.6, 0.6);
+            }
+            else {
+                EffectModule::set_rate(fighter.module_accessor, line, 0.5);
+            }
 
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_airdash"), true, false, false, false, enSEType(0));
+
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES.into());
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             let tier = get_airdash_tier(fighter);

@@ -78,6 +78,19 @@ unsafe extern "C" fn special_lw_jump_init(fighter: &mut L2CFighterCommon) -> L2C
         0.0
     );
 
+    let air_accel_x_add = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_add"), 0);
+    let air_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
+    sv_kinetic_energy!(
+        controller_set_accel_x_add,
+        fighter,
+        air_accel_x_add * 1.25
+    );
+    sv_kinetic_energy!(
+        controller_set_accel_x_mul,
+        fighter,
+        air_accel_x_mul * 1.25
+    );
+
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
 
     sv_kinetic_energy!(

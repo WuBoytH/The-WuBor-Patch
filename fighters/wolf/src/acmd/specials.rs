@@ -1,5 +1,25 @@
 use super::*;
 
+#[no_mangle]
+unsafe extern "C" fn wolf_game_specialn(agent: &mut L2CAgentBase) {
+    game_specialn(agent);
+}
+
+#[no_mangle]
+unsafe extern "C" fn wolf_game_specialairn(agent: &mut L2CAgentBase) {
+    game_specialairn(agent);
+}
+
+#[no_mangle]
+unsafe extern "C" fn wolf_sound_specialn(agent: &mut L2CAgentBase) {
+    sound_specialn(agent);
+}
+
+#[no_mangle]
+unsafe extern "C" fn wolf_expression_specialn(agent: &mut L2CAgentBase) {
+    expression_specialn(agent);
+}
+
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {

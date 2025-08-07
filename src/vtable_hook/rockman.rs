@@ -1,6 +1,5 @@
 use crate::imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
-// use std::arch::asm;
 
 #[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {

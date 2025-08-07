@@ -312,9 +312,6 @@ smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 indexmap = { version = "1.9.3", features = ["std"] }
 runtime-motion-patcher = { git = "https://github.com/blu-dev/runtime-motion-patcher" }
 
-[patch.crates-io]
-skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-
 [features]
 default = ["local", "all_chars"]
 main_nro = ["common"]

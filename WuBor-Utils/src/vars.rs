@@ -876,6 +876,8 @@ pub mod ryu {
             pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1106;
             pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1107;
 
+            pub const ENABLE_DOUBLE_TAP_DRIVE_RUSH : i32 = 0x1108;
+
             pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }
         pub mod int {
@@ -889,6 +891,9 @@ pub mod ryu {
 
 pub mod ryu_shinkuhadoken {
     pub mod status {
+        pub mod instance {
+            pub const HIT : i32 = 0x0150;
+        }
         pub const FINISH : i32 = 0x2;
     }
 }

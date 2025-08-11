@@ -861,6 +861,9 @@ pub mod MiscModule {
         let vtable = *module as *const u64;
         *((*vtable + func_offset) as *const u64)
     }
+
+    #[skyline::from_offset(0x33bd9c0)]
+    pub unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut smash::app::Weapon, something: u32) -> u64;
 }
 
 extern "C" {

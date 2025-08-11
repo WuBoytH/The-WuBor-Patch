@@ -14,7 +14,7 @@ unsafe extern "C" fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
     fighter.global_table[FLICK_Y].assign(&0xFE.into());
-    ControlModule::reset_trigger(fighter.module_accessor);
+    // ControlModule::reset_trigger(fighter.module_accessor);
     fighter.sub_air_check_fall_common_pre();
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_STOP_CEIL);
     let mot;

@@ -185,6 +185,7 @@ pub mod escape_air {
     pub mod flag {
         pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
         pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+        pub const SLIDE_IS_FROM_DAMAGE : i32 = 0x1052;
     }
 }
 
@@ -192,6 +193,8 @@ pub mod guard {
     pub mod flag {
         pub const ADD_BUFFER : i32 = 0x1050;
         pub const SET_SHIELD_LOW_SMOKE : i32 = 0x1051;
+        pub const VALID_GUARD_CANCEL_ATTACK_INPUT : i32 = 0x1052;
+        pub const VALID_GUARD_CANCEL_TAUNT_INPUT : i32 = 0x1053;
     }
     pub mod int {
         pub const SHIELD_EFF_ID : i32 = 0x1050;
@@ -437,7 +440,11 @@ pub mod jack {
             pub const SPECIAL_N_FIRST : i32 = 0x1150;
 
             pub const SPECIAL_S_FEINT : i32 = 0x1150;
+            pub const SPECIAL_S_CATCH_THROW : i32 = 0x1151;
         }
+
+        pub const SPECIAL_S_CATCH : i32 = 0x1FC;
+        pub const SPECIAL_S_CATCH_JUMP : i32 = 0x1FD;
     }
 }
 
@@ -454,12 +461,15 @@ pub mod kirby {
     pub mod status {
         pub mod flag {
             pub const ATTACK_LW3_BOUNCE : i32 = 0x1150;
+            pub const ATTACK_LW3_HIT : i32 = 0x1151;
         }
         pub mod int {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
 
-        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const ATTAK_LW3_BOUNCE : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 1;
+        pub const WOLF_SPECIAL_N_CANCEL : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 2;
+        pub const DOLLY_SPECIAL_N_COMMAND : i32 = super::super::fighter::status::COMMON_STATUS_EXTEND_MAX + 3;
     }
 }
 
@@ -607,6 +617,7 @@ pub mod mario {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
+            pub const ATTACK_AIR_LW_LAST : i32 = 0x1150;
 
             pub const SPECIAL_S_TRY_HOP : i32 = 0x1150;
             pub const SPECIAL_S_HOP : i32 = 0x1151;
@@ -865,6 +876,8 @@ pub mod ryu {
             pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1106;
             pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1107;
 
+            pub const ENABLE_DOUBLE_TAP_DRIVE_RUSH : i32 = 0x1108;
+
             pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }
         pub mod int {
@@ -878,6 +891,9 @@ pub mod ryu {
 
 pub mod ryu_shinkuhadoken {
     pub mod status {
+        pub mod instance {
+            pub const HIT : i32 = 0x0150;
+        }
         pub const FINISH : i32 = 0x2;
     }
 }

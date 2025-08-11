@@ -1,5 +1,31 @@
 use super::*;
 
+unsafe extern "C" fn game_attackairf(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
+        WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(object as *mut smash::app::Weapon);
+    }
+    frame(agent.lua_state_agent, 14.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    }
+}
+
+unsafe extern "C" fn game_attackairhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
+        WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(object as *mut smash::app::Weapon);
+    }
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    }
+}
+
 unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -12,6 +38,9 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
             );
         }
     }
+    macros::FT_MOTION_RATE(agent, 11.0 / 9.0);
+    frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
@@ -65,6 +94,14 @@ unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
+    agent.acmd("game_attackairf", game_attackairf, Priority::Low);
+
+    agent.acmd("game_attackairfhi", game_attackairf, Priority::Low);
+
+    agent.acmd("game_attackairflw", game_attackairf, Priority::Low);
+
+    agent.acmd("game_attackairhi", game_attackairhi, Priority::Low);
+
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
     agent.acmd("effect_attackairlw", effect_attackairlw, Priority::Low);
 

@@ -39,7 +39,7 @@ unsafe extern "C" fn reverse_trump_logic(ctx: &mut skyline::hooks::InlineCtx) {
     WorkModule::on_flag((*object).module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
 }
 
-#[skyline::hook(offset = 0x33bdff8, inline)]
+#[skyline::hook(offset = 0x33bdd88, inline)]
 unsafe extern "C" fn force_reflect_full_lifetime(ctx: &mut skyline::hooks::InlineCtx) {
     *ctx.registers[8].x.as_mut() = 0;
 }

@@ -44,6 +44,7 @@ mod special_s;
 mod special_hi;
 
 mod special_lw;
+mod special_lw_attack;
 mod special_lw_breaking;
 
 mod super_special;
@@ -87,6 +88,7 @@ pub fn install(agent: &mut Agent) {
     special_hi::install(agent);
 
     special_lw::install(agent);
+    special_lw_attack::install(agent);
     special_lw_breaking::install(agent);
 
     super_special::install(agent);

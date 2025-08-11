@@ -53,6 +53,8 @@ mod landing_attack_air;
 
 mod down;
 
+mod catch;
+
 pub fn install(agent: &mut Agent) {
     wait::install(agent);
 
@@ -81,4 +83,6 @@ pub fn install(agent: &mut Agent) {
     landing_attack_air::install(agent);
 
     down::install(agent);
+
+    catch::install(agent);
 }

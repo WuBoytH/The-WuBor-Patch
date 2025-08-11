@@ -1,6 +1,6 @@
 mod init_settings;
-mod get_val;
-mod sound;
+// mod get_val;
+// mod sound;
 pub mod func_links;
 mod fighterutil;
 mod menu;
@@ -16,8 +16,8 @@ mod css;
 
 pub fn install() {
     init_settings::install();
-    get_val::install();
-    sound::install();
+    // get_val::install();
+    // sound::install();
     fighterutil::install();
     menu::install();
     music::install();

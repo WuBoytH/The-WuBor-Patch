@@ -144,7 +144,7 @@ static mut LAST_ANALOG: f32 = 0.0;
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c50f0) as *const u64);
+        .add(0x52c40f0) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
@@ -260,7 +260,7 @@ unsafe extern "C" fn isthrowstick(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3666acc, inline)]
+#[skyline::hook(offset = 0x3666eac, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x100) as *mut _;
@@ -270,7 +270,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x366692c, inline)]
+#[skyline::hook(offset = 0x3666d0c, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -278,7 +278,7 @@ unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS = [0.0, 0.0];
 }
 
-#[skyline::hook(offset = 0x3666b00, inline)]
+#[skyline::hook(offset = 0x3666ee0, inline)]
 unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[9].x.as_ref() & 0x40 != 0 {
         let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
@@ -289,7 +289,7 @@ unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x3666b14, inline)]
+#[skyline::hook(offset = 0x3666ef4, inline)]
 unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     if *ctx.registers[8].x.as_ref() & 0x80 != 0 {
         let controller: *mut Controller = *ctx.registers[19].x.as_ref() as _;
@@ -306,8 +306,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
-    skyline::patching::Patch::in_text(0x3666afc).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3666b10).data(0xAA0803EAu32);
+    skyline::patching::Patch::in_text(0x3666edc).data(0xAA0903EAu32);
+    skyline::patching::Patch::in_text(0x3666ef0).data(0xAA0803EAu32);
     skyline::install_hooks!(
         map_controls_hook,
         analog_trigger_l,

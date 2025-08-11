@@ -146,9 +146,10 @@ pub unsafe extern "C" fn full_invuln(module_accessor: *mut BattleObjectModuleAcc
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    let color = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
-    color == 6 || color == 7
+pub unsafe extern "C" fn shadow_id(_module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    // let color = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+    // color == 6 || color == 7
+    false
 }
 
 pub unsafe extern "C" fn get_damage_mul(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {

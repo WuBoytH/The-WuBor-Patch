@@ -1,5 +1,4 @@
 use crate::imports::*;
-use std::arch::asm;
 
 #[skyline::hook(offset = 0xa633f4, inline)]
 unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::InlineCtx) {
@@ -30,7 +29,7 @@ unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::Inl
 
     let lr = PostureModule::lr(module_accessor);
     let final_angle = rot + new_angle * lr;
-    asm!("fmov s0, w8", in("w8") final_angle);
+    ctx.registers_f[0].set_s(final_angle);
 }
 
 pub fn install() {

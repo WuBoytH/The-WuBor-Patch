@@ -1,6 +1,5 @@
 use super::*;
 use wubor_utils::controls::*;
-use std::arch::asm;
 
 pub mod param {   
     #[allow(non_upper_case_globals)]
@@ -694,7 +693,7 @@ unsafe extern "C" fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d19c4, inline)]
@@ -707,7 +706,7 @@ unsafe extern "C" fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d1b10, inline)]
@@ -720,7 +719,7 @@ unsafe extern "C" fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d0454, inline)]
@@ -733,7 +732,7 @@ unsafe extern "C" fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6ce7d0, inline)]
@@ -746,7 +745,7 @@ unsafe extern "C" fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCt
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d05cc, inline)]
@@ -759,7 +758,7 @@ unsafe extern "C" fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::Inline
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d117c, inline)]
@@ -772,7 +771,7 @@ unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::Inline
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6ce28c, inline)]
@@ -785,7 +784,7 @@ unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::Inline
     else {
         ControlModule::get_stick_x(boma)
     };
-    asm!("fmov s0, w8", in("w8") left_stick_x)
+    ctx.registers_f[0].set_s(left_stick_x);
 }
 
 #[skyline::hook(offset = 0x6d253c, inline)]
@@ -800,7 +799,7 @@ unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
         1.0
     };
     let jump_y = callable(work_module, hash40("jump_speed_y"), 0) * mul;
-    asm!("fmov s0, w8", in("w8") jump_y)
+    ctx.registers_f[0].set_s(jump_y);
 }
 
 pub fn install() {

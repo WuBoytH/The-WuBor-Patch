@@ -924,6 +924,8 @@ pub mod MiscModule {
     #[skyline::from_offset(0x392e590)]
     unsafe extern "C" fn set_lightweight_data_post(stat_change_vec: *mut StatChange);
 
+    #[skyline::from_offset(0x33bd9c0)]
+    pub unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut smash::app::Weapon, something: u32) -> u64;
 }
 
 extern "C" {

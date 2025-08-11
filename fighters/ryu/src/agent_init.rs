@@ -65,6 +65,21 @@ pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommo
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND.into(), true.into());
         return true.into();
     }
+
+    // if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE)
+    // && VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::ENABLE_DOUBLE_TAP_DRIVE_RUSH)
+    // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
+    //     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_6N6 != 0 {
+    //         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+    //         return true.into();
+    //     }
+    //     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_4N4 != 0 {
+    //         PostureModule::reverse_lr(fighter.module_accessor);
+    //         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+    //         return true.into();
+    //     }
+    // }
+
     false.into()
 }
 

@@ -12,15 +12,15 @@ unsafe extern "C" fn shinku_on_hit_inner(
     if !VarModule::is_flag(weapon.battle_object.module_accessor, vars::ryu_shinkuhadoken::status::instance::HIT) {
         if something & (*COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) as u32 != 0 {
             VarModule::on_flag(weapon.battle_object.module_accessor, vars::ryu_shinkuhadoken::status::instance::HIT);
-            println!("hi");
-            KineticModule::unable_energy(weapon.battle_object.module_accessor, 0);
+            // println!("hi");
+            // KineticModule::unable_energy(weapon.battle_object.module_accessor, 0);
             WorkModule::set_int(weapon.battle_object.module_accessor, 35, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         }
     }
     else {
         if something & *COLLISION_KIND_MASK_REFLECTOR as u32 != 0 {
             VarModule::off_flag(weapon.battle_object.module_accessor, vars::ryu_shinkuhadoken::status::instance::HIT);
-            KineticModule::enable_energy(weapon.battle_object.module_accessor, 0);
+            // KineticModule::enable_energy(weapon.battle_object.module_accessor, 0);
         }
     }
     // else {

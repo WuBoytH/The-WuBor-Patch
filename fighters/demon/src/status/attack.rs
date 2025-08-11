@@ -98,32 +98,32 @@ unsafe extern "C" fn demon_attack_combo_main_loop(fighter: &mut L2CFighterCommon
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS) {
         let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
-        if combo_count == 2 {
-            if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
-                MotionModule::change_motion(
-                    fighter.module_accessor,
-                    Hash40::new("attack_14_2"),
-                    0.0,
-                    1.0,
-                    false,
-                    0.0,
-                    false,
-                    false
-                );
-                notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
-            }
-        }
-        if combo_count == 3 {
-            if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
-                fighter.change_status(FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6.into(), true.into());
-                return 0.into();
-            }
-            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
-                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), true.into());
-                return 0.into();
-            }
-        }
+        // if combo_count == 2 {
+        //     if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
+        //         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
+        //         MotionModule::change_motion(
+        //             fighter.module_accessor,
+        //             Hash40::new("attack_14_2"),
+        //             0.0,
+        //             1.0,
+        //             false,
+        //             0.0,
+        //             false,
+        //             false
+        //         );
+        //         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
+        //     }
+        // }
+        // if combo_count == 3 {
+        //     if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
+        //         fighter.change_status(FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6.into(), true.into());
+        //         return 0.into();
+        //     }
+        //     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
+        //         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), true.into());
+        //         return 0.into();
+        //     }
+        // }
         if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
             demon_attack_combo_main_mot_helper(fighter, (combo_count + 1).into());
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
@@ -200,11 +200,11 @@ unsafe extern "C" fn demon_attack_combo_main_loop_helper_second(fighter: &mut L2
                 status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
             }
         }
-        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623BLONG != 0 {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
-            }
-        }
+        // if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623BLONG != 0 {
+        //     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ENABLE_RAGE_SYSTEM) {
+        //         status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_RAGE;
+        //     }
+        // }
     }
     status
 }

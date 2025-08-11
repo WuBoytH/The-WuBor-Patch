@@ -35,8 +35,8 @@ unsafe extern "C" fn kirby_ryu_special_n2_command_pre(fighter: &mut L2CFighterCo
 
 unsafe extern "C" fn kirby_ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("ryu_special_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("ryu_special_air_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let mut speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -168,7 +168,7 @@ unsafe extern "C" fn kirby_ryu_special_n2_main_loop(fighter: &mut L2CFighterComm
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             let mot_air = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST) {
-                FighterMotionModuleImpl::change_motion_kirby_copy(
+                MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_air),
                     0.0,
@@ -181,7 +181,7 @@ unsafe extern "C" fn kirby_ryu_special_n2_main_loop(fighter: &mut L2CFighterComm
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
             }
             else {
-                FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(
+                MotionModule::change_motion_inherit_frame(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_air),
                     -1.0,
@@ -208,7 +208,7 @@ unsafe extern "C" fn kirby_ryu_special_n2_main_loop(fighter: &mut L2CFighterComm
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
             let mot_ground = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST) {
-                FighterMotionModuleImpl::change_motion_kirby_copy(
+                MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_ground),
                     0.0,
@@ -221,7 +221,7 @@ unsafe extern "C" fn kirby_ryu_special_n2_main_loop(fighter: &mut L2CFighterComm
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
             }
             else {
-                FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(
+                MotionModule::change_motion_inherit_frame(
                     fighter.module_accessor,
                     Hash40::new_raw(mot_ground),
                     -1.0,

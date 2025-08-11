@@ -426,11 +426,28 @@ pub mod FGCModule {
         }
     }
 
+    /// Gets the corresponding CommandInputState class.
+    pub unsafe fn get_command_input_state(module_accessor: *mut BattleObjectModuleAccessor, command: usize) -> *mut CommandInputState {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        *control_module.add((0x7f0 + (command * 8)) / 8) as *mut CommandInputState
+    }
+
     /// Sets a command input to only use certain buttons.
     pub unsafe fn set_command_input_button(module_accessor: *mut BattleObjectModuleAccessor, command: usize, buttons: u8) {
+        let buttons = InputAllow::from_bits(buttons).unwrap();
         let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
-        let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut u8;
-        *command_input.add(0xb) = buttons;
+        let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut CommandInputState;
+        (*command_input).input_allow = buttons;
+    }
+
+    /// Sets a command input function.
+    pub unsafe fn set_command_input_function(
+        module_accessor: *mut BattleObjectModuleAccessor,
+        command: usize,
+        function: unsafe extern "C" fn(&mut CommandInputState, *const CommandInputFlags, f32) -> bool) {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut CommandInputState;
+        *((*command_input).vtable as *mut u64).add(0x3) = function as u64;
     }
 
     /// Clones a command input to another cat4 flag
@@ -844,6 +861,9 @@ pub mod MiscModule {
         let vtable = *module as *const u64;
         *((*vtable + func_offset) as *const u64)
     }
+
+    #[skyline::from_offset(0x33bd9c0)]
+    pub unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut smash::app::Weapon, something: u32) -> u64;
 }
 
 extern "C" {

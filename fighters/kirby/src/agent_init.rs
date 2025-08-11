@@ -90,7 +90,9 @@ unsafe extern "C" fn kirby_check_special_command(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
     fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(kirby_check_special_command as *const () as _));
-    // FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+    FGCModule::clone_command_input(fighter.module_accessor, Cat4::SPECIAL_S_COMMAND, Cat4::SPECIAL_N2_COMMAND);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N_COMMAND, 1);
+    FGCModule::set_command_input_button(fighter.module_accessor, Cat4::SPECIAL_N2_COMMAND, 1);
 }
 
 pub fn install(agent: &mut Agent) {

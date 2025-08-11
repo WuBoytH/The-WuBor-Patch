@@ -63,7 +63,7 @@ unsafe extern "C" fn lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u
 unsafe extern "C" fn marth_lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
-    MiscModule::patch_vtable_function(0x4fe7fc0, lucina_init as u64);
-    MiscModule::patch_vtable_function(0x4fe8008, lucina_per_frame as u64);
-    MiscModule::patch_vtable_function(0x4fe80c0, lucina_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fe6fc0, lucina_init as u64);
+    MiscModule::patch_vtable_function(0x4fe7008, lucina_per_frame as u64);
+    MiscModule::patch_vtable_function(0x4fe70c0, lucina_on_attack as u64);
 }

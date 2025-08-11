@@ -2,6 +2,13 @@
 
 use smash::{phx::*, app::*, lib::L2CValue};
 
+pub mod LINKARROW {
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app9linkarrow27LINKARROW_ITEM_THROW_DEGREEEv"]
+        pub fn ITEM_THROW_DEGREE() -> f32;
+    }
+}
+
 pub mod HOLYWATER {
     use super::*;
     extern "C" {
@@ -13,6 +20,15 @@ pub mod HOLYWATER {
 
         #[link_name = "\u{1}_ZN3app9holywater29HOLYWATER_FIRE_PILLAR_SPEED_YENS_11FighterKindE"]
         pub fn FIRE_PILLAR_SPEED_Y(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater26HOLYWATER_THROW_ANGLE_SIDEENS_11FighterKindE"]
+        pub fn THROW_ANGLE_SIDE(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater19HOLYWATER_ROT_SPEEDENS_11FighterKindE"]
+        pub fn ROT_SPEED(kind: FighterKind) -> f32;
+
+        #[link_name = "\u{1}_ZN3app9holywater34HOLYWATER_REFLECT_SHIELD_ROT_SPEEDENS_11FighterKindE"]
+        pub fn REFLECT_SHIELD_ROT_SPEED(kind: FighterKind) -> f32;
     }
 }
 
@@ -20,6 +36,9 @@ pub mod Item {
     extern "C" {
         #[link_name = "\u{1}_ZN3app4item12disable_areaEP9lua_Statei"]
         pub fn disable_area(lua_state: u64, area_kind: i32);
+
+        #[link_name = "\u{1}_ZN3app4item26reset_gravity_energy_brakeEP9lua_State"]
+        pub fn reset_gravity_energy_brake(lua_state: u64);
     }
 }
 
@@ -43,6 +62,9 @@ pub mod KineticEnergyControl {
 
         #[link_name = "\u{1}_ZN3app22kinetic_energy_control9set_speedEP9lua_StateRKN3phx8Vector2fE"]
         pub fn set_speed(lua_state: u64, accel: *const Vector2f);
+
+        #[link_name = "\u{1}_ZN3app22kinetic_energy_control11get_speed_xEP9lua_State"]
+        pub fn get_speed_x(lua_state: u64) -> f32;
     }
 }
 
@@ -81,5 +103,20 @@ pub mod LinkEventThrow {
     extern "C" {
         #[link_name = "\u{1}_ZN3app14LinkEventThrow13new_l2c_tableEv"]
         pub fn new_l2c_table() -> L2CValue;
+    }
+}
+
+pub mod kinetic_energy_outer {
+    use super::*;
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app20kinetic_energy_outer12set_speed_2fEP9lua_StateRKN3phx8Vector2fE"]
+        pub fn set_speed_2f(lua_state: u64, speed: *const Vector2f);
+    }
+}
+
+pub mod kinetic_energy_gravity {
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app22kinetic_energy_gravity12set_speed_1fEP9lua_Statef"]
+        pub fn set_speed_1f(lua_state: u64, speed: f32);
     }
 }

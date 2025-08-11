@@ -28,7 +28,7 @@ unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) 
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x5046570).data(sonic_on_init as u64);
+    let _ = skyline::patching::Patch::in_text(0x5045570).data(sonic_on_init as u64);
     skyline::install_hooks!(
         sonic_on_hit
     );

@@ -99,6 +99,7 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
                 && (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON)) {
                     HitModule::set_status_all(module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+                    WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL);
                     // MotionModule::change_motion_inherit_frame(
@@ -533,7 +534,7 @@ pub fn install() {
 
     // Some Kind of Transition Check
     // Ryu
-    let _ = skyline::patching::Patch::in_text(0x5033eb0 + 0x1F8).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x5032eb0 + 0x1F8).data(1u8);
 
     skyline::install_hooks!(
         ryu_ken_init,

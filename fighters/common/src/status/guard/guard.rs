@@ -31,6 +31,15 @@ unsafe extern "C" fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuard_initStatus_common)]
+unsafe extern "C" fn sub_ftstatusuniqprocessguard_initstatus_common(fighter: &mut L2CFighterCommon) {
+    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
+    let hit_stop_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64);
+    ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
+
+    init_shield_hurtbox(fighter);
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
 unsafe extern "C" fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
@@ -290,10 +299,20 @@ unsafe extern "C" fn fighterstatusguard__check_hit_stop_delay_flick(_fighter: &m
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuard_exitStatus_common)]
+unsafe extern "C" fn sub_ftstatusuniqprocessguard_exitstatus_common(fighter: &mut L2CFighterCommon) {
+    ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+    ShieldModule::set_hit_stop_mul(fighter.module_accessor, 1.0);
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_guard,
+            sub_ftstatusuniqprocessguard_initstatus_common,
             sub_guard_cont_pre,
             sub_guard_cont,
             status_guard_main_common,
@@ -301,7 +320,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_ftstatusuniqprocessguardfunc_updateshield,
             bind_address_call_fighterstatusguard__set_shield_scale,
             fighterstatusguard__set_shield_scale,
-            fighterstatusguard__check_hit_stop_delay_flick
+            fighterstatusguard__check_hit_stop_delay_flick,
+            sub_ftstatusuniqprocessguard_exitstatus_common
         );
     }
 }

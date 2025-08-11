@@ -1,5 +1,6 @@
 mod fighter;
 mod brave;
+mod demon;
 mod dolly;
 mod eflame;
 mod elight;
@@ -8,10 +9,13 @@ mod ganon;
 mod gaogaen;
 mod ike;
 mod jack;
+mod kirby;
 mod koopa;
 mod lucario;
 mod lucina;
 mod luigi;
+mod mariod;
+// mod ness;
 mod pickel;
 mod reflet;
 mod rockman;
@@ -21,10 +25,12 @@ mod sonic;
 mod wario;
 
 mod weapon;
+mod blaster_bullet;
 mod belmont_cross;
 mod dolly_wave;
 mod dolly_burst;
 mod edge_flare1;
+mod inkling_rollerink;
 mod koopa_breath;
 mod mariod_drcapsule;
 mod packun_poisonbreath;
@@ -33,6 +39,7 @@ mod ryu_shinkuhadoken;
 pub fn install() {
     fighter::install();
     brave::install();
+    demon::install();
     dolly::install();
     eflame::install();
     elight::install();
@@ -41,10 +48,13 @@ pub fn install() {
     gaogaen::install();
     ike::install();
     jack::install();
+    kirby::install();
     koopa::install();
     lucario::install();
     lucina::install();
     luigi::install();
+    mariod::install();
+    // ness::install();
     pickel::install();
     reflet::install();
     rockman::install();
@@ -54,10 +64,12 @@ pub fn install() {
     wario::install();
 
     weapon::install();
+    blaster_bullet::install();
     belmont_cross::install();
     dolly_wave::install();
     dolly_burst::install();
     edge_flare1::install();
+    inkling_rollerink::install();
     koopa_breath::install();
     mariod_drcapsule::install();
     packun_poisonbreath::install();

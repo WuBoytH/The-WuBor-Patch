@@ -5,11 +5,23 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
+    let trigger = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8);
+    let trigger_prev = ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8);
+    // println!(
+    //     "guard trigger: {}, in threshold: {}",
+    //     trigger,
+    //     trigger < 6
+    // );
+    // println!(
+    //     "guard trigger prev: {}, in threshold: {}",
+    //     trigger_prev,
+    //     trigger_prev > 20
+    // );
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT)
-    && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < 6 &&
+    && trigger < 6 &&
     (
-        ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) > 20 ||
+        trigger_prev > 20 ||
         StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
     ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
@@ -39,6 +51,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     fighter.global_table[CMD_CAT2].assign(&L2CValue::I32(0));
     fighter.global_table[CMD_CAT3].assign(&L2CValue::I32(0));
     fighter.global_table[CMD_CAT4].assign(&L2CValue::I32(0));
+
+    init_shield_hurtbox(fighter);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]
@@ -171,6 +185,9 @@ unsafe extern "C" fn sub_status_end_guard_on_common(fighter: &mut L2CFighterComm
         }
     }
     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
 }
 
 #[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]

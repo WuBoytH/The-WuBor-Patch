@@ -7,7 +7,7 @@ unsafe extern "C" fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
         *FIGHTER_KINETIC_TYPE_MOTION,
-        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_DAMAGE_FLAG,
@@ -50,6 +50,8 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut
             let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
             EffectModule::set_scale(fighter.module_accessor, shield_eff, &Vector3f{x: ratio, y: ratio, z: ratio});
         }
+
+        init_shield_hurtbox(fighter);
     }
     else {
         fighter.FighterStatusGuard__set_just_shield_scale();
@@ -83,7 +85,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         shield_stiff_frame = shield_stiff_frame_max;
     }
     // println!("final shield_stiff_frame: {}", shield_stiff_frame as i32);
-    let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
+    // let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
     // if object_id != *BATTLE_OBJECT_ID_INVALID {
         // capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         let mut invalid_capture_frame = shield_stiff_frame;
@@ -195,23 +197,37 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         ControlModule::clear_command(fighter.module_accessor, false);
     }
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-        let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
-        let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
+        // let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
+        // let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
         let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
-        let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
+        // let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
         // println!("setoff_speed: {}", setoff_speed);
-        let setoff_mul_indirect = if sv_battle_object::category(object_id as u32) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            0.5
+        let mut setoff_speed = (shield_power * 0.05 + 0.5) * shield_lr;
+        // println!("shield_power {} * mul 0.05 + 0.5", shield_power);
+        // println!("setoff_speed: {}", setoff_speed);
+
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let current_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        if current_x.signum() == setoff_speed.signum() {
+            let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_DAMAGE);
+            let mul = if count > 0 {
+                0.4
+            }
+            else {
+                1.0
+            };
+
+            // println!("combined! current {} + setoff {} = {}", current_x, setoff_speed * mul, current_x + (setoff_speed * mul));
+            setoff_speed = current_x + (setoff_speed * mul);
         }
-        else {
-            1.0
-        };
+
         sv_kinetic_energy!(
             reset_energy,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
             ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
-            setoff_speed * setoff_mul_indirect,
+            setoff_speed.clamp(-2.5, 2.5),
             0.0,
             0.0,
             0.0,
@@ -452,13 +468,24 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
         }
         else {
             // Guard Cancel Actions
+            let is_shield = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+                VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_TAUNT_INPUT, is_shield);
+            }
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                let stick = fighter.global_table[STICK_Y].get_f32() == 0.0;
+                VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_ATTACK_INPUT, is_shield && stick);
+            }
             if !fighter.global_table[IS_STOP].get_bool() && fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
                 // Guard Cancel Taunt
-                let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-                if cat2 & (
+                if VarModule::is_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_TAUNT_INPUT)
+                && fighter.global_table[CMD_CAT2].get_i32() & (
+                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
-                    *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
                     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
                 ) != 0
                 && {
@@ -473,10 +500,8 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
                     // Guard Cancel Attack
-                    if fighter.global_table[CMD_CAT1].get_i32() & (
-                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N |
-                        *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S
-                    ) != 0
+                    if VarModule::is_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_ATTACK_INPUT)
+                    && fighter.global_table[CMD_CAT1].get_i32() & (*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0
                     && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
                         fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
                         return 0.into();
@@ -493,6 +518,16 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
         }
     }
     fighter.status_guard_damage_main_common();
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_guard_damage_main_common_air)]
+unsafe extern "C" fn status_guard_damage_main_common_air(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        // fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_MISS_FOOT.into(), false.into());
+        return 1.into();
+    }
     0.into()
 }
 
@@ -653,6 +688,9 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_exitstatus_common(fighte
         }
         ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     }
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -663,6 +701,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_guarddamage_common,
             sub_guarddamageuniq,
             status_guarddamage_main,
+            status_guard_damage_main_common_air,
             sub_ftstatusuniqprocessguarddamage_execstatus_common,
             sub_ftstatusuniqprocessguarddamage_execstop_common,
             fighterstatusuniqprocessguarddamage_leave_stop,

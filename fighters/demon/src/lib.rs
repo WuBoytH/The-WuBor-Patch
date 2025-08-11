@@ -18,7 +18,6 @@ mod acmd;
 mod status;
 mod frame;
 mod agent_init;
-pub mod helper;
 
 pub fn install() {
     let agent = &mut Agent::new("demon");

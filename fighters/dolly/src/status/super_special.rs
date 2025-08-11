@@ -98,6 +98,7 @@ unsafe extern "C" fn dolly_super_special_main_loop(fighter: &mut L2CFighterCommo
                 false,
                 false
             );
+            VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SUPER_SPECIAL_TRIPLE);
 
             // VarModule::on_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT);
 

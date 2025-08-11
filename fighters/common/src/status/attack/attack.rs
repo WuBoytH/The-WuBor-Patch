@@ -74,7 +74,8 @@ unsafe extern "C" fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterC
 unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
-        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0 {
+        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
+        && only_jabs(fighter) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
             }
@@ -168,6 +169,27 @@ unsafe extern "C" fn check_100_count_button(fighter: &mut L2CFighterCommon, para
     }
 }
 
+#[no_mangle]
+unsafe fn get_jab_cancel_transitions(fighter: &mut L2CFighterCommon) -> Vec<i32> {
+    let mut cancels = Vec::new();
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if !VarModule::is_flag(fighter.module_accessor, vars::attack::flag::ATTACK_S3_IS_REVERSE) {
+        cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+    }
+
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0
+    && ControlModule::get_attack_hi3_fb_kind(fighter.module_accessor) != *FIGHTER_COMMAND_ATTACK3_KIND_B {
+        cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+    }
+
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0
+    && ControlModule::get_attack_lw3_fb_kind(fighter.module_accessor) != *FIGHTER_COMMAND_ATTACK3_KIND_B {
+        cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+    }
+
+    cancels
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_Attack_Main_button)]
 unsafe extern "C" fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     fighter.check_100_count_button(param_1.clone());
@@ -179,13 +201,17 @@ unsafe extern "C" fn status_attack_main_button(fighter: &mut L2CFighterCommon, p
     if CustomCancelManager::execute_cancel(fighter) {
         return 1.into();
     }
+
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+        let allow = cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0
+        && PostureModule::lr(fighter.module_accessor).signum() == fighter.global_table[STICK_X].get_f32().signum();
+        VarModule::set_flag(fighter.module_accessor, vars::attack::flag::ATTACK_S3_IS_REVERSE, !allow);
+    }
+
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-        let normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
-        ].to_vec();
+        let normal_cancels = get_jab_cancel_transitions(fighter);
         if normal_cancel_common(fighter, normal_cancels).get_bool() {
             return 1.into();
         }

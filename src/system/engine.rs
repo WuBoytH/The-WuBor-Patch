@@ -3,9 +3,9 @@ use crate::imports::*;
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = 0x406824, inline)]
 unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
-    let is_attacker = *ctx.registers[4].w.as_ref() & 1 == 0;
-    if *ctx.registers[8].x.as_ref() == hash40("collision_attr_elec") && is_attacker {
-        *ctx.registers[8].x.as_mut() = hash40("collision_attr_normal");
+    let is_attacker = ctx.registers[4].w() & 1 == 0;
+    if ctx.registers[8].x() == hash40("collision_attr_elec") && is_attacker {
+        ctx.registers[8].set_x(hash40("collision_attr_normal"));
     }
 }
 
@@ -29,24 +29,24 @@ unsafe fn change_elec_hitlag_for_attacker(ctx: &mut skyline::hooks::InlineCtx) {
 // Forces parry hitlag to be a constant value
 #[skyline::hook(offset = 0x641d84, inline)]
 unsafe fn set_parry_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
-    let parry_hitlag = *ctx.registers[28].w.as_ref();
-    *ctx.registers[26].x.as_mut() = parry_hitlag as u64;
+    let parry_hitlag = ctx.registers[28].w();
+    ctx.registers[26].set_w(parry_hitlag);
 }
 
 #[skyline::hook(offset = 0x617aa4, inline)]
 unsafe extern "C" fn reverse_trump_logic(ctx: &mut skyline::hooks::InlineCtx) {
-    let object = *ctx.registers[23].x.as_ref() as *mut BattleObject;
+    let object = ctx.registers[23].x() as *mut BattleObject;
     WorkModule::on_flag((*object).module_accessor, *FIGHTER_STATUS_CLIFF_FLAG_TO_ROB);
 }
 
 #[skyline::hook(offset = 0x33bdd88, inline)]
 unsafe extern "C" fn force_reflect_full_lifetime(ctx: &mut skyline::hooks::InlineCtx) {
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 #[skyline::hook(offset = 0x6416e8, inline)]
 unsafe extern "C" fn shield_break_lr_set(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    let fighter = ctx.registers[19].x() as *mut Fighter;
     let module_accessor = (*fighter).battle_object.module_accessor;
     let lr = *(fighter as *const f32).add(0xf738 / 0x4);
     WorkModule::set_float(module_accessor, lr, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
@@ -54,13 +54,13 @@ unsafe extern "C" fn shield_break_lr_set(ctx: &mut skyline::hooks::InlineCtx) {
 
 #[skyline::hook(offset = 0x614c0c, inline)]
 unsafe extern "C" fn shield_health_recovery_check_max(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    let fighter = ctx.registers[19].x() as *mut Fighter;
     shield_recovery_burnout_check(fighter);
 }
 
 #[skyline::hook(offset = 0x614b9c, inline)]
 unsafe extern "C" fn shield_health_recovery_check_less_than_max(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = *ctx.registers[19].x.as_mut() as *mut Fighter;
+    let fighter = ctx.registers[19].x() as *mut Fighter;
     shield_recovery_burnout_check(fighter);
 }
 

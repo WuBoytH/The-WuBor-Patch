@@ -14,7 +14,7 @@ struct CommonEffectPair {
 // #[skyline::hook(offset = 0x41a588, inline)]
 // unsafe extern "C" fn effect_map_hook(ctx: &mut skyline::hooks::InlineCtx) {
 //     println!("sup");
-//     let original_table = *ctx.registers[0].x.as_ref() as *mut CommonEffectPair;
+//     let original_table = ctx.registers[0].x() as *mut CommonEffectPair;
 //     *(original_table.add(15)) = CommonEffectPair{eff_name: hash40("guard_crush"), function_hash: hash40("effect_guardcrush"), padding: 0};
 //     *(original_table.add(16)) = CommonEffectPair{eff_name: hash40("burnout"), function_hash: hash40("effect_burnout"), padding: 0};
 // }

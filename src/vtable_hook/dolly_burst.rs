@@ -4,18 +4,18 @@ static mut BURST_BOMA_PTR : u64 = 0;
 
 #[skyline::hook(offset = 0x975844, inline)]
 unsafe extern "C" fn burst_check_status(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     BURST_BOMA_PTR = module_accessor as u64;
     if StatusModule::status_kind(module_accessor) == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
     && VarModule::is_flag(module_accessor, dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
-        *ctx.registers[26].x.as_mut() = 0;
+        ctx.registers[26].set_x(0);
     }
 }
 
 #[skyline::hook(offset = 0x975b70, inline)]
 unsafe extern "C" fn burst_set_motion(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = BURST_BOMA_PTR as *mut BattleObjectModuleAccessor;
-    let mut motion = *ctx.registers[8].x.as_ref();
+    let mut motion = ctx.registers[8].x();
     // println!("motion: {:#x}", motion);
     if StatusModule::status_kind(module_accessor) == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
     && VarModule::is_flag(module_accessor, dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
@@ -27,7 +27,7 @@ unsafe extern "C" fn burst_set_motion(ctx: &mut skyline::hooks::InlineCtx) {
             _ => hash40("super_special")
         };
     }
-    *ctx.registers[8].x.as_mut() = motion;
+    ctx.registers[8].set_x(motion);
 }
 
 #[skyline::hook(offset = 0x33df440)]

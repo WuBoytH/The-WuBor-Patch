@@ -25,7 +25,7 @@ unsafe fn set_interval_1(window: u64, _: i32) {
 
 #[skyline::hook(replace = OFFSET2, inline)]
 unsafe fn set_interval_2(ctx: &mut skyline::hooks::InlineCtx) {
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 static mut RUN: AtomicBool = AtomicBool::new(false);

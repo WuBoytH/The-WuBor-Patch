@@ -4,7 +4,7 @@ use crate::system::func_links;
 pub static mut LINK_ARROW_THROW : usize = 0x6ca62c;
 
 unsafe extern "C" fn link_arrow_throw(ctx: &mut skyline::hooks::InlineCtx) {
-    let item: &mut L2CAgent = std::mem::transmute(ctx.registers[20].x.as_mut());
+    let item: &mut L2CAgent = std::mem::transmute(ctx.registers[20].x());
 
     let mut speed_x = KineticModule::get_sum_speed_x(item.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let mut speed_y = KineticModule::get_sum_speed_y(item.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

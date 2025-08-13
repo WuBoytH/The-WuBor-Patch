@@ -191,7 +191,7 @@ pub unsafe extern "C" fn shulk_can_transition_to_special_n(fighter: *mut Fighter
 
 #[skyline::hook(offset = 0x1168360, inline)]
 unsafe extern "C" fn shulk_inc_arts_wheel_button_timer(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     if !WorkModule::is_flag(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_CIRCLE_MENU) {
         WorkModule::inc_int(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_SPECIAL_BUTTON_TIMER);
     }

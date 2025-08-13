@@ -2,7 +2,7 @@ use crate::imports::*;
 
 #[skyline::hook(offset = 0xa633f4, inline)]
 unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[20].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[20].x() as *mut BattleObjectModuleAccessor;
 
     let rot = PostureModule::rot_z(module_accessor, 0);
     let motion = MotionModule::motion_kind(module_accessor);

@@ -12,7 +12,7 @@ unsafe extern "C" fn wave_init(vtable: u64, weapon: *mut app::Weapon, something:
 
 #[skyline::hook(offset = 0x33e1d34, inline)]
 unsafe extern "C" fn wave_on_hit(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[24].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[24].x() as *mut BattleObjectModuleAccessor;
     if WorkModule::get_int(module_accessor, *WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_S {
         let effect = if VarModule::is_flag(module_accessor, dolly_wave::status::flag::FINAL_HIT) {
             Hash40::new("effect_hitstrong")
@@ -26,7 +26,7 @@ unsafe extern "C" fn wave_on_hit(ctx: &mut skyline::hooks::InlineCtx) {
             effect,
             -1
         );
-        *ctx.registers[19].w.as_mut() = 0;
+        ctx.registers[19].set_w(0);
     }
     else {
         StatusModule::change_status_request(module_accessor, 1, false);

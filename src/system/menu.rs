@@ -2,7 +2,7 @@
 
 #[skyline::hook(offset = 0x235cad0, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
-    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x100);
+    let sp = (ctx as *const skyline::hooks::InlineCtx as *mut u8).add(0x300);
     *(sp.add(0x60) as *mut u64) = 0x1100000000;
     let slice = std::slice::from_raw_parts_mut(sp.add(0x68), 18);
     slice.copy_from_slice(b"MenuSequenceScene\0");

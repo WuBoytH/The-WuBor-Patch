@@ -495,6 +495,30 @@ pub mod koopa_breath {
     }
 }
 
+pub mod koopajr {
+    pub mod status {
+        pub mod int {
+            pub const THROW_LW_MASH_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod krool {
+    pub mod status {
+        pub mod int {
+            pub const SPECIAL_HI_MASH_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod krool_backpack {
+    pub mod instance {
+        pub mod int {
+            pub const SPECIAL_HI_MASHED_COUNT : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod lucario {
     pub mod instance {
         pub mod flag {
@@ -726,8 +750,8 @@ pub mod mewtwo {
 
 pub mod packun {
     pub mod status {
-        pub mod flag {
-            pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
+        pub mod int {
+            pub const SPECIAL_HI_MASH_COUNT : i32 = 0x1150;
         }
     }
 }

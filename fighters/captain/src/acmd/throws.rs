@@ -18,7 +18,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(agent.module_accessor);
-        captain_check_boost_power(agent.module_accessor, 4.0);
+        captain_update_boost_power(agent.module_accessor, 4.0);
     }
 }
 
@@ -43,7 +43,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(agent.module_accessor);
         macros::REVERSE_LR(agent);
-        captain_check_boost_power(agent.module_accessor, 4.0);
+        captain_update_boost_power(agent.module_accessor, 4.0);
     }
 }
 
@@ -65,7 +65,7 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(agent.module_accessor);
-        captain_check_boost_power(agent.module_accessor, 5.0);
+        captain_update_boost_power(agent.module_accessor, 5.0);
     }
 }
 
@@ -84,7 +84,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
-        captain_check_boost_power(agent.module_accessor, 6.0);
+        captain_update_boost_power(agent.module_accessor, 6.0);
     }
 }
 

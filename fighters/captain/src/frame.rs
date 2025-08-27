@@ -13,12 +13,12 @@ pub unsafe extern "C" fn boost_power_handler(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_REBIRTH,
     ].contains(&fighter.global_table[0xB].get_i32()) {
         VarModule::set_float(fighter.module_accessor, vars::captain::instance::float::BOOST_POWER, 0.0);
-        captain_update_boost_power(fighter.module_accessor);
+        captain_set_lightweight(fighter.module_accessor);
     }
 
     if smashball::is_training_mode() {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-            captain_check_boost_power(fighter.module_accessor, 50.0);
+            captain_update_boost_power(fighter.module_accessor, 50.0);
         }
     }
 

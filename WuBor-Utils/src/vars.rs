@@ -254,6 +254,7 @@ pub mod captain {
         }
         pub mod float {
             pub const BOOST_POWER : i32 = 0x0100;
+            pub const BOOST_POWER_ADD : i32 = 0x0101;
         }
     }
     pub mod status {

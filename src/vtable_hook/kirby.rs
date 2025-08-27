@@ -1,8 +1,8 @@
 use crate::imports::*;
 
 extern "C" {
-    #[link_name = "captain_update_boost_power"]
-    pub fn captain_update_boost_power(module_accessor: *mut BattleObjectModuleAccessor);
+    #[link_name = "captain_set_lightweight"]
+    pub fn captain_set_lightweight(module_accessor: *mut BattleObjectModuleAccessor);
 }
 
 #[skyline::hook(offset = 0xb96770)]
@@ -17,7 +17,7 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
         }
         if copy_kind == *FIGHTER_KIND_CAPTAIN as u32 {
             VarModule::set_float(module_accessor, captain::instance::float::BOOST_POWER, 0.0);
-            captain_update_boost_power(module_accessor);
+            captain_set_lightweight(module_accessor);
         }
     }
     original!()(fighter, param_1);

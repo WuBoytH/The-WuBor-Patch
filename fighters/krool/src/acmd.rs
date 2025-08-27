@@ -9,6 +9,7 @@ mod guard;
 mod normals;
 mod smashes;
 mod aerials;
+mod specials;
 
 mod catch;
 
@@ -25,6 +26,7 @@ pub fn install(agent: &mut Agent) {
     normals::install(agent);
     smashes::install(agent);
     aerials::install(agent);
+    specials::install(agent);
 
     catch::install(agent);
 

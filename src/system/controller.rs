@@ -263,7 +263,7 @@ static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 #[skyline::hook(offset = 0x3666eac, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
-        (ctx as *const _ as *mut u8).add(0x100) as *mut _;
+        (ctx as *const _ as *mut u8).add(0x300) as *mut _;
     let _controller: *mut Controller = ctx.registers[19].x() as _;
 
     GC_TRIGGERS[0] = (*state).LTrigger as f32 / i16::MAX as f32;

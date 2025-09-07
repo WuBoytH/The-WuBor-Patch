@@ -575,20 +575,6 @@ unsafe extern "C" fn sub_transition_group_check_air_special(fighter: &mut L2CFig
                 return true.into();
             }
         }
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
-            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
-                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
-                callable(fighter).get_bool()
-            }
-            else {
-                true
-            };
-            if cont {
-                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
-                return true.into();
-            }
-        }
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
             let cont = if fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_bool() {
@@ -600,6 +586,20 @@ unsafe extern "C" fn sub_transition_group_check_air_special(fighter: &mut L2CFig
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                true
+            };
+            if cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
                 return true.into();
             }
         }

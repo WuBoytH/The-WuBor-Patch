@@ -263,6 +263,8 @@ pub mod captain {
             pub const ENABLE_BOOST_POWER_CRITICAL : i32 = 0x1101;
 
             pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFT : i32 = 0x1150;
+            pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED : i32 = 0x1151;
+            pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END : i32 = 0x1152;
 
             pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
         }

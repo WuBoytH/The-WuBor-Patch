@@ -30,15 +30,7 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
             VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                set_limit_speed,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_STOP,
-                4.0,
-                -1.0
-            );
-            macros::SET_SPEED_EX(agent, 4.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            // KineticModule::suspend_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         macros::FT_MOTION_RATE(agent, 20.0 / 5.0);
     }
@@ -50,14 +42,16 @@ unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
+            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END);
+            GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         }
     }
 }
 
 unsafe extern "C" fn game_specialnturn(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
-        macros::FT_MOTION_RATE(agent, 30.0 / 48.0);
+        macros::FT_MOTION_RATE(agent, 25.0 / 43.0);
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
@@ -82,15 +76,7 @@ unsafe extern "C" fn game_specialnturn(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                set_limit_speed,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_STOP,
-                4.0,
-                -1.0
-            );
-            macros::SET_SPEED_EX(agent, 4.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            // KineticModule::suspend_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
         macros::FT_MOTION_RATE(agent, 20.0 / 5.0);
     }
@@ -102,7 +88,8 @@ unsafe extern "C" fn game_specialnturn(agent: &mut L2CAgentBase) {
     }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
+            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END);
+            GroundModule::correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         }
     }
 }
@@ -146,15 +133,6 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                set_limit_speed,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_STOP,
-                4.0,
-                -1.0
-            );
-            macros::SET_SPEED_EX(agent, 4.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            // KineticModule::suspend_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
         macros::FT_MOTION_RATE(agent, 20.0 / 5.0);
     }
@@ -162,24 +140,10 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        // KineticModule::resume_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
-            KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            VarModule::off_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                reset_energy,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            );
-            KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END);
         }
     }
     wait(agent.lua_state_agent, 12.0);
@@ -189,8 +153,9 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialairnturn(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
-        macros::FT_MOTION_RATE(agent, 30.0 / 48.0);
+        macros::FT_MOTION_RATE(agent, 25.0 / 43.0);
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
@@ -220,15 +185,6 @@ unsafe extern "C" fn game_specialairnturn(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                set_limit_speed,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_STOP,
-                4.0,
-                -1.0
-            );
-            macros::SET_SPEED_EX(agent, 4.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            // KineticModule::suspend_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
         macros::FT_MOTION_RATE(agent, 20.0 / 5.0);
     }
@@ -236,23 +192,10 @@ unsafe extern "C" fn game_specialairnturn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        // KineticModule::resume_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     }
     if VarModule::is_flag(agent.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
         if macros::is_excute(agent) {
-            VarModule::off_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
-            sv_kinetic_energy!(
-                reset_energy,
-                agent,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            );
-            KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            VarModule::on_flag(agent.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END);
         }
     }
     wait(agent.lua_state_agent, 12.0);

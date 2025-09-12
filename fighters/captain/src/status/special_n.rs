@@ -77,9 +77,11 @@ unsafe extern "C" fn special_n_bird_handler(fighter: &mut L2CFighterCommon, stat
 unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[0x16].get_i32() == *SITUATION_KIND_GROUND {
         fighter.set_situation(SITUATION_KIND_GROUND.into());
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         special_n_motion_helper(fighter, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_GROUND_MOT);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        if !VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        }
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -97,7 +99,9 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         special_n_motion_helper(fighter, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_AIR_MOT);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        if !VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        }
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -110,7 +114,7 @@ unsafe extern "C" fn special_n_situation_helper(fighter: &mut L2CFighterCommon) 
             0.0
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT) {
+        if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED) {
             sv_kinetic_energy!(
                 reset_energy,
                 fighter,
@@ -222,21 +226,99 @@ unsafe extern "C" fn special_n_turn_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn special_n_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    original_status(Exec, fighter, status)(fighter);
-    if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT) {
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
-        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::USED_BOOST_POWER) {
+        if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END) {
+            // println!("signal end");
+            if !KineticModule::is_enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY) {
+                if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+
+                    sv_kinetic_energy!(
+                        reset_energy,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    );
+                    let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+                    sv_kinetic_energy!(
+                        set_accel,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        -air_accel_y * 0.6
+                    );
+                    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                }
+                else {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                }
+            }
+            else {
+                let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -air_accel_y * 0.4
+                );
+            }
+        }
+        if VarModule::is_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT) {
+            VarModule::off_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFT);
+            VarModule::on_flag(fighter.module_accessor, vars::captain::status::flag::SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED);
+
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                ENERGY_STOP_RESET_TYPE_AIR,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            );
+            sv_kinetic_energy!(
+                set_limit_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                3.0,
+                -1.0
+            );
+            sv_kinetic_energy!(
+                set_brake,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                0.05,
+                0.0
+            );
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let speed = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                3.0
+            }
+            else {
+                2.2
+            };
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                speed * lr,
+                0.0
+            );
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+
+            KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+            KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fighter.module_accessor);
+        }
+    }
+    else {
+        let status = fighter.global_table[STATUS_KIND].get_i32();
+        original_status(Exec, fighter, status)(fighter);
     }
     0.into()
 }

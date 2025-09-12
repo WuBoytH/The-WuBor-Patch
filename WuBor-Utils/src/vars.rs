@@ -248,11 +248,30 @@ pub mod brave {
 }
 
 pub mod captain {
+    pub mod instance {
+        pub mod int {
+            pub const BOOST_POWER_EFF : i32 = 0x0100;
+        }
+        pub mod float {
+            pub const BOOST_POWER : i32 = 0x0100;
+            pub const BOOST_POWER_ADD : i32 = 0x0101;
+        }
+    }
     pub mod status {
         pub mod flag {
+            pub const USED_BOOST_POWER : i32 = 0x1100;
+            pub const ENABLE_BOOST_POWER_CRITICAL : i32 = 0x1101;
+
+            pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFT : i32 = 0x1150;
+            pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFTED : i32 = 0x1151;
+            pub const SPECIAL_N_BOOST_POWER_KINETIC_SHIFT_END : i32 = 0x1152;
+
             pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
         }
     }
+
+    pub const BOOST_POWER_THRESHOLD : f32 = 50.0;
+    pub const BOOST_POWER_MAX : f32 = 100.0;
 }
 
 pub mod chrom {

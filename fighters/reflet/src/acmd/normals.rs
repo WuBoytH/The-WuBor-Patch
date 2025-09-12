@@ -65,10 +65,53 @@ unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_attack100(agent: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(agent, 1.0);
+    loop {
+        frame(agent.lua_state_agent, 2.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 5.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 8.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 11.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 14.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 17.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 20.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 23.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 26.0);
+        game_attack100_inner(agent);
+        frame(agent.lua_state_agent, 29.0);
+        game_attack100_inner(agent);
+        macros::wait_loop_clear(agent);
+    }
+}
+
+#[inline(always)]
+unsafe extern "C" fn game_attack100_inner(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.9, 361, 10, 0, 11, 8.0, 0.0, 9.0, 12.0, Some(0.0), Some(9.0), Some(8.0), 0.4, 0.2, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_MAGIC);
+        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 2.0, false);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 3);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attack11", game_attack11, Priority::Low);
 
     agent.acmd("game_attack12", game_attack12, Priority::Low);
 
     agent.acmd("game_attack13", game_attack13, Priority::Low);
+
+    agent.acmd("game_attack100", game_attack100, Priority::Low);
 }

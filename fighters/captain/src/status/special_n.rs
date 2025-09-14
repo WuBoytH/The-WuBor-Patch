@@ -57,6 +57,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
+#[no_mangle]
 unsafe extern "C" fn special_n_bird_handler(fighter: &mut L2CFighterCommon, status: L2CValue) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_PUNCH_GENERATE_BIRD) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_FALCONPUNCH, false, -1);

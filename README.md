@@ -5,8 +5,9 @@ A mod for Super Smash Bros. Ultimate that brings character overhauls and mechani
 ## Dependencies
 
 * [ARCropolis](https://github.com/Raytwo/ARCropolis/releases/latest) - Extract this to the root of your SD card.
-* [smashline_plugin](https://github.com/HDR-Development/smashline/releases/latest) - Download libsmashline_plugin_.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
-* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/latest) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
+* [smashline 2](https://github.com/HDR-Development/smashline/releases/latest) - Download libsmashline_plugin_.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
+* [NRO Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/latest) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
+* [Stage Config](https://github.com/ThatNintendoNerd/stage_config/releases/latest) - Download release.zip and merge the atmosphere folder with the one on your SD card.
 
 ### How to Install
 

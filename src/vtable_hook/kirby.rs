@@ -23,8 +23,19 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
     original!()(fighter, param_1);
 }
 
+#[skyline::hook(offset = 0xb97c78, inline)]
+unsafe extern "C" fn kirby_frame_branch_copy_vtable(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("kirby_frame_branch_copy_vtable");
+    let kind = ctx.registers[8].x() as i32;
+    // println!("kind?: {:#x}", kind);
+    if kind == *FIGHTER_KIND_CAPTAIN {
+        ctx.registers[8].set_x(0xF);
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
-        kirby_lose_copy_ability
+        kirby_lose_copy_ability,
+        kirby_frame_branch_copy_vtable
     );
 }

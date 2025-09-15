@@ -6,6 +6,8 @@ unsafe extern "C" fn dolly_super_special_main(fighter: &mut L2CFighterCommon) ->
         VarModule::off_flag(fighter.module_accessor, vars::dolly::instance::flag::SPECIAL_CANCEL);
     }
 
+    WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_OBJECT_ID);
+
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_super_special").into());
 
     MotionModule::change_motion(

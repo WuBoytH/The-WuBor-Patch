@@ -2,13 +2,15 @@ use crate::imports::*;
 
 static mut BURST_BOMA_PTR : u64 = 0;
 
-#[skyline::hook(offset = 0x975844, inline)]
+#[skyline::hook(offset = 0x97569c, inline)]
 unsafe extern "C" fn burst_check_status(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     BURST_BOMA_PTR = module_accessor as u64;
-    if StatusModule::status_kind(module_accessor) == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
+    let status = ctx.registers[0].w() as i32;
+    if status == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
     && VarModule::is_flag(module_accessor, dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
-        ctx.registers[26].set_x(0);
+        println!("hi");
+        ctx.registers[0].set_w(0);
     }
 }
 

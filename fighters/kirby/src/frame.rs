@@ -3,6 +3,9 @@ use super::*;
 extern "C" {
     #[link_name = "common_fighter_frame"]
     pub fn common_fighter_frame(fighter: &mut L2CFighterCommon);
+
+    #[link_name = "boost_power_handler"]
+    pub fn boost_power_handler(fighter: &mut L2CFighterCommon);
 }
 
 unsafe extern "C" fn kirby_gaogaen_lariat_jump_cancel(fighter: &mut L2CFighterCommon) {
@@ -40,11 +43,21 @@ unsafe extern "C" fn kirby_taunt_movement(fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub unsafe extern "C" fn kirby_boost_power_handler(fighter: &mut L2CFighterCommon) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY)
+    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA) != *FIGHTER_KIND_CAPTAIN {
+        return;
+    }
+
+    boost_power_handler(fighter);
+}
+
 unsafe extern "C" fn on_main(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
     kirby_gaogaen_lariat_jump_cancel(fighter);
     kirby_ganon_special_n_reset(fighter);
     kirby_taunt_movement(fighter);
+    kirby_boost_power_handler(fighter);
 }
 
 pub fn install(agent: &mut Agent) {

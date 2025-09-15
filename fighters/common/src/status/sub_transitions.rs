@@ -483,6 +483,41 @@ unsafe extern "C" fn sub_transition_group_check_ground(fighter: &mut L2CFighterC
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_air_check_fall_common)]
+unsafe extern "C" fn sub_air_check_fall_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_landing().get_bool() {
+        return true.into();
+    }
+
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER) {
+        fighter.change_status(FIGHTER_STATUS_KIND_HAMMER_FALL.into(), false.into());
+        return true.into();
+    }
+
+    if fighter.sub_transition_group_check_air_landing().get_bool()
+    || fighter.sub_transition_group_check_air_cliff().get_bool()
+    || fighter.sub_rocketbelt_hover_check().get_bool() {
+        return true.into();
+    }
+
+    if VarModule::get_int(fighter.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME) > 0 {
+        return false.into();
+    }
+
+    if fighter.sub_transition_group_check_air_special().get_bool()
+    || fighter.sub_transition_group_check_air_item_throw().get_bool()
+    || fighter.sub_transition_group_check_air_lasso().get_bool()
+    || fighter.sub_transition_group_check_air_escape().get_bool()
+    || fighter.sub_transition_group_check_air_attack().get_bool()
+    || fighter.sub_transition_group_check_air_tread_jump().get_bool()
+    || fighter.sub_transition_group_check_air_wall_jump().get_bool()
+    || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
+        return true.into();
+    }
+
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_attack)]
 unsafe extern "C" fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_ATTACK_UNIQ].get_bool() {
@@ -540,20 +575,6 @@ unsafe extern "C" fn sub_transition_group_check_air_special(fighter: &mut L2CFig
                 return true.into();
             }
         }
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
-            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
-                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
-                callable(fighter).get_bool()
-            }
-            else {
-                true
-            };
-            if cont {
-                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
-                return true.into();
-            }
-        }
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
             let cont = if fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_bool() {
@@ -565,6 +586,20 @@ unsafe extern "C" fn sub_transition_group_check_air_special(fighter: &mut L2CFig
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                true
+            };
+            if cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
                 return true.into();
             }
         }
@@ -627,80 +662,81 @@ unsafe extern "C" fn sub_transition_group_check_air_escape(fighter: &mut L2CFigh
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
-unsafe extern "C" fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_ptr());
-        if callable(fighter).get_bool() {
-            return true.into();
-        }
-    }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP)
-        && ControlModule::is_enable_flick_jump(fighter.module_accessor) {
-            let do_footstool;
-            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
-                do_footstool = false;
-            }
-            else {
-                let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
-                let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
-                if tread_speed_y < tread_jump_speed_limit {
-                    do_footstool = false;
-                }
-                else {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
-                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-                    do_footstool = fighter.pop_lua_stack(1).get_bool();
-                }
-            }
-            if do_footstool {
-                fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
-                return true.into();
-            }
-        }
-        if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_JUMP_TRIGGER != 0
-        || fighter.global_table[CMD_CAT2].get_i32() & (
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
-        ) != 0 /* this is the addition */
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_BUTTON) {
-            let do_footstool;
-            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
-                do_footstool = false;
-            }
-            else {
-                let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
-                let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
-                if tread_speed_y < tread_jump_speed_limit {
-                    do_footstool = false;
-                }
-                else {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
-                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-                    do_footstool = fighter.pop_lua_stack(1).get_bool();
-                }
-            }
-            if do_footstool {
-                fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
-                return true.into();
-            }
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_NO_TRIGGER) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83), true);
-            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-            if fighter.pop_lua_stack(1).get_bool() {
-                fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), false.into());
-                return true.into();
-            }
-        }
-    }
+unsafe extern "C" fn sub_transition_group_check_air_tread_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
+    // if fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_bool() {
+    //     let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_ptr());
+    //     if callable(fighter).get_bool() {
+    //         return true.into();
+    //     }
+    // }
+    // if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+    //     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
+    //     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP)
+    //     && ControlModule::is_enable_flick_jump(fighter.module_accessor) {
+    //         let do_footstool;
+    //         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
+    //             do_footstool = false;
+    //         }
+    //         else {
+    //             let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
+    //             let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
+    //             if tread_speed_y < tread_jump_speed_limit {
+    //                 do_footstool = false;
+    //             }
+    //             else {
+    //                 fighter.clear_lua_stack();
+    //                 lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
+    //                 sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+    //                 do_footstool = fighter.pop_lua_stack(1).get_bool();
+    //             }
+    //         }
+    //         if do_footstool {
+    //             fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
+    //             return true.into();
+    //         }
+    //     }
+    //     if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_JUMP_TRIGGER != 0
+    //     || fighter.global_table[CMD_CAT2].get_i32() & (
+    //         *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI |
+    //         *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L |
+    //         *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R |
+    //         *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
+    //     ) != 0 /* this is the addition */
+    //     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_BUTTON) {
+    //         let do_footstool;
+    //         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
+    //             do_footstool = false;
+    //         }
+    //         else {
+    //             let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
+    //             let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
+    //             if tread_speed_y < tread_jump_speed_limit {
+    //                 do_footstool = false;
+    //             }
+    //             else {
+    //                 fighter.clear_lua_stack();
+    //                 lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
+    //                 sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+    //                 do_footstool = fighter.pop_lua_stack(1).get_bool();
+    //             }
+    //         }
+    //         if do_footstool {
+    //             fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
+    //             return true.into();
+    //         }
+    //     }
+    //     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_NO_TRIGGER) {
+    //         fighter.clear_lua_stack();
+    //         lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83), true);
+    //         sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+    //         if fighter.pop_lua_stack(1).get_bool() {
+    //             fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), false.into());
+    //             return true.into();
+    //         }
+    //     }
+    // }
+    // false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_cliff)]
@@ -764,6 +800,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground_special,
             sub_transition_group_check_ground,
+
+            sub_air_check_fall_common,
 
             sub_transition_group_check_air_attack,
             sub_transition_group_check_air_special,

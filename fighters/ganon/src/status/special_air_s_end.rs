@@ -20,13 +20,23 @@ unsafe extern "C" fn ganon_special_air_s_end_pre(fighter: &mut L2CFighterCommon)
         false,
         true,
         false,
-        *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_S |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
+        ) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
         0
     );
     0.into()
 }
+
+// unsafe extern "C" fn ganon_special_air_s_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     let func = smashline::api::get_target_function("lua2cpp_ganon.nrs", 0x6ef0).unwrap();
+//     let func : fn(&mut L2CFighterCommon, L2CValue, L2CValue) = std::mem::transmute(func);
+//     func(fighter, hash40("throw").into(), hash40("invalid").into());
+//     0.into()
+// }
 
 unsafe extern "C" fn ganon_special_air_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
@@ -57,5 +67,6 @@ unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterC
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, ganon_special_air_s_end_pre);
+    // agent.status(Init, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, ganon_special_air_s_end_init);
     agent.status(Main, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, ganon_special_air_s_end_main);
 }

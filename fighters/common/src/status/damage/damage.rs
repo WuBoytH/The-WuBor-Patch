@@ -25,7 +25,10 @@ unsafe extern "C" fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CVal
         false,
         false,
         0,
-        *FIGHTER_STATUS_ATTR_DAMAGE as u32,
+        (
+            *FIGHTER_STATUS_ATTR_DAMAGE |
+            *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY
+        ) as u32,
         0,
         0
     );
@@ -34,7 +37,7 @@ unsafe extern "C" fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CVal
 
 #[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init_common)]
 unsafe extern "C" fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
-    let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
+    let mut reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("speed_vec_x"));
@@ -51,8 +54,9 @@ unsafe extern "C" fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFigh
     sv_information::damage_log_value(fighter.lua_state_agent);
     let attr = fighter.pop_lua_stack(1).get_u64();
     // println!("damage log value attr: {:#x}", attr);
+
     let _status = StatusModule::status_kind(fighter.module_accessor);
-    // this isn't used in anyhthing???
+
     if 0 >= reaction_frame as i32 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
@@ -60,6 +64,9 @@ unsafe extern "C" fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFigh
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
     }
     else {
+        if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+            reaction_frame += param::damage::burnout_stun_penalty;
+        }
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION);
         WorkModule::set_float(fighter.module_accessor, reaction_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
         WorkModule::set_float(fighter.module_accessor, reaction_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME_LAST);
@@ -443,8 +450,30 @@ unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusDamage__requestVectorAdjustEffect)]
-unsafe extern "C" fn fighterstatusdamage__requestvectoradjusteffect(_fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue, _arg3: L2CValue, _arg4: L2CValue, _arg5: L2CValue, _arg6: L2CValue,) {
-    // nothing lmao
+unsafe extern "C" fn fighterstatusdamage__requestvectoradjusteffect(
+    fighter: &mut L2CFighterCommon,
+    arg1: L2CValue,
+    arg2: L2CValue,
+    arg3: L2CValue,
+    arg4: L2CValue,
+    arg5: L2CValue,
+    arg6: L2CValue
+) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        return 0.into();
+    }
+    original!()(fighter, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusDamage__correctDamageVectorCommon)]
+unsafe extern "C" fn fighterstatusdamage__correctdamagevectorcommon(
+    fighter: &mut L2CFighterCommon,
+    arg1: L2CValue
+) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        return false.into();
+    }
+    original!()(fighter, arg1)
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -455,8 +484,15 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             fighterstatusuniqprocessdamage_leave_stop,
             sub_damage_uniq_process_mainstop,
             exec_damage_elec_hit_stop,
-            fighterstatusdamage__requestvectoradjusteffect
+            fighterstatusdamage__requestvectoradjusteffect,
+            fighterstatusdamage__correctdamagevectorcommon
         );
+
+        unsafe {
+            let common_offset = (*info.module.ModuleObject).module_base as usize;
+            // Disables the mechanic letting you ASDI up if you get hit enough times on the ground.
+            skyline::patching::patch_pointer((common_offset + 0xab880) as *const u8, &0x14000035u32);
+        }
     }
 }
 

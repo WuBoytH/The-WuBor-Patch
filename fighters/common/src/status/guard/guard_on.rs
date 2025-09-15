@@ -5,10 +5,23 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
+    let trigger = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8);
+    let trigger_prev = ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8);
+    // println!(
+    //     "guard trigger: {}, in threshold: {}",
+    //     trigger,
+    //     trigger < 6
+    // );
+    // println!(
+    //     "guard trigger prev: {}, in threshold: {}",
+    //     trigger_prev,
+    //     trigger_prev > 20
+    // );
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < 6 &&
+    && !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT)
+    && trigger < 6 &&
     (
-        ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) > 20 ||
+        trigger_prev > 20 ||
         StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
     ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
@@ -16,9 +29,9 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
         WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
         ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
-        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+        // if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
             ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-        }
+        // }
         fighter.FighterStatusGuard__set_just_shield_scale();
     }
     // Also Original, but moved down
@@ -26,6 +39,20 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
     let guard_off_disable_shield_recovery = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_disable_shield_recovery"));
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
+
+    // Clear buffer manually
+    // ControlModule::reset_trigger(fighter.module_accessor);
+    // ControlModule::reset_flick_x(fighter.module_accessor);
+    // ControlModule::reset_flick_y(fighter.module_accessor);
+    ControlModule::clear_command(fighter.module_accessor, false);
+    // fighter.global_table[FLICK_X].assign(&L2CValue::I32(0xFE));
+    // fighter.global_table[FLICK_Y].assign(&L2CValue::I32(0xFE));
+    fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT2].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT3].assign(&L2CValue::I32(0));
+    fighter.global_table[CMD_CAT4].assign(&L2CValue::I32(0));
+
+    init_shield_hurtbox(fighter);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]
@@ -67,34 +94,30 @@ unsafe extern "C" fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: 
         fighter.FighterStatusGuard__landing_effect_control();
     }
     else {
-        if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME) {
-            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-            let just_guard_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-            if just_guard_frame == 0 {
-                ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
-                let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
-                    *SHIELD_TYPE_GUARD
-                }
-                else {
-                    *SHIELD_TYPE_UNDEFINED
-                };
-                ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
-                if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
-                    ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
-                }
+        if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME, 0) {
+            ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
+            let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
+                *SHIELD_TYPE_GUARD
             }
+            else {
+                *SHIELD_TYPE_UNDEFINED
+            };
+            ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+            // if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+                ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+            // }
         }
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
-            let shield_dec1 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"));
-            let shield_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_frame"), 0);
-            let decrease = shield_dec1 / shield_frame;
-            WorkModule::sub_float(fighter.module_accessor, decrease, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
-        }
-        let shield_health = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
-        let shield_health_min = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MIN);
-        if shield_health < shield_health_min {
-            WorkModule::set_float(fighter.module_accessor, shield_health_min, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
-        }
+        // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
+        //     let shield_dec1 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"));
+        //     let shield_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_frame"), 0);
+        //     let decrease = shield_dec1 / shield_frame;
+        //     WorkModule::sub_float(fighter.module_accessor, decrease, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        // }
+        // let shield_health = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        // let shield_health_min = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MIN);
+        // if shield_health < shield_health_min {
+        //     WorkModule::set_float(fighter.module_accessor, shield_health_min, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        // }
         let shield_min_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
         if 0 < shield_min_frame {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
@@ -147,6 +170,24 @@ unsafe extern "C" fn sub_status_end_guard_on_common(fighter: &mut L2CFighterComm
     else if !param_1.get_bool() {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
+
+    let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
+        *SHIELD_TYPE_GUARD
+    }
+    else {
+        *SHIELD_TYPE_UNDEFINED
+    };
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
+        ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+        ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+        if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {
+            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+        }
+    }
+    ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
+
+    // Clear shield hurtbox
+    FighterUtil::reset_hit_data(fighter.module_accessor);
 }
 
 #[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]

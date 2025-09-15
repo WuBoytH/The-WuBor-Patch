@@ -240,6 +240,7 @@ pub unsafe extern "C" fn ryu_attack_reset(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_FRAME);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER);
@@ -835,6 +836,7 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
+    VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::ENABLE_DOUBLE_TAP_DRIVE_RUSH);
     let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
         fighter.sub_transition_group_check_air_special().get_bool()
     }
@@ -868,6 +870,7 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     if !attack_command1 {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
     }
+    VarModule::off_flag(fighter.module_accessor, vars::ryu::status::flag::ENABLE_DOUBLE_TAP_DRIVE_RUSH);
     ret.into()
 }
 

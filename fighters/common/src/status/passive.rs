@@ -6,6 +6,11 @@ unsafe extern "C" fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CVal
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
         return false.into();
     }
+
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
+        return false.into();
+    }
+
     true.into()
 }
 
@@ -33,11 +38,11 @@ pub unsafe extern "C" fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CVa
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button_for_damage)]
 unsafe extern "C" fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
-    if reaction_frame <= 0.0
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        return true.into();
-    }
+    // let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+    // if reaction_frame <= 0.0
+    // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+    //     return true.into();
+    // }
     fighter.sub_check_passive_button(param_1)
 }
 

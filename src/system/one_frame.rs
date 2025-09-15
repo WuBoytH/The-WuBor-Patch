@@ -11,7 +11,7 @@ unsafe fn calc_nnsdk_offset() -> u64 {
 
 static mut DUMMY_BLOCK: [u8; 0x100] = [0; 0x100];
 
-#[skyline::hook(offset = 0x374779c, inline)]
+#[skyline::hook(offset = 0x3747b7c, inline)]
 unsafe fn run_scene_update(_: &skyline::hooks::InlineCtx) {
     while !RUN.swap(false, Ordering::SeqCst) {
         skyline::nn::hid::GetNpadFullKeyState(DUMMY_BLOCK.as_mut_ptr() as _, &0);
@@ -25,12 +25,12 @@ unsafe fn set_interval_1(window: u64, _: i32) {
 
 #[skyline::hook(replace = OFFSET2, inline)]
 unsafe fn set_interval_2(ctx: &mut skyline::hooks::InlineCtx) {
-    *ctx.registers[8].x.as_mut() = 0;
+    ctx.registers[8].set_x(0);
 }
 
 static mut RUN: AtomicBool = AtomicBool::new(false);
 
-#[skyline::hook(offset = 0x3810684, inline)]
+#[skyline::hook(offset = 0x3810a64, inline)]
 unsafe fn vsync_count_thread(_: &skyline::hooks::InlineCtx) {
     RUN.store(true, Ordering::SeqCst);
 }

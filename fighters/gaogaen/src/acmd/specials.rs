@@ -324,7 +324,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        // GrabModule::set_rebound(agent.module_accessor, true);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -335,7 +335,7 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        // GrabModule::set_rebound(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 39.0);
     if macros::is_excute(agent) {
@@ -370,7 +370,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
-        GrabModule::set_rebound(agent.module_accessor, true);
+        // GrabModule::set_rebound(agent.module_accessor, true);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -381,7 +381,7 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         grab!(agent, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        GrabModule::set_rebound(agent.module_accessor, false);
+        // GrabModule::set_rebound(agent.module_accessor, false);
     }
     frame(agent.lua_state_agent, 39.0);
     if macros::is_excute(agent) {
@@ -551,7 +551,7 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
-        // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         AttackModule::clear(agent.module_accessor, 2, false);
         AttackModule::clear(agent.module_accessor, 3, false);
         AttackModule::clear(agent.module_accessor, 4, false);
@@ -571,7 +571,7 @@ unsafe extern "C" fn game_specialhistart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 2.5, 5, 5, 0, 30, 3.0, 1.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.7, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 1, 0, Hash40::new("arml"), 2.5, 5, 5, 0, 30, 3.0, 1.0, 0.0, 0.0, Some(7.0), Some(0.0), Some(0.0), 0.7, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }

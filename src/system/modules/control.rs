@@ -4,7 +4,8 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    wubor_utils::controls::*
+    custom_var::*,
+    wubor_utils::{controls::*, vars}
 };
 
 // #[repr(C)]
@@ -195,7 +196,7 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
 
 // #[skyline::hook(offset = 0x6bd6c4, inline)]
 // unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
-//     let control_module = *ctx.registers[21].x.as_ref();
+//     let control_module = ctx.registers[21].x();
 //     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
 //     // For some reason, the game resets your attack_air_kind value every frame
 //     // even though it resets as soon as you perform an aerial attack
@@ -211,9 +212,9 @@ const PRECEDE_EXTENSION : u8 = 24;
 #[skyline::hook(offset = 0x6bd5b4, inline)]
 unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
-    let cat = *ctx.registers[24].w.as_ref();
-    let flag = *ctx.registers[22].w.as_ref() as i32;
-    let current_buffer = *ctx.registers[8].w.as_ref();
+    let cat = ctx.registers[24].w();
+    let flag = ctx.registers[22].w() as i32;
+    let current_buffer = ctx.registers[8].w();
     let threshold = u8::MAX - PRECEDE_EXTENSION;
     let mut buffer = if current_buffer == 1 {
         // println!("Starting Hold Buffer");
@@ -248,7 +249,7 @@ unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
         }
     }
 
-    *ctx.registers[8].w.as_mut() = buffer;
+    ctx.registers[8].set_w(buffer);
 }
 
 #[skyline::hook(offset = 0x6bd51c, inline)]
@@ -262,31 +263,38 @@ unsafe fn set_release_value(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 unsafe fn set_release_value_internal(ctx: &mut skyline::hooks::InlineCtx) {
-    // let control_scuffed = *ctx.registers[21].x.as_ref() as *mut ControlModuleScuffed;
+    // let control_scuffed = ctx.registers[21].x() as *mut ControlModuleScuffed;
     // let precede_extension = (*(*control_scuffed).something).precede_extension;
     // println!("precede_extension: {:#x}", precede_extension);
     let threshold = u8::MAX - PRECEDE_EXTENSION;
     // println!("precede_extension threshold: {:#x}", threshold);
-    let current_buffer = ctx.registers[9].w.as_ref();
+    let current_buffer = ctx.registers[9].w();
     // println!("current: {:#x}", *current_buffer);
-    let buffer = if *current_buffer < threshold as u32 {
-        *current_buffer
+    let buffer = if current_buffer < threshold as u32 {
+        current_buffer
     }
     else {
         1
     };
-    *ctx.registers[8].w.as_mut() = buffer as u32;
+    ctx.registers[8].set_w(buffer);
 }
 
 // #[skyline::hook(offset = 0x6bd5ec, inline)]
 // unsafe fn get_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
-//     let cat = *ctx.registers[24].w.as_ref();
-//     let flag = *ctx.registers[22].w.as_ref();
+//     let cat = ctx.registers[24].w();
+//     let flag = ctx.registers[22].w();
 //     if cat == 0 && flag == 25 {
-//         let buffer = *ctx.registers[8].w.as_ref();
+//         let buffer = ctx.registers[8].w();
 //         println!("ESCAPE_F buffer: {:#x}", buffer);
 //     }
 // }
+
+#[skyline::hook(offset = 0x6bd4a0, inline)]
+unsafe extern "C" fn check_skip_hitlag_buffer(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
+    let skip_hitlag_buffer = VarModule::is_flag(module_accessor, vars::fighter::status::flag::SKIP_HITLAG_BUFFER_CHECK) as u64;
+    ctx.registers[22].set_x(skip_hitlag_buffer);
+}
 
 pub fn install() {
     // Prevents buffered C-stick aerials from triggering nair
@@ -304,7 +312,7 @@ pub fn install() {
     // Custom buffer-state handling
     // Always uses the hitlag handling that cat4 uses
     skyline::patching::Patch::in_text(0x6bd448).nop();
-    skyline::patching::Patch::in_text(0x6bd4a4).nop();
+    skyline::patching::Patch::in_text(0x6bd4a0).data(0xF10002DFu32);
     // Stubs the check if the buffer value is 1 and the button is held
     skyline::patching::Patch::in_text(0x6bd5b0).nop();
     // Stubs setting the buffer lifetime to 2 if held
@@ -319,6 +327,7 @@ pub fn install() {
         set_hold_buffer_value,
         set_release_value_in_hitlag,
         set_release_value,
-        // get_buffer_value
+        // get_buffer_value,
+        check_skip_hitlag_buffer
     );
 }

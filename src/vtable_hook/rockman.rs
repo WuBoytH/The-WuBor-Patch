@@ -1,6 +1,5 @@
 use crate::imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
-// use std::arch::asm;
 
 #[skyline::hook(offset = 0x107e970)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
@@ -93,6 +92,8 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     false,
                     false
                 );
+                let snd_handle = VarModule::get_int(module_accessor, rockman::instance::int::CHARGE_SHOT_SND_HANDLE) as i32;
+                SoundModule::set_se_vol(module_accessor, snd_handle, 0.6, 0);
             }
             let clear_input_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("clear_input_frame"));
             if charge_frame == clear_input_frame {
@@ -101,7 +102,8 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             let delay_charge_frame = WorkModule::get_param_int(module_accessor, hash40("param_buster_charge"), hash40("delay_charge_frame"));
             if charge_frame > delay_charge_frame {
                 if !VarModule::is_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
-                    SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0));
+                    let snd_handle = SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0)) as u32;
+                    VarModule::set_int(module_accessor, rockman::instance::int::CHARGE_SHOT_SND_HANDLE, snd_handle as i32);
                     EffectModule::req_follow(
                         module_accessor,
                         Hash40::new("rockman_chargeshot_hold"),
@@ -162,17 +164,19 @@ unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModul
     if EffectModule::is_exist_effect(module_accessor, eff_handle) {
         EffectModule::kill(module_accessor, eff_handle, true, true);
     }
+    VarModule::set_int(module_accessor, rockman::instance::int::CHARGE_SHOT_EFF_HANDLE, 0);
+    VarModule::set_int(module_accessor, rockman::instance::int::CHARGE_SHOT_SND_HANDLE, 0);
 }
 
 #[skyline::hook(offset = 0x1083bec, inline)]
 unsafe extern "C" fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
 #[skyline::hook(offset = 0x10838e0, inline)]
 unsafe extern "C" fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
 

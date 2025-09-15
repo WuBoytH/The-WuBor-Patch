@@ -7,11 +7,14 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
     u64::from([
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_WALK_BRAKE, // new
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_TURN,
         *FIGHTER_STATUS_KIND_TURN_DASH,
         *FIGHTER_STATUS_KIND_TURN_RUN,
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_JUMP_SQUAT, // new
         *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -61,7 +64,7 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        // *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
         *FIGHTER_STATUS_KIND_OTTOTTO_WAIT,
         *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP,
         *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL,
@@ -81,11 +84,14 @@ pub unsafe extern "C" fn shulk_check_can_activate_art_wheel(fighter: *mut Fighte
     u64::from([
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_WALK_BRAKE, // new
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_TURN,
         *FIGHTER_STATUS_KIND_TURN_DASH,
         *FIGHTER_STATUS_KIND_TURN_RUN,
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
         *FIGHTER_STATUS_KIND_JUMP_SQUAT, // new
         *FIGHTER_STATUS_KIND_JUMP,
         *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -135,7 +141,7 @@ pub unsafe extern "C" fn shulk_check_can_activate_art_wheel(fighter: *mut Fighte
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         // *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-        // *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
         // *FIGHTER_STATUS_KIND_DOWN,
         // *FIGHTER_STATUS_KIND_DOWN_WAIT,
         // *FIGHTER_STATUS_KIND_DOWN_STAND,
@@ -147,9 +153,45 @@ pub unsafe extern "C" fn shulk_check_can_activate_art_wheel(fighter: *mut Fighte
     ].contains(&status))
 }
 
+#[skyline::hook(offset = 0x116b7f0)]
+pub unsafe extern "C" fn shulk_can_transition_to_special_n(fighter: *mut Fighter) -> u64 {
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let status = StatusModule::status_kind(module_accessor);
+    u64::from([
+        *FIGHTER_STATUS_KIND_WAIT,
+        *FIGHTER_STATUS_KIND_WALK,
+        *FIGHTER_STATUS_KIND_DASH,
+        *FIGHTER_STATUS_KIND_RUN,
+        *FIGHTER_STATUS_KIND_RUN_BRAKE, // new
+        *FIGHTER_STATUS_KIND_TURN, // new
+        *FIGHTER_STATUS_KIND_TURN_DASH, // new
+        *FIGHTER_STATUS_KIND_TURN_RUN, // new
+        *FIGHTER_STATUS_KIND_TURN_RUN_BRAKE, // new
+        *FIGHTER_STATUS_KIND_JUMP,
+        *FIGHTER_STATUS_KIND_JUMP_AERIAL,
+        *FIGHTER_STATUS_KIND_FLY,
+        *FIGHTER_STATUS_KIND_FALL,
+        *FIGHTER_STATUS_KIND_FALL_AERIAL,
+        *FIGHTER_STATUS_KIND_LANDING,
+        *FIGHTER_STATUS_KIND_LANDING_LIGHT,
+        // *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        // *FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT,
+        *FIGHTER_STATUS_KIND_OTTOTTO_WAIT,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_FALL,
+        *FIGHTER_STATUS_KIND_ITEM_SCREW_FALL,
+        *FIGHTER_STATUS_KIND_GIMMICK_SPRING_JUMP,
+        *FIGHTER_STATUS_KIND_ITEM_ROCKETBELT_HOVER_KEEP,
+        *FIGHTER_STATUS_KIND_KILLER_JUMP,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_KIRBY_STATUS_KIND_SHULK_SPECIAL_N
+    ].contains(&status))
+}
+
 #[skyline::hook(offset = 0x1168360, inline)]
 unsafe extern "C" fn shulk_inc_arts_wheel_button_timer(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[22].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     if !WorkModule::is_flag(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_CIRCLE_MENU) {
         WorkModule::inc_int(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_SPECIAL_BUTTON_TIMER);
     }
@@ -192,7 +234,7 @@ pub fn install() {
     // skyline::patching::Patch::in_text(0x1165864).data(0x37000140u32);
 
     // Disables a weird check that forces you to go into wait/fall while holding Special, probably for the Art Wheel
-    // skyline::patching::Patch::in_text(0x1167170).data(0x14000499u32);
+    skyline::patching::Patch::in_text(0x1167170).data(0x14000499u32);
 
     // Disables a check that delays the art being selected by holding Special
     // skyline::patching::Patch::in_text(0x1165dd4).data(0x14000004u32);
@@ -207,6 +249,7 @@ pub fn install() {
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,
         shulk_check_can_activate_art_wheel,
+        shulk_can_transition_to_special_n,
         shulk_inc_arts_wheel_button_timer,
         // shulk_on_attack,
         // shulk_shield_art_hit_decrease

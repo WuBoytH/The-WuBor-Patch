@@ -38,6 +38,33 @@ unsafe extern "C" fn game_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn expression_landingairf(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        // macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn expression_landingairb(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+        // macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_attackairn", game_attackairn, Priority::Low);
+
+    agent.acmd("expression_landingairf", expression_landingairf, Priority::Low);
+
+    agent.acmd("expression_landingairb", expression_landingairb, Priority::Low);
 }

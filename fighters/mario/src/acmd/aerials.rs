@@ -137,15 +137,15 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 65, 90, 0, 3.0, 0.0, 0.0, -2.0, Some(0.0), Some(0.0), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 45, 65, 90, 0, 3.0, 0.0, 0.0, -2.0, Some(0.0), Some(0.0), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 3.0, false);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 1, 3.0, false);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 65, 90, 0, 3.0, 0.0, 1.5, -2.0, Some(0.0), Some(1.5), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 4.0, 45, 65, 90, 0, 3.0, 0.0, 1.5, -2.0, Some(0.0), Some(1.5), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_KICK);
         AttackModule::set_no_damage_fly_smoke_all(agent.module_accessor, true, false);
     }
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 40, 90, 0, 60, 4.0, 0.0, 0.0, -2.0, Some(0.0), Some(0.0), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_KICK);
+        AttackModule::clear(agent.module_accessor, 1, false);
+        VarModule::on_flag(agent.module_accessor, vars::mario::status::flag::ATTACK_AIR_LW_LAST);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 60, 40, 0, 60, 4.0, 0.0, 1.5, -2.0, Some(0.0), Some(1.5), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 56.0);
     if macros::is_excute(agent) {
@@ -159,52 +159,19 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn effect_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 0.0, 0, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 5.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.0, 0, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 16.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 17.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 0.0, 0, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 19.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.0, 0, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 30.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 31.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 0.0, 0, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 33.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.0, 0, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 44.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 45.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 0.0, 0, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
-    }
-    frame(agent.lua_state_agent, 47.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.0, 0, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
+    for _ in 0..4 {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
+        }
+        wait(agent.lua_state_agent, 1.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 0.0, 0, 0, 0, 0, 0.5, true, *EF_FLIP_YZ);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 3.0, 0, 0, 0, 0, 0.55, true, *EF_FLIP_YZ);
+        }
+        wait(agent.lua_state_agent, 11.0);
     }
 }
 

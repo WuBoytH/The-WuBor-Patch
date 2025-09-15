@@ -2,6 +2,10 @@ use super::*;
 
 mod dash;
 
+mod landing;
+
+mod guard;
+
 mod normals;
 mod aerials;
 mod specials;
@@ -13,6 +17,10 @@ mod cliff;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
+
+    landing::install(agent);
+
+    guard::install(agent);
 
     normals::install(agent);
     aerials::install(agent);

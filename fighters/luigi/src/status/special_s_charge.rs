@@ -5,6 +5,9 @@ unsafe extern "C" fn luigi_special_s_charge_main(fighter: &mut L2CFighterCommon)
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
     WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+
     if !StopModule::is_stop(fighter.module_accessor) {
         luigi_special_s_charge_substatus(fighter);
     }
@@ -81,19 +84,22 @@ unsafe extern "C" fn luigi_special_s_charge_mot_helper(fighter: &mut L2CFighterC
 }
 
 unsafe extern "C" fn luigi_special_s_charge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-        let charge = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
-        let charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_frame"));
-        if charge_frame <= charge {
-            fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
-        }
-        if StatusModule::is_situation_changed(fighter.module_accessor) {
-            luigi_special_s_charge_mot_helper(fighter);
-        }
-    }
-    else {
+    let charge = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+    let charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_frame"));
+    if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+    || charge_frame <= charge {
         fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
+        return 0.into();
     }
+
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return 1.into();
+    }
+
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        luigi_special_s_charge_mot_helper(fighter);
+    }
+
     0.into()
 }
 

@@ -21,7 +21,7 @@ pub mod agent_init;
 pub mod helper;
 
 mod wave;
-// mod burst;
+mod burst;
 
 pub fn install() {
     let agent = &mut Agent::new("dolly");
@@ -33,5 +33,5 @@ pub fn install() {
     agent.install();
 
     wave::install();
-    // burst::install();
+    burst::install();
 }

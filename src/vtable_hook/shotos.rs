@@ -99,6 +99,7 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
                 && (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON)) {
                     HitModule::set_status_all(module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+                    WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL);
                     // MotionModule::change_motion_inherit_frame(
@@ -252,23 +253,6 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                     VarModule::on_flag(module_accessor, flag);
                 }
             }
-            else if VarModule::get_int(module_accessor, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_REVERSAL {
-                if collision_kind == 1 {
-                    let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-                    if (*opponent_object).battle_object_id >> 0x1c == 0
-                    && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
-                        syoryuken_eff_handler(module_accessor, collision_log, Hash40::new("ryu_syoryuken_hit"), 0.3, 0.1, 0.1, 0.75);
-                    }
-                }
-            }
-        }
-        if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
-            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
-            let opponent_module_accessor = (*opponent_object).module_accessor;
-            let slow_frame = SlowModule::frame(opponent_module_accessor, 0);
-            if slow_frame < 10 {
-                SlowModule::set(opponent_module_accessor, 0, 50, 10, false, 0x50000000);
-            }
         }
     }
     if [
@@ -315,6 +299,21 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     if status == *FIGHTER_STATUS_KIND_FINAL {
         if collision_kind != 1 {
             return;
+        }
+    }
+    if status == fighter::status::GUARD_CANCEL_ATTACK {
+        if collision_kind == 1 {
+            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+            if (*opponent_object).battle_object_id >> 0x1c == 0
+            && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                let eff = if kind == 0x3c {
+                    Hash40::new("ryu_syoryuken_hit")
+                }
+                else {
+                    Hash40::new("ken_syoryuken_hit")
+                };
+                syoryuken_eff_handler(module_accessor, collision_log, eff, 0.3, 0.1, 0.1, 0.75);
+            }
         }
     }
     original!()(vtable, fighter, log, some_float);
@@ -535,7 +534,7 @@ pub fn install() {
 
     // Some Kind of Transition Check
     // Ryu
-    let _ = skyline::patching::Patch::in_text(0x5033eb0 + 0x1F8).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x5032eb0 + 0x1F8).data(1u8);
 
     skyline::install_hooks!(
         ryu_ken_init,

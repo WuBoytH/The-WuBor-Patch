@@ -7,7 +7,7 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
         macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 3.0, 78, 30, 0, 55, 3.5, 1.0, 0.0, 2.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 3.0, 65, 30, 0, 55, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 5.0, 90, 30, 0, 55, 3.5, 1.0, 0.0, 7.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 5.0, 90, 30, 0, 55, 3.5, 1.0, 0.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
     }
     wait(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -38,7 +38,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
         macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 4.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 2.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 4.0, 45, 75, 0, 62, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 2, 0, Hash40::new("sword1"), 6.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 7.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 2, 0, Hash40::new("sword1"), 6.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
     }
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -59,13 +59,37 @@ unsafe extern "C" fn effect_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_attackdash(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 10.0 / 12.0);
+    frame(agent.lua_state_agent, 13.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 7.0, 70, 55, 0, 65, 3.5, 1.0, 0.0, 0.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 7.0, 70, 55, 0, 65, 3.0, 0.0, 1.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 2, 0, Hash40::new("claviclel"), 7.0, 70, 65, 0, 50, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 10.0, 70, 58, 0, 65, 3.5, 1.0, 0.0, 6.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATK_SET_SHIELD_SETOFF_MUL_arg5(agent, 0, 1, 2, 3, 1.5);
+    }
+    frame(agent.lua_state_agent, 16.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 10.0, 70, 55, 0, 65, 3.5, 1.0, 0.0, 0.5, Some(8.0), Some(1.5), Some(-2.5), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 13.0, 70, 58, 0, 65, 3.5, 1.0, 0.0, 6.5, Some(12.0), Some(1.5), Some(-2.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+    }
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 17.0, -10.0);
+}
+
 unsafe extern "C" fn game_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
         macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 9.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 2.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 9.0, 45, 75, 0, 62, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 2, 0, Hash40::new("sword1"), 12.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 7.7, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 2, 0, Hash40::new("sword1"), 12.0, 45, 75, 0, 62, 3.5, 1.0, 0.0, 7.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
     }
     wait(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -93,9 +117,9 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 6.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 0.7, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 5.0, 100, 100, 0, 65, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("claviclel"), 5.0, 100, 100, 0, 65, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 10.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 6.7, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 10.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 4, 0, Hash40::new("sword1"), 5.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 0.7, Some(4.5), Some(0.0), Some(0.7), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 5, 0, Hash40::new("sword1"), 10.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 6.7, Some(6.0), Some(0.0), Some(6.7), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 5, 0, Hash40::new("sword1"), 10.0, 100, 100, 0, 65, 3.5, 0.0, 0.0, 6.7, Some(6.0), Some(0.0), Some(6.7), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
     }
     wait(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -108,7 +132,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 0, 0, Hash40::new("sword1"), 6.0, 85, 100, 0, 52, 3.5, 0.0, 0.0, 0.7, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 5.0, 85, 100, 0, 52, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("claviclel"), 5.0, 85, 100, 0, 52, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_S, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 10.0, 85, 100, 0, 52, 3.5, 0.0, 0.0, 6.7, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 3, 0, Hash40::new("sword1"), 10.0, 85, 100, 0, 52, 3.5, 0.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
     }
     wait(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -134,7 +158,7 @@ unsafe extern "C" fn game_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 30, 40, 0, 40, 2.7, 0.0, 2.7, 15.7, Some(0.0), Some(4.4), Some(9.2), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.35, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_M, unstance.hit_sound, *ATTACK_REGION_SWORD);
-        macros::ATTACK(agent, 1, 0, Hash40::new("sword1"), 10.0, 30, 40, 0, 50, 2.7, 0.0, 0.0, 8.2, Some(0.0), Some(0.0), Some(7.2), 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.35, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
+        macros::ATTACK(agent, 1, 0, Hash40::new("sword1"), 10.0, 30, 40, 0, 50, 2.7, 0.0, 0.0, 8.2, Some(0.0), Some(0.0), Some(7.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.35, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new_raw(unstance.hit_effect), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MARTH_SWORD, *ATTACK_REGION_SWORD);
         AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     wait(agent.lua_state_agent, 2.0);
@@ -162,6 +186,8 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attack12", game_attack12, Priority::Low);
     agent.acmd("effect_attack12", effect_attack12, Priority::Low);
+
+    agent.acmd("game_attackdash", game_attackdash, Priority::Low);
 
     agent.acmd("game_attacks3", game_attacks3, Priority::Low);
     agent.acmd("effect_attacks3", effect_attacks3, Priority::Low);

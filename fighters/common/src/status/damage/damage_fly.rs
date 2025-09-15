@@ -10,7 +10,7 @@ unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2C
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL);
         return 1.into();
     }
-    let mut attr = *FIGHTER_STATUS_ATTR_DAMAGE;
+    let mut attr = *FIGHTER_STATUS_ATTR_DAMAGE | *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY;
     let mut flag_keep = *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLY_FLAG;
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if [
@@ -178,14 +178,21 @@ unsafe extern "C" fn sub_update_damage_fly_effect(
             EffectModule::set_rgb_partial_last(fighter.module_accessor, team_color.value[0], team_color.value[1], team_color.value[2]);
         }
 
-        if effect_hash.get_u64() == hash40("sys_flyroll_smoke") {
-            // <WuBor>
-            EffectModule::set_alpha_last(fighter.module_accessor, 0.6);
-            // </WuBor>
-        }
-
         WorkModule::set_int(fighter.module_accessor, effect_id as i32, effect_const.get_i32());
     }
+
+    if effect_hash.get_u64() == hash40("sys_flyroll_smoke") {
+        // <WuBor>
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        let speed = sv_kinetic_energy::get_speed_length(fighter.lua_state_agent);
+        let fly_effect_smoke_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("fly_effect_smoke_speed"));
+        let fly_effect_aura_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("fly_effect_aura_speed"));
+        let lerp = (speed.clamp(fly_effect_smoke_speed, fly_effect_aura_speed) - fly_effect_smoke_speed) / (fly_effect_aura_speed - fly_effect_smoke_speed);
+        EffectModule::set_alpha(fighter.module_accessor, effect_id, 0.8 * lerp);
+        // </WuBor>
+    }
+
     effect_id.into()
 }
 

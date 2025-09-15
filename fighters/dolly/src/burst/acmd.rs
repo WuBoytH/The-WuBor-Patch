@@ -1,68 +1,101 @@
 use super::*;
 
-unsafe extern "C" fn game_superspecial(agent: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(owner_module_accessor, vars::dolly::status::flag::IS_SPECIAL_CANCEL) {
-        VarModule::on_flag(agent.module_accessor, vars::dolly_wave::instance::flag::FROM_CANCEL);
-    }
+unsafe extern "C" fn game_superspecialtriple1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        let mut damage = 26.0;
-        let mut bkb = 100;
-        if VarModule::is_flag(agent.module_accessor, vars::dolly_wave::instance::flag::FROM_CANCEL) {
-            let special_cancel_damage_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_damage_mul"));
-            let special_cancel_bkb_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_bkb_mul"));
-            damage *= special_cancel_damage_mul;
-            bkb = (bkb as f32 * special_cancel_bkb_mul) as i32;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 70, 41, 0, bkb, 1.0, 0.0, 2.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 70, 41, 0, bkb, 3.0, 0.0, 3.0, -8.0, Some(0.0), Some(3.0), Some(4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 42, 100, 25, 30, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0.0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+        AttackModule::set_no_dead_all(agent.module_accessor, true, false);
     }
-    frame(agent.lua_state_agent, 1.0);
+    frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        let mut damage1 = 26.0;
-        let mut damage2 = 23.0;
-        let mut damage3 = 20.0;
-        let mut bkb = 100;
-        if VarModule::is_flag(agent.module_accessor, vars::dolly_wave::instance::flag::FROM_CANCEL) {
-            let special_cancel_damage_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_damage_mul"));
-            let special_cancel_bkb_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_bkb_mul"));
-            damage1 *= special_cancel_damage_mul;
-            damage2 *= special_cancel_damage_mul;
-            damage3 *= special_cancel_damage_mul;
-            bkb = (bkb as f32 * special_cancel_bkb_mul) as i32;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage1, 70, 41, 0, bkb, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(10.0), Some(-1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage2, 70, 42, 0, bkb, 11.0, 0.0, 25.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), damage3, 70, 44, 0, bkb, 8.0, 0.0, 40.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
+        AttackModule::clear_all(agent.module_accessor);
     }
-    frame(agent.lua_state_agent, 5.0);
+}
+
+unsafe extern "C" fn effect_superspecialtriple1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        let mut damage1 = 19.0;
-        let mut damage2 = 17.0;
-        let mut damage3 = 15.0;
-        let mut bkb1 = 120;
-        let mut bkb2 = 110;
-        let mut bkb3 = 100;
-        if VarModule::is_flag(agent.module_accessor, vars::dolly_wave::instance::flag::FROM_CANCEL) {
-            let special_cancel_damage_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_damage_mul"));
-            let special_cancel_bkb_mul = WorkModule::get_param_float(agent.module_accessor, hash40("param_misc"), hash40("special_cancel_bkb_mul"));
-            damage1 *= special_cancel_damage_mul;
-            damage2 *= special_cancel_damage_mul;
-            damage3 *= special_cancel_damage_mul;
-            bkb1 = (bkb1 as f32 * special_cancel_bkb_mul) as i32;
-            bkb2 = (bkb2 as f32 * special_cancel_bkb_mul) as i32;
-            bkb3 = (bkb3 as f32 * special_cancel_bkb_mul) as i32;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage1, 70, 41, 0, bkb1, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(10.0), Some(-1.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage2, 70, 42, 0, bkb2, 11.0, 0.0, 25.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), damage3, 70, 44, 0, bkb3, 8.0, 0.0, 40.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_SUPERSPECIAL01, *ATTACK_REGION_ENERGY);
+        macros::LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_ground"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_base"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+    }
+}
+
+unsafe extern "C" fn sound_superspecialtriple1(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_final_superspecial01_03"));
+    }
+}
+
+unsafe extern "C" fn game_superspecialtriple2(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 42, 100, 25, 30, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0.0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+        AttackModule::set_no_dead_all(agent.module_accessor, true, false);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
+unsafe extern "C" fn effect_superspecialtriple2(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_ground"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.9, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_base"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.9, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.9, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_flash"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.9, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.1);
+    }
+}
+
+unsafe extern "C" fn sound_superspecialtriple2(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_final_superspecial01_03"));
+    }
+}
+
+unsafe extern "C" fn game_superspecialtriple3(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 70, 65, 0, 100, 11.0, 0.0, 10.0, -1.0, Some(0.0), Some(39.0), Some(9.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0.0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BOMB);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
+unsafe extern "C" fn effect_superspecialtriple3(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::LANDING_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), -3, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_ground"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_base"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_volcano_flash"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 1, true);
+    }
+}
+
+unsafe extern "C" fn sound_superspecialtriple3(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_dolly_final_superspecial01_03_last"));
     }
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_superspecial", game_superspecial, Priority::Low);
+    agent.acmd("game_superspecialtriple1", game_superspecialtriple1, Priority::Low);
+    agent.acmd("effect_superspecialtriple1", effect_superspecialtriple1, Priority::Low);
+    agent.acmd("sound_superspecialtriple1", sound_superspecialtriple1, Priority::Low);
+
+    agent.acmd("game_superspecialtriple2", game_superspecialtriple2, Priority::Low);
+    agent.acmd("effect_superspecialtriple2", effect_superspecialtriple2, Priority::Low);
+    agent.acmd("sound_superspecialtriple2", sound_superspecialtriple2, Priority::Low);
+
+    agent.acmd("game_superspecialtriple3", game_superspecialtriple3, Priority::Low);
+    agent.acmd("effect_superspecialtriple3", effect_superspecialtriple3, Priority::Low);
+    agent.acmd("sound_superspecialtriple3", sound_superspecialtriple3, Priority::Low);
 }

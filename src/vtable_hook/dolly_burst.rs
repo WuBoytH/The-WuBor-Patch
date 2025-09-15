@@ -9,7 +9,6 @@ unsafe extern "C" fn burst_check_status(ctx: &mut skyline::hooks::InlineCtx) {
     let status = ctx.registers[0].w() as i32;
     if status == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
     && VarModule::is_flag(module_accessor, dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
-        println!("hi");
         ctx.registers[0].set_w(0);
     }
 }

@@ -2,7 +2,7 @@ use crate::imports::*;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 #[skyline::hook(offset = 0xaa6990)]
-pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, log: u64) -> u64 {
+pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);

@@ -98,6 +98,11 @@ unsafe extern "C" fn koopa_special_n_main_loop(fighter: &mut L2CFighterCommon) -
             let scale_min = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("fire_scale_min"));
             WorkModule::set_float(fighter.module_accessor, speed_mul_min, *FIGHTER_KOOPA_INSTANCE_WORK_ID_FLOAT_BREATH_SPEED_MUL);
             WorkModule::set_float(fighter.module_accessor, scale_min, *FIGHTER_KOOPA_INSTANCE_WORK_ID_FLOAT_BREATH_SCALE);
+            let eff_handle = VarModule::get_int(fighter.module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+            if !EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+                EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
+                VarModule::set_int(fighter.module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
+            }
         }
         else {
             let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

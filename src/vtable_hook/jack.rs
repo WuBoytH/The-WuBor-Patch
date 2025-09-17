@@ -50,7 +50,7 @@ unsafe extern "C" fn jack_on_attack(vtable: u64, fighter: &mut Fighter, log: u64
 unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 #[skyline::hook(offset = 0xb33820)]
-pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: u64) -> u64 {
+pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
     // param_3 + 0x10

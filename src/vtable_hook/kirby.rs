@@ -19,6 +19,13 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
             VarModule::set_float(module_accessor, captain::instance::float::BOOST_POWER, 0.0);
             captain_set_lightweight(module_accessor);
         }
+        if copy_kind == *FIGHTER_KIND_KOOPA as u32 {
+            let eff_handle = VarModule::get_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+            if !EffectModule::is_exist_effect(module_accessor, eff_handle) {
+                EffectModule::kill(module_accessor, eff_handle, true, true);
+                VarModule::set_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
+            }
+        }
     }
     original!()(fighter, param_1);
 }

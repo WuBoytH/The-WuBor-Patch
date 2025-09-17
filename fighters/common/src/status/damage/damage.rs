@@ -227,10 +227,25 @@ unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2C
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
         }
         else {
-            if !(status == *FIGHTER_STATUS_KIND_DAMAGE_FLY
-            && (damage_motion == hash40("wall_damage")
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("wall_damage")))
-            && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+            let cont = if status == *FIGHTER_STATUS_KIND_DAMAGE_FLY {
+                if damage_motion != hash40("wall_damage")
+                && MotionModule::motion_kind(fighter.module_accessor) != hash40("wall_damage") {
+                    false
+                }
+                else {
+                    true
+                }
+            }
+            else {
+                false
+            };
+
+            if cont
+            || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
+                WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
+            }
+            else {
+                let lr = PostureModule::lr(fighter.module_accessor);
                 TurnModule::set_turn(
                     fighter.module_accessor,
                     Hash40::new("back_damage"),
@@ -240,11 +255,8 @@ unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2C
                     true
                 );
                 PostureModule::reverse_lr(fighter.module_accessor);
-                let back_damage_effective_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
-                WorkModule::set_int(fighter.module_accessor, back_damage_effective_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
-            }
-            else {
-                WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
+                let back_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
+                WorkModule::set_int(fighter.module_accessor, back_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
             }
         }
     }

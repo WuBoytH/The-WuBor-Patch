@@ -1,5 +1,4 @@
 #![feature(
-    concat_idents,
     proc_macro_hygiene,
     simd_ffi,
     repr_simd

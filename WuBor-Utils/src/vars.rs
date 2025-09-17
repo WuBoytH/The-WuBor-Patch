@@ -492,6 +492,14 @@ pub mod kirby {
     }
 }
 
+pub mod koopa {
+    pub mod instance {
+        pub mod int {
+            pub const FIREBALL_CHARGE_EFF_ID : i32 = 0x0100;
+        }
+    }
+}
+
 pub mod koopa_breath {
     pub mod status {
         pub const HIT : i32 = 0x1;

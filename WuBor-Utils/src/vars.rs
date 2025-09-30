@@ -448,6 +448,16 @@ pub mod ike {
     }
 }
 
+pub mod ike_sword {
+    pub mod status {
+        pub mod flag {
+            pub const BLADE_BEAM_KINETIC_SHIFT : i32 = 0x1150;
+        }
+
+        pub const BLADE_BEAM : i32 = 0x4;
+    }
+}
+
 pub mod jack {
     pub mod instance {
         pub mod flag {

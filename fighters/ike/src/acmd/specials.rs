@@ -477,6 +477,25 @@ unsafe extern "C" fn game_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        // macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 0, 48, 9.0, 0.0, 8.0, 18.0, Some(0.0), Some(8.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        // AttackModule::set_force_reaction(agent.module_accessor, 0, true, false);
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, false, -1);
+    }
+    // if WorkModule::is_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
+    //     if macros::is_excute(agent) {
+    //         AttackModule::set_optional_hit_sound(agent.module_accessor, 0, Hash40::new("se_ike_criticalhit"));
+    //     }
+    // }
+    // frame(agent.lua_state_agent, 7.0);
+    // macros::FT_MOTION_RATE(agent, 1.3);
+    // if macros::is_excute(agent) {
+    //     AttackModule::clear_all(agent.module_accessor);
+    // }
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialnend", game_specialnend, Priority::Low);
     agent.acmd("effect_specialnend", effect_specialnend, Priority::Low);
@@ -509,4 +528,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairhi2", game_specialhi2, Priority::Low);
 
     agent.acmd("game_specialhi3", game_specialhi3, Priority::Low);
+
+    agent.acmd("game_speciallwhit", game_speciallwhit, Priority::Low);
+
+    agent.acmd("game_specialairlwhit", game_speciallwhit, Priority::Low);
 }

@@ -1,11 +1,6 @@
 use {
-    smash::{
-        hash40,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars},
+    smash::app::lua_bind::*,
+    wubor_utils::vars,
 };
 
 extern "Rust" {

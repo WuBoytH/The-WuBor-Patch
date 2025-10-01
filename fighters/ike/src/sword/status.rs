@@ -48,7 +48,7 @@ unsafe extern "C" fn blade_beam_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
         set_speed,
         weapon,
         WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-        5.5 * lr,
+        4.8 * lr,
         0.0
     );
     sv_kinetic_energy!(
@@ -107,15 +107,15 @@ unsafe extern "C" fn blade_beam_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
             set_stable_speed,
             weapon,
             WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-            1.0,
-            1.0
+            1.5,
+            1.5
         );
         sv_kinetic_energy!(
             set_brake,
             weapon,
             WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-            0.125,
-            0.125
+            0.1,
+            0.1
         );
         VarModule::off_flag(weapon.module_accessor, vars::ike_sword::status::flag::BLADE_BEAM_KINETIC_SHIFT);
     }

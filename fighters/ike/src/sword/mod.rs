@@ -32,7 +32,7 @@ unsafe extern "Rust" fn ike_sword_on_hit_internal(vtable: u64, weapon: &mut smas
     let module_accessor = weapon.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     if status != vars::ike_sword::status::BLADE_BEAM {
-        *(weapon as *mut smash::app::Weapon as *mut u32).add(0x3bc8) = 0;
+        *(weapon as *mut smash::app::Weapon as *mut u32).add(0x3bc8 / 0x4) = 0;
     }
     val & 1
 }

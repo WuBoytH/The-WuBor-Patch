@@ -141,13 +141,13 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
         return true.into();
     }
 
-    if GroundModule::is_passable_ground(fighter.module_accessor)
-    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
-    && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
-    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
-        return true.into();
-    }
+    // if GroundModule::is_passable_ground(fighter.module_accessor)
+    // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
+    // && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
+    // && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+    //     return true.into();
+    // }
 
     // if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     // && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN {

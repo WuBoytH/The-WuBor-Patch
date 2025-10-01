@@ -97,11 +97,11 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
         cancel_frame = 34.0;
     }
     else {
-        attack_frame = 14.0;
-        cancel_frame = 14.0;
+        attack_frame = 12.0;
+        cancel_frame = 12.0;
     }
     if VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE) {
-        cancel_frame += 10.0;
+        cancel_frame += 12.0;
     }
     AirDashParams{attack_frame, cancel_frame}
 }

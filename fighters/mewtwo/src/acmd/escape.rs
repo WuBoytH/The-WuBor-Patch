@@ -23,7 +23,7 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
         }
     }
     else {
-        frame(agent.lua_state_agent, 15.0);
+        frame(agent.lua_state_agent, 13.0);
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
         }

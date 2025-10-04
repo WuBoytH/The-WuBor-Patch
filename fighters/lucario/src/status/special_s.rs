@@ -55,10 +55,9 @@ unsafe extern "C" fn lucario_special_s_main_loop(fighter: &mut L2CFighterCommon)
         if VarModule::is_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_S_CHECK_ENHANCE) {
             VarModule::off_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
             VarModule::on_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_S_SET_MOTION);
-            let enhance = VarModule::get_int(fighter.module_accessor, vars::lucario::instance::int::AURA_LEVEL) > 0;
-            if enhance && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            && lucario_drain_aura(fighter, false) {
                 VarModule::on_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_S_ENHANCE);
-                lucario_drain_aura(fighter, false);
             }
             lucario_special_s_set_kinetic(fighter);
         }

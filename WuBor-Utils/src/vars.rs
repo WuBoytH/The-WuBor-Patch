@@ -438,6 +438,8 @@ pub mod ike {
             pub const SPECIAL_N_AIR : i32 = 0x1150;
             pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
             pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
+
+            pub const SPECIAL_LW_WHIFF : i32 = 0x1150;
         }
         pub mod int {
             pub const ERUPTION_COUNT : i32 = 0x1150;

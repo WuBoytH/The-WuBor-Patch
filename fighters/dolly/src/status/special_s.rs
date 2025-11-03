@@ -46,9 +46,6 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_F_CHECK_FEINT);
-        if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
-            VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_F_FEINT);
-        }
     }
 
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_DOLLY_STRENGTH_S, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
@@ -95,7 +92,7 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn special_s_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
         if VarModule::is_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_F_CHECK_FEINT)
-        && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
             VarModule::on_flag(fighter.module_accessor, vars::dolly::status::flag::SPECIAL_F_FEINT);
         }
     }

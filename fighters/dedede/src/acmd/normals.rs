@@ -2,7 +2,7 @@ use super::*;
 
 unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 2.0/3.0);
+    macros::FT_MOTION_RATE(agent, 4.0 / 6.0);
     frame(agent.lua_state_agent, 7.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 10.0);
@@ -13,10 +13,12 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 3, 0, Hash40::new("top"), 4.0, 105, 10, 0, 48, 2.8, 0.0, 6.5, 19.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_dedede_hammer"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEDEDE, *ATTACK_REGION_HAMMER);
     }
     wait(agent.lua_state_agent, 2.0);
+    macros::FT_MOTION_RATE(agent, 5.0 / 7.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 19.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
@@ -24,11 +26,12 @@ unsafe extern "C" fn game_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -5.0);
 }
 
 unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.75);
+    macros::FT_MOTION_RATE(agent, 6.0 / 8.0);
     frame(agent.lua_state_agent, 9.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 11.0);
@@ -43,7 +46,7 @@ unsafe extern "C" fn game_attack12(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 14.0);
-    macros::FT_MOTION_RATE(agent, 0.75);
+    macros::FT_MOTION_RATE(agent, 3.0 / 4.0);
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {

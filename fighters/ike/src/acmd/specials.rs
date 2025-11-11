@@ -351,6 +351,17 @@ unsafe extern "C" fn game_specialsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
+unsafe extern "C" fn game_specialairsend(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
+    }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -8.0);
+    frame(agent.lua_state_agent, 26.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_END_NO_LANDING);
+    }
+}
+
 unsafe extern "C" fn game_specialsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -630,7 +641,7 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialsend", game_specialsend, Priority::Low);
 
-    agent.acmd("game_specialairsend", game_specialsend, Priority::Low);
+    agent.acmd("game_specialairsend", game_specialairsend, Priority::Low);
 
     agent.acmd("game_specialsattack", game_specialsattack, Priority::Low);
     agent.acmd("effect_specialsattack", effect_specialsattack, Priority::Low);

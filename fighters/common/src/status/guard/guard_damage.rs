@@ -108,6 +108,14 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     //         WorkModule::set_int(fighter.module_accessor, shield_setoff_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME);
     //     }
     // }
+
+    let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+
+    if PostureModule::lr(fighter.module_accessor) != shield_lr {
+        PostureModule::set_lr(fighter.module_accessor, shield_lr);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         fighter.clear_lua_stack();
         let mot = hash40("guard_damage");
@@ -199,10 +207,10 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         // let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
         // let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
-        let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
-        // let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
+
+        // let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * -shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
         // println!("setoff_speed: {}", setoff_speed);
-        let mut setoff_speed = (shield_power * 0.05 + 0.5) * shield_lr;
+        let mut setoff_speed = (shield_power * 0.05 + 0.5) * -shield_lr;
         // println!("shield_power {} * mul 0.05 + 0.5", shield_power);
         // println!("setoff_speed: {}", setoff_speed);
 
@@ -476,8 +484,26 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
                 VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_TAUNT_INPUT, is_shield);
             }
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                let stick = fighter.global_table[STICK_Y].get_f32() == 0.0;
-                VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_ATTACK_INPUT, is_shield && stick);
+                let status = if GroundModule::is_passable_ground(fighter.module_accessor)
+                && fighter.global_table[STICK_Y].get_f32() < -0.5 {
+                    vars::fighter::status::GUARD_CANCEL_PASS
+                }
+                else if fighter.global_table[STICK_X].get_f32().abs() > 0.5 {
+                    if fighter.global_table[STICK_X].get_f32().signum() == PostureModule::lr(fighter.module_accessor).signum() {
+                        vars::fighter::status::GUARD_CANCEL_ESCAPE_F
+                    }
+                    else {
+                        vars::fighter::status::GUARD_CANCEL_ESCAPE_B
+                    }
+                }
+                else {
+                    vars::fighter::status::GUARD_CANCEL_ATTACK
+                };
+                VarModule::set_int(
+                    fighter.module_accessor,
+                    vars::guard::int::GUARD_CANCEL_STATUS,
+                    status
+                );
             }
             if !fighter.global_table[IS_STOP].get_bool() && fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
                 // Guard Cancel Taunt
@@ -499,16 +525,7 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
                 }
 
                 if !VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
-                    // Guard Cancel Attack
-                    if VarModule::is_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_ATTACK_INPUT)
-                    && fighter.global_table[CMD_CAT1].get_i32() & (*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0
-                    && MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("guard_cancel_attack")) {
-                        fighter.change_status(vars::fighter::status::GUARD_CANCEL_ATTACK.into(), true.into());
-                        return 0.into();
-                    }
-
-                    // Guard Cancel Roll
-                    let status = VarModule::get_int(fighter.module_accessor, vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS);
+                    let status = VarModule::get_int(fighter.module_accessor, vars::guard::int::GUARD_CANCEL_STATUS);
                     if status != 0 {
                         fighter.change_status(status.into(), true.into());
                         return 0.into();
@@ -554,33 +571,6 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstop_common(fighter:
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         fighter.FighterStatusGuard__set_just_shield_scale();
         return;
-    }
-    else {
-        // Guard Cancel Roll only bufferable during hitstop
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
-            VarModule::set_int(
-                fighter.module_accessor,
-                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
-                vars::fighter::status::GUARD_CANCEL_ESCAPE_F
-            );
-        }
-
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
-            VarModule::set_int(
-                fighter.module_accessor,
-                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
-                vars::fighter::status::GUARD_CANCEL_ESCAPE_B
-            );
-        }
-
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE != 0
-        && GroundModule::is_passable_ground(fighter.module_accessor) {
-            VarModule::set_int(
-                fighter.module_accessor,
-                vars::guard::int::DAMAGE_STOP_ESCAPE_STATUS,
-                vars::fighter::status::GUARD_CANCEL_PASS
-            );
-        }
     }
 
     let prev_scale_frame = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME, 0);

@@ -255,10 +255,13 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_THROW_DONE); 
         }
     }
-    // if !StatusModule::is_changing(fighter.module_accessor)
-    // && StatusModule::is_situation_changed(fighter.module_accessor) {
-    //     lucario_special_s_throw_set_kinetic(fighter);
-    // }
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && VarModule::is_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_S_POST_GRAVITY) {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+        }
+    }
 
     0.into()
 }

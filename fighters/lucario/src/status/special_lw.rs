@@ -21,8 +21,11 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
-        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+        ) as u64,
         *FIGHTER_STATUS_ATTR_START_TURN as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
@@ -31,42 +34,98 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let start_x_spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("start_x_spd_mul"));
     let speed_x = speed_x * start_x_spd_mul;
-    lua_bind::KineticEnergy::reset_energy(
-        stop_energy as *mut smash::app::KineticEnergy,
-        *ENERGY_STOP_RESET_TYPE_AIR,
-        &Vector2f{x: speed_x, y: 0.0},
-        &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-        fighter.module_accessor
-    );
-    lua_bind::KineticEnergy::enable(stop_energy as *mut smash::app::KineticEnergy);
-    let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-    let speed_y = if !VarModule::is_flag(fighter.module_accessor, vars::lucario::instance::flag::USED_AURA_CHARGE_AIR) {
-        0.0
+    let reset = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        ENERGY_STOP_RESET_TYPE_GROUND
     }
     else {
-        KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+        ENERGY_STOP_RESET_TYPE_AIR
     };
-    lua_bind::FighterKineticEnergyGravity::set_speed(
-        gravity as *mut smash::app::FighterKineticEnergyGravity,
-        speed_y
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        reset,
+        speed_x,
+        0.0,
+        0.0,
+        0.0,
+        0.0
     );
-    let fall_acc_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_acc_y"));
-    lua_bind::FighterKineticEnergyGravity::set_accel(
-        gravity as *mut smash::app::FighterKineticEnergyGravity,
-        -fall_acc_y
-    );
-    let fall_spd_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_spd_max"));
-    lua_bind::FighterKineticEnergyGravity::set_limit_speed(
-        gravity as *mut smash::app::FighterKineticEnergyGravity,
-        fall_spd_max
-    );
-    lua_bind::KineticEnergy::enable(gravity as *mut smash::app::KineticEnergy);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        let mut speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        if !VarModule::is_flag(fighter.module_accessor, vars::lucario::instance::flag::USED_AURA_CHARGE_AIR) {
+            speed_y *= 0.2;
+        }
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            speed_y
+        );
+        if !VarModule::is_flag(fighter.module_accessor, vars::lucario::instance::flag::USED_AURA_CHARGE_AIR) {
+            let fall_acc_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_acc_y"));
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                -fall_acc_y
+            );
+            let fall_spd_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_spd_max"));
+            sv_kinetic_energy!(
+                set_limit_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                fall_spd_max
+            );
+        }
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
+        sv_kinetic_energy!(
+            mul_x_accel_add,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.1
+        );
+        sv_kinetic_energy!(
+            mul_x_accel_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.1
+        );
+
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+
     0.into()
 }
 
@@ -140,12 +199,27 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
             let subsequent_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_auracharge"), hash40("charge_subsequent_mul"));
             if VarModule::get_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_CHARGE_TIME) == 0 {
                 if charges_gained == 0 {
-                    macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucario_aura"), false, true);
+                    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("lucario_aura"), false, true);
                 }
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+                EffectModule::req_follow(
+                    fighter.module_accessor,
+                    Hash40::new("lucario_aura"),
+                    Hash40::new("top"),
+                    &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                    &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                    1.0,
+                    true,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    false,
+                    false
+                );
                 let rate_add = subsequent_mul * charges_gained as f32;
-                macros::LAST_EFFECT_SET_RATE(fighter, 0.5 + rate_add);
-                macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_l01"));
+                EffectModule::set_rate_last(fighter.module_accessor, 0.5 + rate_add);
+                SoundModule::play_se(fighter.module_accessor, Hash40::new("se_lucario_special_l01"), true, false, false, false, enSEType(0));
             }
             VarModule::inc_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_CHARGE_TIME);
             let charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_auracharge"), hash40("charge_frame"));
@@ -154,12 +228,12 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
                 VarModule::set_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
                 lucario_gain_aura(fighter);
                 lucario_special_lw_effect_helper(fighter);
-                let aura_charge_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_auracharge"), hash40("aura_charge_max"));
-                if VarModule::get_int(fighter.module_accessor, vars::lucario::instance::int::AURA_LEVEL) >= aura_charge_max
-                || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                // let aura_charge_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_auracharge"), hash40("aura_charge_max"));
+                // if VarModule::get_int(fighter.module_accessor, vars::lucario::instance::int::AURA_LEVEL) >= aura_charge_max
+                // || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                     VarModule::off_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                     VarModule::on_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_LW_CHARGE_END);
-                }
+                // }
             }
         }
     }

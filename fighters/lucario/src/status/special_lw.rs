@@ -372,6 +372,20 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
         WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
         lucario_special_lw_set_kinetic(fighter);
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                0.0,
+                speed_y,
+                0.0,
+                0.0,
+                0.0
+            );
+        }
         VarModule::set_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_STEP, vars::lucario::SPECIAL_LW_STEP_END);
         VarModule::off_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_LW_ATTACK);
         VarModule::off_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_LW_CANCEL);

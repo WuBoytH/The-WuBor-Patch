@@ -415,17 +415,17 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
             return 0.into();
         }
     }
-    let cont = if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32) {
-        lucario_special_hi_attach_wall(fighter, (1.0_f32).into()).get_bool()
-    }
-    else if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32) {
-        lucario_special_hi_attach_wall(fighter, (-1.0_f32).into()).get_bool()
-    }
-    else { false };
-    if cont {
-        // println!("attaching to wall!");
-        StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACH_WALL, false);
-    }
+    // let cont = if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32) {
+    //     lucario_special_hi_attach_wall(fighter, (1.0_f32).into()).get_bool()
+    // }
+    // else if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT as u32) {
+    //     lucario_special_hi_attach_wall(fighter, (-1.0_f32).into()).get_bool()
+    // }
+    // else { false };
+    // if cont {
+    //     // println!("attaching to wall!");
+    //     StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACH_WALL, false);
+    // }
     0.into()
 }
 

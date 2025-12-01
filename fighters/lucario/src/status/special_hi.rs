@@ -168,8 +168,8 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
     }
     if !GroundModule::is_status_cliff(fighter.module_accessor) {
         if lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_DOWN.into(), false.into(), 0.0_f32.into()).get_bool()
-        || lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_LEFT.into(), true.into(), 1.0_f32.into()).get_bool()
-        || lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_RIGHT.into(), true.into(), (-1.0_f32).into()).get_bool()
+        || lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_LEFT.into(), false.into(), 1.0_f32.into()).get_bool()
+        || lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_RIGHT.into(), false.into(), (-1.0_f32).into()).get_bool()
         || lucario_special_hi_rush_touch_ground(fighter, GROUND_TOUCH_FLAG_UP.into(), false.into(), 0.0_f32.into()).get_bool() {
             // nothing lol
         }

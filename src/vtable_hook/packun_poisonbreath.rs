@@ -12,5 +12,5 @@ unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: *mut app::Weapon, 
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51f5f90).data(poisonbreath_on_hit as u64);
+    let _ = skyline::patching::Patch::in_text(0x51f5f90).data(poisonbreath_on_hit as *const () as u64);
 }

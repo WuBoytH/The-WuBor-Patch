@@ -32,11 +32,11 @@ unsafe extern "C" fn ike_sword_on_hit(vtable: u64, weapon: &mut smash::app::Weap
 pub unsafe extern "C" fn ike_sword_can_pocket(_vtable: u64, weapon: &mut smash::app::Weapon) -> bool {
     let module_accessor = weapon.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
-    status == vars::ike_sword::status::BLADE_BEAM
+    status >= vars::ike_sword::status::BLADE_BEAM
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51cd2d0).data(ike_sword_can_pocket as u64);
+    let _ = skyline::patching::Patch::in_text(0x51cd2d0).data(ike_sword_can_pocket as *const () as u64);
 
     skyline::install_hooks!(
         ike_sword_set_spawn_pos,

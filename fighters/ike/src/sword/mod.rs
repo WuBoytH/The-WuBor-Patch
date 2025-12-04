@@ -22,7 +22,11 @@ unsafe extern "Rust" fn ike_sword_set_status_internal(ctx: &mut skyline::hooks::
     let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     let status = StatusModule::status_kind(module_accessor);
     if status == *FIGHTER_IKE_STATUS_KIND_SPECIAL_LW_HIT {
-        ctx.registers[8].set_w(vars::ike_sword::status::BLADE_BEAM as u32);
+        let mut sword_status = vars::ike_sword::status::BLADE_BEAM;
+        if VarModule::is_flag(module_accessor, vars::ike::status::flag::SPECIAL_LW_WHIFF) {
+            sword_status += 1;
+        }
+        ctx.registers[8].set_w(sword_status as u32);
     }
 }
 
@@ -31,7 +35,7 @@ unsafe extern "Rust" fn ike_sword_on_hit_internal(vtable: u64, weapon: &mut smas
     let val = MiscModule::normal_weapon_hit_handler(vtable, weapon, hit_kind);
     let module_accessor = weapon.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
-    if status != vars::ike_sword::status::BLADE_BEAM {
+    if status < vars::ike_sword::status::BLADE_BEAM {
         *(weapon as *mut smash::app::Weapon as *mut u32).add(0x3bc8 / 0x4) = 0;
     }
     val & 1

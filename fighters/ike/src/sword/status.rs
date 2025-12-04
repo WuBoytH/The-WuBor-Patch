@@ -95,7 +95,7 @@ unsafe extern "C" fn blade_beam_fastshift(weapon: &mut L2CWeaponCommon) -> L2CVa
     //     LinkModule::remove_model_constraint(weapon.module_accessor, true);
     // }
     if GroundModule::is_touch(weapon.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
-        println!("Help");
+        // println!("Help");
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
     0.into()
@@ -127,4 +127,9 @@ pub fn install(agent: &mut Agent) {
     agent.status(Init, vars::ike_sword::status::BLADE_BEAM, blade_beam_init);
     agent.status(Main, vars::ike_sword::status::BLADE_BEAM, blade_beam_main);
     agent.status(Exec, vars::ike_sword::status::BLADE_BEAM, blade_beam_exec);
+
+    agent.status(Pre, vars::ike_sword::status::BLADE_BEAM + 1, blade_beam_pre);
+    agent.status(Init, vars::ike_sword::status::BLADE_BEAM + 1, blade_beam_init);
+    agent.status(Main, vars::ike_sword::status::BLADE_BEAM + 1, blade_beam_main);
+    agent.status(Exec, vars::ike_sword::status::BLADE_BEAM + 1, blade_beam_exec);
 }

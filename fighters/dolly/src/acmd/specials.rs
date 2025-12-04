@@ -195,16 +195,8 @@ unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_specialffeint(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 1.0);
-        VarModule::off_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_F_CHECK_FEINT);
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
-    }
     frame(agent.lua_state_agent, 7.0);
-    if macros::is_excute(agent) {
-        MotionModule::set_rate(agent.module_accessor, 0.75);
-    }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 7.0, -3.0);
 }
 
 unsafe extern "C" fn effect_specialffeint(agent: &mut L2CAgentBase) {

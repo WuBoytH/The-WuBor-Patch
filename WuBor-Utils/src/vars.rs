@@ -439,6 +439,8 @@ pub mod ike {
             pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
             pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
 
+            pub const SPECIAL_HI_ARMOR : i32 = 0x1150;
+
             pub const SPECIAL_LW_WHIFF : i32 = 0x1150;
         }
         pub mod int {
@@ -446,6 +448,8 @@ pub mod ike {
         }
         pub mod float {
             pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1150;
+
+            pub const SPECIAL_HI_ARMOR_DAMAGE : i32 = 0x1150;
         }
     }
 }

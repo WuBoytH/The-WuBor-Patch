@@ -252,7 +252,7 @@ unsafe extern "C" fn lucario_special_hi_rush_touch_ground(
             };
             let dot = sv_math::vec2_dot(stop_speed.x, stop_speed.y, normal.x, normal.y);
             if dot < 0.0 {
-                let angle_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("angle_speed"));
+                let angle_speed = 10.0_f32;
                 let rad_speed = angle_speed.to_radians();
                 let mut speed_atan = speed.y.atan2(speed.x);
                 let mut normal_atan = normal.y.atan2(normal.x);
@@ -328,6 +328,14 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCo
             end_brake_x,
             0.0
         );
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            speed_x.clamp(-1.4, 1.4),
+            0.0
+        );
         let end_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("end_accel_y"));
         sv_kinetic_energy!(
             set_accel,
@@ -335,7 +343,12 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCo
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -end_accel_y
         );
-        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let speed_y = if VarModule::is_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
+            2.0
+        }
+        else {
+            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+        };
         sv_kinetic_energy!(
             set_speed,
             fighter,

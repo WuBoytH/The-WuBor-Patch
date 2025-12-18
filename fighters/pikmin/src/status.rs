@@ -41,6 +41,8 @@ mod attack_hi3;
 mod special_hi;
 mod special_hi_wait;
 
+mod appeal;
+
 pub fn install(agent: &mut Agent) {
     landing::install(agent);
 
@@ -53,4 +55,6 @@ pub fn install(agent: &mut Agent) {
 
     special_hi::install(agent);
     special_hi_wait::install(agent);
+
+    appeal::install(agent);
 }

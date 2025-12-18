@@ -834,6 +834,7 @@ pub mod pikmin_pikmin {
     pub mod status {
         pub const GUARD_CANCEL_ATTACK_START : i32 = 0x44;
         pub const GUARD_CANCEL_ATTACK : i32 = 0x45;
+        pub const ATTACK_DASH : i32 = 0x46;
     }
 }
 

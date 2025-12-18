@@ -1,11 +1,18 @@
 use super::*;
 
+#[allow(dead_code)]
 extern "C" {
     #[link_name = "\u{1}_ZN3app46FighterPikminLinkEventWeaponPikminChangeStatus13new_l2c_tableEv"]
     pub fn FighterPikminLinkEventWeaponPikminChangeStatus__new_l2c_table() -> L2CValue;
 
     #[link_name = "\u{1}_ZN3app40FighterPikminLinkEventWeaponPikminSyncLR13new_l2c_tableEv"]
     pub fn FighterPikminLinkEventWeaponPikminSyncLR__new_l2c_table() -> L2CValue;
+
+    #[link_name = "\u{1}_ZN3app44FighterPikminLinkEventWeaponPikminConstraint13new_l2c_tableEv"]
+    pub fn FighterPikminLinkEventWeaponPikminConstraint__new_l2c_table() -> L2CValue;
+
+    #[link_name = "\u{1}_ZN3app46FighterPikminLinkEventWeaponPikminChangeMotion13new_l2c_tableEv"]
+    pub fn FighterPikminLinkEventWeaponPikminChangeMotion__new_l2c_table() -> L2CValue;
 
     #[link_name = "\u{1}_ZN3app8lua_bind31LinkEvent__store_l2c_table_implEPKNS_9LinkEventE"]
     pub fn store_event_table(event: *const smash::app::LinkEvent) -> L2CValue;
@@ -26,6 +33,8 @@ mod landing;
 
 mod guard_cancel_attack;
 
+mod attack_dash;
+
 mod attack_s3;
 mod attack_hi3;
 
@@ -36,6 +45,8 @@ pub fn install(agent: &mut Agent) {
     landing::install(agent);
 
     guard_cancel_attack::install(agent);
+
+    attack_dash::install(agent);
 
     attack_s3::install(agent);
     attack_hi3::install(agent);

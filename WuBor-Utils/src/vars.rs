@@ -217,7 +217,7 @@ pub mod look_up {
 
 pub mod thrown {
     pub mod flag {
-        pub const FORCE_LAUNCHED : i32 = 0x1051;
+        pub const FORCE_LAUNCHED : i32 = 0x10FF;
     }
 }
 

@@ -475,11 +475,7 @@ unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 1.0);
-    MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -15.0);
-    frame(agent.lua_state_agent, 39.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -27.0);
 }
 
 pub fn install(agent: &mut Agent) {

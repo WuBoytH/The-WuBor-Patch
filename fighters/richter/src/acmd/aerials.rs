@@ -448,7 +448,6 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        macros::HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_XLU);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(agent, 1.6, -3.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -456,37 +455,30 @@ unsafe extern "C" fn game_attackairlw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 72, 55, 0, 88, 6.5, 0.0, 0.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 300, 0, 10, 69, 6.5, 0.0, 0.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 1, -18.0, false);
-        AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 72, 80, 0, 50, 6.5, 0.0, 0.5, -0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
-        macros::HIT_NODE(agent, Hash40::new("legl"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(agent.module_accessor);
+        JostleModule::set_status(agent.module_accessor, true);
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        JostleModule::set_status(agent.module_accessor, true);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        KineticModule::resume_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
 }
 
-unsafe extern "C" fn game_landingairlw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 12, 0, 38, 2.2, 0.0, 3.7, 7.0, Some(0.0), Some(3.7), Some(3.0), 0.85, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
-        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 7.0, false);
-    }
-    frame(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 3.0, false);
-    }
-    frame(agent.lua_state_agent, 7.0);
+unsafe extern "C" fn game_attackairlw2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 1.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -15.0);
+    frame(agent.lua_state_agent, 39.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 
@@ -512,5 +504,5 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_attackairlw", game_attackairlw, Priority::Low);
 
-    agent.acmd("game_landingairlw", game_landingairlw, Priority::Low);
+    agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
 }

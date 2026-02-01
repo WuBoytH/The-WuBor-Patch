@@ -15,18 +15,9 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     fighter.status_AttackLw3_Main()
 }
 
-unsafe fn get_table_value(table: *mut smash_rs::lib::L2CTable, key: &str) -> smash_rs::lib::L2CValue {
-    let hash = if key.starts_with("0x") {
-        smash_rs::phx::Hash40::from_hex_str(key).unwrap()
-    } else {
-        smash_rs::phx::hash40(key)
-    };
-    (*table).get_map(hash).unwrap().clone()
-}
-
 unsafe extern "C" fn kirby_attacklw3_check_attack(fighter: &mut L2CFighterCommon, param_2: &L2CValue, param_3: &L2CValue) -> L2CValue {
     let table = param_3.get_table() as *mut smash_rs::lib::L2CTable;
-    let kind = get_table_value(table, "kind_").try_integer().unwrap() as i32;
+    let kind = MiscModule::get_table_value(table, "kind_").try_integer().unwrap() as i32;
 
     if [
         *COLLISION_KIND_HIT,

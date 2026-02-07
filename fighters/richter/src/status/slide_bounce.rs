@@ -43,10 +43,10 @@ unsafe extern "C" fn slide_bounce_init(fighter: &mut L2CFighterCommon) -> L2CVal
     );
 
     let (speed_x, speed_y) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT) {
-        (-0.8, 1.4)
+        (-0.7, 1.8)
     }
     else {
-        (-0.8, 0.8)
+        (-0.7, 0.8)
     };
     let lr = PostureModule::lr(fighter.module_accessor);
     sv_kinetic_energy!(

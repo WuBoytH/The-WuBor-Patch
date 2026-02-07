@@ -11,7 +11,7 @@ unsafe extern "C" fn ganon_special_air_s_end_pre(fighter: &mut L2CFighterCommon)
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
-        1
+        *FS_SUCCEEDS_KEEP_ATTACK_ABSOLUTE
     );
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
@@ -100,7 +100,7 @@ unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterC
         }
     }
 
-    if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
         return 1.into();
     }

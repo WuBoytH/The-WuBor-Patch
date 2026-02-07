@@ -69,19 +69,19 @@ unsafe extern "C" fn ganon_special_air_s_end_init(fighter: &mut L2CFighterCommon
         mul_x_accel_add,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-        2.0
+        1.2
     );
     sv_kinetic_energy!(
         mul_x_accel_mul,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-        2.0
+        1.2
     );
     sv_kinetic_energy!(
         mul_x_speed_max,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-        1.5
+        1.2
     );
 
     0.into()

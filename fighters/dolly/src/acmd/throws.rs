@@ -16,6 +16,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        crate::helper::add_go(agent.module_accessor, 7.0);
     }
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 11.0);
@@ -85,6 +86,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
+        crate::helper::add_go(agent.module_accessor, 7.0);
     }
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 11.0);
@@ -156,6 +158,7 @@ unsafe extern "C" fn game_throwhi(agent: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(agent.module_accessor);
+        crate::helper::add_go(agent.module_accessor, 1.0);
     }
 }
 
@@ -180,6 +183,7 @@ unsafe extern "C" fn game_throwlw(agent: &mut L2CAgentBase) {
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         AttackModule::clear_all(agent.module_accessor);
+        crate::helper::add_go(agent.module_accessor, 8.0);
     }
 }
 

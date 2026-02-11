@@ -153,7 +153,7 @@ unsafe extern "C" fn game_specialairscatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *FIGHTER_GANON_EXPLOSION_FALL_SETTING_CATCH, *FIGHTER_GANON_STATUS_WORK_ID_INT_EXPLOSION_FALL_SETTING);
     }
-    macros::FT_MOTION_RATE(agent, 16.0 / 12.0);
+    macros::FT_MOTION_RATE(agent, 22.0 / 12.0);
     frame(agent.lua_state_agent, 15.0);
     macros::FT_MOTION_RATE(agent, 2.0 / 4.0);
 }
@@ -161,8 +161,9 @@ unsafe extern "C" fn game_specialairscatch(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ThrowUtils::set_force_launch(agent.module_accessor);
+        ThrowUtils::set_disable_reflect(agent.module_accessor);
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 270, 20, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 270, 20, 50, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);

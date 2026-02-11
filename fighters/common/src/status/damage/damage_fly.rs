@@ -3,13 +3,17 @@ use super::super::passive::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFly)]
 unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::reset_flick_x(fighter.module_accessor);
-    ControlModule::reset_flick_y(fighter.module_accessor);
-    // ControlModule::reset_trigger(fighter.module_accessor);
     if is_bad_passive(fighter).get_bool() {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL);
         return 1.into();
     }
+    damagefly_pre_inner(fighter)
+}
+
+pub unsafe extern "C" fn damagefly_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::reset_flick_x(fighter.module_accessor);
+    ControlModule::reset_flick_y(fighter.module_accessor);
+    // ControlModule::reset_trigger(fighter.module_accessor);
     let mut attr = *FIGHTER_STATUS_ATTR_DAMAGE | *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY;
     let mut flag_keep = *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLY_FLAG;
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
@@ -30,12 +34,16 @@ unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2C
     ].contains(&prev_status) {
         attr |= *FIGHTER_STATUS_ATTR_DISABLE_ITEM_INTERRUPT;
     }
+    let mut disable_reflect = false;
     if prev_status != *FIGHTER_STATUS_KIND_THROWN {
         flag_keep = *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG;
     }
     else {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_FLAG_DISABLE_PASSIVE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE);
+        }
+        if VarModule::is_flag(fighter.module_accessor, vars::thrown::flag::DISABLE_REFLECT) {
+            disable_reflect = true;
         }
     }
     StatusModule::init_settings(
@@ -66,6 +74,9 @@ unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2C
         0,
         0
     );
+
+    VarModule::set_flag(fighter.module_accessor, vars::thrown::flag::DISABLE_REFLECT, disable_reflect);
+
     0.into()
 }
 
@@ -244,12 +255,54 @@ unsafe extern "C" fn sub_damageflychkuniq(fighter: &mut L2CFighterCommon) -> L2C
     false.into()
 }
 
+
+#[skyline::hook(replace = L2CFighterCommon_sub_DamageFly_setup_strans)]
+unsafe extern "C" fn sub_damagefly_setup_strans(fighter: &mut L2CFighterCommon) {
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FALL);
+    let reflects = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_L,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_R,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D
+    ];
+    for x in reflects.iter() {
+        let able = if VarModule::is_flag(fighter.module_accessor, vars::thrown::flag::DISABLE_REFLECT) {
+            // println!("no bounce");
+            WorkModule::unable_transition_term
+        }
+        else {
+            WorkModule::enable_transition_term
+        };
+        able(fighter.module_accessor, *x);
+    }
+    let passives = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE
+    ];
+    for x in passives.iter() {
+        let able = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE) {
+            WorkModule::unable_transition_term
+        }
+        else {
+            WorkModule::enable_transition_term
+        };
+        able(fighter.module_accessor, *x);
+    }
+}
+
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_damagefly,
             sub_update_damage_fly_effect,
-            sub_damageflychkuniq
+            sub_damageflychkuniq,
+            sub_damagefly_setup_strans
         );
     }
 }

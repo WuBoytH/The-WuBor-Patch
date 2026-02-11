@@ -4,12 +4,13 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 330, 100, 60, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        ThrowUtils::set_force_launch(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 17.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 17.5);
     if macros::is_excute(agent) {
+        ThrowUtils::set_force_launch(agent.module_accessor);
+        ThrowUtils::set_disable_reflect(agent.module_accessor);
         let release_position = Vector3f{ x: 0.0, y: 0.0, z: 16.0 };
         ModelModule::set_joint_translate(agent.module_accessor, Hash40::new("throw"), &release_position, false, false);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -21,7 +22,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 11.0);
     frame(agent.lua_state_agent, 29.0);
-    macros::FT_MOTION_RATE(agent, 17.0 / 26.0);
+    macros::FT_MOTION_RATE(agent, 12.0 / 26.0);
     frame(agent.lua_state_agent, 55.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
@@ -71,7 +72,6 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 330, 100, 60, 0, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        ThrowUtils::set_force_launch(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -80,6 +80,8 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 17.5);
     if macros::is_excute(agent) {
+        ThrowUtils::set_force_launch(agent.module_accessor);
+        ThrowUtils::set_disable_reflect(agent.module_accessor);
         let release_position = Vector3f{ x: 0.0, y: 0.0, z: -16.0 };
         ModelModule::set_joint_translate(agent.module_accessor, Hash40::new("throw"), &release_position, false, false);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
@@ -91,7 +93,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 11.0);
     frame(agent.lua_state_agent, 29.0);
-    macros::FT_MOTION_RATE(agent, 17.0 / 26.0);
+    macros::FT_MOTION_RATE(agent, 12.0 / 26.0);
     frame(agent.lua_state_agent, 55.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }

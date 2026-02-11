@@ -490,6 +490,15 @@ pub mod ThrowUtils {
             }
         }
     }
+
+    /// Disables wall / ground bounce.
+    pub unsafe fn set_disable_reflect(module_accessor: *mut BattleObjectModuleAccessor) {
+        if let Some(object) = get_thrown_object(module_accessor) {
+            if sv_battle_object::category((*object).battle_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                VarModule::on_flag((*object).module_accessor, thrown::flag::DISABLE_REFLECT);
+            }
+        }
+    }
 }
 
 #[allow(non_snake_case)]

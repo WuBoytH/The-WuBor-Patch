@@ -152,9 +152,13 @@ unsafe extern "C" fn game_specialairscatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *FIGHTER_GANON_EXPLOSION_FALL_SETTING_CATCH, *FIGHTER_GANON_STATUS_WORK_ID_INT_EXPLOSION_FALL_SETTING);
+        ThrowUtils::set_thrown_rate(agent.module_accessor, 12.0 / 22.0);
     }
     macros::FT_MOTION_RATE(agent, 22.0 / 12.0);
     frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        ThrowUtils::set_thrown_rate(agent.module_accessor, 4.0 / 2.0);
+    }
     macros::FT_MOTION_RATE(agent, 2.0 / 4.0);
 }
 

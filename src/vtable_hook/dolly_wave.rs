@@ -53,7 +53,6 @@ unsafe extern "C" fn dolly_wave_on_hit2(
     log: u64,
     damage: f32
 ) {
-    println!("hi");
     weapon_hit_handler2(vtable, weapon, param_3, log);
     let module_accessor = weapon.battle_object.module_accessor;
     let owner_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;

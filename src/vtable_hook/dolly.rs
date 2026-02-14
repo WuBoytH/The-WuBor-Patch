@@ -236,5 +236,5 @@ pub fn install() {
         dolly_handle_special_command_turnaround,
         dolly_reset2
     );
-    MiscModule::patch_vtable_function(0x4fa6a28, dolly_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fa6a28, dolly_on_attack as *const () as u64);
 }

@@ -4,8 +4,10 @@
     repr_simd
 )]
 #![allow(
+    unknown_lints,
     unused_macros,
-    unused_must_use
+    unused_must_use,
+    integer_to_ptr_transmutes
 )]
 
 extern crate skyline;

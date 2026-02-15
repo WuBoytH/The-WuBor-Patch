@@ -105,9 +105,6 @@ unsafe extern "C" fn game_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 6.8, 6.7, 7.5, 3.8);
-    }
-    frame(agent.lua_state_agent, 16.0);
-    if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("top"), 5.0, 0.0, 8.0, 7.5, Some(0.0), Some(8.0), Some(11.0), *FIGHTER_STATUS_KIND_CATCHED_GANON, *COLLISION_SITUATION_MASK_G);
         macros::CATCH(agent, 1, Hash40::new("top"), 1.0, 0.0, 8.0, 7.2, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_GANON, *COLLISION_SITUATION_MASK_GA);
     }
@@ -128,8 +125,8 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 0.8);
-    frame(agent.lua_state_agent, 19.0);
+    macros::FT_MOTION_RATE(agent, 17.0 / 14.0);
+    frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("top"), 5.0, 0.0, 6.0, 7.5, Some(0.0), Some(6.0), Some(11.0), *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_G);
         macros::CATCH(agent, 1, Hash40::new("top"), 5.0, 0.0, 11.0, 7.5, Some(0.0), Some(11.0), Some(11.0), *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, *COLLISION_SITUATION_MASK_GA);
@@ -149,24 +146,70 @@ unsafe extern "C" fn game_specialairsstart(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairscatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        WorkModule::set_float(agent.module_accessor, 0.0, *FIGHTER_GANON_STATUS_WORK_ID_FLOAT_EXPLOSION_AIR_SPEED_X);
+        WorkModule::set_float(agent.module_accessor, 2.0, *FIGHTER_GANON_STATUS_WORK_ID_FLOAT_EXPLOSION_AIR_SPEED_Y);
     }
-    macros::FT_MOTION_RATE(agent, 0.8);
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        WorkModule::set_int(agent.module_accessor, *FIGHTER_GANON_EXPLOSION_FALL_SETTING_CATCH, *FIGHTER_GANON_STATUS_WORK_ID_INT_EXPLOSION_FALL_SETTING);
+        ThrowUtils::set_thrown_rate(agent.module_accessor, 12.0 / 22.0);
+    }
+    macros::FT_MOTION_RATE(agent, 22.0 / 12.0);
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        ThrowUtils::set_thrown_rate(agent.module_accessor, 4.0 / 2.0);
+    }
+    macros::FT_MOTION_RATE(agent, 2.0 / 4.0);
 }
 
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
+        ThrowUtils::set_force_launch(agent.module_accessor);
+        ThrowUtils::set_disable_reflect(agent.module_accessor);
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 292, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 270, 20, 50, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
-    frame(agent.lua_state_agent, 4.0);
+}
+
+unsafe extern "C" fn effect_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        macros::REVERSE_LR(agent);
+        macros::EFFECT(agent, Hash40::new("ganon_engokua"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("ganon_engokua"), true, true);
+        macros::EFFECT(agent, Hash40::new("ganon_engokua"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+unsafe extern "C" fn sound_specialairs(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ganon_special_s01"));
+    }
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        macros::STOP_SE(agent, Hash40::new("se_ganon_special_s01"));
+        macros::STOP_SE(agent, Hash40::new("se_ganon_special_s02"));
+        macros::PLAY_SE(agent, Hash40::new("se_ganon_special_s03"));
+        macros::PLAY_SE(agent, Hash40::new("se_ganon_special_n02"));
+    }
+}
+
+unsafe extern "C" fn expression_specialairs(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        // macros::QUAKE(agent, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_impact"), 3, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_explosionm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -312,6 +355,9 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialairscatch", game_specialairscatch, Priority::Low);
 
     agent.acmd("game_specialairs", game_specialairs, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specialairs, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specialairs, Priority::Low);
+    agent.acmd("expression_specialairs", expression_specialairs, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 

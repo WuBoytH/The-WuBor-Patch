@@ -483,7 +483,8 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
             || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
                 VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_TAUNT_INPUT, is_shield);
             }
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+            && is_shield {
                 let status = if GroundModule::is_passable_ground(fighter.module_accessor)
                 && fighter.global_table[STICK_Y].get_f32() < -0.5 {
                     vars::fighter::status::GUARD_CANCEL_PASS

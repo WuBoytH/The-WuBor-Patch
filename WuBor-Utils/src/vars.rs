@@ -217,7 +217,8 @@ pub mod look_up {
 
 pub mod thrown {
     pub mod flag {
-        pub const FORCE_LAUNCHED : i32 = 0x1051;
+        pub const DISABLE_REFLECT : i32 = 0x10FE;
+        pub const FORCE_LAUNCHED : i32 = 0x10FF;
     }
 }
 
@@ -847,10 +848,12 @@ pub mod richter {
         pub mod flag {
             pub const ATTACK_JUST_INPUT : i32 = 0x1150;
 
-            pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
+            pub const SLIDE_BOUNCE_IS_HIT : i32 = 0x1150;
 
             pub const SPECIAL_N_SHOOT : i32 = 0x1150;
         }
+
+        pub const SLIDE_BOUNCE : i32 = 0x1EC;
     }
 }
 

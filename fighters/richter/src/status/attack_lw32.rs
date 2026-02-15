@@ -19,6 +19,11 @@ unsafe extern "C" fn richter_attack_lw32_main(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn richter_attack_lw32_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE)
+    && !fighter.global_table[IS_STOP].get_bool() {
+        fighter.change_status(vars::richter::status::SPECIAL_LW_BOUNCE.into(), false.into());
+    }
+
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -73,11 +78,7 @@ unsafe extern "C" fn richter_attack_lw32_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-unsafe extern "C" fn attack_lw32_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_HIT)
-    && !fighter.global_table[IS_STOP].get_bool() {
-        fighter.change_status(vars::richter::status::SLIDE_BOUNCE.into(), false.into());
-    }
+unsafe extern "C" fn attack_lw32_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
@@ -88,10 +89,10 @@ unsafe extern "C" fn attack_lw32_check_attack(fighter: &mut L2CFighterCommon, _p
     if ![
         *COLLISION_KIND_SHIELD,
     ].contains(&kind) {
-        VarModule::on_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT);
+        VarModule::on_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE_IS_HIT);
     }
 
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_HIT);
+    VarModule::on_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE);
 
     0.into()
 }

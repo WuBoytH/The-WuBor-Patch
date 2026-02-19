@@ -302,7 +302,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
                 false,
                 true
             );
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
@@ -320,7 +320,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
                 false,
                 true
             );
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
             if handle != 0 {
                 let diff = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;

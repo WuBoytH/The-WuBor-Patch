@@ -186,7 +186,7 @@ unsafe extern "C" fn sub_update_damage_fly_effect(
                 0x1aa5a68c3b
             };
             let team_color = FighterUtil::get_effect_team_color(EColorKind(attacker_color.get_i32()), Hash40::new_raw(color_hash));
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, team_color.value[0], team_color.value[1], team_color.value[2]);
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, team_color.x(), team_color.y(), team_color.z());
         }
 
         WorkModule::set_int(fighter.module_accessor, effect_id as i32, effect_const.get_i32());

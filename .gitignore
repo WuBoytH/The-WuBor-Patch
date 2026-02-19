@@ -1,6 +1,6 @@
 **/target
 **/*.pyc
 **/.zed
-# Cargo.lock
+Cargo.lock
 .DS_Store
 .cargo/

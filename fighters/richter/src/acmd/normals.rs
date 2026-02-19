@@ -147,7 +147,7 @@ unsafe extern "C" fn effect_attackdash(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 10, 2, 0, 0, 90, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 10, 3, 0, 0, 90, 1, true);
         macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 0.4, 0.3);
         macros::LAST_EFFECT_SET_RATE(agent, 0.85);
         macros::LAST_EFFECT_SET_SCALE_W(agent, 1.0, 1.0, 0.7);

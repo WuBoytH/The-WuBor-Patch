@@ -312,15 +312,6 @@ smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 indexmap = { version = "1.9.3", features = ["std"] }
 runtime-motion-patcher = { git = "https://github.com/blu-dev/runtime-motion-patcher" }
 
-[patch."https://github.com/blu-dev/smash-rs"]
-smash_rs = { package = "smash", path = "../smash-rs/" }
-
-[patch."https://github.com/ultimate-research/nnsdk-rs"]
-nnsdk = { path = "../nnsdk-rs/" }
-
-[patch.crates-io]
-nnsdk = { path = "../nnsdk-rs/" }
-
 [features]
 default = ["local", "all_chars"]
 main_nro = ["common"]

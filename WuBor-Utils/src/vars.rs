@@ -860,11 +860,13 @@ pub mod richter {
             pub const SPECIAL_S_ENABLED_FALL : i32 = 0x1154;
             
             pub const SPECIAL_LW_SLIDE_ENABLE_JUMP : i32 = 0x1150;
-            pub const SPECIAL_LW_DIVE : i32 = 0x1151;
-            pub const SPECIAL_LW_DIVE_ENABLE_LANDING : i32 = 0x1152;
-            pub const SPECIAL_LW_DIVE_ENABLE_BOUNCE : i32 = 0x1153;
-            pub const SPECIAL_LW_BOUNCE : i32 = 0x1154;
-            pub const SPECIAL_LW_BOUNCE_IS_HIT : i32 = 0x1155;
+            pub const SPECIAL_LW_CHECK_ANGLE : i32 = 0x1151;
+            pub const SPECIAL_LW_IS_ANGLED : i32 = 0x1152;
+            pub const SPECIAL_LW_DIVE : i32 = 0x1153;
+            pub const SPECIAL_LW_DIVE_ENABLE_LANDING : i32 = 0x1154;
+            pub const SPECIAL_LW_DIVE_ENABLE_BOUNCE : i32 = 0x1155;
+            pub const SPECIAL_LW_BOUNCE : i32 = 0x1156;
+            pub const SPECIAL_LW_BOUNCE_IS_HIT : i32 = 0x1157;
         }
 
         pub const SPECIAL_AIR_LW_LANDING : i32 = 0x1EC;

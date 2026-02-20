@@ -84,6 +84,23 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn special_air_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_CHECK_ANGLE) {
+        VarModule::off_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_CHECK_ANGLE);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        if stick_x * lr >= 0.3 {
+            VarModule::on_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_IS_ANGLED);
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_air_lw_s"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+    }
     if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE)
     && !fighter.global_table[IS_STOP].get_bool() {
         fighter.change_status(vars::richter::status::SPECIAL_LW_BOUNCE.into(), false.into());
@@ -121,12 +138,19 @@ unsafe extern "C" fn special_air_lw_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw") {
+    if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw") {
         if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_DIVE) {
             VarModule::off_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_DIVE);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
 
             let lr = PostureModule::lr(fighter.module_accessor);
+
+            let speed: (f32, f32) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_IS_ANGLED) {
+                (1.8, 3.0)
+            }
+            else {
+                (0.0, 3.0)
+            };
 
             sv_kinetic_energy!(
                 set_stable_speed,
@@ -160,7 +184,7 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
                 set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                1.6 * lr,
+                speed.0 * lr,
                 0.0
             );
 
@@ -168,19 +192,19 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
                 set_stable_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                3.8
+                speed.1
             );
             sv_kinetic_energy!(
                 set_limit_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                3.8
+                speed.1
             );
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -3.8
+                -speed.1
             );
         }
     }
@@ -190,8 +214,8 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
 
 unsafe extern "C" fn special_lw_check_attack(fighter: &mut L2CFighterCommon, _param_2: &L2CValue, param_3: &L2CValue) -> L2CValue {
     let motion = MotionModule::motion_kind(fighter.module_accessor);
-    if [
-        hash40("special_air_lw")
+    if ![
+        hash40("special_lw")
     ].contains(&motion) {
         let table = param_3.get_table() as *mut smash_rs::lib::L2CTable;
         let kind = MiscModule::get_table_value(table, "kind_").try_integer().unwrap() as i32;

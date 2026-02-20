@@ -38,9 +38,11 @@ pub unsafe fn weapon_init_hook(weapon: &mut smash::app::Weapon, param_2: u64) {
 #[skyline::hook(offset = 0x3afe00)]
 pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32) {
     // println!("[CustomVarManager] End");
-    // let object_id = (*module_accessor).battle_object_id;
+    let object_id = (*module_accessor).battle_object_id;
     // println!("[CustomVarManager] Ending VarModule for {:#x} (not really)", object_id);
-    CustomVarManager::reset_var_module(module_accessor, true);
+    if object_id != 0x50000000 {
+        CustomVarManager::reset_var_module(module_accessor, true);
+    }
     original!()(module_accessor, param_1)
 }
 

@@ -146,7 +146,7 @@ unsafe extern "C" fn special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             let lr = PostureModule::lr(fighter.module_accessor);
 
             let speed: (f32, f32) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_IS_ANGLED) {
-                (1.8, 3.0)
+                (1.95, 2.4)
             }
             else {
                 (0.0, 3.0)

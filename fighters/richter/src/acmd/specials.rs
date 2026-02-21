@@ -416,7 +416,7 @@ unsafe extern "C" fn effect_specialairlws(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("richter_air_lw"), Hash40::new("top"), 0, -0.5, 4, -40, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("richter_air_lw"), Hash40::new("top"), 0, -0.5, 5.5, -40, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
 }

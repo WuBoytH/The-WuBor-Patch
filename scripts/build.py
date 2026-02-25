@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-import shutil, os, sys, characters
+import shutil
+import os
+import sys
+import characters
 
 build = True
 dev = False

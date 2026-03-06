@@ -67,34 +67,35 @@ unsafe extern "C" fn pikmin_attack_hi3_substatus(fighter: &mut L2CFighterCommon,
 unsafe extern "C" fn pikmin_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::pikmin::status::flag::ATTACK_HI3_DRIFT) {
         VarModule::off_flag(fighter.module_accessor, vars::pikmin::status::flag::ATTACK_HI3_DRIFT);
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
-        sv_kinetic_energy!(
-            clear_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL
-        );
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
-        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        // sv_kinetic_energy!(
+        //     reset_energy,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        //     ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
+        //     0.0,
+        //     0.0,
+        //     0.0,
+        //     0.0,
+        //     0.0
+        // );
+        // sv_kinetic_energy!(
+        //     clear_speed,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_CONTROL
+        // );
+        // sv_kinetic_energy!(
+        //     reset_energy,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        //     ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+        //     0.0,
+        //     0.0,
+        //     0.0,
+        //     0.0,
+        //     0.0
+        // );
+        // KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     }
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
@@ -109,7 +110,7 @@ unsafe extern "C" fn pikmin_attack_hi3_main_loop(fighter: &mut L2CFighterCommon)
         return 1.into();
     }
     let trans = MotionModule::trans_move_speed(fighter.module_accessor);
-    if trans.value[1] < -0.001 {
+    if trans.y() < -0.001 {
         if fighter.sub_transition_group_check_air_landing().get_bool() {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_LIGHT);
             return 0.into();

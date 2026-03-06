@@ -16,7 +16,7 @@ unsafe extern "C" fn pikmin_landing_exec(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.sub_landing_uniq_process_exec();
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_LANDING {
         if VarModule::is_flag(fighter.module_accessor, vars::pikmin::instance::flag::ATTACK_HI3_LANDING) {
-            if MotionModule::frame(fighter.module_accessor) < 20.0 {
+            if MotionModule::frame(fighter.module_accessor) < 6.0 {
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_LANDING_FLAG_STIFF_CANCEL);
             }
         }

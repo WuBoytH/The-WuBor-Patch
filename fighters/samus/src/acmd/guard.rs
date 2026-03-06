@@ -28,8 +28,8 @@ unsafe extern "C" fn effect_guardcancelattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
-        macros::EFFECT(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -3, 12.5, 7, 32, 6, -192, 0.9, 0, 0, 0, 0, 0, 0, true);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.8);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), -1.5, 11.5, 10, 2, 5, 165, 0.95, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
     }
 }
 

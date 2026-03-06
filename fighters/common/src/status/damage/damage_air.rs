@@ -2,11 +2,6 @@ use super::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageAir)]
 unsafe extern "C" fn status_pre_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_THROWN
-    && VarModule::is_flag(fighter.module_accessor, vars::thrown::flag::FORCE_LAUNCHED) {
-        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY);
-        return 1.into();
-    }
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),

@@ -110,9 +110,16 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     // }
 
     let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+    let facing_lr = VarModule::get_float(fighter.module_accessor, vars::guard::float::GUARD_DAMAGE_FACING_DIR);
 
-    if PostureModule::lr(fighter.module_accessor) != shield_lr {
-        PostureModule::set_lr(fighter.module_accessor, shield_lr);
+    let final_lr = if facing_lr == 0.0 {
+        shield_lr
+    }
+    else {
+        facing_lr
+    };
+    if PostureModule::lr(fighter.module_accessor) != final_lr {
+        PostureModule::set_lr(fighter.module_accessor, facing_lr);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
 
@@ -235,7 +242,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
             ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
-            setoff_speed.clamp(-2.5, 2.5),
+            setoff_speed.clamp(-2.1, 2.1),
             0.0,
             0.0,
             0.0,
@@ -302,7 +309,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
                 false,
                 true
             );
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
@@ -320,7 +327,7 @@ unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, p
                 false,
                 true
             );
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.value[0], effect_team_color.value[1], effect_team_color.value[2]);
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x(), effect_team_color.y(), effect_team_color.z());
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
             if handle != 0 {
                 let diff = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
@@ -483,7 +490,8 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
             || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
                 VarModule::set_flag(fighter.module_accessor, vars::guard::flag::VALID_GUARD_CANCEL_TAUNT_INPUT, is_shield);
             }
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+            && is_shield {
                 let status = if GroundModule::is_passable_ground(fighter.module_accessor)
                 && fighter.global_table[STICK_Y].get_f32() < -0.5 {
                     vars::fighter::status::GUARD_CANCEL_PASS

@@ -206,4 +206,5 @@ pub unsafe extern "C" fn lucario_special_lw_eff_remover(fighter: &mut L2CAgentBa
             EffectModule::kill(fighter.module_accessor, eff, true, true);
         }
     }
+    EffectModule::kill_kind(fighter.module_accessor, Hash40::new("lucario_aura"), true, true);
 }

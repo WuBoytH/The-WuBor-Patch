@@ -50,8 +50,8 @@ unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, somethin
         hash40("super_special_triple_3"),
     ].contains(&motion) {
         let pos = &mut *(something as *mut smash_rs::cpp::simd::Vector2).add(0x98 / 0x8);
-        // println!("pos: {}, {}", pos.vec[0], pos.vec[1]);
-        GroundModule::set_shape_safe_pos(module_accessor, &Vector2f{x: pos.vec[0], y: pos.vec[1]});
+        // println!("pos: {}, {}", pos.x(), pos.y());
+        GroundModule::set_shape_safe_pos(module_accessor, &Vector2f{x: pos.x(), y: pos.y()});
     }
 
     let atack_mul = *(something as *const f32).add(0xa8 / 0x4);

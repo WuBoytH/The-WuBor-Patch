@@ -8,9 +8,9 @@ unsafe extern "C" fn special_air_lw_landing_pre(fighter: &mut L2CFighterCommon) 
         *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
         0
     );
     FighterStatusModuleImpl::set_fighter_status_data(
@@ -22,10 +22,9 @@ unsafe extern "C" fn special_air_lw_landing_pre(fighter: &mut L2CFighterCommon) 
         false,
         (
             *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW |
-            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
-            *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
         ) as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
@@ -33,9 +32,15 @@ unsafe extern "C" fn special_air_lw_landing_pre(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn special_air_lw_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_IS_ANGLED) {
+        Hash40::new("special_air_lw_s_landing")
+    }
+    else {
+        Hash40::new("special_air_lw_landing")
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_air_lw_landing"),
+        motion,
         0.0,
         1.0,
         false,

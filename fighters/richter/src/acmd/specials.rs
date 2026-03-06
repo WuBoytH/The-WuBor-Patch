@@ -445,6 +445,27 @@ unsafe extern "C" fn effect_specialairlwlanding(agent: &mut L2CAgentBase) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
         macros::LAST_EFFECT_SET_RATE(agent, 1.2);
     }
+}
+
+unsafe extern "C" fn sound_specialairlwlanding(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::STOP_SE(agent, Hash40::new("se_richter_attackair_l01"));
+        macros::PLAY_SE(agent, Hash40::new("se_richter_attackair_l02"));
+    }
+}
+
+unsafe extern "C" fn expression_specialairlwlanding(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_landl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}
+
+unsafe extern "C" fn effect_specialairlwslanding(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+    }
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 7, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -459,14 +480,14 @@ unsafe extern "C" fn effect_specialairlwlanding(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn sound_specialairlwlanding(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sound_specialairlwslanding(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_richter_attackair_l01"));
         macros::PLAY_SE(agent, Hash40::new("se_richter_attackair_l02"));
     }
 }
 
-unsafe extern "C" fn expression_specialairlwlanding(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn expression_specialairlwslanding(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_landl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -540,6 +561,10 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairlwlanding", effect_specialairlwlanding, Priority::Low);
     agent.acmd("sound_specialairlwlanding", sound_specialairlwlanding, Priority::Low);
     agent.acmd("expression_specialairlwlanding", expression_specialairlwlanding, Priority::Low);
+
+    agent.acmd("effect_specialairlwslanding", effect_specialairlwslanding, Priority::Low);
+    agent.acmd("sound_specialairlwslanding", sound_specialairlwslanding, Priority::Low);
+    agent.acmd("expression_specialairlwslanding", expression_specialairlwslanding, Priority::Low);
 
     agent.acmd("game_attackairlw2", game_attackairlw2, Priority::Low);
 }

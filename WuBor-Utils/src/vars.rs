@@ -439,13 +439,29 @@ pub mod ike {
             pub const SPECIAL_N_AIR : i32 = 0x1150;
             pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
             pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
+
+            pub const SPECIAL_HI_ARMOR : i32 = 0x1150;
+
+            pub const SPECIAL_LW_WHIFF : i32 = 0x1150;
         }
         pub mod int {
             pub const ERUPTION_COUNT : i32 = 0x1150;
         }
         pub mod float {
             pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1150;
+
+            pub const SPECIAL_HI_ARMOR_DAMAGE : i32 = 0x1150;
         }
+    }
+}
+
+pub mod ike_sword {
+    pub mod status {
+        pub mod flag {
+            pub const BLADE_BEAM_KINETIC_SHIFT : i32 = 0x1150;
+        }
+
+        pub const BLADE_BEAM : i32 = 0x4;
     }
 }
 

@@ -31,6 +31,7 @@ mod belmont_cross;
 mod dolly_wave;
 mod dolly_burst;
 mod edge_flare1;
+mod ike_sword;
 mod inkling_rollerink;
 mod koopa_breath;
 mod mariod_drcapsule;
@@ -71,6 +72,7 @@ pub fn install() {
     dolly_wave::install();
     dolly_burst::install();
     edge_flare1::install();
+    ike_sword::install();
     inkling_rollerink::install();
     koopa_breath::install();
     mariod_drcapsule::install();

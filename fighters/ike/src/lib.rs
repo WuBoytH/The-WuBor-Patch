@@ -20,6 +20,8 @@ mod frame;
 mod agent_init;
 pub mod vl;
 
+mod sword;
+
 pub fn install() {
     let agent = &mut Agent::new("ike");
     acmd::install(agent);
@@ -27,4 +29,6 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    sword::install();
 }

@@ -33,6 +33,105 @@ unsafe extern "C" fn ike_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
+unsafe extern "C" fn ike_special_s_dash_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let lr = PostureModule::lr(fighter.module_accessor);
+
+    // let offset_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_hit_offset_x"));
+    // let offset_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_hit_offset_y"));
+    // let size = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_hit_size"));
+    // search!(
+    //     fighter,
+    //     MA_MSC_CMD_SEARCH_SEARCH_FP,
+    //     0,
+    //     0,
+    //     Hash40::new("rot"),
+    //     size,
+    //     0.0,
+    //     offset_y,
+    //     offset_x,
+    //     COLLISION_KIND_MASK_HIT,
+    //     (*COLLISION_CATEGORY_MASK_ITEM | *COLLISION_CATEGORY_MASK_FIGHTER | *COLLISION_CATEGORY_MASK_ENEMY),
+    //     COLLISION_SITUATION_MASK_ALL,
+    //     0,
+    //     COLLISION_PART_MASK_ALL,
+    //     HIT_STATUS_MASK_ALL,
+    //     false,
+    //     0,
+    //     false,
+    //     COLLISION_SHAPE_TYPE_SPHERE,
+    //     false
+    // );
+
+    let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_CHARGE_COUNT);
+    let spd_up_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_charge_dash_spd_up_max"));
+    let count = count.min(spd_up_max);
+
+    let mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("dash_speed_x_mul"));
+
+    let params = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        (
+            "special_s_air_dash_spd_min",
+            "special_s_air_dash_spd_mul",
+            "special_s_air_dash_brake_x",
+            ENERGY_STOP_RESET_TYPE_AIR,
+            *SITUATION_KIND_AIR
+        )
+    }
+    else {
+        (
+            "special_s_ground_dash_spd_min",
+            "special_s_ground_dash_spd_mul",
+            "special_s_ground_dash_brake_x",
+            ENERGY_STOP_RESET_TYPE_GROUND,
+            *SITUATION_KIND_GROUND
+        )
+    };
+
+    let spd_min = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40(params.0));
+    let spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40(params.1));
+
+    let spd_base = (spd_min + (spd_mul * count as f32)) * lr;
+
+    let spd_brake = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40(params.2));
+
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        params.3,
+        spd_base * mul,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        spd_brake,
+        0.0
+    );
+
+    WorkModule::set_int(fighter.module_accessor, params.4, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_SITUATION_PREV);
+
+    sv_kinetic_energy!(
+        set_limit_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        -1.0,
+        0.0
+    );
+
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, fighter.module_accessor);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+
+    0.into()
+}
+
 unsafe extern "C" fn ike_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::select_cliff_hangdata(fighter.module_accessor, 1);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
@@ -125,5 +224,6 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
 
 pub fn install(agent: &mut Agent) {
     agent.status(Pre, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, ike_special_s_dash_pre);
+    agent.status(Init, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, ike_special_s_dash_init);
     agent.status(Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, ike_special_s_dash_main);
 }

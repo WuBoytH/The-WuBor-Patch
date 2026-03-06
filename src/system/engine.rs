@@ -52,6 +52,31 @@ unsafe extern "C" fn shield_break_lr_set(ctx: &mut skyline::hooks::InlineCtx) {
     WorkModule::set_float(module_accessor, lr, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
 }
 
+#[skyline::hook(offset = 0x6418f8, inline)]
+unsafe extern "C" fn shield_set_facing_lr(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = ctx.registers[19].x() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let opponent_object_id = ctx.registers[23].w();
+    let dir = if opponent_object_id != *BATTLE_OBJECT_ID_INVALID as u32 {
+        let opponent_module_accessor = sv_battle_object::module_accessor(opponent_object_id);
+        let pos_x = PostureModule::pos_x(module_accessor);
+        let opponent_pos_x = PostureModule::pos_x(opponent_module_accessor);
+        if pos_x > opponent_pos_x {
+            -1.0
+        }
+        else if pos_x < opponent_pos_x {
+            1.0
+        }
+        else {
+            0.0
+        }
+    }
+    else {
+        0.0
+    };
+    VarModule::set_float(module_accessor, guard::float::GUARD_DAMAGE_FACING_DIR, dir);
+}
+
 #[skyline::hook(offset = 0x614c0c, inline)]
 unsafe extern "C" fn shield_health_recovery_check_max(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = ctx.registers[19].x() as *mut Fighter;
@@ -174,6 +199,9 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0x614b9c).nop();
     let _ = skyline::patching::Patch::in_text(0x614ba0).data(0x1400001Au32);
 
+    // Changes the >= check to > when reducing shield health to exactly 0.0
+    let _ = skyline::patching::Patch::in_text(0x64160c).data(0x54000A4C_u32);
+
     // Disables getting airdodge back on hit
     let _ = skyline::patching::Patch::in_text(0x632530).nop();
 
@@ -184,6 +212,7 @@ pub fn install() {
         reverse_trump_logic,
         force_reflect_full_lifetime,
         shield_break_lr_set,
+        shield_set_facing_lr,
         shield_health_recovery_check_max,
         shield_health_recovery_check_less_than_max,
         fighter_global_per_frame,

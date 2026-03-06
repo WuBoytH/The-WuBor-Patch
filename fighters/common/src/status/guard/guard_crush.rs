@@ -83,6 +83,13 @@ pub unsafe extern "C" fn guard_crush_common(fighter: &mut L2CFighterCommon) {
             -2.1 * shield_lr,
             0.0
         );
+        sv_kinetic_energy!(
+            set_brake,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            0.06,
+            0.0
+        );
     }
 
     if !StopModule::is_stop(fighter.module_accessor) {

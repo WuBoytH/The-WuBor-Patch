@@ -204,6 +204,9 @@ pub mod guard {
         pub const GUARD_CANCEL_STATUS : i32 = 0x1053;
         pub const JUST_SHIELD_XLU_COUNT : i32 = 0x1054;
     }
+    pub mod float {
+        pub const GUARD_DAMAGE_FACING_DIR : i32 = 0x1050;
+    }
 }
 
 pub mod look_up {
@@ -442,13 +445,29 @@ pub mod ike {
             pub const SPECIAL_N_AIR : i32 = 0x1150;
             pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
             pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
+
+            pub const SPECIAL_HI_ARMOR : i32 = 0x1150;
+
+            pub const SPECIAL_LW_WHIFF : i32 = 0x1150;
         }
         pub mod int {
             pub const ERUPTION_COUNT : i32 = 0x1150;
         }
         pub mod float {
             pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1150;
+
+            pub const SPECIAL_HI_ARMOR_DAMAGE : i32 = 0x1150;
         }
+    }
+}
+
+pub mod ike_sword {
+    pub mod status {
+        pub mod flag {
+            pub const BLADE_BEAM_KINETIC_SHIFT : i32 = 0x1150;
+        }
+
+        pub const BLADE_BEAM : i32 = 0x4;
     }
 }
 
@@ -824,9 +843,13 @@ pub mod pikmin {
 
             pub const GUARD_CANCEL_ATTACK_SHOOT : i32 = 0x1150;
             pub const GUARD_CANCEL_ATTACK_DONE : i32 = 0x1151;
+
+            pub const APPEAL_CALL_PICKIE : i32 = 0x1150;
         }
         pub mod int {
             pub const ATTACK_S3_STEP : i32 = 0x1150;
+
+            pub const APPEAL_PIKMIN_COUNT : i32 = 0x1150;
         }
     }
     pub const ATTACK_S3_STEP_START : i32 = 0;
@@ -838,6 +861,8 @@ pub mod pikmin_pikmin {
     pub mod status {
         pub const GUARD_CANCEL_ATTACK_START : i32 = 0x44;
         pub const GUARD_CANCEL_ATTACK : i32 = 0x45;
+        pub const ATTACK_DASH : i32 = 0x46;
+        pub const APPEAL : i32 = 0x47;
     }
 }
 

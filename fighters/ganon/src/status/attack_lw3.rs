@@ -15,21 +15,30 @@ unsafe extern "C" fn ganon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     }
 
     if !StatusModule::is_changing(fighter.module_accessor) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
-        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new("attack_lw3_2"),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
-            );
-            fighter.clear_lua_stack();
-            sv_kinetic_energy::set_motion_energy_update_flag(fighter.lua_state_agent);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new("attack_lw3_2"),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
+                fighter.clear_lua_stack();
+                sv_kinetic_energy::set_motion_energy_update_flag(fighter.lua_state_agent);
+            }
+            // if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
+            //     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), true.into());
+            //     return 1.into();
+            // }
+            // if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0 {
+            //     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S3.into(), true.into());
+            //     return 1.into();
+            // }
         }
     }
 

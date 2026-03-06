@@ -325,6 +325,9 @@ pub mod dolly {
 
             pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
 
+            pub const SPECIAL_N_CHECK_FEINT : i32 = 0x1150;
+            pub const SPECIAL_N_FEINT : i32 = 0x1151;
+
             pub const SPECIAL_F_CHECK_FEINT : i32 = 0x1150;
             pub const SPECIAL_F_FEINT : i32 = 0x1151;
 

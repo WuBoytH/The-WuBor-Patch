@@ -4,6 +4,7 @@ use super::super::helper::*;
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
+        VarModule::off_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_CHECK_FEINT);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W {
@@ -75,6 +76,7 @@ unsafe extern "C" fn sound_specialn(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
+        VarModule::off_flag(agent.module_accessor, vars::dolly::status::flag::SPECIAL_N_CHECK_FEINT);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) != *FIGHTER_DOLLY_STRENGTH_W {
@@ -96,6 +98,35 @@ unsafe extern "C" fn game_specialairn(agent: &mut L2CAgentBase) {
         else {
             MotionModule::set_rate(agent.module_accessor, 32.0 / 28.0);
         }
+    }
+}
+
+unsafe extern "C" fn effect_specialnfeint(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("dolly_wave_arc"), Hash40::new("dolly_wave_arc"), Hash40::new("top"), 0, 10, 2, 69, -46, -45, 1.2, true, *EF_FLIP_YZ);
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("dolly_wave_aura"), false, true);
+    }
+}
+
+unsafe extern "C" fn sound_specialnfeint(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_dolly_ottotto"));
+    }
+}
+
+unsafe extern "C" fn expression_specialnfeint(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+    }
+    frame(agent.lua_state_agent, 13.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_explosion"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -204,7 +235,9 @@ unsafe extern "C" fn game_specialsfattack(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialffeint(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
-    MotionModule::set_rate(agent.module_accessor, 1.0)
+    if macros::is_excute(agent) {
+        MotionModule::set_rate(agent.module_accessor, 1.0)
+    }
 }
 
 unsafe extern "C" fn effect_specialffeint(agent: &mut L2CAgentBase) {
@@ -228,17 +261,6 @@ unsafe extern "C" fn effect_specialffeint(agent: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn expression_specialffeint(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
-    }
-    frame(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-}
-
 unsafe extern "C" fn sound_specialffeint(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -249,6 +271,17 @@ unsafe extern "C" fn sound_specialffeint(agent: &mut L2CAgentBase) {
         else {
             macros::PLAY_SEQUENCE(agent, Hash40::new("seq_dolly_rnd_special_f01"));
         }
+    }
+}
+
+unsafe extern "C" fn expression_specialffeint(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 4, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -1143,6 +1176,10 @@ pub fn install(agent: &mut Agent) {
 
     agent.acmd("game_specialairn", game_specialairn, Priority::Low);
     agent.acmd("sound_specialairn", sound_specialn, Priority::Low);
+
+    agent.acmd("effect_specialnfeint", effect_specialnfeint, Priority::Low);
+    agent.acmd("sound_specialnfeint", sound_specialnfeint, Priority::Low);
+    agent.acmd("expression_specialnfeint", expression_specialnfeint, Priority::Low);
 
     agent.acmd("game_specialsfstart", game_specialsfstart, Priority::Low);
 

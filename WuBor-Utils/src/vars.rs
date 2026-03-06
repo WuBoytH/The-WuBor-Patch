@@ -204,6 +204,9 @@ pub mod guard {
         pub const GUARD_CANCEL_STATUS : i32 = 0x1053;
         pub const JUST_SHIELD_XLU_COUNT : i32 = 0x1054;
     }
+    pub mod float {
+        pub const GUARD_DAMAGE_FACING_DIR : i32 = 0x1050;
+    }
 }
 
 pub mod look_up {

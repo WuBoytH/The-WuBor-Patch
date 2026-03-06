@@ -1,5 +1,4 @@
 use super::*;
-use super::super::helper::*;
 
 // SPECIAL N
 
@@ -272,11 +271,11 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 20, 50, 40, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
     }
-    frame(agent.lua_state_agent, 27.0);
+    frame(agent.lua_state_agent, 29.0);
     if macros::is_excute(agent) {
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
@@ -284,7 +283,7 @@ unsafe extern "C" fn game_specialsthrow(agent: &mut L2CAgentBase) {
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
-    MiscModule::calc_motion_rate_from_cancel_frame(agent, 27.0, -5.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 29.0, -12.0);
 }
 
 unsafe extern "C" fn effect_specialsthrow(agent: &mut L2CAgentBase) {
@@ -296,39 +295,22 @@ unsafe extern "C" fn effect_specialsthrow(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_bflash_l"), Hash40::new("handl"), 0.5, 0, 0, 0, 0, 180, 1, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_bflash_r"), Hash40::new("handr"), 0.5, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_near"), Hash40::new("top"), 0, 6.25, 12, 0, 0, 0, 0.5, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_hakkei_near"), Hash40::new("top"), 0, 7, 9, 0, 0, 0, 0.5, true);
     }
-    frame(agent.lua_state_agent, 27.0);
+    frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn sound_specialsthrow(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_005"));
-    }
-    let scale = WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
-    if scale <= WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_SE_MIDDLE_AURAPOWER) {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_s"));
-        }
-    }
-    else if scale <= WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_SE_HIGH_AURAPOWER) {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_m"));
-        }
-    }
-    else {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_l"));
-        }
+        macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
+        macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_s"));
     }
 }
 
@@ -347,11 +329,11 @@ unsafe extern "C" fn expression_specialsthrow(agent: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_impact"), 0);
     }
-    frame(agent.lua_state_agent, 40.0);
+    frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
     }
@@ -363,26 +345,25 @@ unsafe extern "C" fn game_specialsthrow2(agent: &mut L2CAgentBase) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 361, 50, 40, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
     }
-    frame(agent.lua_state_agent, 27.0);
+    frame(agent.lua_state_agent, 29.0);
+    // macros::FT_MOTION_RATE(agent, 25.0 / 17.0);
     if macros::is_excute(agent) {
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
     }
-    frame(agent.lua_state_agent, 50.0);
-    macros::FT_MOTION_RATE(agent, 0.25);
-    frame(agent.lua_state_agent, 67.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
+    // frame(agent.lua_state_agent, 46.0);
+    // macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 49.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, -1);
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
-    macros::FT_MOTION_RATE(agent, 2.25);
 }
 
 unsafe extern "C" fn effect_specialsthrow2(agent: &mut L2CAgentBase) {
@@ -405,39 +386,21 @@ unsafe extern "C" fn effect_specialsthrow2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FLW_POS(agent, Hash40::new("lucario_hakkei_start"), Hash40::new("haver"), -0.9, 0, 0, 0, 0, 0, 1.5, true);
-        macros::LAST_EFFECT_SET_RATE(agent, 0.25);
     }
-    frame(agent.lua_state_agent, 67.0);
+    frame(agent.lua_state_agent, 49.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn sound_specialsthrow2(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE_REMAIN(agent, Hash40::new("vc_lucario_005"));
+        macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
+        macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_l"));
     }
-    let scale = WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
-    if scale <= WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_SE_MIDDLE_AURAPOWER) {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_s"));
-        }
-    }
-    else if scale <= WorkModule::get_float(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_SE_HIGH_AURAPOWER) {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_m"));
-        }
-    }
-    else {
-        if macros::is_excute(agent) {
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s01"));
-            macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_l"));
-        }
-    }
-    frame(agent.lua_state_agent, 55.0);
+    frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_lucario_004"));
         macros::PLAY_SE(agent, Hash40::new("se_lucario_special_s02_m"));
@@ -459,11 +422,11 @@ unsafe extern "C" fn expression_specialsthrow2(agent: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 28.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_impact"), 0);
     }
-    frame(agent.lua_state_agent, 60.0);
+    frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
             agent.module_accessor,
@@ -473,7 +436,7 @@ unsafe extern "C" fn expression_specialsthrow2(agent: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(agent.lua_state_agent, 84.0);
+    frame(agent.lua_state_agent, 95.0);
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
     }
@@ -482,25 +445,23 @@ unsafe extern "C" fn expression_specialsthrow2(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_specialairsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
-        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 15, 50, 40, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 345, 50, 40, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    macros::FT_MOTION_RATE(agent, 0.75);
-    frame(agent.lua_state_agent, 30.0);
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 20.0 / 28.0);
+    frame(agent.lua_state_agent, 29.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
     }
-    frame(agent.lua_state_agent, 31.0);
+    frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
-    }
-    macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 40.0);
-    if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     }
 }
@@ -569,16 +530,15 @@ unsafe extern "C" fn expression_specialairsthrow(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        lucario_drain_aura(agent, false);
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 80, 50, 40, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
-    frame(agent.lua_state_agent, 28.0);
+    frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
     }
-    frame(agent.lua_state_agent, 29.0);
+    frame(agent.lua_state_agent, 27.0);
     if macros::is_excute(agent) {
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
@@ -586,8 +546,9 @@ unsafe extern "C" fn game_specialairsthrow2(agent: &mut L2CAgentBase) {
         macros::ATK_HIT_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
     }
+    frame(agent.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(agent, 2.0);
-    frame(agent.lua_state_agent, 35.0);
+    frame(agent.lua_state_agent, 36.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
@@ -685,7 +646,7 @@ unsafe extern "C" fn game_specialhimove(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
         if VarModule::get_int(agent.module_accessor, vars::lucario::status::int::AURA_ENHANCED_BY) > 0 {
-            macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 2.0, 38, 70, 0, 50, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+            macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, 70, 100, 100, 0, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
         }
     }
 }

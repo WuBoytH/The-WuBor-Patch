@@ -110,9 +110,16 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
     // }
 
     let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+    let facing_lr = VarModule::get_float(fighter.module_accessor, vars::guard::float::GUARD_DAMAGE_FACING_DIR);
 
-    if PostureModule::lr(fighter.module_accessor) != shield_lr {
-        PostureModule::set_lr(fighter.module_accessor, shield_lr);
+    let final_lr = if facing_lr == 0.0 {
+        shield_lr
+    }
+    else {
+        facing_lr
+    };
+    if PostureModule::lr(fighter.module_accessor) != final_lr {
+        PostureModule::set_lr(fighter.module_accessor, facing_lr);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
 
@@ -235,7 +242,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
             ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
-            setoff_speed.clamp(-2.5, 2.5),
+            setoff_speed.clamp(-2.1, 2.1),
             0.0,
             0.0,
             0.0,

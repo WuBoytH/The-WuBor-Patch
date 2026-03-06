@@ -821,9 +821,13 @@ pub mod pikmin {
 
             pub const GUARD_CANCEL_ATTACK_SHOOT : i32 = 0x1150;
             pub const GUARD_CANCEL_ATTACK_DONE : i32 = 0x1151;
+
+            pub const APPEAL_CALL_PICKIE : i32 = 0x1150;
         }
         pub mod int {
             pub const ATTACK_S3_STEP : i32 = 0x1150;
+
+            pub const APPEAL_PIKMIN_COUNT : i32 = 0x1150;
         }
     }
     pub const ATTACK_S3_STEP_START : i32 = 0;
@@ -835,6 +839,8 @@ pub mod pikmin_pikmin {
     pub mod status {
         pub const GUARD_CANCEL_ATTACK_START : i32 = 0x44;
         pub const GUARD_CANCEL_ATTACK : i32 = 0x45;
+        pub const ATTACK_DASH : i32 = 0x46;
+        pub const APPEAL : i32 = 0x47;
     }
 }
 

@@ -111,10 +111,14 @@ pub fn pikmin_acmd(agent: &mut Agent, name: &str, function: unsafe extern "C" fn
 
 mod guard;
 
+mod normals;
+
 mod catch;
 
 pub fn install(agent: &mut Agent) {
     guard::install(agent);
+
+    normals::install(agent);
 
     catch::install(agent);
 }

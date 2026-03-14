@@ -31,24 +31,24 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_S.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(),
-            &mut *(jack_special_s_main as *const () as *mut libc::c_void)
+            &mut *(jack_special_s_main as *const () as *mut std::ffi::c_void)
         );
     } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1 {
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
-            &mut *(jack_special_lw_pre as *const () as *mut libc::c_void)
+            &mut *(jack_special_lw_pre as *const () as *mut std::ffi::c_void)
         );
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(),
-            &mut *(jack_special_lw_main as *const () as *mut libc::c_void)
+            &mut *(jack_special_lw_main as *const () as *mut std::ffi::c_void)
         );
     } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_2 {
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_LW.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_PRE.into(),
-            &mut *(jack_special_lw2_pre as *const () as *mut libc::c_void)
+            &mut *(jack_special_lw2_pre as *const () as *mut std::ffi::c_void)
         );
     }
     0.into()

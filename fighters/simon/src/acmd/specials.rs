@@ -1,6 +1,10 @@
 use super::*;
 
 unsafe extern "C" fn game_specialn(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 9.0 / 14.0);
+    frame(agent.lua_state_agent, 15.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, vars::simon::status::flag::SPECIAL_N_SHOOT);
@@ -21,6 +25,13 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
+}
+
+unsafe extern "C" fn game_specialnblank(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 9.0 / 14.0);
+    frame(agent.lua_state_agent, 15.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
 }
 
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
@@ -97,7 +108,11 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 13.0 / 9.0);
+    frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
     }
@@ -108,11 +123,11 @@ unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
     }
-    frame(agent.lua_state_agent, 18.0);
+    frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_action_smoke_h"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("simon_bottle_release"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
     }
@@ -123,14 +138,14 @@ unsafe extern "C" fn effect_specialairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("simon_bottle_release"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
 unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 19.0);
+    frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_simon_special_l01"));
         macros::PLAY_SE(agent, Hash40::new("se_simon_special_l01"));
@@ -141,7 +156,7 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
-    frame(agent.lua_state_agent, 20.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
             agent.module_accessor,
@@ -153,12 +168,23 @@ unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
+unsafe extern "C" fn game_speciallwblank(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 13.0 / 9.0);
+    frame(agent.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+}
+
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_specialn", game_specialn, Priority::Low);
     agent.acmd("expression_specialn", expression_specialn, Priority::Low);
 
     agent.acmd("game_specialairn", game_specialn, Priority::Low);
     agent.acmd("expression_specialairn", expression_specialn, Priority::Low);
+
+    agent.acmd("game_specialnblank", game_specialnblank, Priority::Low);
+
+    agent.acmd("game_specialairnblank", game_specialnblank, Priority::Low);
 
     agent.acmd("game_specialhi", game_specialhi, Priority::Low);
 
@@ -173,4 +199,8 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialairlw", effect_specialairlw, Priority::Low);
     agent.acmd("sound_specialairlw", sound_speciallw, Priority::Low);
     agent.acmd("expression_specialairlw", expression_speciallw, Priority::Low);
+
+    agent.acmd("game_speciallwblank", game_speciallwblank, Priority::Low);
+
+    agent.acmd("game_specialairlwblank", game_speciallwblank, Priority::Low);
 }

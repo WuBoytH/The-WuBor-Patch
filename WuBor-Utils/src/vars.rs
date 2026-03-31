@@ -866,8 +866,7 @@ pub mod pikmin_pikmin {
 pub mod richter {
     pub mod instance {
         pub mod int {
-            pub const AXE_ID : i32 = 0x0100;
-            pub const SPECIAL_N_VOICE_KIND : i32 = 0x0101;
+            pub const SPECIAL_N_VOICE_KIND : i32 = 0x0100;
         }
     }
     pub mod status {
@@ -875,15 +874,12 @@ pub mod richter {
             pub const SPECIAL_S_START_SITUATION : i32 = 0x1150;
         }
         pub mod flag {
-            
-            pub const SPECIAL_N_SHOOT : i32 = 0x1150;
-
             pub const SPECIAL_S_START_DASH : i32 = 0x1150;
             pub const SPECIAL_S_BRAKE_SHIFT : i32 = 0x1151;
             pub const SPECIAL_S_ENABLE_LANDING : i32 = 0x1152;
             pub const SPECIAL_S_ENABLE_FALL : i32 = 0x1153;
             pub const SPECIAL_S_ENABLED_FALL : i32 = 0x1154;
-            
+
             pub const SPECIAL_LW_SLIDE_ENABLE_JUMP : i32 = 0x1150;
             pub const SPECIAL_LW_CHECK_ANGLE : i32 = 0x1151;
             pub const SPECIAL_LW_IS_ANGLED : i32 = 0x1152;
@@ -1054,7 +1050,11 @@ pub mod shizue {
 }
 
 pub mod simon {
-    pub use super::richter::*;
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N_SHOOT : i32 = 0x1150;
+        }
+    }
 }
 
 pub mod snake_c4 {

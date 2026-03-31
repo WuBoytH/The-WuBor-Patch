@@ -27,6 +27,7 @@ mod sonic;
 mod wario;
 
 mod weapon;
+mod belmont_cross;
 mod blaster_bullet;
 mod dolly_wave;
 mod dolly_burst;
@@ -68,6 +69,7 @@ pub fn install() {
     wario::install();
 
     weapon::install();
+    belmont_cross::install();
     blaster_bullet::install();
     dolly_wave::install();
     dolly_burst::install();

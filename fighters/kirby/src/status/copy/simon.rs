@@ -1,14 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    belmont_special_n_main_inner(fighter)
-}
-
-unsafe extern "C" fn kirby_richter_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    belmont_special_n_main_inner(fighter)
-}
-
-pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn simon_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;
     let mot_a;
     let mut log =
@@ -16,15 +8,8 @@ pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCo
         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
         *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
     ;
-    let axe_id = VarModule::get_int(fighter.module_accessor, vars::simon::instance::int::AXE_ID) as u32;
-    let is_axe = sv_battle_object::category(axe_id) == *BATTLE_OBJECT_CATEGORY_WEAPON
-    && [
-        *WEAPON_KIND_SIMON_AXE,
-        *WEAPON_KIND_RICHTER_AXE
-    ].contains(&sv_battle_object::kind(axe_id));
     if ItemModule::is_have_item(fighter.module_accessor, 0) // Usually this only checks for if you hold Simon or Richter's Holy Water
-    || !sv_battle_object::is_active(axe_id)
-    || !is_axe {
+    || ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE) == 0 {
         mot_g = hash40("special_n");
         mot_a = hash40("special_air_n");
         log |= *FIGHTER_LOG_MASK_FLAG_SHOOT;
@@ -39,22 +24,16 @@ pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCo
     WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
     WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
     FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log as u64);
-    fighter.sub_shift_status_main(L2CValue::Ptr(belmont_special_n_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(simon_special_n_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn simon_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::simon::status::flag::SPECIAL_N_SHOOT) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            let angle = if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N {
-                45.0
-            }
-            else {
-                69.420
-            };
             ItemModule::throw_item(
                 fighter.module_accessor,
-                angle,
-                2.4,
+                55.0,
+                2.5,
                 1.0,
                 0,
                 true,
@@ -139,15 +118,7 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn kirby_simon_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    belmont_special_n_end_inner(fighter)
-}
-
-unsafe extern "C" fn kirby_richter_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    belmont_special_n_end_inner(fighter)
-}
-
-pub unsafe extern "C" fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn simon_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_N_FLAG_HAVE_AXE) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
     }
@@ -160,9 +131,6 @@ pub unsafe extern "C" fn belmont_special_n_end_inner(fighter: &mut L2CFighterCom
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, kirby_simon_specialn_main);
-    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, kirby_simon_specialn_end);
-
-    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, kirby_richter_specialn_main);
-    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, kirby_richter_specialn_end);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, simon_special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, simon_special_n_end);
 }

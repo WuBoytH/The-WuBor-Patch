@@ -205,6 +205,14 @@ pub fn install() {
     // Disables getting airdodge back on hit
     let _ = skyline::patching::Patch::in_text(0x632530).nop();
 
+    // Allow 0 CPUs in Training Mode menu
+    // Allow UI to decrement to 0
+    let _ = skyline::patching::Patch::in_text(0x1bb46a4).data(0xb907fa7f_u32);
+    // Change set-value handler clamp to 0
+    let _ = skyline::patching::Patch::in_text(0x1bbad14).data(0x7100011f_u32);
+    // Fix clamp logic to clamp underflow to 0 instead of 1
+    let _ = skyline::patching::Patch::in_text(0x1bbad18).data(0x1a9fa114_u32);
+
     skyline::install_hooks!(
         change_elec_hitlag_for_attacker,
         // autoturn_handler,

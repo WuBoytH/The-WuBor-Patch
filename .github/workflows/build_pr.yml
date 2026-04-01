@@ -24,7 +24,7 @@ jobs:
       - name: Download ROMFS (Backup)
         if: steps.pr-romfs.outcome == 'failure'
         shell: bash
-        run: curl -O https://github.com/WuBoytH/WuBor-Romfs/releases/download/dev/romfs.zip
+        run: curl -L -O --fail https://github.com/WuBoytH/WuBor-Romfs/releases/download/dev/romfs.zip
       - name: Build Release NRO (PR)
         run: |
           cd scripts && python3 build.py pr

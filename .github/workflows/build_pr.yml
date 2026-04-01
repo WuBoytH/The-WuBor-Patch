@@ -1,6 +1,6 @@
 name: Create PR Release
 
-on: 
+on:
   pull_request:
     branches:
       - dev
@@ -11,7 +11,7 @@ jobs:
     container:
       image: wuboyth/skyline-plugin-builder:latest
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v6.0.2
       - name: Get Branch Name
         id: branch-name
         shell: bash
@@ -19,20 +19,12 @@ jobs:
       - name: Download ROMFS
         id: pr-romfs
         continue-on-error: true
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/${{ steps.branch-name.outputs.branch }}'
-          file: 'romfs.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: curl -O https://github.com/WuBoytH/WuBor-Romfs/releases/download/${{needs.get-version.outputs.branch}}/romfs.zip
       - name: Download ROMFS (Backup)
         if: steps.pr-romfs.outcome == 'failure'
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/dev'
-          file: 'romfs.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: curl -O https://github.com/WuBoytH/WuBor-Romfs/releases/download/dev/romfs.zip
       - name: Build Release NRO (PR)
         run: |
           cd scripts && python3 build.py pr
@@ -43,7 +35,7 @@ jobs:
         run: |
           cd scripts && python3 create_pr.py && cd ..
       - name: Upload Plugin Artifact (PR)
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: The_WuBor_Patch_PR
           path: build/

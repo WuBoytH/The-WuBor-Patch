@@ -179,7 +179,7 @@ pub unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFigh
             fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
             return 1.into();
         }
-        
+
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
         && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
@@ -399,10 +399,10 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
             let airdash_mul = match get_airdash_tier(fighter) {
                 AirDashTier::Bad => 0.79,
-                AirDashTier::Good => 0.93,
-                AirDashTier::Great => 1.0,
-                AirDashTier::Teleport => 1.0,
-                _ => 0.86
+                AirDashTier::Average => 0.83,
+                AirDashTier::Good => 0.87,
+                AirDashTier::Great => 0.87,
+                AirDashTier::Teleport => 1.0
             };
             sv_kinetic_energy!(
                 set_speed,
@@ -479,9 +479,9 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             let speed_x_mul = match tier {
                 AirDashTier::Teleport => 0.2,
                 AirDashTier::Bad => 0.60,
-                AirDashTier::Good => 0.70,
-                AirDashTier::Great => 0.75,
-                _ => 0.65
+                AirDashTier::Average => 0.65,
+                AirDashTier::Good => 0.65,
+                AirDashTier::Great => 0.70
             };
             let speed_y_mul = match tier {
                 AirDashTier::Teleport => 0.2,

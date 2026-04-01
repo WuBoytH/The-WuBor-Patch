@@ -173,16 +173,19 @@ unsafe extern "C" fn check_100_count_button(fighter: &mut L2CFighterCommon, para
 unsafe fn get_jab_cancel_transitions(fighter: &mut L2CFighterCommon) -> Vec<i32> {
     let mut cancels = Vec::new();
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    if !VarModule::is_flag(fighter.module_accessor, vars::attack::flag::ATTACK_S3_IS_REVERSE) {
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
+    && !VarModule::is_flag(fighter.module_accessor, vars::attack::flag::ATTACK_S3_IS_REVERSE) {
         cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
     }
 
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0
     && ControlModule::get_attack_hi3_fb_kind(fighter.module_accessor) != *FIGHTER_COMMAND_ATTACK3_KIND_B {
         cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
     }
 
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0
+    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 == 0
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0
     && ControlModule::get_attack_lw3_fb_kind(fighter.module_accessor) != *FIGHTER_COMMAND_ATTACK3_KIND_B {
         cancels.push(*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
     }

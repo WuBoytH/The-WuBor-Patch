@@ -1,4 +1,3 @@
-#![feature(repr_simd)]
 #![allow(
     unused_macros,
     unused_must_use

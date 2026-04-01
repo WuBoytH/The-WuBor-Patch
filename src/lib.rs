@@ -1,7 +1,6 @@
 #![feature(
     proc_macro_hygiene,
-    simd_ffi,
-    repr_simd
+    simd_ffi
 )]
 #![allow(
     unknown_lints,

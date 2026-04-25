@@ -116,8 +116,18 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_dash", sound_dash, Priority::Low);
     agent.acmd("expression_dash", expression_dash, Priority::Low);
 
+    agent.acmd("game_dash_nana", game_dash, Priority::Low);
+    agent.acmd("effect_dash_nana", effect_dash, Priority::Low);
+    agent.acmd("sound_dash_nana", sound_dash, Priority::Low);
+    agent.acmd("expression_dash_nana", expression_dash, Priority::Low);
+
     agent.acmd("game_turndash", game_turndash, Priority::Low);
     agent.acmd("effect_turndash", effect_turndash, Priority::Low);
     agent.acmd("sound_turndash", sound_turndash, Priority::Low);
     agent.acmd("expression_turndash", expression_turndash, Priority::Low);
+
+    agent.acmd("game_turndash_nana", game_turndash, Priority::Low);
+    agent.acmd("effect_turndash_nana", effect_turndash, Priority::Low);
+    agent.acmd("sound_turndash_nana", sound_turndash, Priority::Low);
+    agent.acmd("expression_turndash_nana", expression_turndash, Priority::Low);
 }

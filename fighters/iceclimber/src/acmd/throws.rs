@@ -233,35 +233,19 @@ unsafe extern "C" fn expression_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_throwf", game_throwf, Priority::Low);
-    agent.acmd("effect_throwf", effect_throwf, Priority::Low);
-    agent.acmd("expression_throwf", expression_throwf, Priority::Low);
+    install_popo_nana_acmd(agent, "game_throwf", game_throwf, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_throwf", effect_throwf, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_throwf", expression_throwf, Priority::Low);
 
-    agent.acmd("game_throwf_nana", game_throwf, Priority::Low);
-    agent.acmd("effect_throwf_nana", effect_throwf, Priority::Low);
-    agent.acmd("expression_throwf_nana", expression_throwf, Priority::Low);
+    install_popo_nana_acmd(agent, "game_throwb", game_throwb, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_throwb", effect_throwb, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_throwb", expression_throwb, Priority::Low);
 
-    agent.acmd("game_throwb", game_throwb, Priority::Low);
-    agent.acmd("effect_throwb", effect_throwb, Priority::Low);
-    agent.acmd("expression_throwb", expression_throwb, Priority::Low);
+    install_popo_nana_acmd(agent, "game_throwhi", game_throwhi, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_throwhi", effect_throwhi, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_throwhi", expression_throwhi, Priority::Low);
 
-    agent.acmd("game_throwb_nana", game_throwb, Priority::Low);
-    agent.acmd("effect_throwb_nana", effect_throwb, Priority::Low);
-    agent.acmd("expression_throwb_nana", expression_throwb, Priority::Low);
-
-    agent.acmd("game_throwhi", game_throwhi, Priority::Low);
-    agent.acmd("effect_throwhi", effect_throwhi, Priority::Low);
-    agent.acmd("expression_throwhi", expression_throwhi, Priority::Low);
-
-    agent.acmd("game_throwhi_nana", game_throwhi, Priority::Low);
-    agent.acmd("effect_throwhi_nana", effect_throwhi, Priority::Low);
-    agent.acmd("expression_throwhi_nana", expression_throwhi, Priority::Low);
-
-    agent.acmd("game_throwlw", game_throwlw, Priority::Low);
-    agent.acmd("effect_throwlw", effect_throwlw, Priority::Low);
-    agent.acmd("expression_throwlw", expression_throwlw, Priority::Low);
-
-    agent.acmd("game_throwlw_nana", game_throwlw, Priority::Low);
-    agent.acmd("effect_throwlw_nana", effect_throwlw, Priority::Low);
-    agent.acmd("expression_throwlw_nana", expression_throwlw, Priority::Low);
+    install_popo_nana_acmd(agent, "game_throwlw", game_throwlw, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_throwlw", effect_throwlw, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_throwlw", expression_throwlw, Priority::Low);
 }

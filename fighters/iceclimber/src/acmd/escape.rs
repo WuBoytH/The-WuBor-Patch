@@ -23,7 +23,5 @@ unsafe extern "C" fn game_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_escapeairslide", game_escapeairslide, Priority::Low);
-
-    agent.acmd("game_escapeairslide_nana", game_escapeairslide, Priority::Low);
+    install_popo_nana_acmd(agent, "game_escapeairslide", game_escapeairslide, Priority::Low);
 }

@@ -81,19 +81,11 @@ unsafe extern "C" fn game_catchattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_catch", game_catch, Priority::Low);
+    install_popo_nana_acmd(agent, "game_catch", game_catch, Priority::Low);
 
-    agent.acmd("game_catch_nana", game_catch, Priority::Low);
+    install_popo_nana_acmd(agent, "game_catchdash", game_catchdash, Priority::Low);
 
-    agent.acmd("game_catchdash", game_catchdash, Priority::Low);
+    install_popo_nana_acmd(agent, "game_catchturn", game_catchturn, Priority::Low);
 
-    agent.acmd("game_catchdash_nana", game_catchdash, Priority::Low);
-
-    agent.acmd("game_catchturn", game_catchturn, Priority::Low);
-
-    agent.acmd("game_catchturn_nana", game_catchturn, Priority::Low);
-
-    agent.acmd("game_catchattack", game_catchattack, Priority::Low);
-
-    agent.acmd("game_catchattack_nana", game_catchattack, Priority::Low);
+    install_popo_nana_acmd(agent, "game_catchattack", game_catchattack, Priority::Low);
 }

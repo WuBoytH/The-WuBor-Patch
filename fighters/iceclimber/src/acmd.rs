@@ -1,5 +1,15 @@
 use super::*;
 
+fn install_popo_nana_acmd(
+    agent: &mut Agent,
+    name: &str,
+    func: unsafe extern "C" fn(&mut L2CAgentBase),
+    priority: smashline::Priority
+) {
+    agent.acmd(name, func, priority);
+    agent.acmd(format!("{}, {}", name, "_nana").as_str(), func, priority);
+}
+
 mod dash;
 
 mod guard;

@@ -79,7 +79,7 @@ unsafe extern "C" fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValu
     fighter.sub_status_CatchDash();
     GrabModule::set_rebound(fighter.module_accessor, true);
 
-    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
+    // JostleModule::set_overlap_rate_mul(fighter.module_accessor, 6.666);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_CatchDash_Main as *const () as _))
 }
@@ -90,8 +90,8 @@ unsafe extern "C" fn bind_address_call_status_end_catchdash(fighter: &mut L2CFig
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_CatchDash)]
-unsafe extern "C" fn status_end_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
+unsafe extern "C" fn status_end_catchdash(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    // JostleModule::set_overlap_rate_mul(fighter.module_accessor, 1.0);
     0.into()
 }
 

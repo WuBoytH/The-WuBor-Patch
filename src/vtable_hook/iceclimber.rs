@@ -12,5 +12,5 @@ pub fn install() {
     let _ = skyline::patching::Patch::in_text(0xfba850).data(0x1400049E_u32);
 
     // A special patch, to see who's the fastest.
-    let _ = skyline::patching::Patch::in_text(0x2f81cc).data(0x1400000D_u32);
+    let _ = skyline::patching::Patch::in_text(0x2f7dcc).data(0x140000E1_u32);
 }

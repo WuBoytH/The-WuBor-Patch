@@ -111,13 +111,13 @@ unsafe extern "C" fn expression_turndash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_dash", game_dash, Priority::Low);
-    agent.acmd("effect_dash", effect_dash, Priority::Low);
-    agent.acmd("sound_dash", sound_dash, Priority::Low);
-    agent.acmd("expression_dash", expression_dash, Priority::Low);
+    install_popo_nana_acmd(agent, "game_dash", game_dash, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_dash", effect_dash, Priority::Low);
+    install_popo_nana_acmd(agent, "sound_dash", sound_dash, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_dash", expression_dash, Priority::Low);
 
-    agent.acmd("game_turndash", game_turndash, Priority::Low);
-    agent.acmd("effect_turndash", effect_turndash, Priority::Low);
-    agent.acmd("sound_turndash", sound_turndash, Priority::Low);
-    agent.acmd("expression_turndash", expression_turndash, Priority::Low);
+    install_popo_nana_acmd(agent, "game_turndash", game_turndash, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_turndash", effect_turndash, Priority::Low);
+    install_popo_nana_acmd(agent, "sound_turndash", sound_turndash, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_turndash", expression_turndash, Priority::Low);
 }

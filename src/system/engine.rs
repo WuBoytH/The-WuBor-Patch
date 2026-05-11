@@ -133,6 +133,72 @@ unsafe extern "C" fn damage_level_hook(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
+#[skyline::hook(offset = 0x6d249c, inline)]
+unsafe fn hitstun_gravity_1(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("grav1");
+    hitstun_gravity_inner(ctx);
+}
+
+#[skyline::hook(offset = 0x6c39a0, inline)]
+unsafe fn hitstun_gravity_2(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("grav2");
+    hitstun_gravity_inner(ctx);
+}
+
+#[skyline::hook(offset = 0x6d5924, inline)]
+unsafe fn hitstun_gravity_3(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("grav3");
+    hitstun_gravity_inner(ctx);
+}
+
+unsafe extern "C" fn hitstun_gravity_inner(ctx: &mut skyline::hooks::InlineCtx) {
+    let gravity = ctx.registers_f[0].s();
+    // println!("Gravity: {}", gravity);
+    let clamped = gravity.clamp(0.125, 0.15);
+    // if clamped != gravity {
+    //     println!("it's clampin' time: {}", clamped);
+    // }
+    ctx.registers_f[0].set_s(clamped);
+}
+
+#[skyline::hook(offset = 0x6d24c4, inline)]
+unsafe fn hitstun_fall_speed_1(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("fall1");
+    hitstun_fall_speed_inner(ctx);
+}
+
+#[skyline::hook(offset = 0x6c39c8, inline)]
+unsafe fn hitstun_fall_speed_2(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("fall2");
+    hitstun_fall_speed_inner(ctx);
+}
+
+#[skyline::hook(offset = 0x6d594c, inline)]
+unsafe fn hitstun_fall_speed_3(ctx: &mut skyline::hooks::InlineCtx) {
+    // println!("fall3");
+    hitstun_fall_speed_inner(ctx);
+}
+
+unsafe extern "C" fn hitstun_fall_speed_inner(ctx: &mut skyline::hooks::InlineCtx) {
+    let fall_speed = ctx.registers_f[0].s();
+    // println!("Fall Speed: {}", fall_speed);
+    let clamped = fall_speed.clamp(1.5, 1.8);
+    // if clamped != fall_speed {
+    //     println!("it's clampin' time: {}", clamped);
+    // }
+    ctx.registers_f[0].set_s(clamped);
+}
+
+#[skyline::hook(offset = 0x6d1654, inline)]
+unsafe fn force_normal_hitstun_fallspeeds1(ctx: &mut skyline::hooks::InlineCtx) {
+    ctx.registers[24].set_w(1);
+}
+
+#[skyline::hook(offset = 0x6c35f8, inline)]
+unsafe fn force_normal_hitstun_fallspeeds2(ctx: &mut skyline::hooks::InlineCtx) {
+    ctx.registers[8].set_w(1);
+}
+
 pub fn install() {
     // Stubs parry hitlag calculation
     let _ = skyline::patching::Patch::in_text(0x641d84).nop();
@@ -224,6 +290,14 @@ pub fn install() {
         shield_health_recovery_check_max,
         shield_health_recovery_check_less_than_max,
         fighter_global_per_frame,
-        damage_level_hook
+        damage_level_hook,
+        hitstun_gravity_1,
+        hitstun_gravity_2,
+        hitstun_gravity_3,
+        hitstun_fall_speed_1,
+        hitstun_fall_speed_2,
+        hitstun_fall_speed_3,
+        force_normal_hitstun_fallspeeds1,
+        force_normal_hitstun_fallspeeds2
     );
 }

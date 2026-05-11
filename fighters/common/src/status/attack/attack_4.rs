@@ -447,7 +447,7 @@ unsafe extern "C" fn attack_4_reset_ground_normals(fighter: &mut L2CFighterCommo
 
 unsafe extern "C" fn attack_4_hold(fighter: &mut L2CFighterCommon) {
     physics!(fighter, MA_MSC_CMD_PHYSICS_STOP_CHARGE);
-    fighter.pop_lua_stack(1);
+    // fighter.pop_lua_stack(1);
     attack_4_reset_ground_normals(fighter);
 }
 

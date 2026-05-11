@@ -108,13 +108,8 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_guardcancelattack", game_guardcancelattack, Priority::Low);
-    agent.acmd("effect_guardcancelattack", effect_guardcancelattack, Priority::Low);
-    agent.acmd("sound_guardcancelattack", sound_guardcancelattack, Priority::Low);
-    agent.acmd("expression_guardcancelattack", expression_guardcancelattack, Priority::Low);
-
-    agent.acmd("game_guardcancelattack_nana", game_guardcancelattack, Priority::Low);
-    agent.acmd("effect_guardcancelattack_nana", effect_guardcancelattack, Priority::Low);
-    agent.acmd("sound_guardcancelattack_nana", sound_guardcancelattack, Priority::Low);
-    agent.acmd("expression_guardcancelattack_nana", expression_guardcancelattack, Priority::Low);
+    install_popo_nana_acmd(agent, "game_guardcancelattack", game_guardcancelattack, Priority::Low);
+    install_popo_nana_acmd(agent, "effect_guardcancelattack", effect_guardcancelattack, Priority::Low);
+    install_popo_nana_acmd(agent, "sound_guardcancelattack", sound_guardcancelattack, Priority::Low);
+    install_popo_nana_acmd(agent, "expression_guardcancelattack", expression_guardcancelattack, Priority::Low);
 }

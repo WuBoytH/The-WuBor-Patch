@@ -9,6 +9,7 @@ mod elight;
 mod gamewatch;
 mod ganon;
 mod gaogaen;
+mod iceclimber;
 mod ike;
 mod jack;
 mod kirby;
@@ -51,6 +52,7 @@ pub fn install() {
     gamewatch::install();
     ganon::install();
     gaogaen::install();
+    iceclimber::install();
     ike::install();
     jack::install();
     kirby::install();

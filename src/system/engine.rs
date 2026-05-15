@@ -57,7 +57,7 @@ unsafe extern "C" fn shield_set_facing_lr(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = ctx.registers[19].x() as *mut Fighter;
     let module_accessor = (*fighter).battle_object.module_accessor;
     let opponent_object_id = ctx.registers[23].w();
-    let dir = if opponent_object_id != *BATTLE_OBJECT_ID_INVALID as u32 {
+    let dir = if sv_battle_object::category(opponent_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         let opponent_module_accessor = sv_battle_object::module_accessor(opponent_object_id);
         let pos_x = PostureModule::pos_x(module_accessor);
         let opponent_pos_x = PostureModule::pos_x(opponent_module_accessor);

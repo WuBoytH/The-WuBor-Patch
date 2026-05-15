@@ -119,7 +119,7 @@ unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter
         facing_lr
     };
     if PostureModule::lr(fighter.module_accessor) != final_lr {
-        PostureModule::set_lr(fighter.module_accessor, facing_lr);
+        PostureModule::set_lr(fighter.module_accessor, final_lr);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
 

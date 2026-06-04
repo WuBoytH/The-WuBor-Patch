@@ -410,7 +410,7 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             if angle.sin() != -1.0 {
                  speed_y *= 0.75
             }
-            println!("speed: {}, {}", speed_x, speed_y);
+            // println!("speed: {}, {}", speed_x, speed_y);
             sv_kinetic_energy!(
                 set_speed,
                 fighter,

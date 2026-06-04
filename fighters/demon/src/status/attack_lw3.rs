@@ -10,10 +10,25 @@ unsafe extern "C" fn demon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     fighter.status_AttackLw3_Main();
     if !StatusModule::is_changing(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-            let mut status = -1;
-            if fighter.sub_check_command_guard().get_bool() {
-                status = *FIGHTER_STATUS_KIND_GUARD_ON;
+            let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+            let status = if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
+                *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3
             }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
+                *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1
+            }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
+                *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6
+            }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_9 != 0 {
+                *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2
+            }
+            else if fighter.sub_check_command_guard().get_bool() {
+                *FIGHTER_STATUS_KIND_GUARD_ON
+            }
+            else {
+                -1
+            };
             if status != -1 {
                 WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_INC_STEP);
@@ -51,25 +66,33 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon
 unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_GUARD_ON {
-        let mut status = -1;
         let cat4 = fighter.global_table[CMD_CAT4].get_i32();
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3;
+        let status = if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
+            *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3
         }
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1;
+        else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
+            *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1
         }
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6;
+        else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_7 != 0 {
+            *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_6
         }
-        if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_9 != 0 {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2;
+        else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_9 != 0 {
+            *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2
         }
+        else {
+            -1
+        };
         if status != -1 {
             WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
         }
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
+    }
+    else {
         let status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
         if ![
             *FIGHTER_STATUS_KIND_WAIT,
@@ -81,10 +104,6 @@ unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterC
                 clear_buffer = false;
             }
             fighter.change_status(status.into(), clear_buffer.into());
-            return 0.into();
-        }
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
         }
     }

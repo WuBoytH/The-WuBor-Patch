@@ -341,25 +341,25 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         return;
     }
     if slide_step == 0 {
-        let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
-        let frame = back_end_frame as f32 - 1.0;
-        let result = slide_frame as f32 / frame;
-        let back_accel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
-        let curve = sv_math::bezier_curve(0.5, 0.8, 0.9, 1.0, result);
-        let accel = curve - back_accel;
-        let escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
-        // let end = accel * -escape_air_slide_back_distance;
-        let end = accel * escape_air_slide_back_distance; // new
-        WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
-        let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-        let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            dir_x * end,
-            dir_y * end
-        );
+        // let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+        // let frame = back_end_frame as f32 - 1.0;
+        // let result = slide_frame as f32 / frame;
+        // let back_accel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
+        // let curve = sv_math::bezier_curve(0.5, 0.8, 0.9, 1.0, result);
+        // let accel = curve - back_accel;
+        // let escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
+        // // let end = accel * -escape_air_slide_back_distance;
+        // let end = accel * escape_air_slide_back_distance; // new
+        // WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
+        // let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+        // let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+        // sv_kinetic_energy!(
+        //     set_speed,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_STOP,
+        //     dir_x * end,
+        //     dir_y * end
+        // );
     }
     else if slide_step == 1 {
         let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
@@ -383,8 +383,9 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_DAMAGE
             );
-            let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-            let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+            // let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+            // let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+            let angle = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
             // sv_kinetic_energy!(
             //     reset_energy,
             //     fighter,
@@ -404,15 +405,21 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 AirDashTier::Great => 0.87,
                 AirDashTier::Teleport => 1.0
             };
+            let speed_x = escape_air_slide_speed * angle.cos() * airdash_mul;
+            let mut speed_y = escape_air_slide_speed * angle.sin() * airdash_mul;
+            if angle.sin() != -1.0 {
+                 speed_y *= 0.75
+            }
+            println!("speed: {}, {}", speed_x, speed_y);
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                escape_air_slide_speed * dir_x * airdash_mul,
-                escape_air_slide_speed * dir_y * airdash_mul * 0.75
+                speed_x,
+                speed_y
             );
-            let brake_x = dir_x.abs() * 0.15;
-            let brake_y: f32 = if dir_y < 0.0 {
+            let brake_x = angle.cos().abs() * 0.15;
+            let brake_y: f32 = if speed_y < 0.0 {
                 0.0
             }
             else {
@@ -428,20 +435,20 @@ pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
 
             // Effects
 
-            let angle = dir_y.atan2(dir_x).to_degrees();
+            let deg = angle.to_degrees();
             let lr = PostureModule::lr(fighter.module_accessor);
             let hip = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
             ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), hip);
-            let pos = Vector3f{
-                x: 10.0 * dir_x * lr,
-                y: hip.y,
-                z: 0.0
-            };
+            let pos = Vector3f::new(
+                10.0 * angle.cos() * lr,
+                hip.y,
+                0.0
+            );
             let rot = if lr > 0.0 {
-                Vector3f{x: 0.0, y: 0.0, z: 180.0 + angle}
+                Vector3f::new(0.0, 0.0, 180.0 + deg)
             }
             else {
-                Vector3f{x: 0.0, y: 0.0, z: angle}
+                Vector3f::new(0.0, 0.0, deg)
             };
             let line = EffectModule::req_on_joint(
                 fighter.module_accessor,

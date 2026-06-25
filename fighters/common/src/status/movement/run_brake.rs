@@ -56,8 +56,9 @@ unsafe extern "C" fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
     if fighter.global_table[FALL_BRAKE_UNIQ].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[FALL_BRAKE_UNIQ].get_ptr());
-        callable(fighter);
+        let callable: extern "C" fn(&mut L2CValue, &mut L2CFighterCommon) = std::mem::transmute(fighter.global_table[FALL_BRAKE_UNIQ].get_ptr());
+        let param_1 = &mut L2CValue::I32(0);
+        callable(param_1, fighter);
     }
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
@@ -244,13 +245,13 @@ unsafe extern "C" fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2C
         return 0.into();
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) 
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
         return true.into();
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH) 
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
         return true.into();
@@ -264,7 +265,7 @@ unsafe extern "C" fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         return 0.into()
     }
-    
+
     // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP_SHAKE) {
     //     fighter.clear_lua_stack();
     //     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);

@@ -59,6 +59,7 @@ unsafe extern "C" fn demon_attack_step_2s_main_loop(fighter: &mut L2CFighterComm
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
             && fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623A != 0
+            && ControlModule::get_special_command_lr(fighter.module_accessor, *FIGHTER_PAD_CMD_CAT4_COMMAND_623A) == PostureModule::lr(fighter.module_accessor)
             && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_LW_UNIQ].clone()).get_bool() {
                 MotionModule::change_motion(
                     fighter.module_accessor,

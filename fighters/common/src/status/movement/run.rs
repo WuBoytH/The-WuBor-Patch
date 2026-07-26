@@ -80,10 +80,13 @@ unsafe extern "C" fn status_run_sub(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = L2CFighterCommon_status_Run_Main)]
 unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[RUN_MAIN_UNIQ].get_bool() && {
-        let callable: extern "C" fn(&mut L2CValue, &mut L2CFighterCommon) = std::mem::transmute(fighter.global_table[RUN_MAIN_UNIQ].get_ptr());
-        let param_1 = &mut L2CValue::I32(0);
-        callable(param_1, fighter);
-        param_1.get_bool()
+        // let callable: extern "C" fn(&mut L2CValue, &mut L2CFighterCommon) = std::mem::transmute(fighter.global_table[RUN_MAIN_UNIQ].get_ptr());
+        // let param_1 = &mut L2CValue::I32(0);
+        // callable(param_1, fighter);
+        // param_1.get_bool()
+
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[RUN_MAIN_UNIQ].get_ptr());
+        callable(fighter).get_bool()
     } {
         return 1.into();
     }

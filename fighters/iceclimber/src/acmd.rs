@@ -7,7 +7,8 @@ fn install_popo_nana_acmd(
     priority: smashline::Priority
 ) {
     agent.acmd(name, func, priority);
-    agent.acmd(format!("{}, {}", name, "_nana").as_str(), func, priority);
+    let nana_acmd_name = format!("{}{}", name, "_nana");
+    agent.acmd(nana_acmd_name.as_str(), func, priority);
 }
 
 mod dash;

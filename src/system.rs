@@ -13,6 +13,8 @@ mod energy;
 mod modules;
 mod css;
 
+mod command;
+
 pub fn install() {
     init_settings::install();
     // get_val::install();
@@ -27,4 +29,6 @@ pub fn install() {
     energy::install();
     modules::install();
     css::install();
+
+    command::install();
 }

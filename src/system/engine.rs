@@ -128,7 +128,8 @@ unsafe extern "C" fn fighter_global_per_frame(fighter: &mut Fighter) {
 #[skyline::hook(offset = 0x403ca4, inline)]
 unsafe extern "C" fn damage_level_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
-    if VarModule::is_flag(module_accessor, thrown::flag::FORCE_LAUNCHED) {
+    // if VarModule::is_flag(module_accessor, thrown::flag::FORCE_LAUNCHED) {
+    if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_THROWN {
         ctx.registers[0].set_w(3);
     }
 }

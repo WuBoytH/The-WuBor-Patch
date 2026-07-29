@@ -50,13 +50,14 @@ pub unsafe fn ryu_saving_aura_remover(agent: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
-    VarModule::off_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
-    let eff_handle = VarModule::get_int(fighter.module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
-    if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
-        EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
+#[no_mangle]
+pub unsafe fn ryu_denjin_remover(module_accessor: *mut BattleObjectModuleAccessor) {
+    VarModule::off_flag(module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
+    let eff_handle = VarModule::get_int(module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    if EffectModule::is_exist_effect(module_accessor, eff_handle) {
+        EffectModule::kill(module_accessor, eff_handle, true, true);
     }
-    VarModule::set_int(fighter.module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE, 0);
+    VarModule::set_int(module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE, 0);
 }
 
 #[no_mangle]
@@ -545,7 +546,7 @@ unsafe extern "C" fn ryu_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) ->
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
     }
-    
+
     0.into()
 }
 
@@ -664,7 +665,7 @@ unsafe extern "C" fn ryu_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) ->
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), false.into());
     }
-    
+
     0.into()
 }
 

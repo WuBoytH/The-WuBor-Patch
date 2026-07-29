@@ -1,5 +1,10 @@
 use crate::imports::*;
 
+extern "C" {
+    #[link_name = "ryu_denjin_remover"]
+    fn ryu_denjin_remover(module_accessor: *mut BattleObjectModuleAccessor);
+}
+
 #[skyline::hook(offset = 0x10d4570)]
 unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
@@ -36,6 +41,13 @@ extern "C" fn ryu_ken_autoturn_handler(module_accessor: *mut BattleObjectModuleA
 unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
+
+    // evil?
+    if ControlModule::get_command_flag_cat(module_accessor, 3) & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0 {
+        FighterControlModuleImpl::reset_special_command_individual(module_accessor, *FIGHTER_PAD_CMD_CAT4_SPECIAL_N2_COMMAND);
+    }
+    // end of evil
+
     let status = StatusModule::status_kind(module_accessor);
     let mut prevent_turn = 0;
     match status {
@@ -64,23 +76,35 @@ unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighte
 
 unsafe extern "C" fn ryu_ken_handle_special_strength(object: &mut BattleObject, param_parent: u64) {
     let module_accessor = (*object).module_accessor;
-    if VarModule::is_flag(module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH) {
-        return;
-    }
-    let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
-    let pad_release_w = WorkModule::get_param_int(module_accessor, param_parent, hash40("pad_release_w"));
-    let strength = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if !StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor)
-    && (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 2)
-    && (strength == 0 && ControlModule::get_button(module_accessor) & 3 == 0) {
-        let button_on_timer = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
-        let strength = if button_on_timer <= pad_release_w {
-            2
+    if !VarModule::is_flag(module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH) {
+        let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
+        let pad_release_w = WorkModule::get_param_int(module_accessor, param_parent, hash40("pad_release_w"));
+        let strength = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+        if !StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor)
+        && (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 2)
+        && (strength == 0 && ControlModule::get_button(module_accessor) & 3 == 0) {
+            let button_on_timer = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
+            let strength = if button_on_timer <= pad_release_w {
+                2
+            }
+            else {
+                1
+            };
+            WorkModule::set_int(module_accessor, strength, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
         }
-        else {
-            1
-        };
-        WorkModule::set_int(module_accessor, strength, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    }
+
+    if object.kind == *FIGHTER_KIND_RYU as u32
+    && VarModule::is_flag(module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
+        let pad_release_w = WorkModule::get_param_int(module_accessor, param_parent, hash40("pad_release_w"));
+        let button_on_timer = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
+        if button_on_timer <= pad_release_w
+        && ControlModule::get_button(module_accessor) & 3 == 3 {
+            ryu_denjin_remover(module_accessor);
+            VarModule::on_flag(module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
+            VarModule::on_flag(module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
+            WorkModule::set_int(module_accessor, 0, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+        }
     }
 }
 
@@ -521,7 +545,7 @@ unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut 
             PostureModule::update_rot_y_lr(module_accessor);
         }
     }
-    
+
     // CommandModule::reset_special_command(module_accessor, false);
 }
 

@@ -1,20 +1,18 @@
 use super::*;
 
 unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
+    // let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     let current_sit = fighter.global_table[SITUATION_KIND].get_i32();
     let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
     let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     let loop_count_hash;
     let speed_x;
-    if start_sit != *SITUATION_KIND_GROUND {
+    if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         loop_count_hash = hash40("air_loop_num_s");
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-        speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        speed_x = 0.0;
     }
     else {
         let speed_x_hash;
@@ -79,7 +77,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
         0.0,
         0.0
     );
-    let brake = if start_sit != *SITUATION_KIND_GROUND {
+    let brake = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
         0.01
     }
     else {
@@ -111,11 +109,11 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
     }
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     if current_sit != *SITUATION_KIND_GROUND {
-        let speed_y = if start_sit == *SITUATION_KIND_GROUND {
-            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+        let speed_y = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+            1.2
         }
         else {
-            1.2
+            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
         };
         sv_kinetic_energy!(
             reset_energy,
@@ -123,16 +121,22 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
             0.0,
-            speed_y, 
+            speed_y,
             0.0,
             0.0,
             0.0
         );
-        let air_accel_y = if start_sit == *SITUATION_KIND_GROUND {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"))
+
+        let air_accel_y = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+            0.1
         }
         else {
-            0.1
+            if strength == *FIGHTER_RYU_STRENGTH_S {
+                WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"))
+            }
+            else {
+                WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0)
+            }
         };
         sv_kinetic_energy!(
             set_accel,
@@ -140,11 +144,13 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -air_accel_y
         );
-        let air_max_speed_y = if start_sit == *SITUATION_KIND_GROUND {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
+        let air_max_speed_y = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE)
+        || strength == *FIGHTER_RYU_STRENGTH_W
+        || strength == *FIGHTER_RYU_STRENGTH_M {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0)
         }
         else {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0)
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
         };
         sv_kinetic_energy!(
             set_limit_speed,
@@ -165,15 +171,24 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
 }
 
 unsafe extern "C" fn ryu_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
-    if start_sit == *SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    || (
+        !VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) &&
+        WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
+    ) {
         let original = original_status(Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
         return original(fighter);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
+    let motion = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+        Hash40::new("special_air_s2")
+    }
+    else {
+        Hash40::new("special_air_s")
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_air_s2"),
+        motion,
         0.0,
         1.0,
         false,
@@ -213,9 +228,15 @@ unsafe extern "C" fn ryu_special_s2_loop_main_loop(fighter: &mut L2CFighterCommo
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
         let loop_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
         if loop_count > 0 {
+            let motion = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+                Hash40::new("special_air_s2")
+            }
+            else {
+                Hash40::new("special_air_s")
+            };
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new("special_air_s2"),
+                motion,
                 0.0,
                 1.0,
                 false,

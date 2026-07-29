@@ -3,7 +3,7 @@ use super::*;
 unsafe extern "C" fn ryu_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
-    let mot_air = if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_AIR {
+    let mot_air = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
         hash40("special_air_s2_end")
     }
     else {
@@ -102,10 +102,15 @@ unsafe extern "C" fn ryu_special_s_end_main_loop(fighter: &mut L2CFighterCommon)
             );
         }
         else {
-            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION) == *SITUATION_KIND_AIR {
-                WorkModule::set_float(fighter.module_accessor, 16.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                return 1.into();
+            let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+            if StatusModule::is_situation_changed(fighter.module_accessor) {
+                if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE)
+                || strength == *FIGHTER_RYU_STRENGTH_W
+                || strength == *FIGHTER_RYU_STRENGTH_M {
+                    WorkModule::set_float(fighter.module_accessor, 16.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                    return 1.into();
+                }
             }
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
             mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);

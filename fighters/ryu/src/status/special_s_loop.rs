@@ -77,12 +77,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
         0.0,
         0.0
     );
-    let brake = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
-        0.01
-    }
-    else {
-        0.0
-    };
+    let brake = 0.0;
     sv_kinetic_energy!(
         set_brake,
         fighter,
@@ -135,7 +130,8 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
                 WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"))
             }
             else {
-                WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0)
+                // WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0)
+                0.06
             }
         };
         sv_kinetic_energy!(
@@ -147,7 +143,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
         let air_max_speed_y = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE)
         || strength == *FIGHTER_RYU_STRENGTH_W
         || strength == *FIGHTER_RYU_STRENGTH_M {
-            WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0)
+            1.2
         }
         else {
             WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))

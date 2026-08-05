@@ -36,7 +36,7 @@ pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, 
 
 #[inline(always)]
 pub unsafe fn ryu_saving_aura_remover(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA) {
         if macros::is_excute(agent) {
             macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
 

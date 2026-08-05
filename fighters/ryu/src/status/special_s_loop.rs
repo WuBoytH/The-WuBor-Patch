@@ -131,7 +131,7 @@ unsafe extern "C" fn ryu_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
             }
             else {
                 // WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0)
-                0.06
+                0.09
             }
         };
         sv_kinetic_energy!(

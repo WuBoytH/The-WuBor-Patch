@@ -39,7 +39,7 @@ unsafe extern "C" fn ryu_special_lw_step_b_init(_fighter: &mut L2CFighterCommon)
 
 unsafe extern "C" fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
-        ryu_denjin_remover(fighter);
+        ryu_denjin_remover(fighter.module_accessor);
         VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
     }
     MotionModule::change_motion(

@@ -164,7 +164,7 @@ unsafe extern "C" fn game_specialairscatch(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        ThrowUtils::set_force_launch(agent.module_accessor);
+        // ThrowUtils::set_force_launch(agent.module_accessor);
         ThrowUtils::set_disable_reflect(agent.module_accessor);
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 270, 20, 50, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);

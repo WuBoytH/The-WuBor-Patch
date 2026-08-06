@@ -1,6 +1,5 @@
 use super::*;
 
-mod belmont;
 mod captain;
 mod dolly;
 mod ganon;
@@ -9,11 +8,12 @@ mod jack;
 mod koopa;
 mod lucario;
 mod purin;
+mod richter;
 mod ryu;
+mod simon;
 mod wolf;
 
 pub fn install(agent: &mut Agent) {
-    belmont::install(agent);
     captain::install(agent);
     dolly::install(agent);
     ganon::install(agent);
@@ -22,6 +22,8 @@ pub fn install(agent: &mut Agent) {
     koopa::install(agent);
     lucario::install(agent);
     purin::install(agent);
+    richter::install(agent);
     ryu::install(agent);
+    simon::install(agent);
     wolf::install(agent);
 }

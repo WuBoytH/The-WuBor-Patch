@@ -1,4 +1,5 @@
 mod fighter;
+mod belmont;
 mod brave;
 mod captain;
 mod demon;
@@ -27,8 +28,8 @@ mod sonic;
 mod wario;
 
 mod weapon;
-mod blaster_bullet;
 mod belmont_cross;
+mod blaster_bullet;
 mod dolly_wave;
 mod dolly_burst;
 mod edge_flare1;
@@ -41,6 +42,7 @@ mod ryu_shinkuhadoken;
 
 pub fn install() {
     fighter::install();
+    belmont::install();
     brave::install();
     captain::install();
     demon::install();
@@ -69,8 +71,8 @@ pub fn install() {
     wario::install();
 
     weapon::install();
-    blaster_bullet::install();
     belmont_cross::install();
+    blaster_bullet::install();
     dolly_wave::install();
     dolly_burst::install();
     edge_flare1::install();

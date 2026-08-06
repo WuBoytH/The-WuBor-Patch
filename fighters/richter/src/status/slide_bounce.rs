@@ -42,7 +42,7 @@ unsafe extern "C" fn slide_bounce_init(fighter: &mut L2CFighterCommon) -> L2CVal
         0.0
     );
 
-    let (speed_x, speed_y) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT) {
+    let (speed_x, speed_y) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE_IS_HIT) {
         (-0.7, 1.8)
     }
     else {
@@ -75,7 +75,7 @@ unsafe extern "C" fn slide_bounce_init(fighter: &mut L2CFighterCommon) -> L2CVal
         speed_y
     );
 
-    if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT) {
+    if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE_IS_HIT) {
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -94,7 +94,7 @@ unsafe extern "C" fn slide_bounce_init(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 unsafe extern "C" fn slide_bounce_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let (motion, rate) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT) {
+    let (motion, rate) = if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE_IS_HIT) {
         (Hash40::new("fall_leaning_c"), 1.0)
     }
     else {
@@ -124,7 +124,7 @@ unsafe extern "C" fn slide_bounce_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SLIDE_BOUNCE_IS_HIT) {
+        if VarModule::is_flag(fighter.module_accessor, vars::richter::status::flag::SPECIAL_LW_BOUNCE_IS_HIT) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
             return 0.into();
         }
@@ -144,7 +144,7 @@ unsafe extern "C" fn slide_bounce_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, vars::richter::status::SLIDE_BOUNCE, slide_bounce_pre);
-    agent.status(Init, vars::richter::status::SLIDE_BOUNCE, slide_bounce_init);
-    agent.status(Main, vars::richter::status::SLIDE_BOUNCE, slide_bounce_main);
+    agent.status(Pre, vars::richter::status::SPECIAL_LW_BOUNCE, slide_bounce_pre);
+    agent.status(Init, vars::richter::status::SPECIAL_LW_BOUNCE, slide_bounce_init);
+    agent.status(Main, vars::richter::status::SPECIAL_LW_BOUNCE, slide_bounce_main);
 }

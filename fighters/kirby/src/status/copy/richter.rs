@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +34,66 @@ unsafe extern "C" fn special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn richter_mot_kinetic_helper(
+    fighter: &mut L2CFighterCommon,
+    some_bool: L2CValue,
+    mot_g: L2CValue,
+    mot_a: L2CValue,
+    kinetic_g: L2CValue,
+    kinetic_a: L2CValue,
+    correct_g: L2CValue,
+    correct_a: L2CValue
+) -> L2CValue {
+    if !some_bool.get_bool()
+    && !StatusModule::is_situation_changed(fighter.module_accessor) {
+        return false.into();
+    }
+    let mot;
+    let kinetic;
+    let correct;
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.set_situation(SITUATION_KIND_GROUND.into());
+        mot = mot_g.get_u64();
+        kinetic = kinetic_g.get_i32();
+        correct = correct_g.get_i32();
+    }
+    else {
+        fighter.set_situation(SITUATION_KIND_AIR.into());
+        mot = mot_a.get_u64();
+        kinetic = kinetic_a.get_i32();
+        correct = correct_a.get_i32();
+    }
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(correct));
+    if kinetic != FIGHTER_KINETIC_TYPE_NONE {
+        KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+        if some_bool.get_bool() {
+            FighterMotionModuleImpl::change_motion_kirby_copy(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        else {
+            FighterMotionModuleImpl::change_motion_inherit_frame_kirby_copy(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+    }
+    true.into()
+}
+
+unsafe extern "C" fn richter_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;
     let mot_a;
     if ItemModule::is_have_item(fighter.module_accessor, 0) // Usually this only checks for if you hold Simon or Richter's Holy Water
@@ -49,10 +108,10 @@ unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
     WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
 
-    fighter.sub_shift_status_main(L2CValue::Ptr(special_n_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(richter_special_n_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER) {
         if !ItemModule::is_have_item(fighter.module_accessor, 0) {
             if !ItemModule::is_have_item(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA) {
@@ -107,25 +166,13 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
             -1
         };
         if item_part != -1 {
-            let angle_param;
-            let speed_param;
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                angle_param = hash40("throw_angle_ground");
-                speed_param = hash40("throw_speed_ground");
-            }
-            else {
-                angle_param = hash40("throw_angle_air");
-                speed_param = hash40("throw_speed_air");
-            }
-            let throw_angle = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), angle_param);
-            let throw_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), speed_param);
             if is_holywater {
                 ItemModule::set_have_item_action(fighter.module_accessor, *ITEM_HOLYWATER_ACTION_SPECIAL_THROW, 0.0, item_part);
             }
             ItemModule::throw_item(
                 fighter.module_accessor,
-                throw_angle,
-                throw_speed,
+                -45.0,
+                3.0,
                 1.0,
                 item_part,
                 true,
@@ -162,7 +209,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     }
     let mot_g = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
     let mot_a = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
-    belmont_mot_kinetic_helper(
+    richter_mot_kinetic_helper(
         fighter,
         changing.into(),
         mot_g.into(),
@@ -175,7 +222,7 @@ unsafe extern "C" fn special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if [
         *ITEM_KIND_SIMONHOLYWATER,
         *ITEM_KIND_RICHTERHOLYWATER
@@ -191,7 +238,7 @@ unsafe extern "C" fn special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_pre);
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_main);
-    agent.status(End, *FIGHTER_STATUS_KIND_SPECIAL_N, special_n_end);
+    agent.status(Pre, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, richter_special_n_pre);
+    agent.status(Main, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, richter_special_n_main);
+    agent.status(End, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, richter_special_n_end);
 }

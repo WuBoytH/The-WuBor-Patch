@@ -10,18 +10,8 @@ pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCo
         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
         *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
     ;
-    let axe_id = VarModule::get_int(fighter.module_accessor, vars::simon::instance::int::AXE_ID) as u32;
-    let axe_kind = if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SIMON {
-        *WEAPON_KIND_SIMON_AXE
-    }
-    else {
-        *WEAPON_KIND_RICHTER_AXE
-    };
-    let is_axe = sv_battle_object::category(axe_id) == *BATTLE_OBJECT_CATEGORY_WEAPON
-    && sv_battle_object::kind(axe_id) == axe_kind;
     if ItemModule::is_have_item(fighter.module_accessor, 0) // Usually this only checks for if you hold Simon or Richter's Holy Water
-    || !sv_battle_object::is_active(axe_id)
-    || !is_axe {
+    || ArticleModule::get_active_num(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE) == 0 {
         mot_g = hash40("special_n");
         mot_a = hash40("special_air_n");
         log |= *FIGHTER_LOG_MASK_FLAG_SHOOT;
@@ -43,16 +33,10 @@ pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCo
 unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::simon::status::flag::SPECIAL_N_SHOOT) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            let angle = if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SIMON {
-                45.0
-            }
-            else {
-                69.420
-            };
             ItemModule::throw_item(
                 fighter.module_accessor,
-                angle,
-                2.4,
+                55.0,
+                2.5,
                 1.0,
                 0,
                 true,

@@ -148,8 +148,11 @@ unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 0, 0, Hash40::new("sword"), 16.0, 278, 20, 0, 80, 3.4, 3.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("sword"), 16.0, 278, 20, 0, 80, 2.4, 6.0, 6.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("sword"), 16.0, 278, 20, 0, 80, 2.0, 8.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 1, 4.0, false);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 2, 4.0, false);
     }
-    frame(agent.lua_state_agent, 26.0);
+    frame(agent.lua_state_agent, 27.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }

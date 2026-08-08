@@ -35,7 +35,7 @@ unsafe extern "C" fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -
 
 unsafe extern "C" fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
-        ryu_denjin_remover(fighter);
+        ryu_denjin_remover(fighter.module_accessor);
         VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
     }
 
@@ -151,21 +151,21 @@ unsafe extern "C" fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+        // *FIGHTER_STATUS_KIND_SPECIAL_N,
+        // *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        // *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         VarModule::off_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
-    if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT)
-    && [
-        *FIGHTER_STATUS_KIND_SPECIAL_N,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
-        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
-    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-        VarModule::off_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT);
-        VarModule::on_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
-    }
+    // if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT)
+    // && [
+    //     *FIGHTER_STATUS_KIND_SPECIAL_N,
+    //     *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+    //     *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+    // ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+    //     VarModule::off_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_RUSH_INHERIT);
+    //     VarModule::on_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
+    // }
     0.into()
 }
 

@@ -1,5 +1,5 @@
 use super::*;
-use super::super::helper::*;
+// use super::super::helper::*;
 
 unsafe extern "C" fn ryu_special_n2_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
@@ -135,10 +135,10 @@ unsafe extern "C" fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon)
 }
 
 unsafe extern "C" fn ryu_special_n2_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
-        ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
-    }
+    // if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
+    //     ryu_denjin_remover(fighter.module_accessor);
+    //     VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
+    // }
     if !StopModule::is_stop(fighter.module_accessor) {
         ryu_special_n2_substatus(fighter, false.into());
     }

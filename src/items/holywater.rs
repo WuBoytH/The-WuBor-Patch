@@ -150,7 +150,7 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
         // println!("normal: {}, {}", normal_x, normal_y);
         let angle = normal_x.atan2(normal_y);
         // println!("angle: {}", angle.to_degrees());
-        let speed = 0.4;
+        let speed = 0.95;
         let speed_x = speed * angle.cos();
         let speed_y = speed * angle.sin();
         // println!("speed: {}, {}", speed_x, speed_y);
@@ -203,7 +203,7 @@ unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValu
         let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let normal_y = GroundModule::get_touch_normal_y(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let angle = normal_x.atan2(normal_y);
-        let speed = 0.4;
+        let speed = 0.95;
         let speed_x = speed * angle.cos();
         let speed_y = speed * angle.sin();
         let lr = PostureModule::lr(item.module_accessor);

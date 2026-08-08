@@ -9,7 +9,7 @@ unsafe extern "C" fn game_throwf(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 17.5);
     if macros::is_excute(agent) {
-        ThrowUtils::set_force_launch(agent.module_accessor);
+        // ThrowUtils::set_force_launch(agent.module_accessor);
         ThrowUtils::set_disable_reflect(agent.module_accessor);
         let release_position = Vector3f{ x: 0.0, y: 0.0, z: 16.0 };
         ModelModule::set_joint_translate(agent.module_accessor, Hash40::new("throw"), &release_position, false, false);
@@ -80,7 +80,7 @@ unsafe extern "C" fn game_throwb(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 17.5);
     if macros::is_excute(agent) {
-        ThrowUtils::set_force_launch(agent.module_accessor);
+        // ThrowUtils::set_force_launch(agent.module_accessor);
         ThrowUtils::set_disable_reflect(agent.module_accessor);
         let release_position = Vector3f{ x: 0.0, y: 0.0, z: -16.0 };
         ModelModule::set_joint_translate(agent.module_accessor, Hash40::new("throw"), &release_position, false, false);

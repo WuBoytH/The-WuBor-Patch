@@ -1,14 +1,13 @@
 use crate::imports::*;
 use smash_rs::app::{FighterManager, BraveSetMenuCommand, BraveEnableMenuCommand, BraveShowMenu, BraveSetMenuSelectedCommand};
 
-extern "C" {
-    #[link_name = "_ZN3app24FighterSpecializer_Brave30get_special_lw_command_sp_costERKNS_26BattleObjectModuleAccessorENS_28FighterBraveSpecialLwCommandEb"]
-    fn get_special_lw_command_sp_cost(boma: *mut BattleObjectModuleAccessor, command: i32, pass_false: bool) -> f32;
-}
-
 unsafe fn set_command_for_slot(object: &mut BattleObject, slot: usize, id: i32) {
     let hero_mana = WorkModule::get_float(object.module_accessor, 0x53);
-    let mana = get_special_lw_command_sp_cost(object.module_accessor, id, false);
+    let mana = FighterSpecializer_Brave::get_special_lw_command_sp_cost(
+        object.module_accessor,
+        FighterBraveSpecialLwCommand{ _address: id as u8 },
+        false
+    );
     FighterManager::instance().unwrap().send_event(BraveSetMenuCommand::new(
         WorkModule::get_int(object.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as u32, // ENTRY_ID
         (slot + 1) as u32,
@@ -243,5 +242,5 @@ pub fn install() {
         get_special_lw_command_sp_cost_hook,
         lot_critical_hook
     );
-    
+
 }

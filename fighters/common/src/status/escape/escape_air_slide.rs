@@ -199,13 +199,13 @@ pub unsafe extern "C" fn setup_escape_air_slide_common(fighter: &mut L2CFighterC
         }
 
         // set angles
-        if sticky.abs() >= 0.625 {
+        if sticky.abs() >= 0.35 {
             sticky = 1.0 * sticky.signum();
         }
         else {
             sticky = 0.0;
         }
-        if stickx.abs() >= 0.625 {
+        if stickx.abs() >= 0.4 {
             stickx = 1.0 * stickx.signum();
         }
         else {

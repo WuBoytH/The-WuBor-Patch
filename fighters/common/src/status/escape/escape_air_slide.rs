@@ -199,11 +199,17 @@ pub unsafe extern "C" fn setup_escape_air_slide_common(fighter: &mut L2CFighterC
         }
 
         // set angles
-        if sticky != 0.0 {
-            if stickx != 0.0 {
-                sticky = 1.0 * sticky.signum();
-                stickx = 1.0 * stickx.signum();
-            }
+        if sticky.abs() >= 0.35 {
+            sticky = 1.0 * sticky.signum();
+        }
+        else {
+            sticky = 0.0;
+        }
+        if stickx.abs() >= 0.4 {
+            stickx = 1.0 * stickx.signum();
+        }
+        else {
+            stickx = 0.0;
         }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         // let normalize = sv_math::vec2_normalize(stickx, sticky);

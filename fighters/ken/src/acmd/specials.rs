@@ -1873,6 +1873,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("sound_specials", sound_specials, Priority::Low);
     agent.acmd("expression_specials", expression_specials, Priority::Low);
 
+    agent.acmd("game_specialairs", game_specials, Priority::Low);
+    agent.acmd("effect_specialairs", effect_specials, Priority::Low);
+    agent.acmd("sound_specialairs", sound_specials, Priority::Low);
+    agent.acmd("expression_specialairs", expression_specials, Priority::Low);
+
     agent.acmd("game_specialsend", game_specialsend, Priority::Low);
     agent.acmd("effect_specialsend", effect_specialsend, Priority::Low);
     agent.acmd("sound_specialsend", sound_specialsend, Priority::Low);

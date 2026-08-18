@@ -248,11 +248,11 @@ unsafe extern "C" fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2C
         return 0.into();
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
-    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-        return true.into();
-    }
+    // if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+    // && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
+    //     return true.into();
+    // }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {

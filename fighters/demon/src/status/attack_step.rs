@@ -137,12 +137,12 @@ unsafe extern "C" fn demon_attack_step_main_loop(fighter: &mut L2CFighterCommon)
 
             let cat1 = fighter.global_table[CMD_CAT1].get_i32();
 
-            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
-            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
-                demon_attack_step_command_input_helper(fighter);
-                fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-                return 0.into();
-            }
+            // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
+            // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
+            //     demon_attack_step_command_input_helper(fighter);
+            //     fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
+            //     return 0.into();
+            // }
 
             if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH) {

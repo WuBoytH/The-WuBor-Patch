@@ -11,7 +11,7 @@ pub unsafe extern "C" fn dolly_super_special_end_helper(fighter: &mut L2CFighter
 
 // mod wait;
 
-// mod walk;
+mod walk;
 
 mod dash_back;
 
@@ -55,7 +55,7 @@ mod appeal;
 pub fn install(agent: &mut Agent) {
     // wait::install(agent);
 
-    // walk::install(agent);
+    walk::install(agent);
 
     dash_back::install(agent);
 

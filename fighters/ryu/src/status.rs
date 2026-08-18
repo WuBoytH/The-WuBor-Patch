@@ -4,7 +4,7 @@ mod rebirth;
 
 // mod wait;
 
-// mod walk;
+mod walk;
 
 mod dash_back;
 
@@ -51,7 +51,7 @@ pub fn install(agent: &mut Agent) {
 
     // wait::install(agent);
 
-    // walk::install(agent);
+    walk::install(agent);
 
     dash_back::install(agent);
 

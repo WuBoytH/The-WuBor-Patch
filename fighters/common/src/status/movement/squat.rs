@@ -9,14 +9,15 @@ unsafe extern "C" fn sub_squat_common_param(fighter: &mut L2CFighterCommon, star
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND);
-    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
-    // WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
+
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     if [
         start_status.get_i32(),
         wait_status.get_i32()
     ].contains(&status_kind) {
+        WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
+
         let hit_stop_squat_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("hit_stop_squat_mul"));
         HitModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_squat_mul, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_ALL as u8}, 0.0);
     }

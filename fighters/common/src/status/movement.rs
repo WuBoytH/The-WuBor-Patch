@@ -8,6 +8,8 @@ mod look_up_rv;
 
 mod turn;
 
+mod walk;
+
 pub mod dash;
 
 mod run;

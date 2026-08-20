@@ -112,7 +112,7 @@ unsafe extern "C" fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> 
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
             0.0,
-            speed_y, 
+            speed_y,
             0.0,
             0.0,
             0.0
@@ -162,7 +162,21 @@ unsafe extern "C" fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> 
             return 1.into();
         }
         let original = original_status(Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
-        return original(fighter);
+        let ret = original(fighter);
+        let eff = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE) as u32;
+        EffectModule::kill(fighter.module_accessor, eff as u32, false, false);
+        let eff = if !MotionModule::is_flip(fighter.module_accessor) {
+            hash40("ken_tatsumaki_wind_l")
+        }
+        else {
+            hash40("ken_tatsumaki_wind_r")
+        };
+        fighter.clear_lua_stack();
+        lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
+        sv_module_access::effect(fighter.lua_state_agent);
+        let spineffect = fighter.pop_lua_stack(1).get_u32();
+        WorkModule::set_int(fighter.module_accessor, spineffect as i32, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+        return ret;
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
     MotionModule::change_motion(
@@ -176,10 +190,10 @@ unsafe extern "C" fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> 
         false
     );
     let eff = if !MotionModule::is_flip(fighter.module_accessor) {
-        hash40("ken_tatsumaki_wind_r")
+        hash40("ken_tatsumaki_wind_l")
     }
     else {
-        hash40("ken_tatsumaki_wind_l")
+        hash40("ken_tatsumaki_wind_r")
     };
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
@@ -238,11 +252,11 @@ pub unsafe extern "C" fn ken_special_s_loop_end_inner(fighter: &mut L2CFighterCo
             false,
             true
         );
-    }
-    let eff = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
-    if eff != *EFFECT_HANDLE_NULL {
-        EffectModule::kill(fighter.module_accessor, eff as u32, false, false);
-        WorkModule::set_int(fighter.module_accessor, *EFFECT_HANDLE_NULL, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+        let eff = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+        if eff != *EFFECT_HANDLE_NULL {
+            EffectModule::kill(fighter.module_accessor, eff as u32, false, false);
+            WorkModule::set_int(fighter.module_accessor, *EFFECT_HANDLE_NULL, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+        }
     }
     0.into()
 }

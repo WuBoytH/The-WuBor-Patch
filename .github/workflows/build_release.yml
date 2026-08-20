@@ -101,17 +101,23 @@ jobs:
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/wubor/`
           files: >
             The_WuBor_Patch/*
+  # delete-dev-tag:
+  #   runs-on: ubuntu-24.04
+  #   needs: [ package-dev, get-version ]
+  #   permissions:
+  #     contents: write
+  #   steps:
+  #     - uses: actions/checkout@v6.0.2
+  #     - name: Delete GitHub Release and Tag
+  #       run: |
+  #         gh release delete "${{needs.get-version.outputs.version}}-dev" --cleanup-tag --yes
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   upload-dev:
     runs-on: ubuntu-24.04
+    # needs: [ package-dev, get-version, delete-dev-tag ]
     needs: [ package-dev, get-version ]
     steps:
-      # - name: Delete Version Dev Build
-      #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
-      #   with:
-      #     delete_release: true
-      #     tag_name: ${{needs.get-version.outputs.version}}-dev
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
         uses: actions/download-artifact@v8.0.1
       - name: Create Dev Prerelease

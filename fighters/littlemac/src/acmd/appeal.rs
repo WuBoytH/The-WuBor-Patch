@@ -1,5 +1,5 @@
 use super::*;
-
+/*
 unsafe extern "C" fn game_appeallwr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -93,7 +93,6 @@ unsafe extern "C" fn game_appealhir(agent: &mut L2CAgentBase) {
     }
 }
 
-
 unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -108,11 +107,12 @@ unsafe extern "C" fn game_appealhil(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
+ */
 
-pub fn install(agent: &mut Agent) {
+pub fn install(_agent: &mut Agent) {
 
-    agent.acmd("game_appeallwr", game_appeallwr, Priority::Low);
-    agent.acmd("game_appeallwl", game_appeallwl, Priority::Low);
-    agent.acmd("game_appealhir", game_appealhir, Priority::Low);
-    agent.acmd("game_appealhil", game_appealhil, Priority::Low);
+    //agent.acmd("game_appeallwr", game_appeallwr, Priority::Low);
+    //agent.acmd("game_appeallwl", game_appeallwl, Priority::Low);
+    //agent.acmd("game_appealhir", game_appealhir, Priority::Low);
+    //agent.acmd("game_appealhil", game_appealhil, Priority::Low);
 }

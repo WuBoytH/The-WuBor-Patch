@@ -1,5 +1,5 @@
 use super::*;
-
+/*
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -73,7 +73,7 @@ unsafe extern "C" fn effect_appeals(agent: &mut L2CAgentBase) {
         macros::AFTER_IMAGE_OFF(agent, 2);
     }
 }
-
+*/
 unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -120,12 +120,12 @@ unsafe extern "C" fn effect_appealhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install(agent: &mut Agent) {
-    agent.acmd("game_appealsr", game_appeals, Priority::Low);
-    agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    //agent.acmd("game_appealsr", game_appeals, Priority::Low);
+    //agent.acmd("game_appealsl", game_appeals, Priority::Low);
     agent.acmd("game_appealhir", game_appealhi, Priority::Low);
     agent.acmd("game_appealhil", game_appealhi, Priority::Low);
     agent.acmd("effect_appealhir", effect_appealhi, Priority::Low);
     agent.acmd("effect_appealhil", effect_appealhi, Priority::Low);
-    agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
-    agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
+    //agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
+    //agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
 }

@@ -47,7 +47,7 @@ unsafe extern "C" fn game_appealhi(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
-
+/*
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -88,10 +88,10 @@ unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
-
+ */
 pub fn install(agent: &mut Agent) {
     agent.acmd("game_appealhir", game_appealhi, Priority::Low);
     agent.acmd("game_appealhil", game_appealhi, Priority::Low);
-    agent.acmd("game_appealsl", game_appeals, Priority::Low);
-    agent.acmd("game_appealsr", game_appeals, Priority::Low);
+    //agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    //agent.acmd("game_appealsr", game_appeals, Priority::Low);
 }

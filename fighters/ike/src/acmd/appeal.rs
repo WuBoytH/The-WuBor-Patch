@@ -58,7 +58,7 @@ unsafe extern "C" fn game_appeallw(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }  
 }
-
+/* 
 unsafe extern "C" fn game_appeals(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 1.8);
@@ -102,6 +102,7 @@ unsafe extern "C" fn effect_appeals(agent: &mut L2CAgentBase) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("sword"), 0, 12, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
 }
+*/
 
 unsafe extern "C" fn effect_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
@@ -224,11 +225,11 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("game_appeallwl", game_appeallw, Priority::Low);
     agent.acmd("effect_appeallwl", effect_appeallw, Priority::Low);
 
-    agent.acmd("game_appealsr", game_appeals, Priority::Low);
-    agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
+    //agent.acmd("game_appealsr", game_appeals, Priority::Low);
+    //agent.acmd("effect_appealsr", effect_appeals, Priority::Low);
 
-    agent.acmd("game_appealsl", game_appeals, Priority::Low);
-    agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
+    //agent.acmd("game_appealsl", game_appeals, Priority::Low);
+    //agent.acmd("effect_appealsl", effect_appeals, Priority::Low);
 
     agent.acmd("game_appealhir", game_appealhi, Priority::Low);
     agent.acmd("effect_appealhir", effect_appealhi, Priority::Low);

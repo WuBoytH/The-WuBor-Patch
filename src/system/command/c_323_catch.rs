@@ -30,6 +30,14 @@ unsafe extern "C" fn c_323_catch(
             false
         }
         1 => {
+            if data.back(class.lr as f32)
+            || data.back_up(class.lr as f32) {
+                class.state = 1;
+                class.command_timer = 0;
+                class.lr = -class.lr;
+                return false;
+            }
+
             if data.down() {
                 class.state = 2;
                 class.command_timer = 0;

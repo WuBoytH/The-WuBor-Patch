@@ -447,11 +447,11 @@ unsafe extern "C" fn sub_transition_group_check_ground(fighter: &mut L2CFighterC
             return true.into();
         }
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
-            fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-            return true.into();
-        }
+        // if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0
+        // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) {
+        //     fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
+        //     return true.into();
+        // }
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH) {
             fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());

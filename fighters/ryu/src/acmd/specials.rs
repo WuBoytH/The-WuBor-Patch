@@ -505,7 +505,7 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
         if strength == *FIGHTER_RYU_STRENGTH_W {
             if macros::is_excute(agent) {
-                macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 80, 60, 0, 60, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+                macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 80, 60, 0, 60, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
                 AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 2.0, false);
             }
         }
@@ -536,6 +536,12 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 7.0, 80, 60, 0, 70, 5.0, 4.0, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         }
+        frame(agent.lua_state_agent, 10.0);
+        if strength == *FIGHTER_RYU_STRENGTH_W {
+            if macros::is_excute(agent) {
+                MotionModule::set_rate(agent.module_accessor, 17.0 / 12.0);
+            }
+        }
         frame(agent.lua_state_agent, 15.0);
         if macros::is_excute(agent) {
             HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
@@ -549,30 +555,6 @@ unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
         if strength == *FIGHTER_RYU_STRENGTH_W {
             if macros::is_excute(agent) {
                 MotionModule::set_rate(agent.module_accessor, 28.0 / 15.0);
-                sv_kinetic_energy!(
-                    reset_energy,
-                    agent,
-                    FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                    ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                );
-                KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                sv_kinetic_energy!(
-                    reset_energy,
-                    agent,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                );
-                KineticModule::enable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
         }
     }

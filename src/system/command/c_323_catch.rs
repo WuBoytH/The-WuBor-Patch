@@ -1,4 +1,4 @@
-use wubor_utils::app::*;
+use super::*;
 
 #[skyline::hook(offset = 0x6c0df0)]
 unsafe extern "C" fn c_323_catch(
@@ -7,13 +7,17 @@ unsafe extern "C" fn c_323_catch(
     lr: f32
 ) -> bool {
     let data = *args.add(2);
-    if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
-        if class.state != 0 {
+    if class.state != 0 {
+        if !data.intersects(CommandInputFlags::ANY_DIRECTION) {
             if class.unk2 != 0 {
                 class.command_timer = 0;
                 class.state = 0;
                 return false;
             }
+        }
+        else if check_backwards_dp_input(data, class) {
+            class.command_timer = 0;
+            class.state = 0;
         }
     }
 
@@ -30,14 +34,6 @@ unsafe extern "C" fn c_323_catch(
             false
         }
         1 => {
-            if data.back(class.lr as f32)
-            || data.back_up(class.lr as f32) {
-                class.state = 1;
-                class.command_timer = 0;
-                class.lr = -class.lr;
-                return false;
-            }
-
             if data.down() {
                 class.state = 2;
                 class.command_timer = 0;

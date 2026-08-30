@@ -30,15 +30,8 @@ unsafe extern "C" fn c_236(
             }
             false
         }
-        1 => {
-            if data.front_down(class.lr as f32) {
-                class.state = 2;
-                class.command_timer = 0;
-            }
-            false
-        }
-        2 | 3 => {
-            if class.state == 2 {
+        1 | 2 | 3 => {
+            if class.state != 3 {
                 if !data.front(class.lr as f32) {
                     return false;
                 }

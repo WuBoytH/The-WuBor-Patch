@@ -50,7 +50,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 2);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("item") as i64, hash40("item_axe") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("item"), hash40("item_axe"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -66,7 +66,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("item") as i64, hash40("item_none") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("item"), hash40("item_none"));
     }
 }
 

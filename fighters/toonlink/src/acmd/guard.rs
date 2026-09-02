@@ -56,7 +56,7 @@ unsafe extern "C" fn sound_guardcancelattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("shield") as i64, hash40("shield_back") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("shield"), hash40("shield_back"));
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -65,7 +65,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 34.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("shield") as i64, hash40("shield_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("shield"), hash40("shield_normal"));
     }
 }
 

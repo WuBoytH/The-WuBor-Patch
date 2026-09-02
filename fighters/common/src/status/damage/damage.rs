@@ -325,7 +325,7 @@ unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2C
             WorkModule::set_float(fighter.module_accessor, angle, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_ROT_ANGLE);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_ROLL_SET_ANGLE);
         }
-        WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("invalid"), *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     }
     0.into()
 }

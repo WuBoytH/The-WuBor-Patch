@@ -34,7 +34,7 @@ unsafe extern "C" fn guard_cancel_attack_main(weapon: &mut L2CWeaponCommon) -> L
         false
     );
 
-    WorkModule::set_int64(weapon.module_accessor, hash40("guard_cancel_attack") as i64, *WEAPON_ROSETTA_TICO_STATUS_ATTACK_COMMON_WORK_INT_PARENT_MOTION);
+    WorkModule::set_int64(weapon.module_accessor, hash40("guard_cancel_attack"), *WEAPON_ROSETTA_TICO_STATUS_ATTACK_COMMON_WORK_INT_PARENT_MOTION);
 
     weapon.fastshift(L2CValue::Ptr(guard_cancel_attack_fastshift as *const () as _))
 }

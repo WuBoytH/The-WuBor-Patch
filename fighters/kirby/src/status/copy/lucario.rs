@@ -20,12 +20,12 @@ unsafe extern "C" fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_n_start") as i64,
+        hash40("special_n_start"),
         *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT,
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_air_n_start") as i64,
+        hash40("special_air_n_start"),
         *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT,
     );
     kirby_lucario_special_set_kinetic(fighter);
@@ -152,12 +152,12 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_main(fighter: &mut L2CFighterC
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_n_hold") as i64,
+        hash40("special_n_hold"),
         *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT,
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_air_n_hold") as i64,
+        hash40("special_air_n_hold"),
         *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT,
     );
     ArticleModule::change_status(

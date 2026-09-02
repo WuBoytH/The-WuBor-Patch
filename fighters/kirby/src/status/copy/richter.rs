@@ -105,8 +105,8 @@ unsafe extern "C" fn richter_special_n_main(fighter: &mut L2CFighterCommon) -> L
         mot_g = hash40("special_n_blank");
         mot_a = hash40("special_air_n_blank");
     }
-    WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
-    WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, mot_g, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, mot_a, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(richter_special_n_main_loop as *const () as _))
 }

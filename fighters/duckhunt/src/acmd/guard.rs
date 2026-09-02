@@ -66,7 +66,7 @@ unsafe extern "C" fn sound_guardcancelattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("duckhead"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_openwing") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_openwing"));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 5);
     }
     frame(agent.lua_state_agent, 6.0);
@@ -83,7 +83,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 41.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
     }
 }
 

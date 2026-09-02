@@ -2,14 +2,14 @@ use super::*;
 
 unsafe extern "C" fn ryu_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end"), *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
     let mot_air = if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
         hash40("special_air_s2_end")
     }
     else {
         hash40("special_air_s_end")
     };
-    WorkModule::set_int64(fighter.module_accessor, mot_air as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, mot_air, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_AIR);
     if !StopModule::is_stop(fighter.module_accessor) {
         ryu_special_s_end_substatus(fighter, false.into());
     }

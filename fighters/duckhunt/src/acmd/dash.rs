@@ -29,7 +29,7 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_dash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -77,7 +77,7 @@ unsafe extern "C" fn sound_turndash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn expression_turndash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 8);
     }
     frame(agent.lua_state_agent, 2.0);

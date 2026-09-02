@@ -16,7 +16,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
         }
     }
     if macros::is_excute(agent) {
-        WorkModule::set_int64(agent.module_accessor, hash40("attack_s4_hold") as i64, 61296);
+        WorkModule::set_int64(agent.module_accessor, hash40("attack_s4_hold"), 61296);
     }
     frame(agent.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(agent, 2.0);

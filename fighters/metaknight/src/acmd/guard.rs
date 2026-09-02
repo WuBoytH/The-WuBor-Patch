@@ -52,7 +52,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {

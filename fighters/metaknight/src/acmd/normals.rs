@@ -56,7 +56,7 @@ unsafe extern "C" fn expression_attack11(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -125,7 +125,7 @@ unsafe extern "C" fn expression_attack12(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -205,7 +205,7 @@ unsafe extern "C" fn expression_attack13(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -326,7 +326,7 @@ unsafe extern "C" fn expression_attack100end(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -410,7 +410,7 @@ unsafe extern "C" fn expression_attacks3(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_Y),
             AttackDirectionAxis(*ATTACK_DIRECTION_X)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -529,7 +529,7 @@ unsafe extern "C" fn expression_attacklw3(agent: &mut L2CAgentBase) {
             AttackDirectionAxis(*ATTACK_DIRECTION_X),
             AttackDirectionAxis(*ATTACK_DIRECTION_Z)
         );
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {

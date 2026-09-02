@@ -134,8 +134,8 @@ unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> 
     VarModule::set_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
     VarModule::set_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_CHARGES_GAINED, 0);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_lw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     lucario_special_lw_set_kinetic(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucario_special_lw_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_lw_main_loop as *const () as _))
@@ -369,8 +369,8 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-        WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-        WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+        WorkModule::set_int64(fighter.module_accessor, mot_g, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+        WorkModule::set_int64(fighter.module_accessor, mot_a, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
         lucario_special_lw_set_kinetic(fighter);
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
             let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -405,8 +405,8 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         else if step == vars::lucario::SPECIAL_LW_STEP_START {
             VarModule::inc_int(fighter.module_accessor, vars::lucario::status::int::SPECIAL_LW_STEP);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_charge") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_charge") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_charge"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_charge"), *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
             lucario_special_lw_set_kinetic(fighter);
         }
     }

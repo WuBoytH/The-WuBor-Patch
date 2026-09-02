@@ -184,7 +184,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_sphere"));
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(agent.lua_state_agent, 33.0);
@@ -204,7 +204,7 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
     }
     macros::FT_MOTION_RATE(agent, 0.6);
 }
@@ -221,7 +221,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_sphere"));
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(agent.lua_state_agent, 33.0);
@@ -241,7 +241,7 @@ unsafe extern "C" fn game_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
     }
     macros::FT_MOTION_RATE(agent, 0.6);
 }

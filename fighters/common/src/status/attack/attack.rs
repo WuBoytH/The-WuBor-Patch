@@ -41,7 +41,7 @@ unsafe extern "C" fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
         ComboModule::reset(fighter.module_accessor);
     // }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100);
-    WorkModule::set_int64(fighter.module_accessor, hash40("attack_11") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, hash40("attack_11"), *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
 }
 
 // The following five are reimplemented to make sure only Neutral Attack inputs

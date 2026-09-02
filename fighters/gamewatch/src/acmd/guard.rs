@@ -59,7 +59,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_attach_item_visibility(agent.module_accessor, false, 0xff);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x28f4e20a43), true);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("head") as i64, hash40("head_none") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("head"), hash40("head_none"));
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
     }

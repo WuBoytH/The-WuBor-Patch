@@ -13,7 +13,7 @@ unsafe extern "C" fn game_specials(agent: &mut L2CAgentBase) {
         }
     }
     if macros::is_excute(agent) {
-        WorkModule::set_int64(agent.module_accessor, hash40("special_s") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(agent.module_accessor, hash40("special_s"), *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -40,7 +40,7 @@ unsafe extern "C" fn game_specialairhistart(agent: &mut L2CAgentBase) {
         }
     }
     if macros::is_excute(agent) {
-        WorkModule::set_int64(agent.module_accessor, hash40("special_air_hi_jump") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(agent.module_accessor, hash40("special_air_hi_jump"), *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -116,7 +116,7 @@ unsafe extern "C" fn game_specialairhijump(agent: &mut L2CAgentBase) {
         }
     }
     if macros::is_excute(agent) {
-        WorkModule::set_int64(agent.module_accessor, hash40("special_air_hi_jump") as i64, *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(agent.module_accessor, hash40("special_air_hi_jump"), *FIGHTER_EFLAME_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     // frame(agent.lua_state_agent, 31.0);
     // if macros::is_excute(agent) {

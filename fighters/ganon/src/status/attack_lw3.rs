@@ -51,7 +51,7 @@ unsafe extern "C" fn ganon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
         if !StopModule::is_stop(fighter.module_accessor)
         && fighter.sub_check_button_jump().get_bool() {
             let log = fighter.status_attack();
-            let info = log[0x10f40d7b92u64].get_i64();
+            let info = log[0x10f40d7b92u64].get_u64();
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             MotionAnimcmdModule::call_script_single(
                 fighter.module_accessor,

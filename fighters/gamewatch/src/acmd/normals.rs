@@ -106,7 +106,7 @@ unsafe extern "C" fn game_attackhi3(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_default_int64(agent.module_accessor, hash40("lhand") as i64);
+        VisibilityModule::set_default_int64(agent.module_accessor, hash40("lhand"));
     }
 }
 

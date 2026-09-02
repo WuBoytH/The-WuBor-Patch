@@ -16,7 +16,7 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        WorkModule::set_int64(agent.module_accessor, hash40("attack_s4_hold") as i64, 61304);
+        WorkModule::set_int64(agent.module_accessor, hash40("attack_s4_hold"), 61304);
     }
     frame(agent.lua_state_agent, 9.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -82,7 +82,7 @@ unsafe extern "C" fn game_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        WorkModule::set_int64(agent.module_accessor, hash40("attack_hi4_hold") as i64, *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
+        WorkModule::set_int64(agent.module_accessor, hash40("attack_hi4_hold"), *FIGHTER_ELIGHT_INSTANCE_WORK_ID_INT_ESWORD_INHERIT_OPEN_MOTION_KIND);
     }
     frame(agent.lua_state_agent, 8.0);
     macros::FT_MOTION_RATE(agent, 0.5);

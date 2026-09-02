@@ -18,12 +18,12 @@ unsafe extern "C" fn marth_specials_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(marth_specials_substatus as *const () as _));
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_s1") as i64,
+        hash40("special_s1"),
         *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
     );
     WorkModule::set_int64(
         fighter.module_accessor,
-        hash40("special_air_s1") as i64,
+        hash40("special_air_s1"),
         *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
     );
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_specials_main_loop as *const () as _))
@@ -64,36 +64,36 @@ unsafe extern "C" fn marth_specials2_main(fighter: &mut L2CFighterCommon) -> L2C
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s3_lw") as i64,
+            hash40("special_s3_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s3_lw") as i64,
+            hash40("special_air_s3_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
     else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_HI) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s2_hi") as i64,
+            hash40("special_s2_hi"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s2_hi") as i64,
+            hash40("special_air_s2_hi"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
     else {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s2_lw") as i64,
+            hash40("special_s2_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s2_lw") as i64,
+            hash40("special_air_s2_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
@@ -107,36 +107,36 @@ unsafe extern "C" fn marth_specials3_main(fighter: &mut L2CFighterCommon) -> L2C
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s4_lw") as i64,
+            hash40("special_s4_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s4_lw") as i64,
+            hash40("special_air_s4_lw"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
     else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_HI) {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s4_hi") as i64,
+            hash40("special_s4_hi"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s4_hi") as i64,
+            hash40("special_air_s4_hi"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }
     else {
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_s4_s") as i64,
+            hash40("special_s4_s"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND
         );
         WorkModule::set_int64(
             fighter.module_accessor,
-            hash40("special_air_s4_s") as i64,
+            hash40("special_air_s4_s"),
             *FIGHTER_MARTH_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR
         );
     }

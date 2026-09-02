@@ -85,7 +85,7 @@ unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("weapon"), hash40("weapon_normal"));
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
 }

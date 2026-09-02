@@ -20,7 +20,7 @@ unsafe extern "C" fn dolly_attack_air_main(fighter: &mut L2CFighterCommon) -> L2
         false,
         false
     );
-    WorkModule::set_int64(fighter.module_accessor, mot.hash as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, mot.hash, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.sub_attack_air_common(false.into());
     fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_air_main_loop as *const () as _))
 }

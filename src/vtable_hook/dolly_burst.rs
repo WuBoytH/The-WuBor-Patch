@@ -37,7 +37,7 @@ unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, somethin
 
     let motion = *(something as *const u64).add(0x88 / 0x8);
     // println!("motion: {:#x}", motion);
-    WorkModule::set_int64(module_accessor, motion as i64, *WEAPON_DOLLY_BURST_INSTANCE_WORK_ID_INT_MOTION_KIND);
+    WorkModule::set_int64(module_accessor, motion, *WEAPON_DOLLY_BURST_INSTANCE_WORK_ID_INT_MOTION_KIND);
 
     let is_air = *(something as *const bool).add(0xb0);
     // println!("is_air: {}", is_air);
@@ -98,7 +98,7 @@ unsafe extern "C" fn burst_on_hit(_vtable: u64, weapon: *mut app::Weapon) -> u64
     else {
         0
     };
-    
+
     LinkModule::send_event_parents(module_accessor, 3, Hash40::new_raw(event));
 
     return 0

@@ -431,7 +431,7 @@ pub unsafe extern "C" fn ryu_attack_hi3_main_inner(fighter: &mut L2CFighterCommo
         false
     );
     let info = ryu_get_mini_jump_attack_data_log_info(fighter, mot.into());
-    WorkModule::set_int64(fighter.module_accessor, info.get_u64() as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    WorkModule::set_int64(fighter.module_accessor, info.get_u64(), *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x265a5c1b6b), Hash40::new("attack_hi3_s"), Hash40::new("attack_hi3_w"));
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
     let fb = ControlModule::get_attack_hi3_fb_kind(fighter.module_accessor);

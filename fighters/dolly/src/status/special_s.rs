@@ -50,8 +50,8 @@ unsafe extern "C" fn special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_DOLLY_STRENGTH_S, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH);
 
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_f_start") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_f_start") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_f_start"), *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_f_start"), *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
 
     let addition = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02
@@ -209,8 +209,8 @@ unsafe extern "C" fn special_f_end_pre(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 unsafe extern "C" fn dolly_special_f_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_f_end") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_f_end") as i64, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_f_end"), *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_f_end"), *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_INT_MOTION_KIND_AIR);
 
     let func = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1b620).unwrap();
     let func2 = smashline::api::get_target_function("lua2cpp_dolly.nrs", 0x1ad80).unwrap();

@@ -23,8 +23,8 @@ pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCo
         mot_g = hash40("special_n_blank");
         mot_a = hash40("special_air_n_blank");
     }
-    WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
-    WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, mot_g, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, mot_a, *FIGHTER_SIMON_STATUS_SPECIAL_N_INT_MOTION_AIR);
     FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log as u64);
     fighter.sub_shift_status_main(L2CValue::Ptr(belmont_special_n_main_loop as *const () as _))
 }

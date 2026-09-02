@@ -136,7 +136,7 @@ unsafe extern "C" fn expression_attackairb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_monad_hand") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body"), hash40("body_monad_hand"));
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

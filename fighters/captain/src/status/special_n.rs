@@ -1,8 +1,8 @@
 use super::*;
 
 unsafe extern "C" fn special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_n") as i64, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n") as i64, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_AIR_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n"), *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n"), *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_AIR_MOT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_FLAG_MOT_FRAME_INHERIT);
     if !StopModule::is_stop(fighter.module_accessor) {
         special_n_substatus(fighter, false.into());
@@ -161,8 +161,8 @@ unsafe extern "C" fn special_n_motion_helper(fighter: &mut L2CFighterCommon, mot
 }
 
 unsafe extern "C" fn special_n_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_turn") as i64, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_turn") as i64, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_AIR_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n_turn"), *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_turn"), *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_INT_AIR_MOT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_INSTANCE_WORK_ID_FLAG_MOT_FRAME_INHERIT);
 
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_CAPTAIN_GENERATE_ARTICLE_FALCONPUNCH, false, -1);

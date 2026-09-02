@@ -44,7 +44,7 @@ jobs:
         run: |
           cd scripts && python3 create_main.py && cd ..
       - name: Upload Plugin Artifact (Main)
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: The_WuBor_Patch
           path: The_WuBor_Patch.zip
@@ -70,7 +70,7 @@ jobs:
         run: |
           cd scripts && python3 create_dev.py && cd ..
       - name: Upload Plugin Artifact (Dev)
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: The_WuBor_Patch_Dev
           path: The_WuBor_Patch_Dev.zip

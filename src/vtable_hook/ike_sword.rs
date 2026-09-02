@@ -24,7 +24,7 @@ unsafe extern "C" fn ike_sword_set_status(ctx: &mut skyline::hooks::InlineCtx) {
     ike_sword_set_status_internal(ctx);
 }
 
-#[skyline::hook(offset = 0x340ac50)]
+#[skyline::hook(offset = 0x340ac50 + 0x5b0)]
 unsafe extern "C" fn ike_sword_on_hit(vtable: u64, weapon: &mut smash::app::Weapon, hit_kind: u32) -> u64 {
     ike_sword_on_hit_internal(vtable, weapon, hit_kind)
 }
@@ -36,7 +36,7 @@ pub unsafe extern "C" fn ike_sword_can_pocket(_vtable: u64, weapon: &mut smash::
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51cd2d0).data(ike_sword_can_pocket as *const () as u64);
+    let _ = skyline::patching::Patch::in_text(0x51ce2d0).data(ike_sword_can_pocket as *const () as u64);
 
     skyline::install_hooks!(
         ike_sword_set_spawn_pos,

@@ -228,7 +228,7 @@ pub mod FGCModule {
 
     /// Checks the direction of the left stick and returns a number between 1 and 9, representing numpad notation.
     /// # Arguments
-    /// 
+    ///
     /// * `command` - Set to true to have the horizontal stick value reversed, so that it checks the input as if you are facing right.
     pub unsafe fn get_command_stick_direction(fighter: &mut L2CFighterCommon, command: bool) -> i32 {
         let status_kind = StatusModule::status_kind(fighter.module_accessor);
@@ -280,7 +280,7 @@ pub mod FGCModule {
     //     WorkModule::inc_int(fighter.module_accessor, flag);
     //     WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
     // }
-    
+
     /// Checks the timer for a command input. Resets the command input if the timer exceeds the window, otherwise increments the timer by 1.
     // pub unsafe fn check_command_inc(fighter: &mut L2CFighterCommon, flag: i32, timer_flag: i32, window: i32) {
     //     if WorkModule::get_int(fighter.module_accessor, timer_flag) <= window {
@@ -640,7 +640,7 @@ pub mod MiscModule {
             Some(object.battle_object_id)
         }
     }
-    
+
     pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
         unsafe {
             let entry = get_fighter_entry(singletons::FighterManager(), entry_id);
@@ -651,7 +651,7 @@ pub mod MiscModule {
             }
         }
     }
-    
+
     #[skyline::from_offset(0x3ac560)]
     pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
 
@@ -739,7 +739,7 @@ pub mod MiscModule {
             macros::FT_MOTION_RATE(fighter, 1.0);
         }
     }
-    
+
     #[skyline::from_offset(0x696720)]
     pub fn call_critical(
         module_accessor: *mut BattleObjectModuleAccessor,
@@ -924,16 +924,16 @@ pub mod MiscModule {
         handle_attach_item(*work_module as *mut u64, 0, 1);
     }
 
-    #[skyline::from_offset(0x392dce0)]
+    #[skyline::from_offset(0x392dce0 + 0x5b0)]
     unsafe extern "C" fn allocator(align: i32, size: i32) -> *mut u64;
 
     #[skyline::from_offset(0x75d8f0)]
     unsafe extern "C" fn set_lightweight_data(group_ptr: *mut StatChangeGroup, stat_change_vec: *mut StatChange, end_ptr: *mut StatChange);
 
-    #[skyline::from_offset(0x392e590)]
+    #[skyline::from_offset(0x392e590 + 0x5b0)]
     unsafe extern "C" fn set_lightweight_data_post(stat_change_vec: *mut StatChange);
 
-    #[skyline::from_offset(0x33bd9c0)]
+    #[skyline::from_offset(0x33bd9c0 + 0x5b0)]
     pub unsafe extern "C" fn normal_weapon_hit_handler(vtable: u64, weapon: *mut smash::app::Weapon, something: u32) -> u64;
 
     pub unsafe fn get_table_value(table: *mut smash_rs::lib::L2CTable, key: &str) -> smash_rs::lib::L2CValue {

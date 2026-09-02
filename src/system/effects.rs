@@ -21,8 +21,8 @@ struct CommonEffectPair {
 
 pub fn install() {
     // // Patch common effect hashmap allocate size
-    // let _ = skyline::patching::Patch::in_text(0x41a454).data(0x52803301u32);
-    // let _ = skyline::patching::Patch::in_text(0x41a498).data(0x52803301u32);
+    // let _ = skyline::patching::Patch::in_text(0x41a454).data(0x52804301u32);
+    // let _ = skyline::patching::Patch::in_text(0x41a498).data(0x52804301u32);
 
     // // Patch common effect hashmap ending offset
     // let _ = skyline::patching::Patch::in_text(0x41a4c0).data(0x91066008u32);
@@ -33,7 +33,7 @@ pub fn install() {
 
     unsafe {
         let original = (skyline::hooks::getRegionAddress(Region::Text) as *mut u8)
-            .add(0x45412c8)
+            .add(0x45422c8)
             .cast::<*mut CommonEffectPair>();
         let original_table = std::slice::from_raw_parts(*original, 15);
         let new_table = &mut Vec::new();

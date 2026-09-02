@@ -14,5 +14,5 @@ unsafe extern "C" fn shinku_on_hit(vtable: u64, weapon: &mut app::Weapon, someth
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x5214940).data(shinku_on_hit as *const () as u64);
+    let _ = skyline::patching::Patch::in_text(0x5215940).data(shinku_on_hit as *const () as u64);
 }

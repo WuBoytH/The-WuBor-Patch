@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-pub const SIMON_VTABLE_START : usize = 0x5040690;
+pub const SIMON_VTABLE_START : usize = 0x5041690;
 
 #[skyline::hook(offset = 0x11944e0)]
 unsafe extern "C" fn belmont_on_init_death(vtable: u64, fighter: &mut Fighter) {

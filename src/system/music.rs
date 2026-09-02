@@ -1,7 +1,7 @@
-#[skyline::from_offset(0x23ed810)]
+#[skyline::from_offset(0x23ed810 + 0x450)]
 unsafe fn music_function1(arg: u64);
 
-#[skyline::from_offset(0x23ee0c0)]
+#[skyline::from_offset(0x23ee0c0 + 0x450)]
 unsafe fn music_function2(arg: u64, arg2: u64);
 
 #[skyline::hook(offset = 0x14f99cc, inline)]

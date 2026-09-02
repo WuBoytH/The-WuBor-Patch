@@ -1,6 +1,6 @@
 use crate::imports::*;
 
-#[skyline::hook(offset = 0x34216e0)]
+#[skyline::hook(offset = 0x34216e0 + 0x5b0)]
 unsafe extern "C" fn breath_on_hit(vtable: u64, weapon: *mut app::Weapon, something: u32) -> u64 {
     if something & 6 != 0 {
         StatusModule::change_status_request((*weapon).battle_object.module_accessor, koopa_breath::status::HIT, false);

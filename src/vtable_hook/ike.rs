@@ -9,7 +9,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, app::*},
 };
 
-static IKE_VTABLE_ADDRESS : usize = 0x4fc1940;
+static IKE_VTABLE_ADDRESS : usize = 0x4fc2940;
 
 #[skyline::hook(offset = 0xaf9350)]
 pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {

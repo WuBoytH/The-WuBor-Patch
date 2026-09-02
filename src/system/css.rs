@@ -1,4 +1,4 @@
-#[skyline::hook(offset = 0x1798ac8, inline)]
+#[skyline::hook(offset = 0x1798ac8 - 0xE0, inline)]
 unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {
     let ptr1 = ctx.registers[0].x() as *mut u64;
     let ptr2 = ctx.registers[1].x() as *mut u64;

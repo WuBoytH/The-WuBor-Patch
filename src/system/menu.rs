@@ -1,6 +1,6 @@
 // Shamelessly taken from HDR
 
-#[skyline::hook(offset = 0x235cad0, inline)]
+#[skyline::hook(offset = 0x235cad0 + 0x450, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {
     let sp = ctx.sp.x() as *mut u8;
     *(sp.add(0x60) as *mut u64) = 0x1100000000;

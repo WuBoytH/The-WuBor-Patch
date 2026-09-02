@@ -36,8 +36,8 @@ unsafe extern "C" fn sound_dash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_dash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("head") as i64, hash40("head_close") as i64);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("hand") as i64, hash40("hand_hold_lr") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("head"), hash40("head_close"));
+        VisibilityModule::set_int64(agent.module_accessor, hash40("hand"), hash40("hand_hold_lr"));
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -85,8 +85,8 @@ unsafe extern "C" fn sound_turndash(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_turndash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("head") as i64, hash40("head_close") as i64);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("hand") as i64, hash40("hand_hold_lr") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("head"), hash40("head_close"));
+        VisibilityModule::set_int64(agent.module_accessor, hash40("hand"), hash40("hand_hold_lr"));
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {

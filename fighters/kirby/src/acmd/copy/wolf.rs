@@ -154,7 +154,7 @@ unsafe extern "C" fn expression_wolfspecialn(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -166,7 +166,7 @@ unsafe extern "C" fn expression_wolfspecialn(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_normal"));
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
@@ -222,7 +222,7 @@ unsafe extern "C" fn expression_wolfspecialncancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -230,7 +230,7 @@ unsafe extern "C" fn expression_wolfspecialncancel(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_normal"));
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
@@ -243,7 +243,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_wolfspecialnhi", effect_wolfspecialn, Priority::Low);
     agent.acmd("sound_wolfspecialnhi", sound_wolfspecialn, Priority::Low);
     agent.acmd("expression_wolfspecialnhi", expression_wolfspecialn, Priority::Low);
-    
+
     agent.acmd("game_wolfspecialairnhi", game_wolfspecialairn, Priority::Low);
     agent.acmd("effect_wolfspecialairnhi", effect_wolfspecialairn, Priority::Low);
     agent.acmd("sound_wolfspecialairnhi", sound_wolfspecialn, Priority::Low);
@@ -253,7 +253,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_wolfspecialnlw", effect_wolfspecialn, Priority::Low);
     agent.acmd("sound_wolfspecialnlw", sound_wolfspecialn, Priority::Low);
     agent.acmd("expression_wolfspecialnlw", expression_wolfspecialn, Priority::Low);
-    
+
     agent.acmd("game_wolfspecialairnlw", game_wolfspecialairn, Priority::Low);
     agent.acmd("effect_wolfspecialairnlw", effect_wolfspecialairn, Priority::Low);
     agent.acmd("sound_wolfspecialairnlw", sound_wolfspecialn, Priority::Low);

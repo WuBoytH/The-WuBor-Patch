@@ -174,7 +174,7 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -186,7 +186,7 @@ unsafe extern "C" fn expression_specialn(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 45.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_normal"));
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
@@ -242,7 +242,7 @@ unsafe extern "C" fn expression_specialncancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_hide") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_hide"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -250,7 +250,7 @@ unsafe extern "C" fn expression_specialncancel(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster") as i64, hash40("blaster_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("blaster"), hash40("blaster_normal"));
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
@@ -293,7 +293,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialnhi", effect_specialn, Priority::Low);
     agent.acmd("sound_specialnhi", sound_specialn, Priority::Low);
     agent.acmd("expression_specialnhi", expression_specialn, Priority::Low);
-    
+
     agent.acmd("game_specialairnhi", game_specialairn, Priority::Low);
     agent.acmd("effect_specialairnhi", effect_specialairn, Priority::Low);
     agent.acmd("sound_specialairnhi", sound_specialn, Priority::Low);
@@ -303,7 +303,7 @@ pub fn install(agent: &mut Agent) {
     agent.acmd("effect_specialnlw", effect_specialn, Priority::Low);
     agent.acmd("sound_specialnlw", sound_specialn, Priority::Low);
     agent.acmd("expression_specialnlw", expression_specialn, Priority::Low);
-    
+
     agent.acmd("game_specialairnlw", game_specialairn, Priority::Low);
     agent.acmd("effect_specialairnlw", effect_specialairn, Priority::Low);
     agent.acmd("sound_specialairnlw", sound_specialn, Priority::Low);

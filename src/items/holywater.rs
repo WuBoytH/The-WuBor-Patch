@@ -143,11 +143,6 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
     item.clear_lua_stack();
     lua_args!(item, 0, 0, 0);
     func_links::KineticEnergyRot::set_rotation(item.lua_state_agent, &Vector3f{x: 0.0, y: 0.0, z: 0.0});
-    if !GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
-        let speed_y = func_links::HOLYWATER::FIRE_PILLAR_SPEED_Y(FighterKind(kind));
-        // println!("speed y: {}", speed_y);
-        KineticModule::add_speed(item.module_accessor, &Vector3f{x: 0.0, y: speed_y, z: 0.0});
-    }
     // <WuBor>
     if !GroundModule::is_touch(item.module_accessor, (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u32) {
         let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
@@ -155,7 +150,7 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
         // println!("normal: {}, {}", normal_x, normal_y);
         let angle = normal_x.atan2(normal_y);
         // println!("angle: {}", angle.to_degrees());
-        let speed = 0.4;
+        let speed = 0.95;
         let speed_x = speed * angle.cos();
         let speed_y = speed * angle.sin();
         // println!("speed: {}, {}", speed_x, speed_y);
@@ -179,6 +174,11 @@ unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> 
         func_links::KineticEnergyControl::enable(item.lua_state_agent);
     }
     // </WuBor>
+    else if !GroundModule::is_touch(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+        let speed_y = func_links::HOLYWATER::FIRE_PILLAR_SPEED_Y(FighterKind(kind));
+        // println!("speed y: {}", speed_y);
+        KineticModule::add_speed(item.module_accessor, &Vector3f{x: 0.0, y: speed_y, z: 0.0});
+    }
     PostureModule::set_rot(item.module_accessor, &Vector3f{x: 0.0, y: 0.0, z: 0.0}, 0);
     0.into()
 }
@@ -203,7 +203,7 @@ unsafe extern "C" fn richter_holywater_born_loop(item: &mut L2CAgent) -> L2CValu
         let normal_x = GroundModule::get_touch_normal_x(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let normal_y = GroundModule::get_touch_normal_y(item.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         let angle = normal_x.atan2(normal_y);
-        let speed = 0.4;
+        let speed = 0.95;
         let speed_x = speed * angle.cos();
         let speed_y = speed * angle.sin();
         let lr = PostureModule::lr(item.module_accessor);

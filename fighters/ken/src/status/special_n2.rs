@@ -38,8 +38,8 @@ unsafe extern "C" fn ken_special_n2_command_init(fighter: &mut L2CFighterCommon)
         VarModule::off_flag(fighter.module_accessor, vars::ken::instance::flag::QUICK_STEP_INHERIT);
     }
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n2") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_n2"), *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n2"), *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_MOTION_KIND_AIR);
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

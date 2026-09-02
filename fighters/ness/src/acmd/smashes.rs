@@ -2,7 +2,7 @@ use super::*;
 
 unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_visible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_visible"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -29,13 +29,13 @@ unsafe extern "C" fn game_attacks4(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_invisible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_invisible"));
     }
 }
 
 unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_visible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_visible"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -62,13 +62,13 @@ unsafe extern "C" fn game_attacks4hi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_invisible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_invisible"));
     }
 }
 
 unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_visible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_visible"));
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -95,7 +95,7 @@ unsafe extern "C" fn game_attacks4lw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("bat") as i64, hash40("bat_invisible") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("bat"), hash40("bat_invisible"));
     }
 }
 

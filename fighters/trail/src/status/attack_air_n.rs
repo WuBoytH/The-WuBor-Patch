@@ -91,7 +91,7 @@ unsafe extern "C" fn trail_attack_air_n_mot_helper(fighter: &mut L2CFighterCommo
         MotionModule::enable_remove_2nd_change_motion(fighter.module_accessor, true);
     }
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, kind);
-    WorkModule::set_int64(fighter.module_accessor, mot.hash as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, mot.hash, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     0.into()
 }
 

@@ -1,4 +1,5 @@
 mod fighter;
+mod belmont;
 mod brave;
 mod captain;
 mod demon;
@@ -8,6 +9,7 @@ mod elight;
 mod gamewatch;
 mod ganon;
 mod gaogaen;
+mod iceclimber;
 mod ike;
 mod jack;
 mod kirby;
@@ -26,11 +28,12 @@ mod sonic;
 mod wario;
 
 mod weapon;
-mod blaster_bullet;
 mod belmont_cross;
+mod blaster_bullet;
 mod dolly_wave;
 mod dolly_burst;
 mod edge_flare1;
+mod ike_sword;
 mod inkling_rollerink;
 mod koopa_breath;
 mod mariod_drcapsule;
@@ -39,6 +42,7 @@ mod ryu_shinkuhadoken;
 
 pub fn install() {
     fighter::install();
+    belmont::install();
     brave::install();
     captain::install();
     demon::install();
@@ -48,6 +52,7 @@ pub fn install() {
     gamewatch::install();
     ganon::install();
     gaogaen::install();
+    iceclimber::install();
     ike::install();
     jack::install();
     kirby::install();
@@ -66,11 +71,12 @@ pub fn install() {
     wario::install();
 
     weapon::install();
-    blaster_bullet::install();
     belmont_cross::install();
+    blaster_bullet::install();
     dolly_wave::install();
     dolly_burst::install();
     edge_flare1::install();
+    ike_sword::install();
     inkling_rollerink::install();
     koopa_breath::install();
     mariod_drcapsule::install();

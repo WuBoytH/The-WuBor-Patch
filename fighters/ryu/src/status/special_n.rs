@@ -1,12 +1,12 @@
 use super::*;
-use super::super::helper::*;
+// use super::super::helper::*;
 
 unsafe extern "C" fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
-        WorkModule::set_int(fighter.module_accessor, *WEAPON_RYU_HADOKEN_TYPE_SYAKUNETU, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE);
-        ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
-    }
+    // if VarModule::is_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE) {
+    //     WorkModule::set_int(fighter.module_accessor, *WEAPON_RYU_HADOKEN_TYPE_SYAKUNETU, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE);
+    //     ryu_denjin_remover(fighter.module_accessor);
+    //     VarModule::on_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE);
+    // }
     if !StopModule::is_stop(fighter.module_accessor) {
         ryu_special_n_substatus(fighter, false.into());
     }
@@ -15,6 +15,9 @@ unsafe extern "C" fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 unsafe extern "C" fn ryu_special_n_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if VarModule::is_flag(fighter.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+        WorkModule::set_int(fighter.module_accessor, *WEAPON_RYU_HADOKEN_TYPE_SYAKUNETU, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE);
+    }
     if param_1.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
     }

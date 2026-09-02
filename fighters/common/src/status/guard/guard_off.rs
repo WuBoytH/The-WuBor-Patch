@@ -77,7 +77,8 @@ unsafe extern "C" fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL,
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS
     ];
     for val in enabled_terms.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *val);
@@ -132,14 +133,25 @@ unsafe extern "C" fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFi
             return true.into();
         }
     }
+
     false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
-unsafe extern "C" fn sub_status_guard_off_main_common_control(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if fighter.sub_transition_group_check_ground_jump().get_bool() {
     //     return true.into();
     // }
+
+    if GroundModule::is_passable_ground(fighter.module_accessor)
+    // && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
+    && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
+    && fighter.global_table[FLICK_Y].get_i32() < 3
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
+        return true.into();
+    }
+
     false.into()
 }
 

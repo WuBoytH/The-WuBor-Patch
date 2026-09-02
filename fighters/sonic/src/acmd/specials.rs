@@ -337,7 +337,7 @@ unsafe extern "C" fn expression_specialairlw2start(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_sphere"));
         macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_OFF);
@@ -390,7 +390,7 @@ unsafe extern "C" fn sound_specialairlw2bound(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_specialairlw2bound(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_sphere"));
         macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_OFF);
@@ -408,7 +408,7 @@ unsafe extern "C" fn expression_specialairlw2bound(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
         macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(agent, Hash40::new("s_stingd1"), *HIT_STATUS_NORMAL);

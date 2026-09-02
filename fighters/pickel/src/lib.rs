@@ -20,6 +20,7 @@ mod frame;
 
 mod forge;
 mod trolley;
+mod table;
 
 pub fn install() {
     let agent = &mut Agent::new("pickel");
@@ -30,4 +31,5 @@ pub fn install() {
 
     forge::install();
     trolley::install();
+    table::install();
 }

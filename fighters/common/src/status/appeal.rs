@@ -53,26 +53,26 @@ unsafe extern "C" fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, p
         let cat2 = fighter.global_table[CMD_CAT2].get_i32();
         if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
             VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_U;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 {
             VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_D;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0 {
             VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_L;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0 {
             VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_R;
         }
     }
@@ -81,19 +81,19 @@ unsafe extern "C" fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, p
         match rand {
             0 => {
                 VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 appeal_kind = *FIGHTER_APPEAL_KIND_U;
             },
             1 => {
                 VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 appeal_kind = *FIGHTER_APPEAL_KIND_D;
             },
             _ => {
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
-                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l"), *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 let lr = sv_math::rand(hash40("fighter"), 2);
                 if lr == 0 {
                     VarModule::set_int(fighter.module_accessor, vars::appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
@@ -155,7 +155,7 @@ unsafe extern "C" fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, p
     else {
         0
     };
-    WorkModule::set_int64(fighter.module_accessor, log as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    WorkModule::set_int64(fighter.module_accessor, log as u64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     ControlModule::clear_command(fighter.module_accessor, false);
 }
 

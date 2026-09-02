@@ -2,14 +2,14 @@ use super::*;
 
 unsafe extern "C" fn pitb_special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi"), *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_hi"), *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
         WorkModule::set_int64(fighter.module_accessor, 0x7cabbcbb5, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
         WorkModule::set_int64(fighter.module_accessor, 0xbd2abc95c, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
     }
     else {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_s") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_s") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_s"), *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_s"), *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
         WorkModule::set_int64(fighter.module_accessor, 0x684068652, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
         WorkModule::set_int64(fighter.module_accessor, 0xa23431885, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
     }

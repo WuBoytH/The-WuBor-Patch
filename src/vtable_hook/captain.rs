@@ -52,7 +52,7 @@ pub unsafe extern "C" fn captain_on_damage(_vtable: u64, fighter: &mut Fighter, 
 pub fn captain_on_attack_original(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x4f98688).data(captain_on_frame as u64);
-    let _ = skyline::patching::Patch::in_text(0x4f98740).data(captain_on_attack as u64);
-    let _ = skyline::patching::Patch::in_text(0x4f98840).data(captain_on_damage as u64);
+    let _ = skyline::patching::Patch::in_text(0x4f99688).data(captain_on_frame as *const () as u64);
+    let _ = skyline::patching::Patch::in_text(0x4f99740).data(captain_on_attack as *const () as u64);
+    let _ = skyline::patching::Patch::in_text(0x4f99840).data(captain_on_damage as *const () as u64);
 }

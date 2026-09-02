@@ -193,7 +193,7 @@ pub mod guard {
     pub mod flag {
         pub const ADD_BUFFER : i32 = 0x1050;
         pub const SET_SHIELD_LOW_SMOKE : i32 = 0x1051;
-        pub const VALID_GUARD_CANCEL_ATTACK_INPUT : i32 = 0x1052;
+        pub const VALID_GUARD_CANCEL_INPUT : i32 = 0x1052;
         pub const VALID_GUARD_CANCEL_TAUNT_INPUT : i32 = 0x1053;
     }
     pub mod int {
@@ -201,8 +201,11 @@ pub mod guard {
         pub const GUARD_OFF_RESERVE_CAT1 : i32 = 0x1051;
         pub const JUST_SHIELD_COUNT : i32 = 0x1052;
 
-        pub const DAMAGE_STOP_ESCAPE_STATUS : i32 = 0x1053;
+        pub const GUARD_CANCEL_STATUS : i32 = 0x1053;
         pub const JUST_SHIELD_XLU_COUNT : i32 = 0x1054;
+    }
+    pub mod float {
+        pub const GUARD_DAMAGE_FACING_DIR : i32 = 0x1050;
     }
 }
 
@@ -217,7 +220,8 @@ pub mod look_up {
 
 pub mod thrown {
     pub mod flag {
-        pub const FORCE_LAUNCHED : i32 = 0x1051;
+        pub const DISABLE_REFLECT : i32 = 0x10FE;
+        pub const FORCE_LAUNCHED : i32 = 0x10FF;
     }
 }
 
@@ -323,6 +327,9 @@ pub mod dolly {
             pub const IS_SPECIAL_CANCEL : i32 = 0x1101;
 
             pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
+
+            pub const SPECIAL_N_CHECK_FEINT : i32 = 0x1150;
+            pub const SPECIAL_N_FEINT : i32 = 0x1151;
 
             pub const SPECIAL_F_CHECK_FEINT : i32 = 0x1150;
             pub const SPECIAL_F_FEINT : i32 = 0x1151;
@@ -438,13 +445,29 @@ pub mod ike {
             pub const SPECIAL_N_AIR : i32 = 0x1150;
             pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
             pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
+
+            pub const SPECIAL_HI_ARMOR : i32 = 0x1150;
+
+            pub const SPECIAL_LW_WHIFF : i32 = 0x1150;
         }
         pub mod int {
             pub const ERUPTION_COUNT : i32 = 0x1150;
         }
         pub mod float {
             pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1150;
+
+            pub const SPECIAL_HI_ARMOR_DAMAGE : i32 = 0x1150;
         }
+    }
+}
+
+pub mod ike_sword {
+    pub mod status {
+        pub mod flag {
+            pub const BLADE_BEAM_KINETIC_SHIFT : i32 = 0x1150;
+        }
+
+        pub const BLADE_BEAM : i32 = 0x4;
     }
 }
 
@@ -820,9 +843,13 @@ pub mod pikmin {
 
             pub const GUARD_CANCEL_ATTACK_SHOOT : i32 = 0x1150;
             pub const GUARD_CANCEL_ATTACK_DONE : i32 = 0x1151;
+
+            pub const APPEAL_CALL_PICKIE : i32 = 0x1150;
         }
         pub mod int {
             pub const ATTACK_S3_STEP : i32 = 0x1150;
+
+            pub const APPEAL_PIKMIN_COUNT : i32 = 0x1150;
         }
     }
     pub const ATTACK_S3_STEP_START : i32 = 0;
@@ -834,23 +861,40 @@ pub mod pikmin_pikmin {
     pub mod status {
         pub const GUARD_CANCEL_ATTACK_START : i32 = 0x44;
         pub const GUARD_CANCEL_ATTACK : i32 = 0x45;
+        pub const ATTACK_DASH : i32 = 0x46;
+        pub const APPEAL : i32 = 0x47;
     }
 }
 
 pub mod richter {
     pub mod instance {
         pub mod int {
-            pub const AXE_ID : i32 = 0x0100;
+            pub const SPECIAL_N_VOICE_KIND : i32 = 0x0100;
         }
     }
     pub mod status {
-        pub mod flag {
-            pub const ATTACK_JUST_INPUT : i32 = 0x1150;
-
-            pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
-
-            pub const SPECIAL_N_SHOOT : i32 = 0x1150;
+        pub mod int {
+            pub const SPECIAL_S_START_SITUATION : i32 = 0x1150;
         }
+        pub mod flag {
+            pub const SPECIAL_S_START_DASH : i32 = 0x1150;
+            pub const SPECIAL_S_BRAKE_SHIFT : i32 = 0x1151;
+            pub const SPECIAL_S_ENABLE_LANDING : i32 = 0x1152;
+            pub const SPECIAL_S_ENABLE_FALL : i32 = 0x1153;
+            pub const SPECIAL_S_ENABLED_FALL : i32 = 0x1154;
+
+            pub const SPECIAL_LW_SLIDE_ENABLE_JUMP : i32 = 0x1150;
+            pub const SPECIAL_LW_CHECK_ANGLE : i32 = 0x1151;
+            pub const SPECIAL_LW_IS_ANGLED : i32 = 0x1152;
+            pub const SPECIAL_LW_DIVE : i32 = 0x1153;
+            pub const SPECIAL_LW_DIVE_ENABLE_LANDING : i32 = 0x1154;
+            pub const SPECIAL_LW_DIVE_ENABLE_BOUNCE : i32 = 0x1155;
+            pub const SPECIAL_LW_BOUNCE : i32 = 0x1156;
+            pub const SPECIAL_LW_BOUNCE_IS_HIT : i32 = 0x1157;
+        }
+
+        pub const SPECIAL_AIR_LW_LANDING : i32 = 0x1EC;
+        pub const SPECIAL_LW_BOUNCE : i32 = 0x1ED;
     }
 }
 
@@ -1009,7 +1053,11 @@ pub mod shizue {
 }
 
 pub mod simon {
-    pub use super::richter::*;
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N_SHOOT : i32 = 0x1150;
+        }
+    }
 }
 
 pub mod snake_c4 {

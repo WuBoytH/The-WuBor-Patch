@@ -97,11 +97,11 @@ pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> A
         cancel_frame = 34.0;
     }
     else {
-        attack_frame = 14.0;
-        cancel_frame = 14.0;
+        attack_frame = 12.0;
+        cancel_frame = 12.0;
     }
     if VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE) {
-        cancel_frame += 10.0;
+        cancel_frame += 12.0;
     }
     AirDashParams{attack_frame, cancel_frame}
 }
@@ -197,30 +197,43 @@ pub unsafe extern "C" fn setup_escape_air_slide_common(fighter: &mut L2CFighterC
             stickx = 1.0 * PostureModule::lr(fighter.module_accessor);
             sticky = 0.0;
         }
+
+        // set angles
+        if sticky.abs() >= 0.35 {
+            sticky = 1.0 * sticky.signum();
+        }
+        else {
+            sticky = 0.0;
+        }
+        if stickx.abs() >= 0.4 {
+            stickx = 1.0 * stickx.signum();
+        }
+        else {
+            stickx = 0.0;
+        }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-        let normalize = sv_math::vec2_normalize(stickx, sticky);
-        let mut dirx = normalize.x;
-        let mut diry = normalize.y;
-        WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-        WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
-        let speed_x = 
-            KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) +
-            KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE)
-        ;
-        let speed_y = 
-            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) +
-            KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE)
-        ;
-        let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
-        let slide_speed_x = escape_air_slide_speed * speed_x;
-        let slide_speed_y = escape_air_slide_speed * speed_y;
+        // let normalize = sv_math::vec2_normalize(stickx, sticky);
+        // let mut dirx = normalize.x;
+        // let mut diry = normalize.y;
+        // println!("stick: {}, {}", dirx, diry);
+        // println!("angle: {}", diry.atan2(dirx).to_degrees());
+        // WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+        // WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+        let angle = sticky.atan2(stickx);
+        // println!("angle: {}", angle.to_degrees());
+        WorkModule::set_float(fighter.module_accessor, angle, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        // let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
+        // let slide_speed_x = escape_air_slide_speed * speed_x;
+        // let slide_speed_y = escape_air_slide_speed * speed_y;
         sv_kinetic_energy!(
             reset_energy,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_STOP,
             ENERGY_STOP_RESET_TYPE_FREE,
-            slide_speed_x,
-            slide_speed_y,
+            speed_x,
+            speed_y,
             0.0,
             0.0,
             0.0
@@ -233,32 +246,32 @@ pub unsafe extern "C" fn setup_escape_air_slide_common(fighter: &mut L2CFighterC
             -1.0,
             -1.0
         );
-        let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame")); // new
-        let escape_air_slide_u_stiff_frame = escape_air_slide_stiff_frame;
-        let escape_air_slide_d_stiff_frame = escape_air_slide_stiff_frame;
-        dirx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-        diry = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
-        let arctangent = diry.atan2(dirx.abs());
-        let stiff_lerp = if 0.0 > arctangent.to_degrees() {
-            fighter.lerp(
-                escape_air_slide_stiff_frame.into(),
-                escape_air_slide_d_stiff_frame.into(),
-                (arctangent.to_degrees() / 90.0).into()
-            )
-        }
-        else {
-            fighter.lerp(
-                escape_air_slide_stiff_frame.into(),
-                escape_air_slide_u_stiff_frame.into(),
-                (arctangent.to_degrees() / 90.0).into()
-            )
-        };
-        let escape_air_slide_stiff_start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_start_frame"));
-        WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
+        // let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame")); // new
+        // let escape_air_slide_u_stiff_frame = escape_air_slide_stiff_frame;
+        // let escape_air_slide_d_stiff_frame = escape_air_slide_stiff_frame;
+        // dirx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+        // diry = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+        // let arctangent = diry.atan2(dirx.abs());
+        // let stiff_lerp = if 0.0 > arctangent.to_degrees() {
+        //     fighter.lerp(
+        //         escape_air_slide_stiff_frame.into(),
+        //         escape_air_slide_d_stiff_frame.into(),
+        //         (arctangent.to_degrees() / 90.0).into()
+        //     )
+        // }
+        // else {
+        //     fighter.lerp(
+        //         escape_air_slide_stiff_frame.into(),
+        //         escape_air_slide_u_stiff_frame.into(),
+        //         (arctangent.to_degrees() / 90.0).into()
+        //     )
+        // };
+        // let escape_air_slide_stiff_start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_start_frame"));
+        // WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
         let escape_air_slide_back_end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_end_frame"));
         let add_xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
         WorkModule::set_int(fighter.module_accessor, escape_air_slide_back_end_frame + add_xlu, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
-        WorkModule::set_float(fighter.module_accessor, stiff_lerp.get_f32(), *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
+        // WorkModule::set_float(fighter.module_accessor, stiff_lerp.get_f32(), *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
         if VarModule::is_flag(fighter.module_accessor, vars::escape_air::flag::SLIDE_IS_FROM_DAMAGE) {
             let eff_handle = EffectModule::req_on_joint(
                 fighter.module_accessor,

@@ -69,8 +69,8 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         ItemModule::set_attach_item_visibility(agent.module_accessor, false, *ATTACH_ITEM_GROUP_ALL as u8);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_none") as i64);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("pizza") as i64, hash40("pizza_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_none"));
+        VisibilityModule::set_int64(agent.module_accessor, hash40("pizza"), hash40("pizza_normal"));
         macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_OFF);
         macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_OFF);
@@ -94,8 +94,8 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, true, 0);
         ItemModule::set_attach_item_visibility(agent.module_accessor, true, *ATTACH_ITEM_GROUP_ALL as u8);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("pizza") as i64, hash40("pizza_none") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("body"), hash40("body_normal"));
+        VisibilityModule::set_int64(agent.module_accessor, hash40("pizza"), hash40("pizza_none"));
         macros::HIT_NODE(agent, Hash40::new("waist"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(agent, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);

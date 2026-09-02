@@ -70,11 +70,65 @@ unsafe extern "C" fn sub_turn_uniq_process_main(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_Turn_Main)]
+unsafe extern "C" fn status_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[TURN_UNIQ].get_bool() && {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[TURN_UNIQ].get_ptr());
+        callable(fighter).get_bool()
+    } {
+        return 1.into();
+    }
+
+    if fighter.status_TurnCommon().get_bool() {
+        return 1.into();
+    }
+
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TURN_FLAG_DASH)
+    && {
+        let dash_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_stick_x"));
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let turn_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_TURN_WORK_FLOAT_LR);
+        dash_stick_x <= stick_x * -turn_lr
+    } {
+        fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
+        return 1.into();
+    }
+
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_exit_Turn)]
+unsafe extern "C" fn sub_exit_turn(fighter: &mut L2CFighterCommon) {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status == *FIGHTER_STATUS_KIND_ESCAPE_F
+    || status == *FIGHTER_STATUS_KIND_ESCAPE_B {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+
+    let turn = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TURN_FLAG_TURN);
+    // if status == *FIGHTER_STATUS_KIND_DASH
+    // && turn {
+    //     PostureModule::reverse_lr(fighter.module_accessor);
+    //     PostureModule::update_rot_y_lr(fighter.module_accessor);
+    // }
+
+    if status == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+    && !turn {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_turncommon,
-            sub_turn_uniq_process_main
+            sub_turn_uniq_process_main,
+            status_turn_main,
+            sub_exit_turn
         );
     }
 }

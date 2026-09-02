@@ -11,7 +11,7 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
     && status != *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN
     && status != *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("weapon"), hash40("weapon_normal"));
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOWARROW, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
     0.into()

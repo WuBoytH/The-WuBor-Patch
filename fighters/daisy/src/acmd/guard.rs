@@ -50,7 +50,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("smash_item") as i64, hash40("smash_item_racket") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("smash_item"), hash40("smash_item_racket"));
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -62,7 +62,7 @@ unsafe extern "C" fn expression_guardcancelattack(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("smash_item") as i64, hash40("smash_item_none") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("smash_item"), hash40("smash_item_none"));
     }
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {

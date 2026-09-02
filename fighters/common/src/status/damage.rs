@@ -3,7 +3,7 @@ use super::*;
 mod damage;
 mod damage_air;
 mod damage_fall;
-mod damage_fly;
+pub mod damage_fly;
 mod damage_fly_roll;
 mod damage_fly_reflect;
 

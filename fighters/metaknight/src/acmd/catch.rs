@@ -27,7 +27,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        macros::CATCH(agent, 0, Hash40::new("top"), 2.4, 0.0, 7.0, 4.0, Some(0.0), Some(7.0), Some(10.1), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
+        macros::CATCH(agent, 0, Hash40::new("top"), 2.4, 0.0, 7.0, 1.4, Some(0.0), Some(7.0), Some(10.1), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);
     }
     let animcmd: &mut L2CFighterAnimcmdGameCommon = std::mem::transmute(&mut *agent);
     L2CFighterAnimcmdGameCommon::game_CaptureCutCommon(animcmd);
@@ -101,12 +101,12 @@ unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_wing") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_wing"));
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle") as i64, hash40("mantle_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("mantle"), hash40("mantle_normal"));
     }
 }
 

@@ -86,7 +86,7 @@ impl KineticEnergy {
 
         unsafe {
             let result = adjust_speed_for_ground_normal_internal(smash_rs::cpp::simd::Vector2 { vec: [speed.x, speed.y] }, module_accessor);
-            PaddedVec2::new(result.vec[0], result.vec[1])
+            PaddedVec2::new(result.x(), result.y())
         }
     }
 

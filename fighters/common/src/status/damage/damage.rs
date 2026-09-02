@@ -325,7 +325,7 @@ unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2C
             WorkModule::set_float(fighter.module_accessor, angle, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_ROT_ANGLE);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_ROLL_SET_ANGLE);
         }
-        WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
+        WorkModule::set_int64(fighter.module_accessor, hash40("invalid"), *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     }
     0.into()
 }
@@ -377,7 +377,7 @@ unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
     //     fighter.FighterStatusDamage__req_fly_roll_smoke_first();
     // }
     fighter.sub_FighterStatusDamage_correctDamageVectorExecStop();
-    
+
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KOZUKATA_DAMAGE) {
         if ControlModule::get_clatter_time(fighter.module_accessor, 0) <= 0.0 {
             WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
@@ -477,13 +477,30 @@ unsafe extern "C" fn fighterstatusdamage__requestvectoradjusteffect(
     original!()(fighter, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
+#[repr(C)]
+pub struct L2CValueTriple {
+    pub x: smash_rs::lib::L2CValue,
+    pub y: smash_rs::lib::L2CValue,
+    pub z: smash_rs::lib::L2CValue
+}
+
+impl L2CValueTriple {
+    pub fn new<T: Into<smash_rs::lib::L2CValue>>(x: T, y: T, z: T) -> Self {
+        L2CValueTriple{
+            x: smash_rs::lib::L2CValue::new(x),
+            y: smash_rs::lib::L2CValue::new(y),
+            z: smash_rs::lib::L2CValue::new(z),
+        }
+    }
+}
+
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusDamage__correctDamageVectorCommon)]
 unsafe extern "C" fn fighterstatusdamage__correctdamagevectorcommon(
     fighter: &mut L2CFighterCommon,
     arg1: L2CValue
-) -> L2CValue {
+) -> L2CValueTriple {
     if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::BURNOUT) {
-        return false.into();
+        return L2CValueTriple::new(0.0, 0.0, 0.0);
     }
     original!()(fighter, arg1)
 }

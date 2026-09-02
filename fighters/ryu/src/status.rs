@@ -4,7 +4,7 @@ mod rebirth;
 
 // mod wait;
 
-// mod walk;
+mod walk;
 
 mod dash_back;
 
@@ -35,6 +35,7 @@ mod special_s_loop;
 mod special_s_end;
 
 mod special_hi;
+mod special_hi_jump;
 
 mod special_lw;
 
@@ -51,7 +52,7 @@ pub fn install(agent: &mut Agent) {
 
     // wait::install(agent);
 
-    // walk::install(agent);
+    walk::install(agent);
 
     dash_back::install(agent);
 
@@ -82,6 +83,7 @@ pub fn install(agent: &mut Agent) {
     special_s_end::install(agent);
 
     special_hi::install(agent);
+    special_hi_jump::install(agent);
 
     special_lw::install(agent);
 

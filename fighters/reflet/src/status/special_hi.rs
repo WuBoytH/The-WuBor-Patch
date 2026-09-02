@@ -1,6 +1,48 @@
 use super::*;
 
-unsafe extern "C" fn reflet_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FighterSpecializer_Reflet::change_hud_kind(fighter.battle_object as *mut Fighter, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND);
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) < 1 {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_FAIL);
+        return 1.into();
+    }
+    if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::DISABLE_SPECIAL_HI) {
+        StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2);
+        return 1.into();
+    }
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_SHOOT |
+            *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+        ) as u64,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+        0
+    );
+    0.into()
+}
+
+unsafe extern "C" fn special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
     let correct;
     let kinetic;
@@ -42,10 +84,10 @@ unsafe extern "C" fn reflet_special_hi_main(fighter: &mut L2CFighterCommon) -> L
     }
     let special_hi_landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_frame"));
     WorkModule::set_float(fighter.module_accessor, special_hi_landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-    fighter.sub_shift_status_main(L2CValue::Ptr(reflet_special_hi_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(special_hi_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn reflet_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -65,12 +107,12 @@ unsafe extern "C" fn reflet_special_hi_main_loop(fighter: &mut L2CFighterCommon)
             return 1.into();
         }
     }
-    reflet_special_hi_check_jump(fighter);
-    reflet_special_hi_try_2nd(fighter);
+    special_hi_check_jump(fighter);
+    // special_hi_try_2nd(fighter);
     0.into()
 }
 
-unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn special_hi_check_jump(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP) {
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -80,7 +122,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
         lua_bind::KineticEnergy::reset_energy(
             grav_energy,
             *ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
-            &Vector2f{x: 0.0, y: speed.value[1]},
+            &Vector2f{x: 0.0, y: speed.y()},
             &Vector3f{x: 0.0, y: 0.0, z: 0.0},
             fighter.module_accessor
         );
@@ -106,7 +148,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            speed.value[0],
+            speed.x(),
             0.0
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -123,19 +165,17 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
     }
 }
 
-unsafe extern "C" fn reflet_special_hi_try_2nd(fighter: &mut L2CFighterCommon) {
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND)
-    && (
-        ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        || WarkModule::is_operation_cpu(fighter.module_accessor)
-    ) {
-        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) > 0 {
-            StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2, false);
-        }
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
-    }
-}
+// unsafe extern "C" fn special_hi_try_2nd(fighter: &mut L2CFighterCommon) {
+//     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND)
+//     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+//         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_SPECIAL_HI_CURRENT_POINT) > 0 {
+//             StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_REFLET_STATUS_KIND_SPECIAL_HI_2, false);
+//         }
+//         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
+//     }
+// }
 
 pub fn install(agent: &mut Agent) {
-    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, reflet_special_hi_main);
+    agent.status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_pre);
+    agent.status(Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, special_hi_main);
 }

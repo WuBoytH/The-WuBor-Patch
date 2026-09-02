@@ -2,18 +2,34 @@ use super::*;
 
 unsafe extern "C" fn ken_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
+    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end"), *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
     let mot_air = if VarModule::is_flag(fighter.module_accessor, vars::ken::status::flag::QUICK_STEP_INHERITED) {
         hash40("special_air_s2_end")
     }
     else {
         hash40("special_air_s_end")
     };
-    WorkModule::set_int64(fighter.module_accessor, mot_air as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, mot_air, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_AIR);
     if !StopModule::is_stop(fighter.module_accessor) {
         ken_special_s_end_substatus(fighter, false.into());
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ken_special_s_end_substatus as *const () as _));
+
+    let eff = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE) as u32;
+    if eff == 0 {
+        let eff = if !MotionModule::is_flip(fighter.module_accessor) {
+            hash40("ken_tatsumaki_wind_l")
+        }
+        else {
+            hash40("ken_tatsumaki_wind_r")
+        };
+        fighter.clear_lua_stack();
+        lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
+        sv_module_access::effect(fighter.lua_state_agent);
+        let spineffect = fighter.pop_lua_stack(1).get_u32();
+        WorkModule::set_int(fighter.module_accessor, spineffect as i32, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+    }
+
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_special_s_end_main_loop as *const () as _))
 }
 
@@ -185,6 +201,13 @@ unsafe extern "C" fn ken_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2
         false,
         true
     );
+
+    let eff = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+    if eff != *EFFECT_HANDLE_NULL {
+        EffectModule::kill(fighter.module_accessor, eff as u32, false, false);
+        WorkModule::set_int(fighter.module_accessor, *EFFECT_HANDLE_NULL, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
+    }
+
     0.into()
 }
 

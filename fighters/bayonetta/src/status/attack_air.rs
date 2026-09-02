@@ -5,7 +5,7 @@ unsafe extern "C" fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) ->
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if mot == hash40("attack_air_lw") {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            VisibilityModule::set_int64(fighter.module_accessor, hash40("gun_hand") as i64, 0xf62011258);
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("gun_hand"), 0xf62011258);
             ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
         }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_KEEP_AIR);
@@ -25,8 +25,8 @@ unsafe extern "C" fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) ->
             loop_mot = hash40("attack_air_hi_hold");
             param = hash40("attack_air_hi_loop_max");
         }
-        WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_MOTION_KIND);
-        WorkModule::set_int64(fighter.module_accessor, loop_mot as i64, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_LOOP_MOTION_KIND);
+        WorkModule::set_int64(fighter.module_accessor, mot, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_MOTION_KIND);
+        WorkModule::set_int64(fighter.module_accessor, loop_mot, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_LOOP_MOTION_KIND);
         let loop_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), param);
         WorkModule::set_int(fighter.module_accessor, loop_max, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_INT_LOOP_COUNT);
         fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_attackair_main_loop as *const () as _))

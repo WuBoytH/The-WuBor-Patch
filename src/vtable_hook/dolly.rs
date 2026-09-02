@@ -224,11 +224,11 @@ unsafe extern "C" fn dolly_reset2(_vtable: u64, fighter: &mut Fighter) {
 
 pub fn install() {
     // Max Status Terms?
-    let _ = skyline::patching::Patch::in_text(0x4fa6e40).data(6u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e40).data(6u8);
     // Some Kind of Transition Check
-    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x203).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x204).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa6e70 + 0x205).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x204).data(1u8);
+    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x205).data(1u8);
 
     skyline::install_hooks!(
         dolly_per_frame,
@@ -236,5 +236,5 @@ pub fn install() {
         dolly_handle_special_command_turnaround,
         dolly_reset2
     );
-    MiscModule::patch_vtable_function(0x4fa6a28, dolly_on_attack as u64);
+    MiscModule::patch_vtable_function(0x4fa7a28, dolly_on_attack as *const () as u64);
 }

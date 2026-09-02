@@ -58,7 +58,7 @@ unsafe extern "C" fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
         }
         let log = fighter.status_attack()["log_infos"]["attack_dash"].get_int();
-        WorkModule::set_int64(fighter.module_accessor, log as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+        WorkModule::set_int64(fighter.module_accessor, log, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
         if !StopModule::is_stop(fighter.module_accessor) {
             fighter.sub_attack_dash_uniq(false.into());
         }
@@ -82,7 +82,7 @@ unsafe extern "C" fn dolly_attack_dash_main_loop(fighter: &mut L2CFighterCommon)
                 return 1.into();
             }
         }
-        
+
     }
     fighter.status_AttackDash_Main();
     0.into()

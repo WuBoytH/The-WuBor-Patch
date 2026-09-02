@@ -1,3 +1,5 @@
+#![allow(unknown_lints, integer_to_ptr_transmutes)]
+
 use crate::imports::*;
 use crate::system::func_links;
 

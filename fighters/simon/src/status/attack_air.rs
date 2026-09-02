@@ -48,7 +48,7 @@ unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2
         false
     );
 
-    WorkModule::set_int64(fighter.module_accessor, new_kind as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
+    WorkModule::set_int64(fighter.module_accessor, new_kind, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
 
     fighter.sub_attack_air_common(false.into());
 

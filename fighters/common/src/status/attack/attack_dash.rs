@@ -24,8 +24,8 @@ unsafe extern "C" fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CVal
         WorkModule::set_int(fighter.module_accessor, jump_mini_attack_enable_frame + 1, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
     }
-    let log = fighter.status_attack()["log_infos"]["attack_dash"].get_int();
-    WorkModule::set_int64(fighter.module_accessor, log as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    let log = fighter.status_attack()["log_infos"]["attack_dash"].get_u64();
+    WorkModule::set_int64(fighter.module_accessor, log, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK)
     && WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND) > 0 {
         let log = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
@@ -177,7 +177,7 @@ unsafe extern "C" fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L
         if !StopModule::is_stop(fighter.module_accessor)
         && fighter.sub_check_button_jump().get_bool() {
             let log = fighter.status_attack();
-            let info = log[0x10f40d7b92u64].get_i64();
+            let info = log[0x10f40d7b92u64].get_u64();
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             MotionAnimcmdModule::call_script_single(
                 fighter.module_accessor,

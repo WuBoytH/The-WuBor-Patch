@@ -24,6 +24,8 @@ pub struct CollisionLogScuffed {
     pub collider_part_id: u8,
     pub receiver_id: u8,
     pub collider_id: u8,
+    pub x34: u8,
+    pub is_abs: bool
 }
 
 // SHIELD BOXES
@@ -433,14 +435,14 @@ pub struct StatChangeGroup {
 impl StatChangeGroup {
     pub fn empty(capacity: usize) -> *mut StatChangeGroup {
         let layout = std::alloc::Layout::array::<StatChange>(capacity).unwrap();
-        let ptr = unsafe { 
+        let ptr = unsafe {
             let raw_ptr = std::alloc::alloc_zeroed(layout) as *mut StatChange;
             if raw_ptr.is_null() {
                 std::alloc::handle_alloc_error(layout);
             }
             raw_ptr
         };
-        
+
         Box::into_raw(Box::new(StatChangeGroup {
             group: ptr,
             end: ptr, // Start with same pointer (empty array)
@@ -452,7 +454,7 @@ impl StatChangeGroup {
         let ptr = changes.as_mut_ptr();
         let len = changes.len();
         std::mem::forget(changes); // Prevent Rust from dropping
-        
+
         // Calculate end pointer (first element + length)
         let end_ptr = unsafe { ptr.add(len) };
 
@@ -461,7 +463,7 @@ impl StatChangeGroup {
             end: end_ptr,
             end2: end_ptr
         });
-        
+
         Box::into_raw(group)
     }
 }

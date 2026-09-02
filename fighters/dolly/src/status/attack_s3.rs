@@ -66,7 +66,7 @@ unsafe extern "C" fn dolly_attack_s3_main_loop_inner(fighter: &mut L2CFighterCom
             if !StopModule::is_stop(fighter.module_accessor)
             && fighter.sub_check_button_jump().get_bool() {
                 let log = fighter.status_attack();
-                let info = log[0x10f40d7b92u64].get_i64();
+                let info = log[0x10f40d7b92u64].get_u64();
                 let mot = MotionModule::motion_kind(fighter.module_accessor);
                 MotionAnimcmdModule::call_script_single(
                     fighter.module_accessor,
@@ -147,7 +147,7 @@ unsafe extern "C" fn dolly_attack_s3_mtrans_param(fighter: &mut L2CFighterCommon
     let attack_struct = fighter.status_attack();
     let log_infos = attack_struct["log_infos"].clone();
     let attack_s3_s = log_infos["attack_s3_s"].get_u64();
-    WorkModule::set_int64(fighter.module_accessor, attack_s3_s as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    WorkModule::set_int64(fighter.module_accessor, attack_s3_s, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if !StatusModule::is_changing(fighter.module_accessor) {
         let jump_attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
         if 0 < jump_attack_frame {

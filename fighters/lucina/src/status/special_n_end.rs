@@ -3,12 +3,12 @@ use super::*;
 unsafe extern "C" fn lucina_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     if VarModule::is_flag(fighter.module_accessor, vars::yu::status::flag::IS_EX) {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end_max") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end_max") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end_max"), *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end_max"), *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
     }
     else {
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
-        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end"), *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end"), *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_special_n_end_main_loop as *const () as _))
 }

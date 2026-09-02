@@ -48,8 +48,8 @@ pub unsafe extern "C" fn belmont_special_lw_main_inner(fighter: &mut L2CFighterC
         mot_g = hash40("special_lw_blank");
         mot_a = hash40("special_air_lw_blank");
     }
-    WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION);
-    WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION_AIR);
+    WorkModule::set_int64(fighter.module_accessor, mot_g, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, mot_a, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION_AIR);
     let sum = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     if sum < 0.0 {
         KineticModule::mul_speed(

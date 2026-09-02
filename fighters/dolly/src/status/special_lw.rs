@@ -132,10 +132,7 @@ unsafe extern "C" fn dolly_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-        return 1.into();
-    }
+
     if !MotionModule::is_end(fighter.module_accessor) {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP)
         && !StatusModule::is_changing(fighter.module_accessor)

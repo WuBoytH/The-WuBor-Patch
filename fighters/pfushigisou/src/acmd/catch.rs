@@ -26,7 +26,7 @@ unsafe extern "C" fn game_catchdash(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
-        macros::CATCH(agent, 0, Hash40::new("top"), 2.6, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(19.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
+        macros::CATCH(agent, 0, Hash40::new("top"), 2.6, 0.0, 5.0, 1.6, Some(0.0), Some(5.0), Some(19.7), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_GA);
     }
     let animcmd: &mut L2CFighterAnimcmdGameCommon = std::mem::transmute(&mut *agent);
     L2CFighterAnimcmdGameCommon::game_CaptureCutCommon(animcmd);
@@ -85,7 +85,7 @@ unsafe extern "C" fn effect_catchattack(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn expression_catchattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        VisibilityModule::set_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("weapon"), hash40("weapon_normal"));
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
 }

@@ -143,7 +143,7 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
 
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
-    && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
         return true.into();
@@ -175,13 +175,22 @@ unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue 
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && !ItemModule::is_have_item(fighter.module_accessor, 0) {
-        if !can_act {
-            fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let turn_run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_run_stick_x"));
+        let status = if stick_x * lr <= turn_run_stick_x {
+            FIGHTER_STATUS_KIND_CATCH_TURN
         }
         else {
-            set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH, false);
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
-        }
+            FIGHTER_STATUS_KIND_CATCH
+        };
+        // if !can_act {
+            fighter.change_status(status.into(), true.into());
+        // }
+        // else {
+        //     set_cat1_backup(fighter, *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH, false);
+        //     fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
+        // }
         return true.into();
     }
 

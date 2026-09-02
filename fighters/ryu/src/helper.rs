@@ -36,7 +36,7 @@ pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, 
 
 #[inline(always)]
 pub unsafe fn ryu_saving_aura_remover(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, vars::ryu::status::flag::SET_DENJIN_AURA) {
         if macros::is_excute(agent) {
             macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
 
@@ -50,13 +50,14 @@ pub unsafe fn ryu_saving_aura_remover(agent: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
-    VarModule::off_flag(fighter.module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
-    let eff_handle = VarModule::get_int(fighter.module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
-    if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
-        EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
+#[no_mangle]
+pub unsafe fn ryu_denjin_remover(module_accessor: *mut BattleObjectModuleAccessor) {
+    VarModule::off_flag(module_accessor, vars::ryu::instance::flag::DENJIN_CHARGE);
+    let eff_handle = VarModule::get_int(module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    if EffectModule::is_exist_effect(module_accessor, eff_handle) {
+        EffectModule::kill(module_accessor, eff_handle, true, true);
     }
-    VarModule::set_int(fighter.module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE, 0);
+    VarModule::set_int(module_accessor, vars::ryu::instance::int::DENJIN_EFF_HANDLE, 0);
 }
 
 #[no_mangle]
@@ -430,7 +431,7 @@ pub unsafe extern "C" fn ryu_attack_hi3_main_inner(fighter: &mut L2CFighterCommo
         false
     );
     let info = ryu_get_mini_jump_attack_data_log_info(fighter, mot.into());
-    WorkModule::set_int64(fighter.module_accessor, info.get_u64() as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    WorkModule::set_int64(fighter.module_accessor, info.get_u64(), *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x265a5c1b6b), Hash40::new("attack_hi3_s"), Hash40::new("attack_hi3_w"));
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
     let fb = ControlModule::get_attack_hi3_fb_kind(fighter.module_accessor);
@@ -545,7 +546,7 @@ unsafe extern "C" fn ryu_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) ->
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
     }
-    
+
     0.into()
 }
 
@@ -664,7 +665,7 @@ unsafe extern "C" fn ryu_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) ->
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_SQUAT_WAIT.into(), false.into());
     }
-    
+
     0.into()
 }
 

@@ -103,8 +103,7 @@ jobs:
             Remove the `ultimate/mods/The WuBor Patch` or `ultimate/mods/wubor` folder, if you have one already.
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/wubor/`
           files: >
-            The_WuBor_Patch/*
-            The_WuBor_Patch.zip/*
+            The_WuBor_Patch.zip
   # delete-dev-tag:
   #   runs-on: ubuntu-24.04
   #   needs: [ package-dev, get-version ]
@@ -124,6 +123,9 @@ jobs:
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v8.0.1
+      - name: Print Filesystem
+        shell: bash
+        run: ls
       - name: Create Dev Prerelease
         uses: softprops/action-gh-release@v3.0.3
         env:
@@ -143,5 +145,4 @@ jobs:
             Remove the `ultimate/mods/The WuBor Patch` or `ultimate/mods/wubor` folder, if you have one already.
             Extract `The_WuBor_Patch_Dev.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/wubor/`
           files: >
-            The_WuBor_Patch_Dev/*
-            The_WuBor_Patch_Dev.zip/*
+            The_WuBor_Patch_Dev.zip

@@ -98,8 +98,8 @@ unsafe extern "C" fn sonic_special_air_lw_bound_exec(fighter: &mut L2CFighterCom
     VarModule::off_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_BOUND_START);
     VarModule::on_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_LW_BOUNDING);
     let speed_x_add = VarModule::get_float(fighter.module_accessor, vars::sonic::status::float::SPECIAL_AIR_LW_BOUND_SPEED_X);
-    let speed = VarModule::get_float(fighter.module_accessor, vars::sonic::status::float::SPECIAL_AIR_LW_BOUND_SPEED_Y) * 0.6;
-    let speed = speed.clamp(0.5, 10.0);
+    let speed = VarModule::get_float(fighter.module_accessor, vars::sonic::status::float::SPECIAL_AIR_LW_BOUND_SPEED_Y) * 0.68;
+    let speed = speed.clamp(1.5, 10.0);
 
     fighter.set_situation(SITUATION_KIND_AIR.into());
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));

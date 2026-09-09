@@ -1081,7 +1081,7 @@ pub mod sonic {
 
             pub const SPECIAL_AIR_S_FIRST : i32 = 0x1150;
             pub const SPECIAL_AIR_S_CHECK_END : i32 = 0x1151;
-            pub const SPECIAL_AIR_S_TO_END : i32 = 0x1152;
+            pub const SPECIAL_AIR_S_TO_HIT : i32 = 0x1152;
             pub const SPECIAL_AIR_S_CHECK_HIT : i32 = 0x1153;
 
             pub const SPECIAL_AIR_LW_TO_LOOP : i32 = 0x1150;
@@ -1112,11 +1112,12 @@ pub mod sonic {
         pub const LOOK_UP_RV : i32 = 0x1F5;
         pub const SPECIAL_AIR_S_START : i32 = 0x1F6;
         pub const SPECIAL_AIR_S_HOLD : i32 = 0x1F7;
-        pub const SPECIAL_AIR_S_END : i32 = 0x1F8;
-        pub const SPECIAL_AIR_LW_START : i32 = 0x1F9;
-        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1FA;
-        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1FB;
-        pub const TRICK : i32 = 0x1FC;
+        pub const SPECIAL_AIR_S_HIT : i32 = 0x1F8;
+        pub const SPECIAL_AIR_S_LAUNCH : i32 = 0x1F9;
+        pub const SPECIAL_AIR_LW_START : i32 = 0x1FA;
+        pub const SPECIAL_AIR_LW_LOOP : i32 = 0x1FB;
+        pub const SPECIAL_AIR_LW_BOUND : i32 = 0x1FC;
+        pub const TRICK : i32 = 0x1FD;
     }
 }
 

@@ -11,7 +11,8 @@ mod special_s;
 
 mod special_air_s_start;
 mod special_air_s_hold;
-mod special_air_s_end;
+mod special_air_s_hit;
+mod special_air_s_launch;
 
 mod special_lw;
 
@@ -33,7 +34,8 @@ pub fn install(agent: &mut Agent) {
 
     special_air_s_start::install(agent);
     special_air_s_hold::install(agent);
-    special_air_s_end::install(agent);
+    special_air_s_hit::install(agent);
+    special_air_s_launch::install(agent);
 
     special_lw::install(agent);
 

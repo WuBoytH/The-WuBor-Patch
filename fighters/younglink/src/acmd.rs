@@ -12,6 +12,7 @@ mod lasso;
 
 mod escape;
 mod cliff;
+mod appeal;
 
 pub fn install(agent: &mut Agent) {
     dash::install(agent);
@@ -26,4 +27,5 @@ pub fn install(agent: &mut Agent) {
 
     escape::install(agent);
     cliff::install(agent);
+    appeal::install(agent);
 }

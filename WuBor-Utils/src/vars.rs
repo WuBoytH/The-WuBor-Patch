@@ -1,6 +1,8 @@
 #![allow(non_upper_case_globals)]
 
 use smash::phx::Vector3f;
+use smash::hash40;
+use custom_var::{decl_var, VarType, CUSTOM_VAR_MANAGER};
 
 // Common
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
@@ -20,8 +22,12 @@ pub const ATTACK_HI4_MASK : i32 = 0b0100000;
 pub const ATTACK_LW4_MASK : i32 = 0b1000000;
 
 pub mod fighter {
+    use super::*;
     pub mod instance {
-        pub mod flag {
+        use super::*;
+         pub mod flag {
+            use super::*;
+            decl_var!(DISABLE_SPECIAL_X, hash40("fighter"), VarType::Flag, true);
             pub const DISABLE_SPECIAL_N : i32 = 0x0000;
             pub const DISABLE_SPECIAL_S : i32 = 0x0001;
             pub const DISABLE_SPECIAL_HI : i32 = 0x0002;

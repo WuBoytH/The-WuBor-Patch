@@ -13,15 +13,14 @@ unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) 
     let collision_kind = (*collision_log).collision_kind;
     if [
         sonic::status::SPECIAL_AIR_S_HOLD,
-        sonic::status::SPECIAL_AIR_S_END
+        sonic::status::SPECIAL_AIR_S_HIT,
+        sonic::status::SPECIAL_AIR_S_LAUNCH,
     ].contains(&status) {
         if collision_kind == 1 {
             VarModule::on_flag(module_accessor, sonic::status::flag::SPECIAL_AIR_S_CHECK_HIT);
-        }
-        if [1, 2].contains(&collision_kind)
-        && status == sonic::status::SPECIAL_AIR_S_HOLD {
-            VarModule::on_flag(module_accessor, sonic::status::flag::SPECIAL_AIR_S_TO_END);
-            KineticModule::unable_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            if status == sonic::status::SPECIAL_AIR_S_HOLD {
+                VarModule::on_flag(module_accessor, sonic::status::flag::SPECIAL_AIR_S_TO_HIT);
+            }
         }
     }
     original!()(vtable, fighter, log);

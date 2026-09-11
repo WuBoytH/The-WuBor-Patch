@@ -57,12 +57,12 @@ unsafe extern "C" fn sonic_special_air_s_hold_main(fighter: &mut L2CFighterCommo
     sv_kinetic_energy!(
         controller_set_accel_x_add,
         fighter,
-        0.01
+        0.025
     );
     sv_kinetic_energy!(
         controller_set_accel_x_mul,
         fighter,
-        0.01
+        0.025
     );
     sv_kinetic_energy!(
         set_speed,
@@ -79,7 +79,8 @@ unsafe extern "C" fn sonic_special_air_s_hold_main_loop(fighter: &mut L2CFighter
     }
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+        WorkModule::set_float(fighter.module_accessor, 16.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         return 0.into();
     }
 
@@ -97,21 +98,23 @@ unsafe extern "C" fn sonic_special_air_s_hold_main_loop(fighter: &mut L2CFighter
         VarModule::off_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_FIRST);
     }
 
+    if VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_TO_HIT) {
+        fighter.change_status(vars::sonic::status::SPECIAL_AIR_S_HIT.into(), false.into());
+        return 1.into();
+    }
+
     if VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_CHECK_END) {
         VarModule::off_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_CHECK_END);
         let count_down = VarModule::countdown_int(fighter.module_accessor, vars::sonic::status::int::SPECIAL_AIR_S_HOLD_COUNT_REMAIN, 0);
-        if VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_TO_END) {
-            fighter.change_status(vars::sonic::status::SPECIAL_AIR_S_END.into(), false.into());
-            return 1.into();
-        }
         if !VarModule::is_flag(fighter.module_accessor, vars::sonic::status::flag::SPECIAL_AIR_S_FIRST)
         && (ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || count_down) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            // fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            fighter.change_status(vars::sonic::status::SPECIAL_AIR_S_LAUNCH.into(), false.into());
             return 0.into();
         }
     }
-    
+
     0.into()
 }
 

@@ -14,8 +14,8 @@ unsafe extern "C" fn jack_throw_cancel(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-        ].to_vec();
-        special_cancel_common(fighter, SITUATION_KIND_GROUND.into(), special_cancels);
+        ];
+        special_cancel_common(fighter, SITUATION_KIND_GROUND.into(), &special_cancels);
     }
 }
 

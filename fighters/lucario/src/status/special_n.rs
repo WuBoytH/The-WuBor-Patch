@@ -171,7 +171,7 @@ unsafe extern "C" fn lucario_special_n_shoot_main_loop(fighter: &mut L2CFighterC
     }
     if VarModule::is_flag(fighter.module_accessor, vars::lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
         let situation = fighter.global_table[SITUATION_KIND].clone();
-        special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
+        special_cancel_common(fighter, situation, &[*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI]);
     }
     if !MotionModule::is_end(fighter.module_accessor) {
         if !StatusModule::is_changing(fighter.module_accessor)

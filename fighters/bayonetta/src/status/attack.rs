@@ -105,7 +105,7 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
         let normal_cancels = get_jab_cancel_transitions(fighter);
-        if normal_cancel_common(fighter, normal_cancels).get_bool() {
+        if normal_cancel_common(fighter, normal_cancels.as_slice()).get_bool() {
             return 1.into();
         }
     }

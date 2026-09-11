@@ -397,11 +397,11 @@ impl CustomCancelManager {
 
     #[export_name = "CustomCancelManager__execute_cancel"]
     pub extern "Rust" fn execute_cancel(fighter: &mut L2CFighterCommon) -> bool {
-        let mut manager = CUSTOM_CANCEL_MANAGER.write();
+        let manager = CUSTOM_CANCEL_MANAGER.read();
         let agent = unsafe{ (*fighter.battle_object).agent_kind_hash };
-        if let Some(agent_infos) = manager.cancel_infos.get_mut(&agent) {
+        if let Some(agent_infos) = manager.cancel_infos.get(&agent) {
             let status = unsafe {StatusModule::status_kind(fighter.module_accessor)};
-            if let Some(cancel_info) = agent_infos.get_mut(&status) {
+            if let Some(cancel_info) = agent_infos.get(&status) {
                 if Self::execute_cancel_inner(fighter, cancel_info) {
                     if let Some(post_func) = cancel_info.post {
                         unsafe {
@@ -435,7 +435,7 @@ impl CustomCancelManager {
 
                 let special_cancel = cancel_info.special_cancel;
                 
-                let mut specials = cancel_info.specials.clone();
+                let mut specials: &[i32] = &cancel_info.specials;
 
                 let condition =
                 if cancel_info.alt_info.is_some()
@@ -448,7 +448,7 @@ impl CustomCancelManager {
                     if alt_cancel.contains(CancelType::WHIFF)
                     || (alt_cancel.contains(CancelType::BLOCK) && shield)
                     || (alt_cancel.contains(CancelType::HIT) && hit) {
-                        specials = alt_enable.specials.clone();
+                        specials = &alt_enable.specials;
                         true
                     }
                     else {
@@ -492,7 +492,7 @@ impl CustomCancelManager {
 
                 let normal_cancel = cancel_info.normal_cancel;
 
-                let mut normals = cancel_info.normals.clone();
+                let mut normals: &[i32] = &cancel_info.normals;
                 
                 let condition =
                 if cancel_info.alt_info.is_some()
@@ -505,7 +505,7 @@ impl CustomCancelManager {
                     if alt_cancel.contains(CancelType::WHIFF)
                     || (alt_cancel.contains(CancelType::BLOCK) && shield)
                     || (alt_cancel.contains(CancelType::HIT) && hit) {
-                        normals = alt_enable.normals.clone();
+                        normals = &alt_enable.normals;
                         true
                     }
                     else {

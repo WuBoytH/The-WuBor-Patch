@@ -63,7 +63,7 @@ unsafe extern "C" fn mariod_special_lw_main_loop(fighter: &mut L2CFighterCommon)
     else if VarModule::is_flag(fighter.module_accessor, vars::mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS) {
         let situation = fighter.global_table[SITUATION_KIND].clone();
         if FGCModule::air_dash_cancel_check(fighter, false, true).get_bool()
-        || special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec()).get_bool() {
+        || special_cancel_common(fighter, situation, &[*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI]).get_bool() {
             return 0.into();
         }
     }

@@ -417,7 +417,7 @@ all_chars = [
 panic = "abort"
 
 [profile.release]
-opt-level = 3
+opt-level = "s"
 panic = "abort"
 lto = true
 codegen-units = 1

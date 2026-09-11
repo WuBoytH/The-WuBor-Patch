@@ -199,7 +199,7 @@ pub mod FGCModule {
     /// * `special_cancels` - A vector of all of the special move transition terms you can cancel into.
     /// * `aerial_cancel` - Checks if you can cancel into an aerial.
     /// * `jump_cancel` - Checks if you can jump-cancel. 0 = None | 1 = On Hit | 2 = On Hit or Block
-    pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) -> L2CValue {
+    pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: &[i32], special_cancels: &[i32], aerial_cancel: bool, jump_cancel: i32) -> L2CValue {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         && check_cancel_window(fighter) {

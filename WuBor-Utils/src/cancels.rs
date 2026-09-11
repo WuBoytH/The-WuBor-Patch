@@ -66,7 +66,7 @@ pub unsafe fn airdash_cancel_common(fighter: &mut L2CFighterCommon, situation: L
     ret.into()
 }
 
-pub unsafe fn special_cancel_common(fighter: &mut L2CFighterCommon, situation: L2CValue, allowed_terms: Vec<i32>) -> L2CValue {
+pub unsafe fn special_cancel_common(fighter: &mut L2CFighterCommon, situation: L2CValue, allowed_terms: &[i32]) -> L2CValue {
     let ret;
     let terms = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
@@ -145,7 +145,7 @@ pub unsafe fn aerial_cancel_common_revised(fighter: &mut L2CFighterCommon, allow
     ret.into()
 }
 
-pub unsafe fn normal_cancel_common(fighter: &mut L2CFighterCommon, allowed_terms: Vec<i32>) -> L2CValue {
+pub unsafe fn normal_cancel_common(fighter: &mut L2CFighterCommon, allowed_terms: &[i32]) -> L2CValue {
     let ret;
     let terms = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK,

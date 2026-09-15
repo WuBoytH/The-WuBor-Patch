@@ -14,54 +14,17 @@ use {
 };
 
 lazy_static! {
-    pub static ref CUSTOM_VAR_MANAGER: RwLock<CustomVarManager> = RwLock::new(CustomVarManager::new());
+    static ref CUSTOM_VAR_MANAGER: RwLock<CustomVarManager> = RwLock::new(CustomVarManager::new());
 }
 
 pub struct CustomVarManager {
-    pub modules: Arc<RwLock<HashMap<u32, VarModule>>>,
-    pub instance_count: Arc<RwLock<HashMap<u64, (i32, i32, i32, i32)>>>,
-    pub status_count: Arc<RwLock<HashMap<u64, (i32, i32, i32, i32)>>>
-}
-
-#[repr(usize)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum VarType {
-    Int = 0,
-    Int64,
-    Flag,
-    Float
-}
-
-#[macro_export]
-macro_rules! decl_var {
-    ($name:ident, $cat:expr, $ty:expr, $instance:expr) => {
-        pub static $name: std::sync::LazyLock<i32> = std::sync::LazyLock::new(|| {
-            let mgr = CUSTOM_VAR_MANAGER.read();
-            let mut counts = if $instance {
-                mgr.instance_count.write()
-            }
-            else {
-                mgr.status_count.write()
-            };
-            let slot = match $ty {
-                VarType::Int => &mut counts.entry($cat).or_default().0,
-                VarType::Int64 => &mut counts.entry($cat).or_default().1,
-                VarType::Flag => &mut counts.entry($cat).or_default().2,
-                VarType::Float => &mut counts.entry($cat).or_default().3,
-            };
-            let id = *slot;
-            *slot += 1;
-            id
-        });
-    };
+    pub modules: Arc<RwLock<HashMap<u32, VarModule>>>
 }
 
 impl CustomVarManager {
     pub(crate) fn new() -> Self {
         Self {
-            modules: Arc::new(RwLock::new(HashMap::new())),
-            instance_count: Arc::new(RwLock::new(HashMap::new())),
-            status_count: Arc::new(RwLock::new(HashMap::new())),
+            modules: Arc::new(RwLock::new(HashMap::new()))
         }
     }
 
@@ -120,7 +83,7 @@ impl CustomVarManager {
 
         x
     }
-
+    
     #[export_name = "CustomVarManager__count"]
     pub extern "Rust" fn count() -> i32 {
         let mut manager = CUSTOM_VAR_MANAGER.write();
@@ -463,7 +426,7 @@ impl VarModule {
         if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
-            module.int[vec_index][index]
+            module.int[vec_index][index]   
         }
         else {
             0
@@ -594,7 +557,7 @@ impl VarModule {
         if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
-            module.float[vec_index][index] = val;
+            module.float[vec_index][index] = val;   
         }
     }
 

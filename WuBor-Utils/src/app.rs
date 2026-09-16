@@ -278,7 +278,8 @@ pub struct CommandInputState {
 pub struct CommandInputStateHold {
     pub input_state: CommandInputState,
     pub hold_timer_max: u16,
-    pub hold_timer: u16
+    pub hold_timer: u16,
+    pub is_special_button: u16
 }
 
 impl core::ops::Deref for CommandInputStateHold {

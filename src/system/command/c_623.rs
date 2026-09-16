@@ -37,7 +37,6 @@ unsafe extern "C" fn c_623_a(
             if data.down() {
                 class.state = 3;
                 class.command_timer = 0;
-                return false;
             }
             if data.front_down(class.lr as f32) || data.front(class.lr as f32) {
                 class.state = 2;

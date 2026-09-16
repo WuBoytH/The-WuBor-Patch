@@ -2,7 +2,7 @@ use super::*;
 
 #[skyline::hook(offset = 0x6c0480)]
 unsafe extern "C" fn c_623_ab_long(
-    class: &mut CommandInputState,
+    class: &mut CommandInputStateHold,
     args: *const CommandInputFlags,
     lr: f32
 ) -> bool {
@@ -89,14 +89,14 @@ unsafe extern "C" fn c_623_ab_long(
             if data.intersects(check_flag) {
                 class.state = 5;
                 class.command_timer = 0;
-                *(class as *mut CommandInputState as *mut u16).add(0x12) = 1;
-                *(class as *mut CommandInputState as *mut u8).add(0x14) = (data.bits() >> 10 & 1) as u8;
+                class.hold_timer = 1;
+                class.is_special_button = (data.bits() >> 10 & 1) as u16;
             }
 
             false
         }
         5 => {
-            let check = if *(class as *mut CommandInputState as *mut u8).add(0x14) == 0 {
+            let check = if class.is_special_button == 0 {
                 0xc
             }
             else {
@@ -108,11 +108,11 @@ unsafe extern "C" fn c_623_ab_long(
                 return false;
             }
 
-            let count = *(class as *mut CommandInputState as *mut u8).add(0x12) + 1;
-            *(class as *mut CommandInputState as *mut u8).add(0x12) = count;
+            let count = class.hold_timer + 1;
+            class.hold_timer = count;
             class.command_timer = 0;
 
-            let count_max = *(class as *mut CommandInputState as *mut u8).add(0x10);
+            let count_max = class.hold_timer_max;
             if count_max <= count {
                 return true;
             }

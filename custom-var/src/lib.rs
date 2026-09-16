@@ -83,7 +83,7 @@ impl CustomVarManager {
 
         x
     }
-    
+
     #[export_name = "CustomVarManager__count"]
     pub extern "Rust" fn count() -> i32 {
         let mut manager = CUSTOM_VAR_MANAGER.write();
@@ -426,7 +426,7 @@ impl VarModule {
         if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
-            module.int[vec_index][index]   
+            module.int[vec_index][index]
         }
         else {
             0
@@ -557,7 +557,7 @@ impl VarModule {
         if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
-            module.float[vec_index][index] = val;   
+            module.float[vec_index][index] = val;
         }
     }
 

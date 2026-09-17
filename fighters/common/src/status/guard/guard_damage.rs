@@ -3,11 +3,17 @@ use super::super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_GuardDamage)]
 unsafe extern "C" fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let correct = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP
+    }
+    else {
+        *GROUND_CORRECT_KIND_GROUND
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
         *FIGHTER_KINETIC_TYPE_MOTION,
-        *GROUND_CORRECT_KIND_GROUND as u32,
+        correct as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_DAMAGE_FLAG,
@@ -549,8 +555,14 @@ unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_damage_main_common_air)]
 unsafe extern "C" fn status_guard_damage_main_common_air(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        let correct = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            FIGHTER_STATUS_KIND_FALL
+        }
+        else {
+            FIGHTER_STATUS_KIND_MISS_FOOT
+        };
         // fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
-        fighter.change_status(FIGHTER_STATUS_KIND_MISS_FOOT.into(), false.into());
+        fighter.change_status(correct.into(), false.into());
         return 1.into();
     }
     0.into()

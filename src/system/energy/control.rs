@@ -1,7 +1,7 @@
 use super::*;
 use wubor_utils::controls::*;
 
-pub mod param {   
+pub mod param {
     #[allow(non_upper_case_globals)]
     pub mod jump {
         pub const special_jump_control_mul : f32 = 1.0;
@@ -342,7 +342,7 @@ unsafe extern "C" fn control_update(energy: &mut FighterKineticEnergyControl, mo
             };
 
             if horizontal_limit < energy.speed.x.abs() {
-                energy.speed.x = vertical_limit * energy.speed.x.signum();
+                energy.speed.x = horizontal_limit * energy.speed.x.signum();
             }
 
             if vertical_limit < energy.speed.y.abs() {
@@ -777,7 +777,7 @@ unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::Inline
 #[skyline::hook(offset = 0x6ce28c, inline)]
 unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);    
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_retain(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
         ControlModule::get_sub_stick_x(boma)
     }

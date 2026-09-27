@@ -41,7 +41,7 @@ pub fn install() {
     agent_init::install(agent);
     agent.install();
 
-    smashline::whitelist_kirby_copy_article(*FIGHTER_KIND_RICHTER, *ITEM_KIND_RICHTERHOLYWATER);
+    smashline::whitelist_kirby_copy_article(*FIGHTER_KIND_RICHTER, *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER);
 
     // let ryu_copy_motions = [
     //     hash40("ryu_special_n"), hash40("special_n"),

@@ -2,20 +2,14 @@ use super::*;
 
 unsafe extern "C" fn game_specials3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
+    macros::FT_MOTION_RATE(agent, 7.0 / 4.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 6.0, 4.0);
     }
-    frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 350, 100, 40, 0, 3.0, 0.0, 4.0, 3.0, Some(0.0), Some(9.0), Some(3.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-    }
+    frame(agent.lua_state_agent, 7.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 350, 100, 15, 0, 3.0, 0.0, 6.0, 3.0, Some(0.0), Some(9.0), Some(3.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-    }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
         macros::CATCH(agent, 0, Hash40::new("top"), 4.0, 0.0, 7.0, 5.0, Some(0.0), Some(8.0), Some(5.0), *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_THROWN, *COLLISION_SITUATION_MASK_G);
         macros::CATCH(agent, 1, Hash40::new("top"), 1.0, 0.0, 8.0, 0.0, Some(0.0), Some(8.0), Some(2.0), *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_THROWN, *COLLISION_SITUATION_MASK_GA);
     }
@@ -31,22 +25,14 @@ unsafe extern "C" fn game_specials3dash(agent: &mut L2CAgentBase) {
 
 unsafe extern "C" fn game_specialairs3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(agent, 7.0 / 4.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 4.5, 4.5, 6.0, 6.0);
     }
-    frame(agent.lua_state_agent, 9.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 350, 100, 100, 0, 5.0, 0.0, 4.0, 0.0, Some(0.0), Some(9.0), Some(1.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 350, 100, 40, 0, 3.0, 0.0, 6.0, 3.0, Some(0.0), Some(9.0), Some(3.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-    }
+    frame(agent.lua_state_agent, 7.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 350, 100, 80, 0, 5.0, 0.0, 4.0, 1.0, Some(0.0), Some(4.0), Some(0.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 350, 100, 15, 0, 3.0, 0.0, 7.0, 3.0, Some(0.0), Some(8.0), Some(3.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-    }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
         macros::CATCH(agent, 0, Hash40::new("top"), 5.0, 0.0, 6.0, 3.5, Some(0.0), Some(6.0), Some(2.0), *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_AIR_CAPTURED, *COLLISION_SITUATION_MASK_G);
         macros::CATCH(agent, 1, Hash40::new("top"), 3.0, 0.0, 7.0, 5.5, Some(0.0), Some(8.0), Some(5.5), *FIGHTER_STATUS_KIND_MIIFIGHTER_SUPLEX_AIR_CAPTURED, *COLLISION_SITUATION_MASK_GA);
     }

@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xbc2290)]
+#[skyline::hook(offset = offsets::fighter::koopa::PER_FRAME)]
 pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;

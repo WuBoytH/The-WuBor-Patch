@@ -1,6 +1,7 @@
 use super::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0x6bfae0)]
+#[skyline::hook(offset = offsets::system::command::C_236236_R)]
 unsafe extern "C" fn c_236236_r(
     class: &mut CommandInputState,
     args: *const CommandInputFlags,

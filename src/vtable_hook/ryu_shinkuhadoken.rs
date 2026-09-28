@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "shinku_on_hit_inner"]
@@ -14,5 +15,7 @@ unsafe extern "C" fn shinku_on_hit(vtable: u64, weapon: &mut app::Weapon, someth
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x5215940).data(shinku_on_hit as *const () as u64);
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::ryu_shinkuhadoken::vtable::ON_HIT).data(shinku_on_hit as *const () as u64);
+    }
 }

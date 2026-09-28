@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 
 unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: *mut app::Weapon, something: u32) -> u64 {
     let module_accessor = (*weapon).battle_object.module_accessor;
@@ -12,5 +13,7 @@ unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: *mut app::Weapon, 
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51f6f90).data(poisonbreath_on_hit as *const () as u64);
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::packun_poisonbreath::vtable::ON_HIT).data(poisonbreath_on_hit as *const () as u64);
+    }
 }

@@ -1,4 +1,8 @@
+use crate::offsets;
+
 pub fn install() {
-    // Disables the LR check
-    let _ = skyline::patching::Patch::in_text(0x45c85c).nop();
+    unsafe {
+        // Disables the LR check
+        let _ = skyline::patching::Patch::in_text(offsets::system::grab_module::LR_CHECK_PATCH).nop();
+    }
 }

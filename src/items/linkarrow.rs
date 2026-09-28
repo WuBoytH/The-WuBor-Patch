@@ -1,9 +1,10 @@
 #![allow(unknown_lints, integer_to_ptr_transmutes)]
 
 use crate::imports::*;
+use crate::offsets;
 use crate::system::func_links;
 
-pub static mut LINK_ARROW_THROW : usize = 0x6ca62c;
+pub static mut LINK_ARROW_THROW : usize = 0;
 
 unsafe extern "C" fn link_arrow_throw(ctx: &mut skyline::hooks::InlineCtx) {
     let item: &mut L2CAgent = std::mem::transmute(ctx.registers[20].x());
@@ -25,7 +26,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "item" {
         unsafe {
             let base = (*info.module.ModuleObject).module_base as usize;
-            LINK_ARROW_THROW += base;
+            LINK_ARROW_THROW = offsets::item::linkarrow::THROW + base;
 
             skyline::hooks::A64InlineHook(
                 LINK_ARROW_THROW as u64 as _,

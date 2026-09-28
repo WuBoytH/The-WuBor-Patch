@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xab9970)]
+#[skyline::hook(offset = offsets::fighter::gaogaen::ON_ATTACK)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -20,9 +21,11 @@ pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, l
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        gaogaen_on_attack
-    );
-    // Skips to the end of the Revenge check after changing statuses
-    skyline::patching::Patch::in_text(0xab9ff0).data(0x140000D1u32);
+    unsafe {
+        skyline::install_hooks!(
+            gaogaen_on_attack
+        );
+        // Skips to the end of the Revenge check after changing statuses
+        skyline::patching::Patch::in_text(offsets::fighter::gaogaen::REVENGE_CHECK_SKIP_PATCH).data(0x140000D1u32);
+    }
 }

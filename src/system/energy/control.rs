@@ -1,4 +1,5 @@
 use super::*;
+use crate::offsets;
 use wubor_utils::controls::*;
 
 pub mod param {
@@ -103,7 +104,7 @@ impl DerefMut for FighterKineticEnergyControl {
     }
 }
 
-#[skyline::hook(offset = 0x6d3630)]
+#[skyline::hook(offset = offsets::system::energy::control::UPDATE)]
 unsafe extern "C" fn control_update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
@@ -360,7 +361,7 @@ unsafe extern "C" fn control_update(energy: &mut FighterKineticEnergyControl, mo
     energy.speed_brake = backup_brake;
 }
 
-#[skyline::hook(offset = 0x6d4060)]
+#[skyline::hook(offset = offsets::system::energy::control::INITIALIZE)]
 unsafe extern "C" fn control_initialize(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     use EnergyControllerResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
@@ -563,7 +564,7 @@ unsafe extern "C" fn control_initialize(energy: &mut FighterKineticEnergyControl
     }
 }
 
-#[skyline::hook(offset = 0x6d4bc0)]
+#[skyline::hook(offset = offsets::system::energy::control::SETUP)]
 unsafe extern "C" fn control_setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyControllerResetType, initial_speed: &Vector3f, _unk: u64, module_accessor: &mut BattleObjectModuleAccessor) {
     energy.clear_energy();
 
@@ -683,7 +684,7 @@ unsafe extern "C" fn control_setup(energy: &mut FighterKineticEnergyControl, res
     energy.initialize(module_accessor);
 }
 
-#[skyline::hook(offset = 0x6ce6d8, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP1_STICK_X, inline)]
 unsafe extern "C" fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -696,7 +697,7 @@ unsafe extern "C" fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d19c4, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP2_STICK_X, inline)]
 unsafe extern "C" fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -709,7 +710,7 @@ unsafe extern "C" fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d1b10, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP3_STICK_X, inline)]
 unsafe extern "C" fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -722,7 +723,7 @@ unsafe extern "C" fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d0454, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP4_STICK_X, inline)]
 unsafe extern "C" fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -735,7 +736,7 @@ unsafe extern "C" fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6ce7d0, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP_AERIAL_STICK_X, inline)]
 unsafe extern "C" fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -748,7 +749,7 @@ unsafe extern "C" fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCt
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d05cc, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP_AERIAL_2_STICK_X, inline)]
 unsafe extern "C" fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -761,7 +762,7 @@ unsafe extern "C" fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::Inline
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d117c, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP_AERIAL_3_STICK_X, inline)]
 unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -774,7 +775,7 @@ unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::Inline
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6ce28c, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP_AERIAL_4_STICK_X, inline)]
 unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = ctx.registers[0].x();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -787,7 +788,7 @@ unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::Inline
     ctx.registers_f[0].set_s(left_stick_x);
 }
 
-#[skyline::hook(offset = 0x6d253c, inline)]
+#[skyline::hook(offset = offsets::system::energy::control::JUMP_SPEED_Y, inline)]
 unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(ctx.registers[8].x());
     let work_module = ctx.registers[0].x();
@@ -803,39 +804,41 @@ unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        control_update,
-        control_initialize,
-        control_setup
-    );
+    unsafe {
+        skyline::install_hooks!(
+            control_update,
+            control_initialize,
+            control_setup
+        );
 
-    // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
-    skyline::patching::Patch::in_text(0x6ce6d8).nop();
-    skyline::patching::Patch::in_text(0x6d19c4).nop();
-    skyline::patching::Patch::in_text(0x6d1b10).nop();
-    skyline::patching::Patch::in_text(0x6d0454).nop();
+        // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP1_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP2_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP3_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP4_STICK_X).nop();
 
-    // Same as above but for double jumps
-    skyline::patching::Patch::in_text(0x6ce7d0).nop();
-    skyline::patching::Patch::in_text(0x6d05cc).nop();
-    skyline::patching::Patch::in_text(0x6d117c).nop();
-    skyline::patching::Patch::in_text(0x6ce28c).nop();
+        // Same as above but for double jumps
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP_AERIAL_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP_AERIAL_2_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP_AERIAL_3_STICK_X).nop();
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP_AERIAL_4_STICK_X).nop();
 
-    // Super Jump Speed Multiplier
-    skyline::patching::Patch::in_text(0x6d253c).nop();
+        // Super Jump Speed Multiplier
+        skyline::patching::Patch::in_text(offsets::system::energy::control::JUMP_SPEED_Y).nop();
 
-    // Always use Jump Speed Y
-    skyline::patching::Patch::in_text(0x6d217c).data(0x140000EBu32);
+        // Always use Jump Speed Y
+        skyline::patching::Patch::in_text(offsets::system::energy::control::ALWAYS_USE_JUMP_SPEED_Y_PATCH).data(0x140000EBu32);
 
-    skyline::install_hooks!(
-        jump1_stick_x_hook,
-        jump2_stick_x_hook,
-        jump3_stick_x_hook,
-        jump4_stick_x_hook,
-        jump_aerial_stick_x_hook,
-        jump_aerial_2_stick_x_hook,
-        jump_aerial_3_stick_x_hook,
-        jump_aerial_4_stick_x_hook,
-        jump_speed_y_hook
-    );
+        skyline::install_hooks!(
+            jump1_stick_x_hook,
+            jump2_stick_x_hook,
+            jump3_stick_x_hook,
+            jump4_stick_x_hook,
+            jump_aerial_stick_x_hook,
+            jump_aerial_2_stick_x_hook,
+            jump_aerial_3_stick_x_hook,
+            jump_aerial_4_stick_x_hook,
+            jump_speed_y_hook
+        );
+    }
 }

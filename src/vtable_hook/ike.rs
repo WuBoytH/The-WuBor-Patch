@@ -8,10 +8,9 @@ use {
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, app::*},
 };
+use crate::offsets;
 
-static IKE_VTABLE_ADDRESS : usize = 0x4fc2940;
-
-#[skyline::hook(offset = 0xaf9350)]
+#[skyline::hook(offset = offsets::fighter::ike::ON_ATTACK)]
 pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status;
@@ -85,9 +84,11 @@ unsafe extern "C" fn ike_on_damage(_vtable: u64, fighter: &mut Fighter, log: u64
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        ike_on_attack
-    );
+    unsafe {
+        skyline::install_hooks!(
+            ike_on_attack
+        );
 
-    let _ = skyline::patching::Patch::in_text(IKE_VTABLE_ADDRESS + (68 * 0x8)).data(ike_on_damage as *const () as u64);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::ike::vtable::START + (68 * 0x8)).data(ike_on_damage as *const () as u64);
+    }
 }

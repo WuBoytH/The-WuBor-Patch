@@ -1,10 +1,11 @@
 use crate::imports::*;
+use crate::offsets;
 
 unsafe extern "C" fn sonic_on_init(_vtable: u64, fighter: &mut Fighter) {
     VarModule::on_flag(fighter.battle_object.module_accessor, fighter::instance::flag::CAN_LOOK_UP);
 }
 
-#[skyline::hook(offset = 0x11d5a00)]
+#[skyline::hook(offset = offsets::fighter::sonic::ON_HIT)]
 unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -27,8 +28,10 @@ unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) 
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x5046570).data(sonic_on_init as *const () as u64);
-    skyline::install_hooks!(
-        sonic_on_hit
-    );
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::sonic::vtable::ON_INIT).data(sonic_on_init as *const () as u64);
+        skyline::install_hooks!(
+            sonic_on_hit
+        );
+    }
 }

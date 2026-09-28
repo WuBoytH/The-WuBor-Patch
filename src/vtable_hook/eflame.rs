@@ -1,3 +1,5 @@
+use crate::offsets;
+
 use smash_rs::app::*;
 
 // Original Groups
@@ -45,7 +47,7 @@ const EFLAME_DISABLE_INDIVI: [WorkId; 9] = [
     transition_terms::CONT_LADDER_ATTACK
 ];
 
-#[skyline::hook(offset = 0xa0c250)]
+#[skyline::hook(offset = offsets::fighter::eflame::HAS_ESWORD_ENABLE_TRANSITIONS)]
 pub unsafe extern "C" fn eflame_has_esword_enable_transitions(work: &mut WorkModule, has_sword: u64) {
     if has_sword == 0 {
         work.on_flag(work_ids::fighter::eflame::instance::HAS_ESWORD);
@@ -80,7 +82,7 @@ pub unsafe extern "C" fn eflame_has_esword_enable_transitions(work: &mut WorkMod
     }
 }
 
-#[skyline::hook(offset = 0xa0c880)]
+#[skyline::hook(offset = offsets::fighter::eflame::HAS_ESWORD_DISABLE_STATUSES)]
 pub unsafe extern "C" fn eflame_has_esword_disable_statuses(_vtable: u64, _fighter: &mut smash::app::Fighter, _status: i32) -> bool {
     // Vanilla Logic (Unused)
     // let module_accessor = _fighter.battle_object.module_accessor;

@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0x1286ae0)]
+#[skyline::hook(offset = offsets::fighter::wario::VTABLE_FUNC)]
 pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
@@ -78,7 +79,7 @@ pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
     WorkModule::set_flag(module_accessor, stop, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_STOP);
 }
 
-#[skyline::hook(offset = 0x128b0b0)]
+#[skyline::hook(offset = offsets::fighter::wario::VTABLE_FUNC_2)]
 pub unsafe extern "C" fn wario_vtable_func2(_vtable: u64, _module_accessor: &mut BattleObjectModuleAccessor) {
 
 }

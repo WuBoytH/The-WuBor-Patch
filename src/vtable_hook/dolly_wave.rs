@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0x33e1800 + 0x5b0)]
+#[skyline::hook(offset = offsets::weapon::dolly_wave::INIT)]
 unsafe extern "C" fn wave_init(vtable: u64, weapon: *mut app::Weapon, something: u64, something_2: f32) {
     original!()(vtable, weapon, something, something_2);
     let module_accessor = (*weapon).battle_object.module_accessor;
@@ -10,7 +11,7 @@ unsafe extern "C" fn wave_init(vtable: u64, weapon: *mut app::Weapon, something:
     }
 }
 
-#[skyline::hook(offset = 0x33e1d34 + 0x5b0, inline)]
+#[skyline::hook(offset = offsets::weapon::dolly_wave::ON_HIT, inline)]
 unsafe extern "C" fn wave_on_hit(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[24].x() as *mut BattleObjectModuleAccessor;
     if WorkModule::get_int(module_accessor, *WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_S {
@@ -33,7 +34,7 @@ unsafe extern "C" fn wave_on_hit(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::from_offset(0x33bcd10 + 0x5b0)]
+#[skyline::from_offset(offsets::weapon::common::HIT_HANDLER_2)]
 unsafe extern "C" fn weapon_hit_handler2(
     vtable: u64,
     weapon: &mut smash::app::Weapon,
@@ -78,10 +79,12 @@ unsafe extern "C" fn dolly_wave_on_hit2(
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x33e1d34 + 0x5b0).nop();
-    let _ = skyline::patching::Patch::in_text(0x51bdd10).data(dolly_wave_on_hit2 as *const () as u64);
-    skyline::install_hooks!(
-        wave_init,
-        wave_on_hit
-    );
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::dolly_wave::ON_HIT).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::dolly_wave::vtable::ON_HIT_2).data(dolly_wave_on_hit2 as *const () as u64);
+        skyline::install_hooks!(
+            wave_init,
+            wave_on_hit
+        );
+    }
 }

@@ -3,6 +3,7 @@ use smash::{
     phx::*,
     app::*
 };
+use crate::offsets;
 
 #[skyline::hook(replace = FighterUtil::get_just_shield_se)]
 unsafe extern "C" fn get_just_shield_se(fighter_kind: i32) -> u64 {
@@ -20,15 +21,17 @@ unsafe extern "C" fn get_cliff_xlu_frame(module_accessor: *mut BattleObjectModul
     get_motion_data(motion_module, motion.hash, 0)
 }
 
-#[skyline::from_offset(0x6e2440)]
+#[skyline::from_offset(offsets::system::fighterutil::GET_MOTION_DATA)]
 extern "C" fn get_motion_data(motion_module: u64, motion: u64, param_3: u32) -> f32;
 
 pub fn install() {
-    // Removed the Diddy fighter kind check from the diddy unlink node FighterUtil function
-    let _ = skyline::patching::Patch::in_text(0x6938b4).nop();
+    unsafe {
+        // Removed the Diddy fighter kind check from the diddy unlink node FighterUtil function
+        let _ = skyline::patching::Patch::in_text(offsets::system::fighterutil::DIDDY_UNLINK_NODE_KIND_CHECK_PATCH).nop();
 
-    skyline::install_hooks!(
-        get_just_shield_se,
-        get_cliff_xlu_frame
-    );
+        skyline::install_hooks!(
+            get_just_shield_se,
+            get_cliff_xlu_frame
+        );
+    }
 }

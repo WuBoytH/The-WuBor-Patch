@@ -1,29 +1,30 @@
 #![allow(non_snake_case)]
 
 use crate::imports::*;
+use crate::offsets;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
-#[skyline::hook(offset = 0xb36ee0)]
+#[skyline::hook(offset = offsets::fighter::jack::DAMAGE_CALLBACK)]
 pub unsafe extern "C" fn jack_damage_callback(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0xb36ea0)]
+#[skyline::hook(offset = offsets::fighter::jack::DAMAGE_CALLBACK_2)]
 pub unsafe extern "C" fn jack_damage_callback2(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b3440)]
+#[skyline::hook(offset = offsets::fighter::jack::DAMAGE_CALLBACK_3)]
 pub unsafe extern "C" fn jack_damage_callback3(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0xb34450)]
+#[skyline::hook(offset = offsets::fighter::jack::HANDLE_GUN_DODGE_STALING)]
 pub unsafe extern "C" fn jack_handle_gun_dodge_staling(_vtable: u64, _fighter: &mut Fighter) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-#[skyline::hook(offset = 0x21b35f0)]
+#[skyline::hook(offset = offsets::fighter::jack::CALL_SUMMON_DISPATCH)]
 pub unsafe extern "C" fn jack_call_summon_dispatch(_stack: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
@@ -46,10 +47,10 @@ unsafe extern "C" fn jack_on_attack(vtable: u64, fighter: &mut Fighter, log: u64
     jack_on_attack_inner(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0xb33d30)]
+#[skyline::from_offset(offsets::fighter::jack::ON_ATTACK_INNER)]
 unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
-#[skyline::hook(offset = 0xb33820)]
+#[skyline::hook(offset = offsets::fighter::jack::ON_GRAB)]
 pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
@@ -112,22 +113,24 @@ pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: *
     original!()(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0x721240)]
+#[skyline::from_offset(offsets::fighter::diddy::GET_SPECIAL_S_OFFSET)]
 fn diddy_get_special_s_offset(param_accessor_2: *mut smash::app::FighterParamAccessor2, kind: u32) -> f32;
 
 pub fn install() {
-    // Disables passive meter gain
-    skyline::patching::Patch::in_text(0xb31620).data(0x17FFFF6Eu32);
-    // Disables automatically summoning Arsene
-    skyline::patching::Patch::in_text(0xb3153c).data(0x14000035u32);
-    skyline::patching::Patch::in_text(0xb30dd4).data(0x14000031u32);
-    skyline::install_hooks!(
-        jack_damage_callback,
-        jack_damage_callback2,
-        jack_damage_callback3,
-        jack_handle_gun_dodge_staling,
-        jack_call_summon_dispatch,
-        jack_on_grab
-    );
-    MiscModule::patch_vtable_function(0x4fc71b8, jack_on_attack as *const () as u64);
+    unsafe {
+        // Disables passive meter gain
+        skyline::patching::Patch::in_text(offsets::fighter::jack::PASSIVE_METER_GAIN_PATCH).data(0x17FFFF6Eu32);
+        // Disables automatically summoning Arsene
+        skyline::patching::Patch::in_text(offsets::fighter::jack::AUTO_SUMMON_ARSENE_PATCH_1).data(0x14000035u32);
+        skyline::patching::Patch::in_text(offsets::fighter::jack::AUTO_SUMMON_ARSENE_PATCH_2).data(0x14000031u32);
+        skyline::install_hooks!(
+            jack_damage_callback,
+            jack_damage_callback2,
+            jack_damage_callback3,
+            jack_handle_gun_dodge_staling,
+            jack_call_summon_dispatch,
+            jack_on_grab
+        );
+        MiscModule::patch_vtable_function(offsets::fighter::jack::vtable::ON_ATTACK, jack_on_attack as *const () as u64);
+    }
 }

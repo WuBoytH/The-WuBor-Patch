@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xa633f4, inline)]
+#[skyline::hook(offset = offsets::weapon::blaster_bullet::GENERATE_ANGLE, inline)]
 unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[20].x() as *mut BattleObjectModuleAccessor;
 
@@ -33,10 +34,12 @@ unsafe extern "C" fn blaster_bullet_generate_angle(ctx: &mut skyline::hooks::Inl
 }
 
 pub fn install() {
-    // Patches offsetting the ecb
-    let _ = skyline::patching::Patch::in_text(0x33faaec + 0x5b0).data(0x1e2703e0);
+    unsafe {
+        // Patches offsetting the ecb
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::blaster_bullet::ECB_OFFSET_PATCH).data(0x1e2703e0);
 
-    skyline::install_hooks!(
-        blaster_bullet_generate_angle
-    );
+        skyline::install_hooks!(
+            blaster_bullet_generate_angle
+        );
+    }
 }

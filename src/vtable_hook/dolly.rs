@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "add_go"]
@@ -25,7 +26,7 @@ pub unsafe extern "C" fn dolly_handle_special_strength(module_accessor: *mut Bat
     NoSpecial{no: -1, special: -1}
 }
 
-#[skyline::hook(offset = 0x971490)]
+#[skyline::hook(offset = offsets::fighter::dolly::PER_FRAME)]
 pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -100,13 +101,13 @@ pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
     }
 }
 
-#[skyline::from_offset(0x69ae40)]
+#[skyline::from_offset(offsets::fighter::common::AUTOTURN_HANDLER)]
 unsafe extern "C" fn dolly_transition_handler(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32, param_2: u32);
 
-#[skyline::from_offset(0x695c80)]
+#[skyline::from_offset(offsets::fighter::common::CHECK_FINAL_CAN_CANCEL)]
 unsafe extern "C" fn dolly_what_is_this(workmodule: *const u64) -> u32;
 
-#[skyline::hook(offset = 0x971250)]
+#[skyline::hook(offset = offsets::fighter::dolly::CHECK_SUPER_SPECIAL)]
 pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u64 {
     let module_accessor = &mut *(*((work as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
@@ -127,7 +128,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     unused_variables,
     unused_assignments
 )]
-#[skyline::hook(offset = 0x972db0)]
+#[skyline::hook(offset = offsets::fighter::dolly::HANDLE_SPECIAL_COMMAND_TURNAROUND)]
 pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
@@ -211,10 +212,10 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
     dolly_on_attack_inner(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0x9720a0)]
+#[skyline::from_offset(offsets::fighter::dolly::ON_ATTACK_INNER)]
 unsafe extern "C" fn dolly_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
-#[skyline::hook(offset = 0x970e20)]
+#[skyline::hook(offset = offsets::fighter::dolly::RESET2)]
 unsafe extern "C" fn dolly_reset2(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     WorkModule::off_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_SPECIAL_N_HOP_DONE);
@@ -223,18 +224,20 @@ unsafe extern "C" fn dolly_reset2(_vtable: u64, fighter: &mut Fighter) {
 }
 
 pub fn install() {
-    // Max Status Terms?
-    let _ = skyline::patching::Patch::in_text(0x4fa7e40).data(6u8);
-    // Some Kind of Transition Check
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x203).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x204).data(1u8);
-    let _ = skyline::patching::Patch::in_text(0x4fa7e70 + 0x205).data(1u8);
+    unsafe {
+        // Max Status Terms?
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::MAX_STATUS_TERMS).data(6u8);
+        // Some Kind of Transition Check
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x203).data(1u8);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x204).data(1u8);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x205).data(1u8);
 
-    skyline::install_hooks!(
-        dolly_per_frame,
-        dolly_check_super_special,
-        dolly_handle_special_command_turnaround,
-        dolly_reset2
-    );
-    MiscModule::patch_vtable_function(0x4fa7a28, dolly_on_attack as *const () as u64);
+        skyline::install_hooks!(
+            dolly_per_frame,
+            dolly_check_super_special,
+            dolly_handle_special_command_turnaround,
+            dolly_reset2
+        );
+        MiscModule::patch_vtable_function(offsets::fighter::dolly::vtable::ON_ATTACK, dolly_on_attack as *const () as u64);
+    }
 }

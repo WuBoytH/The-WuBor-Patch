@@ -7,13 +7,14 @@ use {
     },
     wubor_utils::controls::*,
 };
+use crate::offsets;
 
-#[skyline::hook(offset = 0x16d85dc - 0x1A0, inline)]
+#[skyline::hook(offset = offsets::system::controller::PACKED_PACKET_CREATION, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[22].set_x(0x2);
 }
 
-#[skyline::hook(offset = 0x16d8610 - 0x1A0, inline)]
+#[skyline::hook(offset = offsets::system::controller::WRITE_PACKET, inline)]
 unsafe fn write_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let raw = ctx.registers[19].x();
 
@@ -50,7 +51,7 @@ macro_rules! apply_button_mappings {
     }}
 }
 
-#[skyline::hook(offset = 0x1750f70 - 0x1A0)]
+#[skyline::hook(offset = offsets::system::controller::MAP_CONTROLS)]
 unsafe fn map_controls_hook(
     mappings: *mut ControllerMapping,
     player_idx: i32,
@@ -144,11 +145,11 @@ static mut LAST_ANALOG: f32 = 0.0;
 
 pub unsafe fn get_mapped_controller_inputs_from_id(player: usize) -> &'static MappedInputs {
     let base = *((skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as *mut u8)
-        .add(0x52c50f0) as *const u64);
+        .add(offsets::system::controller::MAPPED_INPUTS_TABLE) as *const u64);
     &*((base + 0x2b8 + 0x8 * (player as u64)) as *const MappedInputs)
 }
 
-#[skyline::hook(offset = 0x3f7240)]
+#[skyline::hook(offset = offsets::system::controller::PARSE_INPUTS)]
 unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     const NEUTRAL: f32 = 0.2;
     const CLAMP_MAX: f32 = 120.0;
@@ -191,7 +192,7 @@ unsafe fn parse_inputs(this: &mut ControlModuleInternal) {
     call_original!(this)
 }
 
-#[skyline::hook(offset = 0x6b9c7c, inline)]
+#[skyline::hook(offset = offsets::system::controller::AFTER_EXEC, inline)]
 unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     let module = ctx.registers[19].x();
     let internal_class = *(module as *const u64).add(0x110 / 0x8);
@@ -200,7 +201,7 @@ unsafe fn after_exec(ctx: &skyline::hooks::InlineCtx) {
     *(internal_class as *mut f32).add(0x48 / 0x4) = LAST_ANALOG;
 }
 
-#[skyline::hook(offset = 0x16d7034 - 0x1A0, inline)]
+#[skyline::hook(offset = offsets::system::controller::HANDLE_INCOMING_PACKET, inline)]
 unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
     let packet = ctx.registers[15].x();
 
@@ -260,7 +261,7 @@ unsafe extern "C" fn isthrowstick(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 static mut GC_TRIGGERS: [f32; 2] = [0.0, 0.0];
 
-#[skyline::hook(offset = 0x3666eac + 0x5B0, inline)]
+#[skyline::hook(offset = offsets::system::controller::POST_GAMECUBE_PROCESS, inline)]
 unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     let state: *mut skyline::nn::hid::NpadGcState =
         (ctx as *const _ as *mut u8).add(0x300) as *mut _;
@@ -270,7 +271,7 @@ unsafe fn post_gamecube_process(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS[1] = (*state).RTrigger as f32 / i16::MAX as f32;
 }
 
-#[skyline::hook(offset = 0x3666d0c + 0x5B0, inline)]
+#[skyline::hook(offset = offsets::system::controller::APPLY_TRIGGERS, inline)]
 unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     let controller: *mut Controller = ctx.registers[19].x() as _;
     (*controller).left_trigger = GC_TRIGGERS[0];
@@ -278,7 +279,7 @@ unsafe fn apply_triggers(ctx: &skyline::hooks::InlineCtx) {
     GC_TRIGGERS = [0.0, 0.0];
 }
 
-#[skyline::hook(offset = 0x3666ee0 + 0x5B0, inline)]
+#[skyline::hook(offset = offsets::system::controller::ANALOG_TRIGGER_L, inline)]
 unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     if ctx.registers[9].x() & 0x40 != 0 {
         let controller: *mut Controller = ctx.registers[19].x() as _;
@@ -289,7 +290,7 @@ unsafe fn analog_trigger_l(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x3666ef4 + 0x5B0, inline)]
+#[skyline::hook(offset = offsets::system::controller::ANALOG_TRIGGER_R, inline)]
 unsafe fn analog_trigger_r(ctx: &mut skyline::hooks::InlineCtx) {
     if ctx.registers[8].x() & 0x80 != 0 {
         let controller: *mut Controller = ctx.registers[19].x() as _;
@@ -306,19 +307,21 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 }
 
 pub fn install() {
-    skyline::patching::Patch::in_text(0x3666edc + 0x5B0).data(0xAA0903EAu32);
-    skyline::patching::Patch::in_text(0x3666ef0 + 0x5B0).data(0xAA0803EAu32);
-    skyline::install_hooks!(
-        map_controls_hook,
-        analog_trigger_l,
-        analog_trigger_r,
-        packed_packet_creation,
-        write_packet,
-        parse_inputs,
-        handle_incoming_packet,
-        after_exec,
-        post_gamecube_process,
-        apply_triggers
-    );
-    skyline::nro::add_hook(nro_hook);
+    unsafe {
+        skyline::patching::Patch::in_text(offsets::system::controller::ANALOG_TRIGGER_L_PATCH).data(0xAA0903EAu32);
+        skyline::patching::Patch::in_text(offsets::system::controller::ANALOG_TRIGGER_R_PATCH).data(0xAA0803EAu32);
+        skyline::install_hooks!(
+            map_controls_hook,
+            analog_trigger_l,
+            analog_trigger_r,
+            packed_packet_creation,
+            write_packet,
+            parse_inputs,
+            handle_incoming_packet,
+            after_exec,
+            post_gamecube_process,
+            apply_triggers
+        );
+        skyline::nro::add_hook(nro_hook);
+    }
 }

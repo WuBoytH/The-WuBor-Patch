@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0x34f8280 + 0x5b0)]
+#[skyline::hook(offset = offsets::weapon::belmont_cross::ON_HIT)]
 pub unsafe extern "C" fn belmont_cross_on_hit(_vtable: u64, weapon: &mut smash::app::Weapon, param_3: u64) -> u64 {
     let module_accessor = weapon.battle_object.module_accessor;
     // let status = StatusModule::status_kind(module_accessor);
@@ -36,7 +37,7 @@ pub unsafe extern "C" fn belmont_cross_on_hit(_vtable: u64, weapon: &mut smash::
     return 1;
 }
 
-#[skyline::from_offset(0x33a9bf0 + 0x5b0)]
+#[skyline::from_offset(offsets::weapon::belmont_cross::ON_HIT_THING)]
 unsafe extern "C" fn belmont_cross_on_hit_thing(
     weapon: &mut smash::app::Weapon,
     some_int: u32,

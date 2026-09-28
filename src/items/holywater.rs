@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 use crate::system::func_links;
 
 unsafe extern "C" fn holywater_get_fighter_kind(item: &mut L2CAgent) -> L2CValue {
@@ -13,11 +14,11 @@ unsafe extern "C" fn holywater_get_fighter_kind(item: &mut L2CAgent) -> L2CValue
     fighter_kind.into()
 }
 
-pub static mut SIMON_HOLYWATER_THROW : usize = 0x792300;
-pub static mut RICHTER_HOLYWATER_THROW : usize = 0x757e20;
+pub static mut SIMON_HOLYWATER_THROW : usize = 0;
+pub static mut RICHTER_HOLYWATER_THROW : usize = 0;
 
-pub static mut RICHTER_HOLYWATER_BORN : usize = 0x758e00;
-pub static mut RICHTER_HOLYWATER_BORN_LOOP : usize = 0x759600;
+pub static mut RICHTER_HOLYWATER_BORN : usize = 0;
+pub static mut RICHTER_HOLYWATER_BORN_LOOP : usize = 0;
 
 #[skyline::hook(replace = SIMON_HOLYWATER_THROW)]
 unsafe extern "C" fn simon_holywater_throw(item: &mut L2CAgent) -> L2CValue {
@@ -218,10 +219,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "item" {
         unsafe {
             let base = (*info.module.ModuleObject).module_base as usize;
-            SIMON_HOLYWATER_THROW += base;
-            RICHTER_HOLYWATER_THROW += base;
-            RICHTER_HOLYWATER_BORN += base;
-            RICHTER_HOLYWATER_BORN_LOOP += base;
+            SIMON_HOLYWATER_THROW = offsets::item::holywater::SIMON_THROW + base;
+            RICHTER_HOLYWATER_THROW = offsets::item::holywater::RICHTER_THROW + base;
+            RICHTER_HOLYWATER_BORN = offsets::item::holywater::RICHTER_BORN + base;
+            RICHTER_HOLYWATER_BORN_LOOP = offsets::item::holywater::RICHTER_BORN_LOOP + base;
 
             skyline::install_hooks!(
                 simon_holywater_throw,

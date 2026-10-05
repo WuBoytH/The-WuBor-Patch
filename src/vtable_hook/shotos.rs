@@ -1,11 +1,12 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "ryu_denjin_remover"]
     fn ryu_denjin_remover(module_accessor: *mut BattleObjectModuleAccessor);
 }
 
-#[skyline::hook(offset = 0x10d4570)]
+#[skyline::hook(offset = offsets::fighter::shotos::INIT)]
 unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -28,16 +29,16 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     FGCModule::set_command_input_button(module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);
 }
 
-#[skyline::from_offset(0x646fe0)]
+#[skyline::from_offset(offsets::fighter::shotos::WHAT_IS_THIS)]
 extern "C" fn what_is_this(fighter: &mut Fighter) -> *const u64;
 
-#[skyline::from_offset(0x6da350)]
+#[skyline::from_offset(offsets::fighter::shotos::WHAT_IS_THIS_2)]
 extern "C" fn what_is_this_2(param_1: i32, param_2: i32, param_3: u64, module_accessor: *mut BattleObjectModuleAccessor, huh: *const u64);
 
-#[skyline::from_offset(0x69ae40)]
+#[skyline::from_offset(offsets::fighter::common::AUTOTURN_HANDLER)]
 extern "C" fn ryu_ken_autoturn_handler(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32, param_2: u32);
 
-#[skyline::hook(offset = 0x10d4df0)]
+#[skyline::hook(offset = offsets::fighter::shotos::MOVE_STRENGTH_AUTOTURN_HANDLER)]
 unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -108,7 +109,7 @@ unsafe extern "C" fn ryu_ken_handle_special_strength(object: &mut BattleObject, 
     }
 }
 
-#[skyline::hook(offset = 0x10d5a80)]
+#[skyline::hook(offset = offsets::fighter::shotos::HANDLE_LIGHT_NORMALS)]
 unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_motion: u64, light_motion: u64) {
     let module_accessor = fighter.battle_object.module_accessor;
     let mot = MotionModule::motion_kind(module_accessor);
@@ -174,7 +175,7 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
     }
 }
 
-#[skyline::hook(offset = 0x10d6c10)]
+#[skyline::hook(offset = offsets::fighter::shotos::ON_SITUATION_CHANGE)]
 unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fighter, log: u64) {
     if *(log as *const u8).add(0xc) == 2 {
         return;
@@ -218,7 +219,7 @@ unsafe extern "C" fn syoryuken_eff_handler(
     EffectModule::set_rate(module_accessor, eff, rate);
 }
 
-#[skyline::hook(offset = 0x10d6ca0)]
+#[skyline::hook(offset = offsets::fighter::shotos::ON_HIT)]
 unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
@@ -343,7 +344,7 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     original!()(vtable, fighter, log, some_float);
 }
 
-#[skyline::hook(offset = 0x10d7420)]
+#[skyline::hook(offset = offsets::fighter::shotos::ON_HIT_2)]
 unsafe extern "C" fn ryu_ken_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     if (*object).kind == 0x3c {
@@ -361,7 +362,7 @@ unsafe extern "C" fn ryu_ken_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u
     original!()(vtable, fighter, log);
 }
 
-#[skyline::hook(offset = 0x10d7b80)]
+#[skyline::hook(offset = offsets::fighter::shotos::ON_SEARCH)]
 unsafe extern "C" fn ryu_ken_on_search(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     if (*object).kind != 0x3c {
@@ -381,7 +382,7 @@ unsafe extern "C" fn ryu_ken_on_search(vtable: u64, fighter: &mut Fighter, log: 
     }
 }
 
-#[skyline::hook(offset = 0x10d7760)]
+#[skyline::hook(offset = offsets::fighter::shotos::ON_DAMAGE)]
 unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_damage: u64) {
     let object = &mut fighter.battle_object;
     if (*object).kind == 0x3d {
@@ -424,7 +425,7 @@ unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_da
     }
 }
 
-#[skyline::hook(offset = 0x10d5f30)]
+#[skyline::hook(offset = offsets::fighter::shotos::FRAME)]
 unsafe extern "C" fn ryu_ken_frame(vtable: u64, fighter: &mut Fighter) {
     original!()(vtable, fighter);
     let object = &mut fighter.battle_object;
@@ -466,10 +467,10 @@ unsafe extern "C" fn ryu_ken_frame(vtable: u64, fighter: &mut Fighter) {
     }
 }
 
-#[skyline::from_offset(0x695c80)]
+#[skyline::from_offset(offsets::fighter::common::CHECK_FINAL_CAN_CANCEL)]
 fn ryu_ken_check_final_can_cancel(work_module: *const u64) -> bool;
 
-#[skyline::hook(offset = 0x10d6a10)]
+#[skyline::hook(offset = offsets::fighter::shotos::STATUS_CHANGE_CALLBACK)]
 unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -550,26 +551,28 @@ unsafe extern "C" fn ryu_ken_status_change_callback(_vtable: u64, fighter: &mut 
 }
 
 pub fn install() {
-    // Patches the original final smash cancel check
-    let _ = skyline::patching::Patch::in_text(0x10d6324).data(0x14000039u32);
+    unsafe {
+        // Patches the original final smash cancel check
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::shotos::FINAL_SMASH_CANCEL_CHECK_PATCH).data(0x14000039u32);
 
-    // Allows any status over 0x1de to be final smash cancelable
-    let _ = skyline::patching::Patch::in_text(0x10d67d8).data(0x1400000Au32);
+        // Allows any status over 0x1de to be final smash cancelable
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::shotos::FINAL_SMASH_CANCEL_STATUS_PATCH).data(0x1400000Au32);
 
-    // Some Kind of Transition Check
-    // Ryu
-    let _ = skyline::patching::Patch::in_text(0x5032eb0 + 0x1F8).data(1u8);
+        // Some Kind of Transition Check
+        // Ryu
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::shotos::RYU_TRANSITION_CHECK_TABLE + 0x1F8).data(1u8);
 
-    skyline::install_hooks!(
-        ryu_ken_init,
-        ryu_ken_move_strength_autoturn_handler,
-        ryu_ken_handle_light_normals,
-        ryu_ken_on_situation_change,
-        ryu_ken_on_hit,
-        ryu_ken_on_hit_2,
-        ryu_ken_on_search,
-        ryu_ken_on_damage,
-        ryu_ken_frame,
-        ryu_ken_status_change_callback
-    );
+        skyline::install_hooks!(
+            ryu_ken_init,
+            ryu_ken_move_strength_autoturn_handler,
+            ryu_ken_handle_light_normals,
+            ryu_ken_on_situation_change,
+            ryu_ken_on_hit,
+            ryu_ken_on_hit_2,
+            ryu_ken_on_search,
+            ryu_ken_on_damage,
+            ryu_ken_frame,
+            ryu_ken_status_change_callback
+        );
+    }
 }

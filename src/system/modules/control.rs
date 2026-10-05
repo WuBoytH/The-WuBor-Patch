@@ -7,6 +7,7 @@ use {
     custom_var::*,
     wubor_utils::{controls::*, vars}
 };
+use crate::offsets;
 
 // #[repr(C)]
 // struct BufferState {
@@ -170,7 +171,7 @@ fn exec_post(module_accessor: *mut BattleObjectModuleAccessor, cat1_prev: i32) {
 
 pub static mut EXEC_CONTROL_MODULE : u64 = 0;
 
-#[skyline::hook(offset = 0x6bac10)]
+#[skyline::hook(offset = offsets::system::control_module::EXEC_COMMAND)]
 fn exec_command_hook(control_module: u64, flag: bool) {
     unsafe {EXEC_CONTROL_MODULE = control_module;}
     let module_accessor = unsafe { *(control_module as *mut *mut BattleObjectModuleAccessor).add(1) };
@@ -183,7 +184,7 @@ fn exec_command_hook(control_module: u64, flag: bool) {
 
 // These 2 hooks prevent buffered nair after inputting C-stick on first few frames of jumpsquat
 // Both found in ControlModule::exec_command
-#[skyline::hook(offset = 0x6be630)]
+#[skyline::hook(offset = offsets::system::control_module::SET_ATTACK_AIR_STICK)]
 unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
     // Only happens during jumpsquat currently
@@ -194,7 +195,7 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     call_original!(control_module, arg);
 }
 
-// #[skyline::hook(offset = 0x6bd6c4, inline)]
+// #[skyline::hook(offset = offsets::system::control_module::RESET_ATTACK_AIR_KIND_PATCH, inline)]
 // unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
 //     let control_module = ctx.registers[21].x();
 //     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
@@ -209,7 +210,7 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
 
 const PRECEDE_EXTENSION : u8 = 24;
 
-#[skyline::hook(offset = 0x6bd5b4, inline)]
+#[skyline::hook(offset = offsets::system::control_module::SET_HOLD_BUFFER_VALUE, inline)]
 unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
     let cat = ctx.registers[24].w();
@@ -252,12 +253,12 @@ unsafe fn set_hold_buffer_value(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[8].set_w(buffer);
 }
 
-#[skyline::hook(offset = 0x6bd51c, inline)]
+#[skyline::hook(offset = offsets::system::control_module::SET_RELEASE_VALUE_IN_HITLAG, inline)]
 unsafe fn set_release_value_in_hitlag(ctx: &mut skyline::hooks::InlineCtx) {
     set_release_value_internal(ctx);
 }
 
-#[skyline::hook(offset = 0x6bd5d8, inline)]
+#[skyline::hook(offset = offsets::system::control_module::SET_RELEASE_VALUE, inline)]
 unsafe fn set_release_value(ctx: &mut skyline::hooks::InlineCtx) {
     set_release_value_internal(ctx);
 }
@@ -289,7 +290,7 @@ unsafe fn set_release_value_internal(ctx: &mut skyline::hooks::InlineCtx) {
 //     }
 // }
 
-#[skyline::hook(offset = 0x6bd4a0, inline)]
+#[skyline::hook(offset = offsets::system::control_module::CHECK_SKIP_HITLAG_BUFFER, inline)]
 unsafe extern "C" fn check_skip_hitlag_buffer(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *(EXEC_CONTROL_MODULE as *mut *mut BattleObjectModuleAccessor).add(1);
     let skip_hitlag_buffer = VarModule::is_flag(module_accessor, vars::fighter::status::flag::SKIP_HITLAG_BUFFER_CHECK) as u64;
@@ -297,37 +298,39 @@ unsafe extern "C" fn check_skip_hitlag_buffer(ctx: &mut skyline::hooks::InlineCt
 }
 
 pub fn install() {
-    // Prevents buffered C-stick aerials from triggering nair
-    skyline::patching::Patch::in_text(0x6be664).data(0x52800040);
+    unsafe {
+        // Prevents buffered C-stick aerials from triggering nair
+        skyline::patching::Patch::in_text(offsets::system::control_module::BUFFERED_CSTICK_NAIR_PATCH).data(0x52800040);
 
-    // Prevents Aerial Kind resetting every frame
-    skyline::patching::Patch::in_text(0x6bd6c4).nop();
+        // Prevents Aerial Kind resetting every frame
+        skyline::patching::Patch::in_text(offsets::system::control_module::RESET_ATTACK_AIR_KIND_PATCH).nop();
 
-    // Removes 10f C-stick lockout for tilt stick and special stick
-    skyline::patching::Patch::in_text(0x17532ac - 0x1A0).data(0x2A1F03FA);
-    skyline::patching::Patch::in_text(0x17532b0 - 0x1A0).nop();
-    skyline::patching::Patch::in_text(0x17532b4 - 0x1A0).nop();
-    skyline::patching::Patch::in_text(0x17532b8 - 0x1A0).nop();
+        // Removes 10f C-stick lockout for tilt stick and special stick
+        skyline::patching::Patch::in_text(offsets::system::control_module::CSTICK_LOCKOUT_PATCH_1).data(0x2A1F03FA);
+        skyline::patching::Patch::in_text(offsets::system::control_module::CSTICK_LOCKOUT_PATCH_2).nop();
+        skyline::patching::Patch::in_text(offsets::system::control_module::CSTICK_LOCKOUT_PATCH_3).nop();
+        skyline::patching::Patch::in_text(offsets::system::control_module::CSTICK_LOCKOUT_PATCH_4).nop();
 
-    // Custom buffer-state handling
-    // Always uses the hitlag handling that cat4 uses
-    skyline::patching::Patch::in_text(0x6bd448).nop();
-    skyline::patching::Patch::in_text(0x6bd4a0).data(0xF10002DFu32);
-    // Stubs the check if the buffer value is 1 and the button is held
-    skyline::patching::Patch::in_text(0x6bd5b0).nop();
-    // Stubs setting the buffer lifetime to 2 if held
-    skyline::patching::Patch::in_text(0x6bd53c).nop();
-    skyline::patching::Patch::in_text(0x6bd5b4).nop();
+        // Custom buffer-state handling
+        // Always uses the hitlag handling that cat4 uses
+        skyline::patching::Patch::in_text(offsets::system::control_module::HITLAG_BUFFER_CAT4_PATCH).nop();
+        skyline::patching::Patch::in_text(offsets::system::control_module::CHECK_SKIP_HITLAG_BUFFER).data(0xF10002DFu32);
+        // Stubs the check if the buffer value is 1 and the button is held
+        skyline::patching::Patch::in_text(offsets::system::control_module::HOLD_BUFFER_CHECK_PATCH).nop();
+        // Stubs setting the buffer lifetime to 2 if held
+        skyline::patching::Patch::in_text(offsets::system::control_module::HOLD_BUFFER_LIFETIME_PATCH).nop();
+        skyline::patching::Patch::in_text(offsets::system::control_module::SET_HOLD_BUFFER_VALUE).nop();
 
-    skyline::install_hooks!(
-        // get_command_flag_cat_replace,
-        exec_command_hook,
-        set_attack_air_stick_hook,
-        // exec_command_reset_attack_air_kind_hook,
-        set_hold_buffer_value,
-        set_release_value_in_hitlag,
-        set_release_value,
-        // get_buffer_value,
-        check_skip_hitlag_buffer
-    );
+        skyline::install_hooks!(
+            // get_command_flag_cat_replace,
+            exec_command_hook,
+            set_attack_air_stick_hook,
+            // exec_command_reset_attack_air_kind_hook,
+            set_hold_buffer_value,
+            set_release_value_in_hitlag,
+            set_release_value,
+            // get_buffer_value,
+            check_skip_hitlag_buffer
+        );
+    }
 }

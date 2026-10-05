@@ -21,6 +21,8 @@ use skyline::libc::c_char;
 #[cfg(feature = "main_nro")]
 mod imports;
 #[cfg(feature = "main_nro")]
+pub mod offsets;
+#[cfg(feature = "main_nro")]
 pub mod system;
 #[cfg(feature = "main_nro")]
 mod custom_vars;

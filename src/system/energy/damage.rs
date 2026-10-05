@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 
 use super::*;
+use crate::offsets;
 
 #[repr(C)]
 pub struct FighterKineticEnergyDamage {
@@ -111,7 +112,7 @@ pub enum EnergyStopResetType {
 //     }
 // }
 
-#[skyline::hook(offset = 0x6d8100)]
+#[skyline::hook(offset = offsets::system::energy::damage::INITIALIZE)]
 unsafe extern "C" fn damage_initialize(energy: &mut FighterKineticEnergyDamage, module_accessor: &mut BattleObjectModuleAccessor) {
     use EnergyStopResetType::*;
     // println!("[wubor::damage] Damage Energy Init");

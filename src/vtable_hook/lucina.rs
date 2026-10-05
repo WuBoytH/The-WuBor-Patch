@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "add_sp"]
@@ -59,11 +60,13 @@ unsafe extern "C" fn lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u
     marth_lucina_on_attack(vtable, fighter, log)
 }
 
-#[skyline::from_offset(0xcd9ea0)]
+#[skyline::from_offset(offsets::fighter::lucina::MARTH_LUCINA_ON_ATTACK)]
 unsafe extern "C" fn marth_lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
-    MiscModule::patch_vtable_function(0x4fe7fc0, lucina_init as *const () as u64);
-    MiscModule::patch_vtable_function(0x4fe8008, lucina_per_frame as *const () as u64);
-    MiscModule::patch_vtable_function(0x4fe80c0, lucina_on_attack as *const () as u64);
+    unsafe {
+        MiscModule::patch_vtable_function(offsets::fighter::lucina::vtable::INIT, lucina_init as *const () as u64);
+        MiscModule::patch_vtable_function(offsets::fighter::lucina::vtable::PER_FRAME, lucina_per_frame as *const () as u64);
+        MiscModule::patch_vtable_function(offsets::fighter::lucina::vtable::ON_ATTACK, lucina_on_attack as *const () as u64);
+    }
 }

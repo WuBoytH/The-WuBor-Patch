@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 // use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 // #[skyline::hook(offset = 0x933800)]
@@ -20,7 +21,7 @@ use crate::imports::*;
 //     original!()(vtable, fighter, event)
 // }
 
-#[skyline::hook(offset = 0x934310)]
+#[skyline::hook(offset = offsets::fighter::demon::SOME_EVENT)]
 pub unsafe extern "C" fn demon_some_event(_vtable: u64, _fighter: &mut Fighter, event: u64) -> u64 {
     event
 }

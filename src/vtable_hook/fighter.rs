@@ -1,4 +1,8 @@
+use crate::offsets;
+
 pub fn install() {
-    // Sets jostle team for all fighters to 0
-    skyline::patching::Patch::in_text(0x60eb08).data(0x52800001u32);
+    unsafe {
+        // Sets jostle team for all fighters to 0
+        skyline::patching::Patch::in_text(offsets::fighter::common::JOSTLE_TEAM_PATCH).data(0x52800001u32);
+    }
 }

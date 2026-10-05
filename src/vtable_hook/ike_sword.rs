@@ -2,6 +2,7 @@ use {
     smash::app::lua_bind::*,
     wubor_utils::vars,
 };
+use crate::offsets;
 
 extern "Rust" {
     #[link_name = "ike_sword_set_spawn_pos_internal"]
@@ -14,17 +15,17 @@ extern "Rust" {
     fn ike_sword_on_hit_internal(vtable: u64, weapon: &mut smash::app::Weapon, hit_kind: u32) -> u64;
 }
 
-#[skyline::hook(offset = 0xaf9bf0, inline)]
+#[skyline::hook(offset = offsets::weapon::ike_sword::SET_SPAWN_POS, inline)]
 unsafe extern "C" fn ike_sword_set_spawn_pos(ctx: &mut skyline::hooks::InlineCtx) {
     ike_sword_set_spawn_pos_internal(ctx);
 }
 
-#[skyline::hook(offset = 0xaf9cc4, inline)]
+#[skyline::hook(offset = offsets::weapon::ike_sword::SET_STATUS, inline)]
 unsafe extern "C" fn ike_sword_set_status(ctx: &mut skyline::hooks::InlineCtx) {
     ike_sword_set_status_internal(ctx);
 }
 
-#[skyline::hook(offset = 0x340ac50 + 0x5b0)]
+#[skyline::hook(offset = offsets::weapon::ike_sword::ON_HIT)]
 unsafe extern "C" fn ike_sword_on_hit(vtable: u64, weapon: &mut smash::app::Weapon, hit_kind: u32) -> u64 {
     ike_sword_on_hit_internal(vtable, weapon, hit_kind)
 }
@@ -36,11 +37,13 @@ pub unsafe extern "C" fn ike_sword_can_pocket(_vtable: u64, weapon: &mut smash::
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x51ce2d0).data(ike_sword_can_pocket as *const () as u64);
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::weapon::ike_sword::vtable::CAN_POCKET).data(ike_sword_can_pocket as *const () as u64);
 
-    skyline::install_hooks!(
-        ike_sword_set_spawn_pos,
-        ike_sword_set_status,
-        ike_sword_on_hit
-    );
+        skyline::install_hooks!(
+            ike_sword_set_spawn_pos,
+            ike_sword_set_status,
+            ike_sword_on_hit
+        );
+    }
 }

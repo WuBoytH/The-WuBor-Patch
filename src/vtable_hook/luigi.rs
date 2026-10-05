@@ -1,11 +1,12 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xca1510)]
+#[skyline::hook(offset = offsets::fighter::luigi::CHANGE_MOTION_CALLBACK)]
 pub unsafe extern "C" fn luigi_change_motion_callback(_vtable: u64, _fighter: &mut Fighter, _some_struct: u64) {
     // nothing lmao
 }
 
-#[skyline::hook(offset = 0xca0e70)]
+#[skyline::hook(offset = offsets::fighter::luigi::LINK_EVENT)]
 pub unsafe extern "C" fn luigi_link_event(vtable: u64, fighter: &mut Fighter, event: &mut smash_rs::app::LinkEvent) -> u64 {
     if event.link_event_kind.0 == hash40("capture") {
         return 1;

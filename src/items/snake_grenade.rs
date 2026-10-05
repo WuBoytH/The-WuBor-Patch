@@ -1,9 +1,10 @@
 use crate::imports::*;
+use crate::offsets;
 use crate::system::func_links;
 
-pub static mut GRENADE_STATUS_FALL : usize = 0x7c9ae0;
-pub static mut GRENADE_STATUS_LANDING : usize = 0x7c9d10;
-pub static mut GRENADE_STATUS_THROWN : usize = 0x7c9fc0;
+pub static mut GRENADE_STATUS_FALL : usize = 0;
+pub static mut GRENADE_STATUS_LANDING : usize = 0;
+pub static mut GRENADE_STATUS_THROWN : usize = 0;
 
 #[skyline::hook(replace = GRENADE_STATUS_FALL)]
 unsafe extern "C" fn snake_grenade_status_fall(item: &mut L2CAgent) -> L2CValue {
@@ -40,10 +41,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         unsafe {
             // Makes it so hitting the grenade launches it instead of exploding
             let item_offset = (*info.module.ModuleObject).module_base as usize;
-            skyline::patching::patch_pointer((0x7ca48c + item_offset) as *const u8, &0x529FE608u32);
-            GRENADE_STATUS_FALL += item_offset;
-            GRENADE_STATUS_LANDING += item_offset;
-            GRENADE_STATUS_THROWN += item_offset;
+            skyline::patching::patch_pointer((offsets::item::snake_grenade::HIT_LAUNCH_PATCH + item_offset) as *const u8, &0x529FE608u32);
+            GRENADE_STATUS_FALL = offsets::item::snake_grenade::STATUS_FALL + item_offset;
+            GRENADE_STATUS_LANDING = offsets::item::snake_grenade::STATUS_LANDING + item_offset;
+            GRENADE_STATUS_THROWN = offsets::item::snake_grenade::STATUS_THROWN + item_offset;
             skyline::install_hooks!(
                 snake_grenade_status_fall,
                 snake_grenade_status_landing,

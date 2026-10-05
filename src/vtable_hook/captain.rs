@@ -1,4 +1,5 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "captain_update_boost_power"]
@@ -48,11 +49,13 @@ pub unsafe extern "C" fn captain_on_damage(_vtable: u64, fighter: &mut Fighter, 
     captain_update_boost_power(module_accessor, -damage);
 }
 
-#[skyline::from_offset(0x8b8b90)]
+#[skyline::from_offset(offsets::fighter::captain::ON_ATTACK_ORIGINAL)]
 pub fn captain_on_attack_original(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(0x4f99688).data(captain_on_frame as *const () as u64);
-    let _ = skyline::patching::Patch::in_text(0x4f99740).data(captain_on_attack as *const () as u64);
-    let _ = skyline::patching::Patch::in_text(0x4f99840).data(captain_on_damage as *const () as u64);
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_FRAME).data(captain_on_frame as *const () as u64);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_ATTACK).data(captain_on_attack as *const () as u64);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_DAMAGE).data(captain_on_damage as *const () as u64);
+    }
 }

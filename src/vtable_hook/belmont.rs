@@ -1,8 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-pub const SIMON_VTABLE_START : usize = 0x5041690;
-
-#[skyline::hook(offset = 0x11944e0)]
+#[skyline::hook(offset = offsets::fighter::belmont::ON_INIT_DEATH)]
 unsafe extern "C" fn belmont_on_init_death(vtable: u64, fighter: &mut Fighter) {
     original!()(vtable, fighter);
     let module_accessor = fighter.battle_object.module_accessor;
@@ -18,7 +17,7 @@ unsafe extern "C" fn simon_on_situation_change(_vtable: u64, fighter: &mut Fight
     }
 }
 
-#[skyline::hook(offset = 0x1195890)]
+#[skyline::hook(offset = offsets::fighter::belmont::SIMON_ON_DAMAGE)]
 unsafe extern "C" fn simon_on_damage(_vtable: u64, fighter: &mut Fighter, log: *const u64) {
     if *(log as *const u8).add(0x18) != 0 {
         let module_accessor = fighter.battle_object.module_accessor;
@@ -29,10 +28,12 @@ unsafe extern "C" fn simon_on_damage(_vtable: u64, fighter: &mut Fighter, log: *
 }
 
 pub fn install() {
-    let _ = skyline::patching::Patch::in_text(SIMON_VTABLE_START + (0x8 * 45)).data(simon_on_situation_change as *const () as u64);
+    unsafe {
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::belmont::vtable::SIMON_START + (0x8 * 45)).data(simon_on_situation_change as *const () as u64);
 
-    skyline::install_hooks!(
-        belmont_on_init_death,
-        simon_on_damage
-    );
+        skyline::install_hooks!(
+            belmont_on_init_death,
+            simon_on_damage
+        );
+    }
 }

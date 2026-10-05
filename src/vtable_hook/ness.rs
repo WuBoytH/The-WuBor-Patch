@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xdefdf0)]
+#[skyline::hook(offset = offsets::fighter::ness::INIT)]
 unsafe extern "C" fn ness_init(vtable: u64, fighter: &mut Fighter) {
     original!()(vtable, fighter);
     let module_accessor = fighter.battle_object.module_accessor;

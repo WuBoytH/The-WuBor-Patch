@@ -1,9 +1,10 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::from_offset(0xb2f820)]
+#[skyline::from_offset(offsets::fighter::jack::CUSTOMIZER)]
 extern "C" fn jack_customizer(module_accessor: *mut BattleObjectModuleAccessor, customize_to: u32);
 
-#[skyline::hook(offset = 0xb30954, inline)]
+#[skyline::hook(offset = offsets::fighter::jack::CHECK_DOYLE_SUMMON_DISPATCH, inline)]
 unsafe fn check_doyle_summon_dispatch_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[21].x() as *mut BattleObjectModuleAccessor;
     WorkModule::off_flag(module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST);

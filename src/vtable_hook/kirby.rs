@@ -1,11 +1,12 @@
 use crate::imports::*;
+use crate::offsets;
 
 extern "C" {
     #[link_name = "captain_set_lightweight"]
     pub fn captain_set_lightweight(module_accessor: *mut BattleObjectModuleAccessor);
 }
 
-#[skyline::hook(offset = 0xb96770)]
+#[skyline::hook(offset = offsets::fighter::kirby::LOSE_COPY_ABILITY)]
 pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1: u32) {
     let module_accessor = fighter.battle_object.module_accessor;
     let copy_module = WorkModule::get_int64(module_accessor, 0x10000106); // *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_MODULE_ADDRESS
@@ -30,7 +31,7 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
     original!()(fighter, param_1);
 }
 
-#[skyline::hook(offset = 0xb97c78, inline)]
+#[skyline::hook(offset = offsets::fighter::kirby::FRAME_BRANCH_COPY_VTABLE, inline)]
 unsafe extern "C" fn kirby_frame_branch_copy_vtable(ctx: &mut skyline::hooks::InlineCtx) {
     // println!("kirby_frame_branch_copy_vtable");
     let kind = ctx.registers[8].x() as i32;

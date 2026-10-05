@@ -1,6 +1,7 @@
 use crate::imports::*;
+use crate::offsets;
 
-#[skyline::hook(offset = 0xb103bc, inline)]
+#[skyline::hook(offset = offsets::weapon::inkling_rollerink::GENERATE, inline)]
 unsafe extern "C" fn inkling_rollerink_generate(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[20].x() as *mut BattleObjectModuleAccessor;
     let status = StatusModule::status_kind(module_accessor);

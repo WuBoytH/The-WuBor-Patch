@@ -1,8 +1,9 @@
 use crate::imports::*;
+use crate::offsets;
 
 static mut BURST_BOMA_PTR : u64 = 0;
 
-#[skyline::hook(offset = 0x97569c, inline)]
+#[skyline::hook(offset = offsets::weapon::dolly_burst::CHECK_STATUS, inline)]
 unsafe extern "C" fn burst_check_status(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = ctx.registers[22].x() as *mut BattleObjectModuleAccessor;
     BURST_BOMA_PTR = module_accessor as u64;
@@ -13,7 +14,7 @@ unsafe extern "C" fn burst_check_status(ctx: &mut skyline::hooks::InlineCtx) {
     }
 }
 
-#[skyline::hook(offset = 0x975b70, inline)]
+#[skyline::hook(offset = offsets::weapon::dolly_burst::SET_MOTION, inline)]
 unsafe extern "C" fn burst_set_motion(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = BURST_BOMA_PTR as *mut BattleObjectModuleAccessor;
     let mut motion = ctx.registers[8].x();
@@ -31,7 +32,7 @@ unsafe extern "C" fn burst_set_motion(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[8].set_x(motion);
 }
 
-#[skyline::hook(offset = 0x33df440 + 0x5b0)]
+#[skyline::hook(offset = offsets::weapon::dolly_burst::INIT)]
 unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, something: u64) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
@@ -65,7 +66,7 @@ unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut app::Weapon, somethin
     }
 }
 
-#[skyline::hook(offset = 0x33df620 + 0x5b0)]
+#[skyline::hook(offset = offsets::weapon::dolly_burst::ON_HIT)]
 unsafe extern "C" fn burst_on_hit(_vtable: u64, weapon: *mut app::Weapon) -> u64 {
     let module_accessor = (*weapon).battle_object.module_accessor;
 

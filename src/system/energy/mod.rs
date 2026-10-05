@@ -10,6 +10,7 @@
 )]
 
 use crate::imports::*;
+use crate::offsets;
 
 #[repr(C)]
 pub struct KineticEnergyVTable {
@@ -81,7 +82,7 @@ pub struct KineticEnergy {
 
 impl KineticEnergy {
     pub fn adjust_speed_for_ground_normal(speed: &PaddedVec2, module_accessor: &mut BattleObjectModuleAccessor) -> PaddedVec2 {
-        #[skyline::from_offset(0x47b4f0)]
+        #[skyline::from_offset(offsets::system::energy::ADJUST_SPEED_FOR_GROUND_NORMAL)]
         extern "C" fn adjust_speed_for_ground_normal_internal(speed: smash_rs::cpp::simd::Vector2, module_accessor: &mut BattleObjectModuleAccessor) -> smash_rs::cpp::simd::Vector2;
 
         unsafe {
@@ -92,7 +93,7 @@ impl KineticEnergy {
 
     pub fn process(&mut self, module_accessor: &mut BattleObjectModuleAccessor) {
         unsafe {
-            #[skyline::from_offset(0x47bf90)]
+            #[skyline::from_offset(offsets::system::energy::PROCESS)]
             extern "C" fn process_energy(energy: &mut KineticEnergy, module_accessor: &mut BattleObjectModuleAccessor);
 
             process_energy(self, module_accessor)

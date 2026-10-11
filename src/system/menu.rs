@@ -1,6 +1,6 @@
 // Shamelessly taken from HDR
 
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::system::menu::MAIN_MENU_QUICK, inline)]
 unsafe fn main_menu_quick(ctx: &skyline::hooks::InlineCtx) {

@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 
 use super::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[repr(C)]
 pub struct FighterKineticEnergyDamage {

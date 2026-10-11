@@ -3,7 +3,7 @@ use smash::{
     phx::*,
     app::*
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(replace = FighterUtil::get_just_shield_se)]
 unsafe extern "C" fn get_just_shield_se(fighter_kind: i32) -> u64 {

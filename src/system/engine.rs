@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = offsets::system::engine::CHANGE_ELEC_HITLAG_FOR_ATTACKER, inline)]

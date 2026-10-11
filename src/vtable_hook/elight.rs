@@ -1,4 +1,4 @@
-use crate::offsets;
+use wubor_utils::offsets;
 
 pub fn install() {
     unsafe {

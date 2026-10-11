@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::luigi::CHANGE_MOTION_CALLBACK)]
 pub unsafe extern "C" fn luigi_change_motion_callback(_vtable: u64, _fighter: &mut Fighter, _some_struct: u64) {

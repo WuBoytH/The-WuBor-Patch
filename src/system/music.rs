@@ -1,4 +1,4 @@
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::from_offset(offsets::system::music::MUSIC_FUNCTION_1)]
 unsafe fn music_function1(arg: u64);

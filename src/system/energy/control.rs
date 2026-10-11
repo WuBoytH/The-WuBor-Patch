@@ -1,5 +1,5 @@
 use super::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use wubor_utils::controls::*;
 
 pub mod param {

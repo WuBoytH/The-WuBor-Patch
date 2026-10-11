@@ -14,7 +14,7 @@
 //! - `item::<name>`     item NRO relative offsets
 //! - `system::<area>`   engine, controller, modules and other shared code
 
-#![allow(dead_code)]
+// #![allow(dead_code)]
 
 pub mod fighter {
     /// Shared fighter code that more than one character hooks into.
@@ -336,22 +336,6 @@ pub mod weapon {
         pub static mut GENERATE_ANGLE : usize = 0xa633f4;
         /// Patches offsetting the ecb.
         pub static mut ECB_OFFSET_PATCH : usize = 0x33faaec + 0x5b0;
-    }
-
-    pub mod dolly_burst {
-        pub static mut CHECK_STATUS : usize = 0x97569c;
-        pub static mut SET_MOTION : usize = 0x975b70;
-        pub static mut INIT : usize = 0x33df440 + 0x5b0;
-        pub static mut ON_HIT : usize = 0x33df620 + 0x5b0;
-    }
-
-    pub mod dolly_wave {
-        pub static mut INIT : usize = 0x33e1800 + 0x5b0;
-        pub static mut ON_HIT : usize = 0x33e1d34 + 0x5b0;
-
-        pub mod vtable {
-            pub static mut ON_HIT_2 : usize = 0x51bdd10;
-        }
     }
 
     pub mod edge_flare1 {

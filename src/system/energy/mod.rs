@@ -10,7 +10,7 @@
 )]
 
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[repr(C)]
 pub struct KineticEnergyVTable {

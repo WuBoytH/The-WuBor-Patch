@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::gaogaen::ON_ATTACK)]
 pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, log: u64) {

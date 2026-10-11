@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 extern "C" {
     #[link_name = "captain_set_lightweight"]

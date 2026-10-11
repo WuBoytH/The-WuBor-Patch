@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::from_offset(offsets::fighter::jack::CUSTOMIZER)]
 extern "C" fn jack_customizer(module_accessor: *mut BattleObjectModuleAccessor, customize_to: u32);
@@ -15,5 +15,5 @@ pub fn install() {
     skyline::install_hooks!(
         check_doyle_summon_dispatch_hook
     );
-    
+
 }

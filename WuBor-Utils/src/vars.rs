@@ -459,6 +459,14 @@ pub mod ike {
             pub const SPECIAL_HI_ARMOR_DAMAGE : i32 = 0x1150;
         }
     }
+
+    pub mod generate {
+        pub static mut WAVE : i32 = 0;
+    }
+
+    pub mod weapon_id {
+        pub static mut WAVE : i32 = 0;
+    }
 }
 
 pub mod ike_sword {
@@ -468,6 +476,14 @@ pub mod ike_sword {
         }
 
         pub const BLADE_BEAM : i32 = 0x4;
+    }
+}
+
+pub mod ike_wave {
+    pub mod status {
+        pub mod flag {
+            pub const BLADE_BEAM_KINETIC_SHIFT : i32 = 0x1150;
+        }
     }
 }
 

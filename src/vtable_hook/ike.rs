@@ -8,7 +8,7 @@ use {
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, app::*},
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::ike::ON_ATTACK)]
 pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {

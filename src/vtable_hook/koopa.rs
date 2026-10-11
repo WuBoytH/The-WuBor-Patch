@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::koopa::PER_FRAME)]
 pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {

@@ -21,8 +21,16 @@ mod agent_init;
 pub mod vl;
 
 mod sword;
+mod wave;
 
 pub fn install() {
+    unsafe {
+        let wave = clone_weapon("ike", "wave", *WEAPON_KIND_DOLLY_WAVE, true);
+        vars::ike::generate::WAVE = wave.generate_id;
+        vars::ike::weapon_id::WAVE = wave.weapon_id;
+        add_param_object("ike", "map_collision_wave");
+    }
+
     let agent = &mut Agent::new("ike");
     acmd::install(agent);
     status::install(agent);
@@ -31,4 +39,5 @@ pub fn install() {
     agent.install();
 
     sword::install();
+    wave::install();
 }

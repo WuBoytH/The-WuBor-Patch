@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 unsafe extern "C" fn sonic_on_init(_vtable: u64, fighter: &mut Fighter) {
     VarModule::on_flag(fighter.battle_object.module_accessor, fighter::instance::flag::CAN_LOOK_UP);

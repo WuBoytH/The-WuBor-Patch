@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::gamewatch::CHANGE_STATUS_CALLBACK)]
 unsafe extern "C" fn gamewatch_change_status_callback(vtable: u64, fighter: &mut Fighter) {

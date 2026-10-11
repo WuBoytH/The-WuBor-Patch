@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 #[skyline::hook(offset = offsets::fighter::jack::DAMAGE_CALLBACK)]

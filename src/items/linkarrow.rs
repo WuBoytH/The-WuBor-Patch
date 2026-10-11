@@ -1,7 +1,7 @@
 #![allow(unknown_lints, integer_to_ptr_transmutes)]
 
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use crate::system::func_links;
 
 pub static mut LINK_ARROW_THROW : usize = 0;

@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::wario::VTABLE_FUNC)]
 pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
@@ -42,7 +42,7 @@ pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
             gas_level = *FIGHTER_WARIO_GASS_LEVEL_M;
         }
         else { gas_level = 0; } // FIGHTER_WARIO_GASS_LEVEL_S
-    
+
         WorkModule::set_int(module_accessor, gas_level, *FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_LEVEL);
         WorkModule::set_float(module_accessor, (gas_count as f32 * 100.0) / gas_max as f32, 0x4F); // FIGHTER_WARIO_INSTANCE_WORK_ID_FLOAT_STOMACH_MOTION_FRAME
         if !LinkModule::is_link(module_accessor, 0xd) {

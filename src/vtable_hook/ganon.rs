@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 #[skyline::hook(offset = offsets::fighter::ganon::LINK_EVENT)]

@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::belmont::ON_INIT_DEATH)]
 unsafe extern "C" fn belmont_on_init_death(vtable: u64, fighter: &mut Fighter) {

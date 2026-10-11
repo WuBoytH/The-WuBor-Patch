@@ -86,7 +86,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add4"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_flash3_g"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add2"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-            } 
+            }
             else {
                 macros::EFFECT(agent, Hash40::new("ike_volcano"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_flash_g"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -105,7 +105,7 @@ unsafe extern "C" fn effect_specialnend(agent: &mut L2CAgentBase) {
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add4"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_flash3_g"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add2"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-            } 
+            }
         }
     }
 }
@@ -147,7 +147,7 @@ unsafe extern "C" fn sound_specialnend(agent: &mut L2CAgentBase) {
         if VarModule::is_flag(agent.module_accessor, vars::ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
                 macros::PLAY_SE(agent, Hash40::new("se_ike_special_n10"));
-            } 
+            }
         }
     }
     frame(agent.lua_state_agent, 48.0);
@@ -526,7 +526,7 @@ unsafe extern "C" fn game_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         // macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 0, 48, 9.0, 0.0, 8.0, 18.0, Some(0.0), Some(8.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
         // AttackModule::set_force_reaction(agent.module_accessor, 0, true, false);
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_IKE_GENERATE_ARTICLE_SWORD, false, -1);
+        ArticleModule::generate_article(agent.module_accessor, vars::ike::generate::WAVE, false, -1);
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     // if WorkModule::is_flag(agent.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {

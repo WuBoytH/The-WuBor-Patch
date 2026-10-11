@@ -11,7 +11,7 @@ use {
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*}
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::lucario::CHECK_AURA)]
 pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {

@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
 
 #[skyline::hook(offset = offsets::fighter::rockman::VTABLE_FUNC)]
@@ -56,7 +56,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                     VarModule::on_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE);
                 }
             }
-            
+
             if VarModule::get_int(module_accessor, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME) >= 0 {
                 VarModule::dec_int(module_accessor, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME);
             }

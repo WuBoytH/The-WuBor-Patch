@@ -7,7 +7,7 @@ use {
     custom_var::*,
     wubor_utils::{controls::*, vars}
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 // #[repr(C)]
 // struct BufferState {

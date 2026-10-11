@@ -7,7 +7,7 @@ use {
     },
     wubor_utils::controls::*,
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::system::controller::PACKED_PACKET_CREATION, inline)]
 unsafe fn packed_packet_creation(ctx: &mut skyline::hooks::InlineCtx) {

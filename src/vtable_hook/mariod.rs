@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::mariod::INIT)]
 unsafe extern "C" fn mariod_init(_vtable: u64, fighter: &mut Fighter) {

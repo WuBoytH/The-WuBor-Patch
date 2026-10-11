@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use crate::system::func_links;
 
 unsafe extern "C" fn holywater_get_fighter_kind(item: &mut L2CAgent) -> L2CValue {

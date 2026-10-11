@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 // Used for when generic weapons hit something else.
 #[skyline::hook(offset = offsets::weapon::common::ATTACK_CALLBACK)]

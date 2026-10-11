@@ -431,6 +431,12 @@ unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, par
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+        return 1.into();
+    }
+
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
         return 1.into();
@@ -734,6 +740,11 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
     }
 
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN)
+    && fighter.sub_check_command_walk().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALK.into(), true.into());
+    }
+
     // if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 && {
     //     let frame = MotionModule::frame(fighter.module_accessor);
     //     let re_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32;
@@ -830,12 +841,12 @@ unsafe extern "C" fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighte
     }
 
     if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME, 0) {
-        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     }
 
     if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME, 0) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
     }

@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::weapon::inkling_rollerink::GENERATE, inline)]
 unsafe extern "C" fn inkling_rollerink_generate(ctx: &mut skyline::hooks::InlineCtx) {

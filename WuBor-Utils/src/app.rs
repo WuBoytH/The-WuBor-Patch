@@ -495,3 +495,79 @@ impl StatChange {
         }
     }
 }
+
+// Evil Init Fn
+
+
+#[repr(C)]
+pub struct SubObjectRef {
+    pub ptr: u64,
+    pub id: i32,
+    _pad: u32,
+}
+
+#[repr(C)]
+pub struct GenerateRecord {
+    pub vtable: u64,
+    pub unk_08: u16,
+    _pad_0a: [u8; 6],
+    pub pos: smash::phx::Vector4f,
+    pub lr: f32,
+    pub unk_24: u32,
+    pub unk_28: u32,
+    pub owner_id: u32,
+    pub unk_30: u32,
+    pub unk_34: u32,
+    pub team_no: u32,
+    pub unk_3c: u32,
+    pub stick_y: f32,
+    pub power: f32,
+    pub power_attr: f32,
+    _pad_4c: u32,
+    pub sub_object_a: SubObjectRef,
+    pub sub_object_b: SubObjectRef,
+    pub unk_70: u32,
+    pub unk_74: u32,
+    pub unk_78: i32,
+    pub unk_7c: u8,
+    pub unk_7d: u8,
+    pub unk_7e: u8,
+    pub unk_7f: u8,
+    pub unk_80: u8,
+    pub unk_81: u8,
+    pub unk_82: u8,
+    pub unk_83: u8,
+    pub unk_84: [u8; 3],
+    pub unk_87: u8,
+    pub motion_kind: u64,
+    pub unk_90: u64,
+    pub center_pos: smash::phx::Vector4f,
+    pub scale: [f32; 2],
+    pub is_air: bool,
+    _pad_b1: [u8; 7],
+    _payload_tail: [u8; 0x38],
+}
+
+impl GenerateRecord {
+    pub unsafe fn new() -> Self {
+        use smash::lib::lua_const::BATTLE_OBJECT_ID_INVALID;
+
+        let mut record: Self = std::mem::zeroed();
+        record.vtable = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64 + 0x4f62778;
+        record.unk_08 = 0x1000;
+        record.lr = -1.0;
+        record.unk_30 = *BATTLE_OBJECT_ID_INVALID as u32;
+        record.unk_34 = *BATTLE_OBJECT_ID_INVALID as u32;
+        record.team_no = u32::MAX;
+        record.power = 1.0;
+        record.power_attr = 1.0;
+        record.sub_object_a.id = -1;
+        record.sub_object_b.id = -1;
+        record.unk_70 = u32::MAX;
+        record.unk_7f = 1;
+        record.unk_81 = 1;
+        record.unk_83 = 1;
+        record.scale = [1.0, 1.0];
+        record
+    }
+}

@@ -1,7 +1,7 @@
 use super::*;
 
 unsafe extern "C" fn normal_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    println!("normal");
+    // println!("normal");
     if WorkModule::is_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_SWALLOWED) {
         WorkModule::set_float(weapon.module_accessor, 1.0, *WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLOAT_SWALLOWED_SPEED_MUL);
     }
@@ -102,7 +102,7 @@ unsafe extern "C" fn normal_fastshift(weapon: &mut L2CWeaponCommon) -> L2CValue 
         let angle = normal_x.atan2(normal_y);
         let lr = PostureModule::lr(weapon.module_accessor);
         let degrees = (angle * lr).to_degrees();
-        println!("degrees: {}", degrees);
+        // println!("degrees: {}", degrees);
         WorkModule::set_float(weapon.module_accessor, degrees, *WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLOAT_GROUND_ANGLE);
         let angle_kill = WorkModule::get_param_float(weapon.module_accessor, hash40("param_wave"), 0x1d5e336640);
         if degrees.abs() > angle_kill {

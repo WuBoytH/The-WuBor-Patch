@@ -103,9 +103,29 @@ unsafe extern "C" fn dolly_burst_init(article: *mut u64, module_accessor: *mut B
     || VarModule::is_flag(module_accessor, vars::dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
         let burst_offset_z = WorkModule::get_param_float(module_accessor, hash40("param_final"), hash40("burst_offset_z"));
         let prev_burst_id = WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_OBJECT_ID) as u32;
+        if StatusModule::status_kind(module_accessor) == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
+        && VarModule::is_flag(module_accessor, vars::dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
+            let num = VarModule::get_int(module_accessor, vars::dolly::status::int::SUPER_SPECIAL_TRIPLE_COUNT);
+            record.motion_kind = match num {
+                1 => hash40("super_special_triple_1"),
+                2 => hash40("super_special_triple_2"),
+                3 => hash40("super_special_triple_3"),
+                _ => hash40("super_special")
+            };
+        }
+        else {
+            if prev_burst_id == *BATTLE_OBJECT_ID_INVALID as u32 {
+                record.motion_kind = hash40("final");
+            }
+            else if WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_NUM) == 1 {
+                record.motion_kind = hash40("final2");
+            }
+            else {
+                record.motion_kind = hash40("final3");
+            }
+        }
         if prev_burst_id == *BATTLE_OBJECT_ID_INVALID as u32 {
             pos = top_joint_position(module_accessor, burst_offset_z);
-            record.motion_kind = hash40("final");
         }
         else {
             let prev_burst = MiscModule::get_battle_object_from_id(prev_burst_id);
@@ -120,22 +140,6 @@ unsafe extern "C" fn dolly_burst_init(article: *mut u64, module_accessor: *mut B
                 pos = top_joint_position(module_accessor, burst_num as f32 * burst_offset_z);
                 record.center_pos = ground_center_pos(module_accessor);
             }
-            record.motion_kind = if StatusModule::status_kind(module_accessor) == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
-            && VarModule::is_flag(module_accessor, vars::dolly::status::flag::SUPER_SPECIAL_TRIPLE) {
-                let num = VarModule::get_int(module_accessor, vars::dolly::status::int::SUPER_SPECIAL_TRIPLE_COUNT);
-                match num {
-                    1 => hash40("super_special_triple_1"),
-                    2 => hash40("super_special_triple_2"),
-                    3 => hash40("super_special_triple_3"),
-                    _ => hash40("super_special")
-                }
-            }
-            else if WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_NUM) == 1 {
-                hash40("final2")
-            }
-            else {
-                hash40("final3")
-            };
         }
         record.unk_7c = 1;
         WorkModule::inc_int(module_accessor, *FIGHTER_DOLLY_STATUS_FINAL_WORK_INT_BURST_NUM);

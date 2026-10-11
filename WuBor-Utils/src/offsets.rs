@@ -2,10 +2,9 @@
 //!
 //! All values are relative to the start of the game's `.text` region unless
 //! noted otherwise (item offsets are relative to the `item` NRO's base and are
-//! resolved when that NRO loads). The `+ 0x5b0`, `- 0x1A0`, `+ 0x450` and
-//! `- 0xE0` adjustments are the shifts between the version the offset was
-//! originally found in and the version the patch currently targets, and are
-//! kept explicit so the original address can still be looked up.
+//! resolved when that NRO loads). Values are already shifted to the version
+//! the patch currently targets; the pre-shift address an offset was originally
+//! found at can be recovered from this file's git history.
 //!
 //! Layout:
 //! - `fighter::<name>`  functions belonging to a fighter's code
@@ -321,60 +320,44 @@ pub mod fighter {
 pub mod weapon {
     /// Shared weapon code.
     pub mod common {
-        pub static mut INIT : usize = 0x33a07d0 + 0x5b0;
+        pub static mut INIT : usize = 0x33a0d80;
         /// Used for when generic weapons hit something else.
-        pub static mut ATTACK_CALLBACK : usize = 0x33a8010 + 0x5b0;
-        pub static mut HIT_HANDLER_2 : usize = 0x33bcd10 + 0x5b0;
+        pub static mut ATTACK_CALLBACK : usize = 0x33a85c0;
+        pub static mut HIT_HANDLER_2 : usize = 0x33bd2c0;
     }
 
     pub mod belmont_cross {
-        pub static mut ON_HIT : usize = 0x34f8280 + 0x5b0;
-        pub static mut ON_HIT_THING : usize = 0x33a9bf0 + 0x5b0;
+        pub static mut ON_HIT : usize = 0x34f8830;
+        pub static mut ON_HIT_THING : usize = 0x33aa1a0;
     }
 
     pub mod blaster_bullet {
         pub static mut GENERATE_ANGLE : usize = 0xa633f4;
         /// Patches offsetting the ecb.
-        pub static mut ECB_OFFSET_PATCH : usize = 0x33faaec + 0x5b0;
+        pub static mut ECB_OFFSET_PATCH : usize = 0x33fb09c;
     }
 
     pub mod edge_flare1 {
-        pub static mut INIT : usize = 0x33eccf0 + 0x5b0;
+        pub static mut INIT : usize = 0x33ed2a0;
     }
 
-    pub mod ike_sword {
-        pub static mut SET_SPAWN_POS : usize = 0xaf9bf0;
-        pub static mut SET_STATUS : usize = 0xaf9cc4;
-        pub static mut ON_HIT : usize = 0x340ac50 + 0x5b0;
+    // pub mod ike_sword {
+    //     pub static mut SET_SPAWN_POS : usize = 0xaf9bf0;
+    //     pub static mut SET_STATUS : usize = 0xaf9cc4;
+    //     pub static mut ON_HIT : usize = 0x340b200;
 
-        pub mod vtable {
-            pub static mut CAN_POCKET : usize = 0x51ce2d0;
-        }
-    }
+    //     pub mod vtable {
+    //         pub static mut CAN_POCKET : usize = 0x51ce2d0;
+    //     }
+    // }
 
     pub mod inkling_rollerink {
         pub static mut GENERATE : usize = 0xb103bc;
     }
 
-    pub mod koopa_breath {
-        pub static mut ON_HIT : usize = 0x34216e0 + 0x5b0;
-    }
-
     pub mod mariod_drcapsule {
         /// Pill fix for respawn platform.
         pub static mut RESPAWN_PLATFORM_PILL_PATCH : usize = 0xcc9e34;
-    }
-
-    pub mod packun_poisonbreath {
-        pub mod vtable {
-            pub static mut ON_HIT : usize = 0x51f6f90;
-        }
-    }
-
-    pub mod ryu_shinkuhadoken {
-        pub mod vtable {
-            pub static mut ON_HIT : usize = 0x5215940;
-        }
     }
 }
 
@@ -438,10 +421,10 @@ pub mod system {
         /// Prevents Aerial Kind resetting every frame.
         pub static mut RESET_ATTACK_AIR_KIND_PATCH : usize = 0x6bd6c4;
         /// Removes 10f C-stick lockout for tilt stick and special stick.
-        pub static mut CSTICK_LOCKOUT_PATCH_1 : usize = 0x17532ac - 0x1A0;
-        pub static mut CSTICK_LOCKOUT_PATCH_2 : usize = 0x17532b0 - 0x1A0;
-        pub static mut CSTICK_LOCKOUT_PATCH_3 : usize = 0x17532b4 - 0x1A0;
-        pub static mut CSTICK_LOCKOUT_PATCH_4 : usize = 0x17532b8 - 0x1A0;
+        pub static mut CSTICK_LOCKOUT_PATCH_1 : usize = 0x175310c;
+        pub static mut CSTICK_LOCKOUT_PATCH_2 : usize = 0x1753110;
+        pub static mut CSTICK_LOCKOUT_PATCH_3 : usize = 0x1753114;
+        pub static mut CSTICK_LOCKOUT_PATCH_4 : usize = 0x1753118;
         /// Always uses the hitlag handling that cat4 uses.
         pub static mut HITLAG_BUFFER_CAT4_PATCH : usize = 0x6bd448;
         /// Stubs the check if the buffer value is 1 and the button is held.
@@ -456,33 +439,33 @@ pub mod system {
     }
 
     pub mod controller {
-        pub static mut PACKED_PACKET_CREATION : usize = 0x16d85dc - 0x1A0;
-        pub static mut WRITE_PACKET : usize = 0x16d8610 - 0x1A0;
-        pub static mut MAP_CONTROLS : usize = 0x1750f70 - 0x1A0;
-        pub static mut HANDLE_INCOMING_PACKET : usize = 0x16d7034 - 0x1A0;
+        pub static mut PACKED_PACKET_CREATION : usize = 0x16d843c;
+        pub static mut WRITE_PACKET : usize = 0x16d8470;
+        pub static mut MAP_CONTROLS : usize = 0x1750dd0;
+        pub static mut HANDLE_INCOMING_PACKET : usize = 0x16d6e94;
         pub static mut PARSE_INPUTS : usize = 0x3f7240;
         pub static mut AFTER_EXEC : usize = 0x6b9c7c;
         /// Pointer to the table used by `get_mapped_controller_inputs_from_id`.
         pub static mut MAPPED_INPUTS_TABLE : usize = 0x52c50f0;
-        pub static mut POST_GAMECUBE_PROCESS : usize = 0x3666eac + 0x5B0;
-        pub static mut APPLY_TRIGGERS : usize = 0x3666d0c + 0x5B0;
-        pub static mut ANALOG_TRIGGER_L : usize = 0x3666ee0 + 0x5B0;
-        pub static mut ANALOG_TRIGGER_R : usize = 0x3666ef4 + 0x5B0;
-        pub static mut ANALOG_TRIGGER_L_PATCH : usize = 0x3666edc + 0x5B0;
-        pub static mut ANALOG_TRIGGER_R_PATCH : usize = 0x3666ef0 + 0x5B0;
+        pub static mut POST_GAMECUBE_PROCESS : usize = 0x366745c;
+        pub static mut APPLY_TRIGGERS : usize = 0x36672bc;
+        pub static mut ANALOG_TRIGGER_L : usize = 0x3667490;
+        pub static mut ANALOG_TRIGGER_R : usize = 0x36674a4;
+        pub static mut ANALOG_TRIGGER_L_PATCH : usize = 0x366748c;
+        pub static mut ANALOG_TRIGGER_R_PATCH : usize = 0x36674a0;
     }
 
     pub mod css {
-        pub static mut FIX_CHARA_REPLACE : usize = 0x1798ac8 - 0xE0;
+        pub static mut FIX_CHARA_REPLACE : usize = 0x17989e8;
     }
 
     pub mod menu {
-        pub static mut MAIN_MENU_QUICK : usize = 0x235cad0 + 0x450;
+        pub static mut MAIN_MENU_QUICK : usize = 0x235cf20;
     }
 
     pub mod music {
-        pub static mut MUSIC_FUNCTION_1 : usize = 0x23ed810 + 0x450;
-        pub static mut MUSIC_FUNCTION_2 : usize = 0x23ee0c0 + 0x450;
+        pub static mut MUSIC_FUNCTION_1 : usize = 0x23edc60;
+        pub static mut MUSIC_FUNCTION_2 : usize = 0x23ee510;
         pub static mut TRAINING_RESET_MUSIC_1 : usize = 0x1509fd4;
         pub static mut TRAINING_RESET_MUSIC_2 : usize = 0x14f99cc;
     }
@@ -528,7 +511,7 @@ pub mod system {
         pub static mut SET_PARRY_HITLAG : usize = 0x641d84;
         /// Also nopped to remove the vanilla ledge trump check.
         pub static mut REVERSE_TRUMP_LOGIC : usize = 0x617aa4;
-        pub static mut FORCE_REFLECT_FULL_LIFETIME : usize = 0x33bdd88 + 0x5b0;
+        pub static mut FORCE_REFLECT_FULL_LIFETIME : usize = 0x33be338;
         pub static mut SHIELD_BREAK_LR_SET : usize = 0x6416e8;
         pub static mut SHIELD_SET_FACING_LR : usize = 0x6418f8;
         pub static mut SHIELD_HEALTH_RECOVERY_CHECK_MAX : usize = 0x614c0c;

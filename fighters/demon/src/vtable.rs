@@ -1,5 +1,4 @@
-use crate::imports::*;
-use wubor_utils::offsets;
+use super::*;
 // use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 // #[skyline::hook(offset = 0x933800)]
@@ -21,14 +20,14 @@ use wubor_utils::offsets;
 //     original!()(vtable, fighter, event)
 // }
 
-#[skyline::hook(offset = offsets::fighter::demon::SOME_EVENT)]
 pub unsafe extern "C" fn demon_some_event(_vtable: u64, _fighter: &mut Fighter, event: u64) -> u64 {
     event
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        // demon_link_event,
-        demon_some_event
+    replace_fighter_vtable(
+        *FIGHTER_KIND_DEMON,
+        138,
+        demon_some_event as *const () as _
     );
 }

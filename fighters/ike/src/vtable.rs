@@ -1,21 +1,10 @@
-use {
-    smash::{
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, app::*},
-};
-use wubor_utils::offsets;
+use super::*;
 
-#[skyline::hook(offset = offsets::fighter::ike::ON_ATTACK)]
 pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log: u64) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status;
     let param_hash;
-    let collision_log : &mut CollisionLogScuffed = std::mem::transmute(log);
+    let collision_log : &mut CollisionLogScuffed = std::mem::transmute(log as *mut u64);
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         status = *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END;
         param_hash = hash40("param_special_n_kirby");
@@ -25,8 +14,8 @@ pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log:
         param_hash = hash40("param_special_n");
     }
     if StatusModule::status_kind(module_accessor) == status
-    && VarModule::is_flag(module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL) {
-        VarModule::off_flag(module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+    && VarModule::is_flag(module_accessor, vars::ike::status::flag::SPECIAL_N_ENABLE_CRITICAL) {
+        VarModule::off_flag(module_accessor, vars::ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
         MiscModule::call_critical(module_accessor, log, 0x23, param_hash, 1, 0, 0, 0, 0);
     }
 
@@ -35,7 +24,7 @@ pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log:
         let opponent_object_id = collision_log.opponent_object_id;
         let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
         if HitModule::get_status((*opponent_object).module_accessor, collision_log.receiver_id as i32, 0) == 0 {
-            let armor_damage = VarModule::get_float(module_accessor, ike::status::float::SPECIAL_HI_ARMOR_DAMAGE);
+            let armor_damage = VarModule::get_float(module_accessor, vars::ike::status::float::SPECIAL_HI_ARMOR_DAMAGE);
             if armor_damage != 0.0 {
                 DamageModule::heal(module_accessor, -armor_damage * 1.5, 0);
                 SoundModule::play_se(
@@ -63,7 +52,7 @@ pub unsafe extern "C" fn ike_on_attack(_vtable: u64, fighter: &mut Fighter, log:
                     false,
                     false
                 );
-                VarModule::set_float(module_accessor, ike::status::float::SPECIAL_HI_ARMOR_DAMAGE, 0.0);
+                VarModule::set_float(module_accessor, vars::ike::status::float::SPECIAL_HI_ARMOR_DAMAGE, 0.0);
             }
         }
     }
@@ -76,19 +65,22 @@ unsafe extern "C" fn ike_on_damage(_vtable: u64, fighter: &mut Fighter, log: u64
         *FIGHTER_STATUS_KIND_SPECIAL_HI,
         *FIGHTER_IKE_STATUS_KIND_SPECIAL_HI_2
     ].contains(&StatusModule::status_kind(module_accessor)) {
-        if VarModule::is_flag(module_accessor, ike::status::flag::SPECIAL_HI_ARMOR) {
+        if VarModule::is_flag(module_accessor, vars::ike::status::flag::SPECIAL_HI_ARMOR) {
             let damage = *((*(log as *const u64).add(0x10 / 0x8)) as *const f32).add(0x4 / 0x4);
-            VarModule::add_float(module_accessor, ike::status::float::SPECIAL_HI_ARMOR_DAMAGE, damage);
+            VarModule::add_float(module_accessor, vars::ike::status::float::SPECIAL_HI_ARMOR_DAMAGE, damage);
         }
     }
 }
 
 pub fn install() {
-    unsafe {
-        skyline::install_hooks!(
-            ike_on_attack
-        );
-
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::ike::vtable::START + (68 * 0x8)).data(ike_on_damage as *const () as u64);
-    }
+    replace_fighter_vtable(
+        *FIGHTER_KIND_IKE,
+        36,
+        ike_on_attack as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_IKE,
+        68,
+        ike_on_damage as *const () as _
+    );
 }

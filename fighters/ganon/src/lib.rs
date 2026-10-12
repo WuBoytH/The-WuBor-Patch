@@ -20,6 +20,8 @@ mod status;
 mod agent_init;
 pub mod helper;
 
+mod vtable;
+
 pub fn install() {
     let agent = &mut Agent::new("ganon");
     acmd::install(agent);
@@ -27,4 +29,6 @@ pub fn install() {
     status::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
 }

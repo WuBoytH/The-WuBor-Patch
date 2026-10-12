@@ -22,6 +22,8 @@ mod status;
 pub mod agent_init;
 pub mod helper;
 
+mod vtable;
+
 mod wave;
 mod burst;
 
@@ -33,6 +35,8 @@ pub fn install() {
     agent_init::install(agent);
     smashline::add_param_object("dolly", "param_misc");
     agent.install();
+
+    vtable::install();
 
     wave::install();
     burst::install();

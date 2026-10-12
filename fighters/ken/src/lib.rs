@@ -19,6 +19,8 @@ mod status;
 mod frame;
 mod agent_init;
 
+mod vtable;
+
 mod hadoken;
 mod shinryuken;
 
@@ -29,6 +31,8 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
 
     hadoken::install();
     shinryuken::install();

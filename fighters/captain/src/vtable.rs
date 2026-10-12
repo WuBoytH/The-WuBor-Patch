@@ -1,12 +1,8 @@
-use crate::imports::*;
+use super::*;
 use wubor_utils::offsets;
 
-extern "C" {
-    #[link_name = "captain_update_boost_power"]
-    pub fn captain_update_boost_power(module_accessor: *mut BattleObjectModuleAccessor, damage: f32);
-    #[link_name = "captain_check_boost_power"]
-    pub fn captain_check_boost_power(module_accessor: *mut BattleObjectModuleAccessor);
-}
+#[skyline::from_offset(offsets::fighter::captain::ON_ATTACK_ORIGINAL)]
+pub fn captain_on_attack_original(vtable: u64, fighter: &mut Fighter, log: u64);
 
 pub unsafe extern "C" fn captain_on_frame(_vtable: u64, fighter: &mut Fighter) {
     let object = (*fighter).battle_object;
@@ -32,8 +28,8 @@ pub unsafe extern "C" fn captain_on_attack(vtable: u64, fighter: &mut Fighter, l
         if [
             *FIGHTER_CAPTAIN_STATUS_KIND_SPECIAL_S_END,
         ].contains(&status) {
-            if VarModule::is_flag(module_accessor, captain::status::flag::USED_BOOST_POWER)
-            && VarModule::is_flag(module_accessor, captain::status::flag::ENABLE_BOOST_POWER_CRITICAL) {
+            if VarModule::is_flag(module_accessor, vars::captain::status::flag::USED_BOOST_POWER)
+            && VarModule::is_flag(module_accessor, vars::captain::status::flag::ENABLE_BOOST_POWER_CRITICAL) {
                 MiscModule::call_critical(module_accessor, log, 0xb, hash40("param_special_n"), 1, 0, 0, 0, 0);
                 return;
             }
@@ -49,13 +45,20 @@ pub unsafe extern "C" fn captain_on_damage(_vtable: u64, fighter: &mut Fighter, 
     captain_update_boost_power(module_accessor, -damage);
 }
 
-#[skyline::from_offset(offsets::fighter::captain::ON_ATTACK_ORIGINAL)]
-pub fn captain_on_attack_original(vtable: u64, fighter: &mut Fighter, log: u64);
-
 pub fn install() {
-    unsafe {
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_FRAME).data(captain_on_frame as *const () as u64);
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_ATTACK).data(captain_on_attack as *const () as u64);
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::captain::vtable::ON_DAMAGE).data(captain_on_damage as *const () as u64);
-    }
+    replace_fighter_vtable(
+        *FIGHTER_KIND_CAPTAIN,
+        13,
+        captain_on_frame as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_CAPTAIN,
+        36,
+        captain_on_attack as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_CAPTAIN,
+        68,
+        captain_on_damage as *const () as _
+    );
 }

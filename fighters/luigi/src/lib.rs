@@ -18,6 +18,8 @@ mod acmd;
 mod status;
 mod frame;
 
+mod vtable;
+
 mod fireball;
 
 pub fn install() {
@@ -26,6 +28,8 @@ pub fn install() {
     status::install(agent);
     frame::install(agent);
     agent.install();
+
+    vtable::install();
 
     fireball::install();
 }

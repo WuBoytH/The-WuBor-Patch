@@ -208,3 +208,20 @@ pub unsafe extern "C" fn lucario_special_lw_eff_remover(fighter: &mut L2CAgentBa
     }
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("lucario_aura"), true, true);
 }
+
+#[no_mangle]
+pub unsafe extern "C" fn lucario_get_aura(object: *mut BattleObject) -> f32 {
+    let module_accessor = (*object).module_accessor;
+    if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+        1.0
+    }
+    else {
+        let mut charge = VarModule::get_int(module_accessor, vars::lucario::instance::int::AURA_LEVEL) as f32;
+        charge += VarModule::get_int(module_accessor, vars::lucario::status::int::AURA_ENHANCED_BY) as f32;
+        let aurapower_min = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_min"));
+        let aurapower_max = WorkModule::get_param_float(module_accessor, hash40("param_auracharge"), hash40("aurapower_max"));
+        let diff = aurapower_max - aurapower_min;
+        let max_charge = WorkModule::get_param_int(module_accessor, hash40("param_auracharge"), hash40("aura_charge_max")) as f32;
+        aurapower_min + (diff * charge.clamp(0.0, max_charge) / max_charge)
+    }
+}

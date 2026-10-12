@@ -1,7 +1,5 @@
-use crate::imports::*;
-use wubor_utils::offsets;
+use super::*;
 
-#[skyline::hook(offset = offsets::fighter::mariod::INIT)]
 unsafe extern "C" fn mariod_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     WorkModule::off_flag(module_accessor, *FIGHTER_MARIOD_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP);
@@ -9,7 +7,6 @@ unsafe extern "C" fn mariod_init(_vtable: u64, fighter: &mut Fighter) {
     EffectModule::remove_common(module_accessor, Hash40::new("charge_max"));
 }
 
-#[skyline::hook(offset = offsets::fighter::mariod::ON_STATUS_CHANGE)]
 unsafe extern "C" fn mariod_on_status_change(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0);
@@ -19,8 +16,14 @@ unsafe extern "C" fn mariod_on_status_change(_vtable: u64, fighter: &mut Fighter
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        mariod_init,
-        mariod_on_status_change
+    replace_fighter_vtable(
+        *FIGHTER_KIND_MARIOD,
+        7,
+        mariod_init as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_MARIOD,
+        43,
+        mariod_on_status_change as *const () as _
     );
 }

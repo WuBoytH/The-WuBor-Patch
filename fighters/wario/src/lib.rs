@@ -19,10 +19,14 @@ mod status;
 mod frame;
 pub mod vl;
 
+mod vtable;
+
 pub fn install() {
     let agent = &mut Agent::new("wario");
     acmd::install(agent);
     status::install(agent);
     frame::install(agent);
     agent.install();
+
+    vtable::install();
 }

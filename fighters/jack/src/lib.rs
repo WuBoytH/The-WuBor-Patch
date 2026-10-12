@@ -20,6 +20,8 @@ mod status;
 pub mod agent_init;
 mod fgc;
 
+mod vtable;
+
 mod doyle;
 
 pub fn install() {
@@ -30,6 +32,8 @@ pub fn install() {
     agent_init::install(agent);
     fgc::install();
     agent.install();
+
+    vtable::install();
 
     doyle::install();
 }

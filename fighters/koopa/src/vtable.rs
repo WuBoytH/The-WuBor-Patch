@@ -1,7 +1,5 @@
-use crate::imports::*;
-use wubor_utils::offsets;
+use super::*;
 
-#[skyline::hook(offset = offsets::fighter::koopa::PER_FRAME)]
 pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
@@ -37,15 +35,15 @@ pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
                 else {
                     Hash40::new("jaw")
                 };
-                EffectModule::req_follow(module_accessor, Hash40::new("sys_flash"), bone, &ZERO_VECTOR, &ZERO_VECTOR, 1.0, true, 0, 0, 0, 0, 0, false, false);
-                let eff_handle = VarModule::get_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+                EffectModule::req_follow(module_accessor, Hash40::new("sys_flash"), bone, &vars::ZERO_VECTOR, &vars::ZERO_VECTOR, 1.0, true, 0, 0, 0, 0, 0, false, false);
+                let eff_handle = VarModule::get_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
                 if !EffectModule::is_exist_effect(module_accessor, eff_handle) {
                     EffectModule::kill(module_accessor, eff_handle, true, true);
-                    VarModule::set_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
+                    VarModule::set_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
                 }
             }
 
-            let eff_handle = VarModule::get_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+            let eff_handle = VarModule::get_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
             if !EffectModule::is_exist_effect(module_accessor, eff_handle) {
                 let bone = if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
                     Hash40::new("mouth1")
@@ -77,21 +75,23 @@ pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
                 };
                 EffectModule::set_scale(module_accessor, eff_handle, eff_scale);
                 EffectModule::set_rate(module_accessor, eff_handle, eff_rate);
-                VarModule::set_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID, eff_handle as i32);
+                VarModule::set_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID, eff_handle as i32);
             }
         }
         else {
-            let eff_handle = VarModule::get_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+            let eff_handle = VarModule::get_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
             if !EffectModule::is_exist_effect(module_accessor, eff_handle) {
                 EffectModule::kill(module_accessor, eff_handle, true, true);
-                VarModule::set_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
+                VarModule::set_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
             }
         }
     }
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        koopa_per_frame
+    replace_fighter_vtable(
+        *FIGHTER_KIND_KOOPA,
+        13,
+        koopa_per_frame as *const () as _
     );
 }

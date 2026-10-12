@@ -20,7 +20,7 @@ unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
             fighta,
             *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX,
             ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)
-        ) & 1 != 0 {
+        ) {
             ArticleModule::shoot(
                 fighter.module_accessor,
                 *FIGHTER_SNAKE_GENERATE_ARTICLE_CBOX,

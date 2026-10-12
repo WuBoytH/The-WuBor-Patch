@@ -20,6 +20,8 @@ mod frame;
 mod agent_init;
 mod fgc;
 
+mod vtable;
+
 mod esword;
 mod firepillar;
 
@@ -30,6 +32,8 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
     fgc::install();
 
     esword::install();

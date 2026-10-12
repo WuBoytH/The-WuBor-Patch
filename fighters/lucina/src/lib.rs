@@ -22,6 +22,8 @@ pub mod helper;
 pub mod vl;
 mod cancel;
 
+mod vtable;
+
 pub fn install() {
     let agent = &mut Agent::new("lucina");
     acmd::install(agent);
@@ -30,4 +32,6 @@ pub fn install() {
     agent_init::install(agent);
     cancel::install();
     agent.install();
+
+    vtable::install();
 }

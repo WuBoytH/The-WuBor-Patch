@@ -1,8 +1,6 @@
-use crate::imports::*;
-use wubor_utils::offsets;
+use super::*;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
-#[skyline::hook(offset = offsets::fighter::ganon::LINK_EVENT)]
 pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
@@ -90,7 +88,6 @@ pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, l
     1
 }
 
-#[skyline::hook(offset = offsets::fighter::ganon::STATUS_TRANSITION)]
 pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0) as u64;
@@ -128,8 +125,14 @@ pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fig
 }
 
 pub fn install() {
-    skyline::install_hooks!(
-        ganon_link_event,
-        ganon_status_transition
+    replace_fighter_vtable(
+        *FIGHTER_KIND_GANON,
+        43,
+        ganon_status_transition as *const () as _
+    );
+    replace_fighter_vtable(
+        *FIGHTER_KIND_GANON,
+        46,
+        ganon_link_event as *const () as _
     );
 }

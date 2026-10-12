@@ -20,6 +20,8 @@ mod frame;
 mod agent_init;
 pub mod vl;
 
+mod vtable;
+
 mod sword;
 mod wave;
 
@@ -37,6 +39,8 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
 
     sword::install();
     wave::install();

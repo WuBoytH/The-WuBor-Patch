@@ -20,6 +20,8 @@ mod frame;
 mod agent_init;
 mod fgc;
 
+mod vtable;
+
 mod chargeshot;
 mod airshooter;
 mod leafshield;
@@ -33,6 +35,8 @@ pub fn install() {
     fgc::install();
     smashline::add_param_object("rockman", "param_buster_charge");
     agent.install();
+
+    vtable::install();
 
     chargeshot::install();
     airshooter::install();

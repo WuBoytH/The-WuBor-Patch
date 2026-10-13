@@ -25,7 +25,7 @@ pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, l
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_GAOGAEN,
-        36,
+        FighterVtableSlot::OnAttack,
         gaogaen_on_attack as *const () as _
     );
 }

@@ -3,9 +3,9 @@ use wubor_utils::offsets;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
 #[skyline::from_offset(offsets::fighter::lucario::SET_EFFECT_SCALE)]
-unsafe extern "C" fn lucario_set_effect_scale_inner(vtable: u64, fighter: &mut Fighter);
+unsafe extern "C" fn lucario_on_frame7_inner(vtable: u64, fighter: &mut Fighter);
 
-pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn lucario_on_death_reset1(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
@@ -15,7 +15,7 @@ pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
 }
 
-pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn lucario_on_frame9(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let object_id = object.battle_object_id;
     let module_accessor = sv_battle_object::module_accessor(object_id);
@@ -120,7 +120,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     // WorkModule::set_int(module_accessor, charge_frame, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME);
 }
 
-pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, event: &mut LinkEvent) -> u64 {
+pub unsafe extern "C" fn lucario_on_link_event(_vtable: u64, fighter: &mut Fighter, event: &mut LinkEvent) -> u64 {
     // param_3 + 0x10
     if event.link_event_kind.0 == hash40("capture") {
         let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
@@ -143,8 +143,8 @@ pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, ev
     1
 }
 
-pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {
-    lucario_set_effect_scale_inner(vtable, fighter);
+pub unsafe extern "C" fn lucario_on_frame7(vtable: u64, fighter: &mut Fighter) {
+    lucario_on_frame7_inner(vtable, fighter);
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
     let effect = WorkModule::get_int64(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_KIND);
@@ -171,22 +171,22 @@ pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fig
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCARIO,
-        19,
-        lucario_set_effect_scale as *const () as _
+        FighterVtableSlot::OnFrame7,
+        lucario_on_frame7 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCARIO,
-        25,
-        lucario_handle_aura as *const () as _
+        FighterVtableSlot::OnDeathReset1,
+        lucario_on_death_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCARIO,
-        27,
-        lucario_handle_aura2 as *const () as _
+        FighterVtableSlot::OnFrame9,
+        lucario_on_frame9 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCARIO,
-        46,
-        lucario_on_grab as *const () as _
+        FighterVtableSlot::OnLinkEvent,
+        lucario_on_link_event as *const () as _
     );
 }

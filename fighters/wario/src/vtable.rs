@@ -2,9 +2,9 @@ use super::*;
 use wubor_utils::offsets;
 
 #[skyline::from_offset(offsets::fighter::wario::VTABLE_FUNC)]
-unsafe extern "C" fn wario_vtable_func_inner(vtable: u64, fighter: &mut Fighter);
+unsafe extern "C" fn wario_on_frame5_inner(vtable: u64, fighter: &mut Fighter);
 
-pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn wario_on_frame5(vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
@@ -77,14 +77,14 @@ pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
 
     let stop = WorkModule::is_flag(module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_STOP);
     WorkModule::on_flag(module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_STOP);
-    wario_vtable_func_inner(vtable, fighter);
+    wario_on_frame5_inner(vtable, fighter);
     WorkModule::set_flag(module_accessor, stop, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_STOP);
 }
 
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_WARIO,
-        13,
-        wario_vtable_func as *const () as _
+        FighterVtableSlot::OnFrame5,
+        wario_on_frame5 as *const () as _
     );
 }

@@ -6,20 +6,20 @@ use smash_rs::app::{LinkEvent, LinkEventCapture};
 unsafe extern "C" fn jack_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 #[skyline::from_offset(offsets::fighter::jack::ON_GRAB)]
-unsafe extern "C" fn jack_on_grab_inner(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64;
+unsafe extern "C" fn jack_on_link_event_inner(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64;
 
 #[skyline::from_offset(offsets::fighter::diddy::GET_SPECIAL_S_OFFSET)]
 fn diddy_get_special_s_offset(param_accessor_2: *mut smash::app::FighterParamAccessor2, kind: u32) -> f32;
 
-pub unsafe extern "C" fn jack_damage_callback(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
+pub unsafe extern "C" fn jack_unk130(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-pub unsafe extern "C" fn jack_damage_callback2(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
+pub unsafe extern "C" fn jack_unk129(_vtable: u64, _fighter: &mut Fighter, _event: u64) {
     // stub gaining rebel's gauge from getting hit?
 }
 
-pub unsafe extern "C" fn jack_handle_gun_dodge_staling(_vtable: u64, _fighter: &mut Fighter) {
+pub unsafe extern "C" fn jack_on_status_change(_vtable: u64, _fighter: &mut Fighter) {
     // stub gaining rebel's gauge from getting hit?
 }
 
@@ -41,7 +41,7 @@ unsafe extern "C" fn jack_on_attack(vtable: u64, fighter: &mut Fighter, log: u64
     jack_on_attack_inner(vtable, fighter, log)
 }
 
-pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
+pub unsafe extern "C" fn jack_on_link_event(vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
     // param_3 + 0x10
@@ -100,33 +100,33 @@ pub unsafe extern "C" fn jack_on_grab(vtable: u64, fighter: &mut Fighter, log: *
             return 0;
         }
     }
-    jack_on_grab_inner(vtable, fighter, log)
+    jack_on_link_event_inner(vtable, fighter, log)
 }
 
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
-        30,
-        jack_handle_gun_dodge_staling as *const () as _
+        FighterVtableSlot::OnStatusChange,
+        jack_on_status_change as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
-        36,
+        FighterVtableSlot::OnAttack,
         jack_on_attack as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
-        46,
-        jack_on_grab as *const () as _
+        FighterVtableSlot::OnLinkEvent,
+        jack_on_link_event as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
-        129,
-        jack_damage_callback2 as *const () as _
+        FighterVtableSlot::Unk129,
+        jack_unk129 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
-        130,
-        jack_damage_callback as *const () as _
+        FighterVtableSlot::Unk130,
+        jack_unk130 as *const () as _
     );
 }

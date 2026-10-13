@@ -4,7 +4,7 @@ use wubor_utils::offsets;
 #[skyline::from_offset(offsets::fighter::brave::REMOVE_PSYCHE_UP)]
 extern "C" fn remove_psyche_up(fighter: &mut Fighter);
 
-unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn brave_on_frame6(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     if !WorkModule::is_flag(module_accessor, 0x200000ea)
     || !WorkModule::is_flag(module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
@@ -32,7 +32,7 @@ unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_BRAVE,
-        18,
-        handle_psyche_up_hit as *const () as _
+        FighterVtableSlot::OnFrame6,
+        brave_on_frame6 as *const () as _
     );
 }

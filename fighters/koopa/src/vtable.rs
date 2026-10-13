@@ -1,6 +1,6 @@
 use super::*;
 
-pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn koopa_on_frame5(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
@@ -91,7 +91,7 @@ pub unsafe extern "C" fn koopa_per_frame(_vtable: u64, fighter: &mut Fighter) {
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_KOOPA,
-        13,
-        koopa_per_frame as *const () as _
+        FighterVtableSlot::OnFrame5,
+        koopa_on_frame5 as *const () as _
     );
 }

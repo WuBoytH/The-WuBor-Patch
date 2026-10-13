@@ -188,7 +188,7 @@ unsafe extern "C" fn dolly_burst_init(article: *mut u64, module_accessor: *mut B
     0
 }
 
-unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64) {
+unsafe extern "C" fn burst_weapon_generate2(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
     let motion = *(something as *const u64).add(0x88 / 0x8);
@@ -221,7 +221,7 @@ unsafe extern "C" fn burst_init(_vtable: u64, weapon: *mut smash::app::Weapon, s
     }
 }
 
-unsafe extern "C" fn burst_on_hit(_vtable: u64, weapon: *mut smash::app::Weapon) -> u64 {
+unsafe extern "C" fn burst_weapon_on_attack_mask(_vtable: u64, weapon: *mut smash::app::Weapon) -> u64 {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
     let motion = MotionModule::motion_kind(module_accessor);
@@ -268,12 +268,12 @@ pub fn install() {
     );
     replace_weapon_vtable(
         *WEAPON_KIND_DOLLY_BURST,
-        0x7,
-        burst_init as *const () as _
+        WeaponVtableSlot::WeaponGenerate2,
+        burst_weapon_generate2 as *const () as _
     );
     replace_weapon_vtable(
         *WEAPON_KIND_DOLLY_BURST,
-        0x1d,
-        burst_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        burst_weapon_on_attack_mask as *const () as _
     );
 }

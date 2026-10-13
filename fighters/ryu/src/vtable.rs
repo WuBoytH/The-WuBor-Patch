@@ -12,15 +12,15 @@ fn ryu_ken_check_final_can_cancel(work_module: *const u64) -> bool;
 unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_motion: u64, light_motion: u64);
 
 #[skyline::from_offset(offsets::fighter::shotos::ON_HIT)]
-unsafe extern "C" fn ryu_ken_on_hit_inner(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32);
+unsafe extern "C" fn ryu_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32);
 
 #[skyline::from_offset(offsets::fighter::shotos::ON_HIT_2)]
-unsafe extern "C" fn ryu_ken_on_hit_2_inner(vtable: u64, fighter: &mut Fighter, log: u64);
+unsafe extern "C" fn ryu_on_attack_event_inner(vtable: u64, fighter: &mut Fighter, log: u64);
 
 #[skyline::from_offset(offsets::fighter::shotos::FRAME)]
-unsafe extern "C" fn ryu_ken_frame_inner(vtable: u64, fighter: &mut Fighter);
+unsafe extern "C" fn ryu_on_frame5_inner(vtable: u64, fighter: &mut Fighter);
 
-unsafe extern "C" fn ryu_init(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ryu_reset1(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     *(control_energy as *mut u8).add(0xa4) = 1;
@@ -34,7 +34,7 @@ unsafe extern "C" fn ryu_init(_vtable: u64, fighter: &mut Fighter) {
     FGCModule::set_command_input_button(module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);
 }
 
-unsafe extern "C" fn ryu_on_frame(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ryu_on_frame4(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
 
@@ -146,7 +146,7 @@ unsafe extern "C" fn syoryuken_eff_handler(
     EffectModule::set_rate(module_accessor, eff, rate);
 }
 
-unsafe extern "C" fn ryu_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
+unsafe extern "C" fn ryu_on_attack(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     let collision_log = log as *mut CollisionLogScuffed;
@@ -249,10 +249,10 @@ unsafe extern "C" fn ryu_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, so
             }
         }
     }
-    ryu_ken_on_hit_inner(vtable, fighter, log, some_float);
+    ryu_on_attack_inner(vtable, fighter, log, some_float);
 }
 
-unsafe extern "C" fn ryu_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u64) {
+unsafe extern "C" fn ryu_on_attack_event(vtable: u64, fighter: &mut Fighter, log: u64) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -265,7 +265,7 @@ unsafe extern "C" fn ryu_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u64) 
         VarModule::on_flag(module_accessor, vars::ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD_WIND);
     }
 
-    ryu_ken_on_hit_2_inner(vtable, fighter, log);
+    ryu_on_attack_event_inner(vtable, fighter, log);
 }
 
 unsafe extern "C" fn ryu_on_search(_vtable: u64, fighter: &mut Fighter, log: u64, _some_float: f32) {
@@ -323,8 +323,8 @@ unsafe extern "C" fn ryu_on_damage(_vtable: u64, fighter: &mut Fighter, on_damag
     }
 }
 
-unsafe extern "C" fn ryu_on_frame2(vtable: u64, fighter: &mut Fighter) {
-    ryu_ken_frame_inner(vtable, fighter);
+unsafe extern "C" fn ryu_on_frame5(vtable: u64, fighter: &mut Fighter) {
+    ryu_on_frame5_inner(vtable, fighter);
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
 
@@ -364,7 +364,7 @@ unsafe extern "C" fn ryu_on_frame2(vtable: u64, fighter: &mut Fighter) {
     }
 }
 
-unsafe extern "C" fn ryu_status_change_callback(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ryu_on_status_change(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let force_reset;
@@ -446,47 +446,47 @@ unsafe extern "C" fn ryu_status_change_callback(_vtable: u64, fighter: &mut Figh
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        4,
-        ryu_init as *const () as _
+        FighterVtableSlot::Reset1,
+        ryu_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        12,
-        ryu_on_frame as *const () as _
+        FighterVtableSlot::OnFrame4,
+        ryu_on_frame4 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        13,
-        ryu_on_frame2 as *const () as _
+        FighterVtableSlot::OnFrame5,
+        ryu_on_frame5 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        30,
-        ryu_status_change_callback as *const () as _
+        FighterVtableSlot::OnStatusChange,
+        ryu_on_status_change as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        31,
+        FighterVtableSlot::OnSituationChange,
         ryu_on_situation_change as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        36,
-        ryu_on_hit as *const () as _
+        FighterVtableSlot::OnAttack,
+        ryu_on_attack as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        41,
-        ryu_on_hit_2 as *const () as _
+        FighterVtableSlot::OnAttackEvent,
+        ryu_on_attack_event as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        48,
+        FighterVtableSlot::OnSearch,
         ryu_on_search as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_RYU,
-        68,
+        FighterVtableSlot::OnDamage,
         ryu_on_damage as *const () as _
     );
 }

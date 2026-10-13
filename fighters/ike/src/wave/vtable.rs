@@ -181,7 +181,7 @@ unsafe extern "C" fn ike_wave_init(article: *mut u64, module_accessor: *mut Batt
     0
 }
 
-unsafe extern "C" fn wave_init(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64, _something_2: f32) {
+unsafe extern "C" fn wave_weapon_generate2(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64, _something_2: f32) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
     let lr = PostureModule::lr(module_accessor);
@@ -250,7 +250,7 @@ unsafe extern "C" fn wave_init(_vtable: u64, weapon: *mut smash::app::Weapon, so
     WorkModule::set_float(module_accessor, *(something as *mut f32).add(0xac / 0x4), *WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLOAT_POS_OFFSET_X);
 }
 
-unsafe extern "C" fn wave_on_hit(vtable: u64, weapon: *mut smash::app::Weapon, collision_mask: u32) -> u64 {
+unsafe extern "C" fn wave_weapon_on_attack_mask(vtable: u64, weapon: *mut smash::app::Weapon, collision_mask: u32) -> u64 {
     MiscModule::normal_weapon_hit_handler(vtable, weapon, collision_mask)
 }
 
@@ -264,13 +264,13 @@ pub fn install() {
         );
         replace_weapon_vtable(
             vars::ike::weapon_id::WAVE,
-            0x7,
-            wave_init as *const () as _
+            WeaponVtableSlot::WeaponGenerate2,
+            wave_weapon_generate2 as *const () as _
         );
         replace_weapon_vtable(
             vars::ike::weapon_id::WAVE,
-            0x1d,
-            wave_on_hit as *const () as _
+            WeaponVtableSlot::WeaponOnAttackMask,
+            wave_weapon_on_attack_mask as *const () as _
         );
     }
 }

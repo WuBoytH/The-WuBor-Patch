@@ -2,13 +2,13 @@ use super::*;
 use wubor_utils::offsets;
 
 #[skyline::from_offset(offsets::fighter::sonic::ON_HIT)]
-unsafe extern "C" fn sonic_on_hit_inner(vtable: u64, fighter: &mut Fighter, log: u64, damage: f32);
+unsafe extern "C" fn sonic_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64, damage: f32);
 
-unsafe extern "C" fn sonic_on_init(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn sonic_reset1(_vtable: u64, fighter: &mut Fighter) {
     VarModule::on_flag(fighter.battle_object.module_accessor, vars::fighter::instance::flag::CAN_LOOK_UP);
 }
 
-unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, damage: f32) {
+unsafe extern "C" fn sonic_on_attack(vtable: u64, fighter: &mut Fighter, log: u64, damage: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     let collision_log = log as *mut CollisionLogScuffed;
@@ -26,18 +26,18 @@ unsafe extern "C" fn sonic_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, 
             }
         }
     }
-    sonic_on_hit_inner(vtable, fighter, log, damage);
+    sonic_on_attack_inner(vtable, fighter, log, damage);
 }
 
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_SONIC,
-        4,
-        sonic_on_init as *const () as _
+        FighterVtableSlot::Reset1,
+        sonic_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_SONIC,
-        36,
-        sonic_on_hit as *const () as _
+        FighterVtableSlot::OnAttack,
+        sonic_on_attack as *const () as _
     );
 }

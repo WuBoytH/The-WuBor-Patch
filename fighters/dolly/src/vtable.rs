@@ -30,7 +30,7 @@ pub unsafe extern "C" fn dolly_handle_special_strength(module_accessor: *mut Bat
     NoSpecial{no: -1, special: -1}
 }
 
-pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn dolly_on_frame4(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let thing = match status {
@@ -108,7 +108,7 @@ pub unsafe extern "C" fn dolly_per_frame(_vtable: u64, fighter: &mut Fighter) {
     unused_variables,
     unused_assignments
 )]
-pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn dolly_unk43(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -191,7 +191,7 @@ unsafe extern "C" fn dolly_on_attack(vtable: u64, fighter: &mut Fighter, log: u6
     dolly_on_attack_inner(vtable, fighter, log)
 }
 
-unsafe extern "C" fn dolly_reset2(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn dolly_on_death_reset1(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     WorkModule::off_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_SPECIAL_N_HOP_DONE);
     ControlModule::reset_special_command(module_accessor, true);
@@ -201,22 +201,22 @@ unsafe extern "C" fn dolly_reset2(_vtable: u64, fighter: &mut Fighter) {
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
-        12,
-        dolly_per_frame as *const () as _
+        FighterVtableSlot::OnFrame4,
+        dolly_on_frame4 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
-        25,
-        dolly_reset2 as *const () as _
+        FighterVtableSlot::OnDeathReset1,
+        dolly_on_death_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
-        36,
+        FighterVtableSlot::OnAttack,
         dolly_on_attack as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
-        43,
-        dolly_handle_special_command_turnaround as *const () as _
+        FighterVtableSlot::Unk43,
+        dolly_unk43 as *const () as _
     );
 }

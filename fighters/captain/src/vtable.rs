@@ -4,7 +4,7 @@ use wubor_utils::offsets;
 #[skyline::from_offset(offsets::fighter::captain::ON_ATTACK_ORIGINAL)]
 pub fn captain_on_attack_original(vtable: u64, fighter: &mut Fighter, log: u64);
 
-pub unsafe extern "C" fn captain_on_frame(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn captain_on_frame5(_vtable: u64, fighter: &mut Fighter) {
     let object = (*fighter).battle_object;
     let module_accessor = object.module_accessor;
     captain_check_boost_power(module_accessor);
@@ -48,17 +48,17 @@ pub unsafe extern "C" fn captain_on_damage(_vtable: u64, fighter: &mut Fighter, 
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_CAPTAIN,
-        13,
-        captain_on_frame as *const () as _
+        FighterVtableSlot::OnFrame5,
+        captain_on_frame5 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_CAPTAIN,
-        36,
+        FighterVtableSlot::OnAttack,
         captain_on_attack as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_CAPTAIN,
-        68,
+        FighterVtableSlot::OnDamage,
         captain_on_damage as *const () as _
     );
 }

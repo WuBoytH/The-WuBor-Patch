@@ -50,7 +50,7 @@ pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_SHULK,
-        36,
+        FighterVtableSlot::OnAttack,
         shulk_on_attack as *const () as _
     );
 }

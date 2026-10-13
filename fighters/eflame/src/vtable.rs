@@ -1,6 +1,6 @@
 use super::*;
 
-pub unsafe extern "C" fn eflame_has_esword_disable_statuses(_vtable: u64, _fighter: &mut Fighter, _status: i32) -> bool {
+pub unsafe extern "C" fn eflame_on_status_transition(_vtable: u64, _fighter: &mut Fighter, _status: i32) -> bool {
     // Vanilla Logic (Unused)
     // let module_accessor = _fighter.battle_object.module_accessor;
     // let has_sword = WorkModule::get_flag(module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
@@ -11,7 +11,7 @@ pub unsafe extern "C" fn eflame_has_esword_disable_statuses(_vtable: u64, _fight
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_EFLAME,
-        101,
-        eflame_has_esword_disable_statuses as *const () as _
+        FighterVtableSlot::OnStatusTransition,
+        eflame_on_status_transition as *const () as _
     );
 }

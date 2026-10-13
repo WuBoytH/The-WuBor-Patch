@@ -2,9 +2,9 @@ use super::*;
 use wubor_utils::offsets;
 
 #[skyline::from_offset(offsets::fighter::rockman::VTABLE_FUNC)]
-unsafe extern "C" fn rockman_vtable_func_inner(vtable: u64, fighter: &mut Fighter);
+unsafe extern "C" fn rockman_on_frame2_inner(vtable: u64, fighter: &mut Fighter);
 
-pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn rockman_on_frame2(vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
@@ -129,7 +129,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut Fighter)
             }
         }
     }
-    rockman_vtable_func_inner(vtable, fighter);
+    rockman_on_frame2_inner(vtable, fighter);
 }
 
 unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
@@ -173,7 +173,7 @@ unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModul
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_ROCKMAN,
-        10,
-        rockman_vtable_func as *const () as _
+        FighterVtableSlot::OnFrame2,
+        rockman_on_frame2 as *const () as _
     );
 }

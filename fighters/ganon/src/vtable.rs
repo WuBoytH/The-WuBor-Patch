@@ -1,7 +1,7 @@
 use super::*;
 use smash_rs::app::{LinkEvent, LinkEventCapture};
 
-pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
+pub unsafe extern "C" fn ganon_on_link_event(_vtable: u64, fighter: &mut Fighter, log: *mut u64) -> u64 {
     let event : &mut LinkEvent = std::mem::transmute(log);
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -88,7 +88,7 @@ pub unsafe extern "C" fn ganon_link_event(_vtable: u64, fighter: &mut Fighter, l
     1
 }
 
-pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn ganon_unk43(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0) as u64;
     let status = StatusModule::status_kind(module_accessor) as u64;
@@ -127,12 +127,12 @@ pub unsafe extern "C" fn ganon_status_transition(_vtable: u64, fighter: &mut Fig
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_GANON,
-        43,
-        ganon_status_transition as *const () as _
+        FighterVtableSlot::Unk43,
+        ganon_unk43 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_GANON,
-        46,
-        ganon_link_event as *const () as _
+        FighterVtableSlot::OnLinkEvent,
+        ganon_on_link_event as *const () as _
     );
 }

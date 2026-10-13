@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn breath_on_hit(vtable: u64, weapon: &mut smash::app::Weapon, something: u32) -> u64 {
+unsafe extern "C" fn breath_weapon_on_attack_mask(vtable: u64, weapon: &mut smash::app::Weapon, something: u32) -> u64 {
     if something & 6 != 0 {
         StatusModule::change_status_request(weapon.battle_object.module_accessor, vars::koopa_breath::status::HIT, false);
         return 1;
@@ -11,7 +11,7 @@ unsafe extern "C" fn breath_on_hit(vtable: u64, weapon: &mut smash::app::Weapon,
 pub fn install() {
     replace_weapon_vtable(
         *WEAPON_KIND_KOOPA_BREATH,
-        0x1d,
-        breath_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        breath_weapon_on_attack_mask as *const () as _
     );
 }

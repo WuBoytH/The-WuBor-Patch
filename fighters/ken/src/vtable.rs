@@ -12,12 +12,12 @@ fn ryu_ken_check_final_can_cancel(work_module: *const u64) -> bool;
 unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_motion: u64, light_motion: u64);
 
 #[skyline::from_offset(offsets::fighter::shotos::ON_HIT)]
-unsafe extern "C" fn ryu_ken_on_hit_inner(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32);
+unsafe extern "C" fn ken_on_attack_inner(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32);
 
 #[skyline::from_offset(offsets::fighter::shotos::FRAME)]
-unsafe extern "C" fn ryu_ken_frame_inner(vtable: u64, fighter: &mut Fighter);
+unsafe extern "C" fn ken_on_frame5_inner(vtable: u64, fighter: &mut Fighter);
 
-unsafe extern "C" fn ken_init(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ken_reset1(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     *(control_energy as *mut u8).add(0xa4) = 1;
@@ -33,7 +33,7 @@ unsafe extern "C" fn ken_init(_vtable: u64, fighter: &mut Fighter) {
     FGCModule::set_command_input_button(module_accessor, Cat4::SUPER_SPECIAL2_COMMAND, 2);
 }
 
-unsafe extern "C" fn ken_on_frame(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ken_on_frame4(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
 
@@ -133,7 +133,7 @@ unsafe extern "C" fn syoryuken_eff_handler(
     EffectModule::set_rate(module_accessor, eff, rate);
 }
 
-unsafe extern "C" fn ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
+unsafe extern "C" fn ken_on_attack(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
     let collision_log = log as *mut CollisionLogScuffed;
@@ -185,11 +185,11 @@ unsafe extern "C" fn ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, so
             }
         }
     }
-    ryu_ken_on_hit_inner(vtable, fighter, log, some_float);
+    ken_on_attack_inner(vtable, fighter, log, some_float);
 }
 
-unsafe extern "C" fn ken_on_frame2(vtable: u64, fighter: &mut Fighter) {
-    ryu_ken_frame_inner(vtable, fighter);
+unsafe extern "C" fn ken_on_frame5(vtable: u64, fighter: &mut Fighter) {
+    ken_on_frame5_inner(vtable, fighter);
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
 
@@ -229,7 +229,7 @@ unsafe extern "C" fn ken_on_frame2(vtable: u64, fighter: &mut Fighter) {
     }
 }
 
-unsafe extern "C" fn ken_status_change_callback(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn ken_on_status_change(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let force_reset;
@@ -311,32 +311,32 @@ unsafe extern "C" fn ken_status_change_callback(_vtable: u64, fighter: &mut Figh
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        4,
-        ken_init as *const () as _
+        FighterVtableSlot::Reset1,
+        ken_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        12,
-        ken_on_frame as *const () as _
+        FighterVtableSlot::OnFrame4,
+        ken_on_frame4 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        13,
-        ken_on_frame2 as *const () as _
+        FighterVtableSlot::OnFrame5,
+        ken_on_frame5 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        30,
-        ken_status_change_callback as *const () as _
+        FighterVtableSlot::OnStatusChange,
+        ken_on_status_change as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        31,
+        FighterVtableSlot::OnSituationChange,
         ken_on_situation_change as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_KEN,
-        36,
-        ken_on_hit as *const () as _
+        FighterVtableSlot::OnAttack,
+        ken_on_attack as *const () as _
     );
 }

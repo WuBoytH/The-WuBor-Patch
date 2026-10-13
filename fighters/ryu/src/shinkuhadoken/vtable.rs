@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn shinku_on_hit(vtable: u64, weapon: &mut smash::app::Weapon, collision_kind_mask: u32) -> u64 {
+unsafe extern "C" fn shinku_weapon_on_attack_mask(vtable: u64, weapon: &mut smash::app::Weapon, collision_kind_mask: u32) -> u64 {
     if !VarModule::is_flag(weapon.battle_object.module_accessor, vars::ryu_shinkuhadoken::status::instance::HIT) {
         if collision_kind_mask & (*COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) as u32 != 0 {
             VarModule::on_flag(weapon.battle_object.module_accessor, vars::ryu_shinkuhadoken::status::instance::HIT);
@@ -25,7 +25,7 @@ unsafe extern "C" fn shinku_on_hit(vtable: u64, weapon: &mut smash::app::Weapon,
 pub fn install() {
     replace_weapon_vtable(
         *WEAPON_KIND_RYU_SHINKUHADOKEN,
-        0x1d,
-        shinku_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        shinku_weapon_on_attack_mask as *const () as _
     );
 }

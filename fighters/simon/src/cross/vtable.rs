@@ -1,7 +1,7 @@
 use super::*;
 use wubor_utils::offsets;
 
-pub unsafe extern "C" fn belmont_cross_on_hit(_vtable: u64, weapon: &mut smash::app::Weapon, param_3: u64) -> u64 {
+pub unsafe extern "C" fn belmont_cross_weapon_on_attack_mask(_vtable: u64, weapon: &mut smash::app::Weapon, param_3: u64) -> u64 {
     let module_accessor = weapon.battle_object.module_accessor;
     // let status = StatusModule::status_kind(module_accessor);
     let some_int = *(weapon as *const smash::app::Weapon as *const u32).add(0x11c / 0x4);
@@ -49,7 +49,7 @@ unsafe extern "C" fn belmont_cross_on_hit_thing(
 pub fn install() {
     replace_weapon_vtable(
         *WEAPON_KIND_SIMON_CROSS,
-        0x1d,
-        belmont_cross_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        belmont_cross_weapon_on_attack_mask as *const () as _
     );
 }

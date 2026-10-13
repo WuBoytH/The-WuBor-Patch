@@ -1,7 +1,7 @@
 use super::*;
 use wubor_utils::offsets;
 
-unsafe extern "C" fn wave_init(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64, _something_2: f32) {
+unsafe extern "C" fn wave_weapon_generate2(_vtable: u64, weapon: *mut smash::app::Weapon, something: u64, _something_2: f32) {
     let module_accessor = (*weapon).battle_object.module_accessor;
 
     let lr = PostureModule::lr(module_accessor);
@@ -95,7 +95,7 @@ extern "C" {
     ) -> u64;
 }
 
-unsafe extern "C" fn wave_on_hit(vtable: u64, weapon: *mut smash::app::Weapon, collision_mask: u32) -> u64 {
+unsafe extern "C" fn wave_weapon_on_attack_mask(vtable: u64, weapon: *mut smash::app::Weapon, collision_mask: u32) -> u64 {
     let module_accessor = (*weapon).battle_object.module_accessor;
     if StatusModule::status_kind(module_accessor) == 1 {
         return 0;
@@ -167,7 +167,7 @@ unsafe extern "C" fn weapon_hit_handler2(
     log: u64
 );
 
-unsafe extern "C" fn dolly_wave_on_hit2(
+unsafe extern "C" fn wave_weapon_on_attack_log(
     vtable: u64,
     weapon: &mut smash::app::Weapon,
     param_3: u64,
@@ -201,17 +201,17 @@ unsafe extern "C" fn dolly_wave_on_hit2(
 pub fn install() {
     replace_weapon_vtable(
         *WEAPON_KIND_DOLLY_WAVE,
-        0x7,
-        wave_init as *const () as _
+        WeaponVtableSlot::WeaponGenerate2,
+        wave_weapon_generate2 as *const () as _
     );
     replace_weapon_vtable(
         *WEAPON_KIND_DOLLY_WAVE,
-        0x1d,
-        wave_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        wave_weapon_on_attack_mask as *const () as _
     );
     replace_weapon_vtable(
         *WEAPON_KIND_DOLLY_WAVE,
-        0x16,
-        dolly_wave_on_hit2 as *const () as _
+        WeaponVtableSlot::WeaponOnAttackLog,
+        wave_weapon_on_attack_log as *const () as _
     );
 }

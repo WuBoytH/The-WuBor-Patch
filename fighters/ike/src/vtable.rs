@@ -75,12 +75,12 @@ unsafe extern "C" fn ike_on_damage(_vtable: u64, fighter: &mut Fighter, log: u64
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_IKE,
-        36,
+        FighterVtableSlot::OnAttack,
         ike_on_attack as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_IKE,
-        68,
+        FighterVtableSlot::OnDamage,
         ike_on_damage as *const () as _
     );
 }

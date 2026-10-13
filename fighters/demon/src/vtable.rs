@@ -20,14 +20,14 @@ use super::*;
 //     original!()(vtable, fighter, event)
 // }
 
-pub unsafe extern "C" fn demon_some_event(_vtable: u64, _fighter: &mut Fighter, event: u64) -> u64 {
+pub unsafe extern "C" fn demon_on_grab(_vtable: u64, _fighter: &mut Fighter, event: u64) -> u64 {
     event
 }
 
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_DEMON,
-        138,
-        demon_some_event as *const () as _
+        FighterVtableSlot::OnGrab,
+        demon_on_grab as *const () as _
     );
 }

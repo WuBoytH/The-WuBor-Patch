@@ -1,6 +1,6 @@
 use super::*;
 
-unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: &mut smash::app::Weapon, collision_mask: u32) -> u64 {
+unsafe extern "C" fn poisonbreath_weapon_on_attack_mask(vtable: u64, weapon: &mut smash::app::Weapon, collision_mask: u32) -> u64 {
     let module_accessor = weapon.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     if status == *WEAPON_PACKUN_POISONBREATH_STATUS_KIND_START
@@ -14,7 +14,7 @@ unsafe extern "C" fn poisonbreath_on_hit(vtable: u64, weapon: &mut smash::app::W
 pub fn install() {
     replace_weapon_vtable(
         *WEAPON_KIND_PACKUN_POISONBREATH,
-        0x1d,
-        poisonbreath_on_hit as *const () as _
+        WeaponVtableSlot::WeaponOnAttackMask,
+        poisonbreath_weapon_on_attack_mask as *const () as _
     );
 }

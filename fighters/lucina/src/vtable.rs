@@ -4,7 +4,7 @@ use wubor_utils::offsets;
 #[skyline::from_offset(offsets::fighter::lucina::MARTH_LUCINA_ON_ATTACK)]
 unsafe extern "C" fn marth_lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u64);
 
-unsafe extern "C" fn lucina_init(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn lucina_reset1(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     WorkModule::on_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
     VarModule::set_float(module_accessor, vars::yu::instance::float::SP_GAUGE_MAX, 100.0);
@@ -18,7 +18,7 @@ unsafe extern "C" fn lucina_init(_vtable: u64, fighter: &mut Fighter) {
     FGCModule::set_command_input_button(module_accessor, 11, 2);
 }
 
-unsafe extern "C" fn lucina_per_frame(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn lucina_on_frame5(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
@@ -53,17 +53,17 @@ unsafe extern "C" fn lucina_on_attack(vtable: u64, fighter: &mut Fighter, log: u
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCINA,
-        4,
-        lucina_init as *const () as _
+        FighterVtableSlot::Reset1,
+        lucina_reset1 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCINA,
-        13,
-        lucina_per_frame as *const () as _
+        FighterVtableSlot::OnFrame5,
+        lucina_on_frame5 as *const () as _
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_LUCINA,
-        36,
+        FighterVtableSlot::OnAttack,
         lucina_on_attack as *const () as _
     );
 }

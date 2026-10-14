@@ -4,7 +4,7 @@ use wubor_utils::offsets;
 #[skyline::from_offset(offsets::fighter::gamewatch::CHANGE_STATUS_CALLBACK)]
 unsafe extern "C" fn gamewatch_unk43_inner(vtable: u64, fighter: &mut Fighter);
 
-unsafe extern "C" fn gamewatch_unk43(vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn gamewatch_on_status_change2(vtable: u64, fighter: &mut Fighter) {
     gamewatch_unk43_inner(vtable, fighter);
 
     let module_accessor = fighter.battle_object.module_accessor;
@@ -24,7 +24,7 @@ unsafe extern "C" fn gamewatch_unk43(vtable: u64, fighter: &mut Fighter) {
 pub fn install() {
     replace_fighter_vtable(
         *FIGHTER_KIND_GAMEWATCH,
-        FighterVtableSlot::Unk43,
-        gamewatch_unk43 as *const () as _
+        FighterVtableSlot::OnStatusChange2,
+        gamewatch_on_status_change2 as *const () as _
     );
 }

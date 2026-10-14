@@ -7,7 +7,7 @@ unsafe extern "C" fn mariod_on_death(_vtable: u64, fighter: &mut Fighter) {
     EffectModule::remove_common(module_accessor, Hash40::new("charge_max"));
 }
 
-unsafe extern "C" fn mariod_unk43(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn mariod_on_status_change2(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let prev_status = StatusModule::prev_status_kind(module_accessor, 0);
     if [*FIGHTER_STATUS_KIND_APPEAL, *FIGHTER_STATUS_KIND_DEMO].contains(&prev_status) {
@@ -23,7 +23,7 @@ pub fn install() {
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_MARIOD,
-        FighterVtableSlot::Unk43,
-        mariod_unk43 as *const () as _
+        FighterVtableSlot::OnStatusChange2,
+        mariod_on_status_change2 as *const () as _
     );
 }

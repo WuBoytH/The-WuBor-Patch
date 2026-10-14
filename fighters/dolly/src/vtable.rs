@@ -108,7 +108,7 @@ pub unsafe extern "C" fn dolly_on_frame4(_vtable: u64, fighter: &mut Fighter) {
     unused_variables,
     unused_assignments
 )]
-pub unsafe extern "C" fn dolly_unk43(_vtable: u64, fighter: &mut Fighter) {
+pub unsafe extern "C" fn dolly_on_status_change2(_vtable: u64, fighter: &mut Fighter) {
     let object = &mut fighter.battle_object;
     let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -216,7 +216,7 @@ pub fn install() {
     );
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
-        FighterVtableSlot::Unk43,
-        dolly_unk43 as *const () as _
+        FighterVtableSlot::OnStatusChange2,
+        dolly_on_status_change2 as *const () as _
     );
 }

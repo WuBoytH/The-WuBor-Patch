@@ -75,7 +75,7 @@ unsafe extern "C" fn shield_set_facing_lr(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         0.0
     };
-    VarModule::set_float(module_accessor, guard::float::GUARD_DAMAGE_FACING_DIR, dir);
+    VarModule::set_float(module_accessor, vars::guard::float::GUARD_DAMAGE_FACING_DIR, dir);
 }
 
 #[skyline::hook(offset = offsets::system::engine::SHIELD_HEALTH_RECOVERY_CHECK_MAX, inline)]
@@ -92,7 +92,7 @@ unsafe extern "C" fn shield_health_recovery_check_less_than_max(ctx: &mut skylin
 
 unsafe extern "C" fn shield_recovery_burnout_check(fighter: *mut Fighter) {
     let module_accessor = (*fighter).battle_object.module_accessor;
-    if VarModule::is_flag(module_accessor, fighter::instance::flag::BURNOUT) {
+    if VarModule::is_flag(module_accessor, vars::fighter::instance::flag::BURNOUT) {
         let shield_recovery1 = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("shield_recovery1"));
         let shield_recovery = WorkModule::get_param_float(module_accessor, hash40("shield_recovery"), 0);
         let mut shield_health = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
@@ -110,8 +110,8 @@ unsafe extern "C" fn shield_recovery_burnout_check(fighter: *mut Fighter) {
                 enSEType(0)
             );
             ColorBlendModule::cancel_main_color(module_accessor, 0);
-            VarModule::set_int(module_accessor, fighter::instance::int::BURNOUT_EFF_FRAME, 0);
-            VarModule::off_flag(module_accessor, fighter::instance::flag::BURNOUT);
+            VarModule::set_int(module_accessor, vars::fighter::instance::int::BURNOUT_EFF_FRAME, 0);
+            VarModule::off_flag(module_accessor, vars::fighter::instance::flag::BURNOUT);
         }
         WorkModule::set_float(module_accessor, shield_health, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     }
@@ -122,7 +122,7 @@ unsafe extern "C" fn fighter_global_per_frame(fighter: &mut Fighter) {
     original!()(fighter);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if *battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0 {
-        VarModule::countdown_int(fighter.battle_object.module_accessor, fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
+        VarModule::countdown_int(fighter.battle_object.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
     }
 }
 

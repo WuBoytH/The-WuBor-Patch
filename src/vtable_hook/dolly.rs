@@ -10,7 +10,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     // if smashball::is_training_mode() {
     //     return 1;
     // }
-    let go_meter = VarModule::get_float(module_accessor, dolly::instance::float::GO_METER);
+    let go_meter = VarModule::get_float(module_accessor, vars::dolly::instance::float::GO_METER);
     // println!("go_meter: {}", go_meter);
     if go_meter >= 100.0 {
         return 1;
@@ -19,16 +19,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
 }
 
 pub fn install() {
-    unsafe {
-        // Max Status Terms?
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::MAX_STATUS_TERMS).data(6u8);
-        // Some Kind of Transition Check
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x203).data(1u8);
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x204).data(1u8);
-        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x205).data(1u8);
-
-        skyline::install_hooks!(
-            dolly_check_super_special
-        );
-    }
+    skyline::install_hooks!(
+        dolly_check_super_special
+    );
 }

@@ -30,6 +30,11 @@ unsafe extern "C" fn brave_on_frame6(_vtable: u64, fighter: &mut Fighter) {
 }
 
 pub fn install() {
+    unsafe {
+        // Removes a Psyche Up check
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::brave::PSYCHE_UP_CHECK_PATCH).data(0x14000010u32);
+    }
+
     replace_fighter_vtable(
         *FIGHTER_KIND_BRAVE,
         FighterVtableSlot::OnFrame6,

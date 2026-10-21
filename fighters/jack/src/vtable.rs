@@ -104,6 +104,14 @@ pub unsafe extern "C" fn jack_on_link_event(vtable: u64, fighter: &mut Fighter, 
 }
 
 pub fn install() {
+    unsafe {
+        // Disables passive meter gain
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::jack::PASSIVE_METER_GAIN_PATCH).data(0x17FFFF6Eu32);
+        // Disables automatically summoning Arsene
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::jack::AUTO_SUMMON_ARSENE_PATCH_1).data(0x14000035u32);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::jack::AUTO_SUMMON_ARSENE_PATCH_2).data(0x14000031u32);
+    }
+
     replace_fighter_vtable(
         *FIGHTER_KIND_JACK,
         FighterVtableSlot::OnStatusChange,

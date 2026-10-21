@@ -4,6 +4,20 @@ use wubor_utils::offsets;
 #[skyline::from_offset(offsets::fighter::rockman::VTABLE_FUNC)]
 unsafe extern "C" fn rockman_on_frame2_inner(vtable: u64, fighter: &mut Fighter);
 
+// Inline hooked in the main plugin (src/vtable_hook/rockman.rs).
+#[no_mangle]
+pub unsafe extern "C" fn rockman_do_leafshield_things_disable_inline(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
+    FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
+}
+
+// Inline hooked in the main plugin (src/vtable_hook/rockman.rs).
+#[no_mangle]
+pub unsafe extern "C" fn rockman_do_leafshield_things_enable_inline(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = ctx.registers[19].x() as *mut BattleObjectModuleAccessor;
+    FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
+}
+
 pub unsafe extern "C" fn rockman_on_frame2(vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
@@ -171,6 +185,45 @@ unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModul
 }
 
 pub fn install() {
+    unsafe {
+        // Forces the original Leaf Shield handler to not run so we can run the custom one.
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_HANDLER_SKIP_PATCH).data(0x1400001Eu32);
+        // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_REMOVAL_CHECK_PATCH).data(0x14000007u32);
+
+        // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
+        // Disable
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_1).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_2).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_3).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_4).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_5).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_6).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_7).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_8).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_9).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_10).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_11).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_DISABLE_CHECK_PATCH_12).nop();
+        // Enable
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_1).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_2).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_3).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_4).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_5).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_6).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_7).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_8).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_9).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_10).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_11).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::LEAFSHIELD_ENABLE_CHECK_PATCH_12).nop();
+
+        // Patches which status to compare to for Metal Blade.
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::METAL_BLADE_STATUS_PATCH_1).nop();
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::rockman::METAL_BLADE_STATUS_PATCH_2).nop();
+    }
+
     replace_fighter_vtable(
         *FIGHTER_KIND_ROCKMAN,
         FighterVtableSlot::OnFrame2,

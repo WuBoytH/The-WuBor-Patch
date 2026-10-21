@@ -7,7 +7,7 @@ pub use {
     },
     smash_script::*,
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::vars
 };
 
 // pub use {

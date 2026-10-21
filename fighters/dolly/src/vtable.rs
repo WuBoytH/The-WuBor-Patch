@@ -199,6 +199,15 @@ unsafe extern "C" fn dolly_on_death_reset1(_vtable: u64, fighter: &mut Fighter) 
 }
 
 pub fn install() {
+    unsafe {
+        // Max Status Terms?
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::MAX_STATUS_TERMS).data(6u8);
+        // Some Kind of Transition Check
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x203).data(1u8);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x204).data(1u8);
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::dolly::TRANSITION_CHECK_TABLE + 0x205).data(1u8);
+    }
+
     replace_fighter_vtable(
         *FIGHTER_KIND_DOLLY,
         FighterVtableSlot::OnFrame4,

@@ -19,6 +19,8 @@ mod status;
 mod frame;
 mod agent_init;
 
+mod vtable;
+
 mod gigafire;
 
 pub fn install() {
@@ -28,6 +30,8 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
 
     gigafire::install();
 }

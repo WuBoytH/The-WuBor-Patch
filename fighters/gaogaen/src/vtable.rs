@@ -23,6 +23,11 @@ pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, l
 }
 
 pub fn install() {
+    unsafe {
+        // Skips to the end of the Revenge check after changing statuses
+        let _ = skyline::patching::Patch::in_text(offsets::fighter::gaogaen::REVENGE_CHECK_SKIP_PATCH).data(0x140000D1u32);
+    }
+
     replace_fighter_vtable(
         *FIGHTER_KIND_GAOGAEN,
         FighterVtableSlot::OnAttack,

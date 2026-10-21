@@ -4,6 +4,9 @@ use wubor_utils::offsets;
 extern "C" {
     #[link_name = "captain_set_lightweight"]
     pub fn captain_set_lightweight(module_accessor: *mut BattleObjectModuleAccessor);
+
+    #[link_name = "kirby_frame_branch_copy_vtable_inline"]
+    fn kirby_frame_branch_copy_vtable_inline(ctx: &mut skyline::hooks::InlineCtx);
 }
 
 #[skyline::hook(offset = offsets::fighter::kirby::LOSE_COPY_ABILITY)]
@@ -17,14 +20,14 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
             ControlModule::reset_special_command(module_accessor, true);
         }
         if copy_kind == *FIGHTER_KIND_CAPTAIN as u32 {
-            VarModule::set_float(module_accessor, captain::instance::float::BOOST_POWER, 0.0);
+            VarModule::set_float(module_accessor, vars::captain::instance::float::BOOST_POWER, 0.0);
             captain_set_lightweight(module_accessor);
         }
         if copy_kind == *FIGHTER_KIND_KOOPA as u32 {
-            let eff_handle = VarModule::get_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
+            let eff_handle = VarModule::get_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID) as u32;
             if !EffectModule::is_exist_effect(module_accessor, eff_handle) {
                 EffectModule::kill(module_accessor, eff_handle, true, true);
-                VarModule::set_int(module_accessor, koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
+                VarModule::set_int(module_accessor, vars::koopa::instance::int::FIREBALL_CHARGE_EFF_ID, 0);
             }
         }
     }
@@ -33,12 +36,7 @@ pub unsafe extern "C" fn kirby_lose_copy_ability(fighter: &mut Fighter, param_1:
 
 #[skyline::hook(offset = offsets::fighter::kirby::FRAME_BRANCH_COPY_VTABLE, inline)]
 unsafe extern "C" fn kirby_frame_branch_copy_vtable(ctx: &mut skyline::hooks::InlineCtx) {
-    // println!("kirby_frame_branch_copy_vtable");
-    let kind = ctx.registers[8].x() as i32;
-    // println!("kind?: {:#x}", kind);
-    if kind == *FIGHTER_KIND_CAPTAIN {
-        ctx.registers[8].set_x(0xF);
-    }
+    kirby_frame_branch_copy_vtable_inline(ctx);
 }
 
 pub fn install() {

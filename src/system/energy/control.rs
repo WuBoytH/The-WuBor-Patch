@@ -372,9 +372,9 @@ unsafe extern "C" fn control_initialize(energy: &mut FighterKineticEnergyControl
                 stable_speed *= WorkModule::get_param_float(module_accessor, hash40("common"), hash40("stop_ceil_speed_x_stable_mul"));
             }
 
-            let is_jump = VarModule::is_flag(module_accessor, fighter::instance::flag::JUMP_FROM_SQUAT);
+            let is_jump = VarModule::is_flag(module_accessor, vars::fighter::instance::flag::JUMP_FROM_SQUAT);
             // println!("Is jumping? {is_jump}");
-            let super_jump = is_jump && VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP);
+            let super_jump = is_jump && VarModule::is_flag(module_accessor, vars::fighter::instance::flag::SUPER_JUMP);
 
             energy.speed_max = PaddedVec2::new(stable_speed, -1.0);
             energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(module_accessor, hash40("air_brake_x"), 0), 0.0);
@@ -392,7 +392,7 @@ unsafe extern "C" fn control_initialize(energy: &mut FighterKineticEnergyControl
                     jump_speed_x = WorkModule::get_param_float(module_accessor, hash40("air_speed_x_stable"), 0);
                 }
 
-                if !VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
+                if !VarModule::is_flag(module_accessor, vars::fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
                     let stick_x = if Buttons::from_bits_retain(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
                         ControlModule::get_sub_stick_x(module_accessor)
                     }
@@ -400,7 +400,7 @@ unsafe extern "C" fn control_initialize(energy: &mut FighterKineticEnergyControl
                         ControlModule::get_stick_x(module_accessor)
                     };
                     energy.speed.x = jump_speed_x * stick_x;
-                    VarModule::on_flag(module_accessor, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
+                    VarModule::on_flag(module_accessor, vars::fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
                 }
                 energy.speed_max.x = jump_speed_x;
             }
@@ -793,7 +793,7 @@ unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(ctx.registers[8].x());
     let work_module = ctx.registers[0].x();
     let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let mul = if VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP) {
+    let mul = if VarModule::is_flag(module_accessor, vars::fighter::instance::flag::SUPER_JUMP) {
         1.2
     }
     else {

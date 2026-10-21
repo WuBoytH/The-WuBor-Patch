@@ -17,6 +17,8 @@ use {
 mod acmd;
 mod frame;
 
+mod vtable;
+
 pub fn install() {
     let popo = &mut Agent::new("popo");
     let nana = &mut Agent::new("nana");
@@ -26,4 +28,6 @@ pub fn install() {
     frame::install(nana);
     popo.install();
     nana.install();
+
+    vtable::install();
 }

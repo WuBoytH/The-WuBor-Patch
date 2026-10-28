@@ -18,6 +18,8 @@ mod acmd;
 mod status;
 mod frame;
 
+mod vtable;
+
 #[no_mangle]
 pub unsafe extern "C" fn captain_update_boost_power(module_accessor: *mut BattleObjectModuleAccessor, damage: f32) {
     VarModule::add_float(module_accessor, vars::captain::instance::float::BOOST_POWER_ADD, damage);
@@ -71,4 +73,6 @@ pub fn install() {
     status::install(agent);
     frame::install(agent);
     agent.install();
+
+    vtable::install();
 }

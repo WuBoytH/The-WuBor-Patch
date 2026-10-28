@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook( offset = offsets::fighter::pickel::IS_MINING_MATERIAL_TABLE_NORMAL )]
 pub unsafe fn is_mining_material_table_normal() -> bool {
@@ -41,6 +41,6 @@ pub fn install() {
             is_mining_material_table_normal,
             get_mining_material_table_result
         );
-    
+
     }
 }

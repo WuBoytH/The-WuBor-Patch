@@ -1,4 +1,4 @@
-use crate::offsets;
+use wubor_utils::offsets;
 
 use smash_rs::app::*;
 
@@ -82,18 +82,8 @@ pub unsafe extern "C" fn eflame_has_esword_enable_transitions(work: &mut WorkMod
     }
 }
 
-#[skyline::hook(offset = offsets::fighter::eflame::HAS_ESWORD_DISABLE_STATUSES)]
-pub unsafe extern "C" fn eflame_has_esword_disable_statuses(_vtable: u64, _fighter: &mut smash::app::Fighter, _status: i32) -> bool {
-    // Vanilla Logic (Unused)
-    // let module_accessor = _fighter.battle_object.module_accessor;
-    // let has_sword = WorkModule::get_flag(module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
-    // 2 < _status - 0x8d || has_sword
-    true
-}
-
 pub fn install() {
     skyline::install_hooks!(
-        eflame_has_esword_enable_transitions,
-        eflame_has_esword_disable_statuses
+        eflame_has_esword_enable_transitions
     );
 }

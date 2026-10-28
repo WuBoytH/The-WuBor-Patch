@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::fighter::ness::INIT)]
 unsafe extern "C" fn ness_init(vtable: u64, fighter: &mut Fighter) {

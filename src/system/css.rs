@@ -1,4 +1,4 @@
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::system::css::FIX_CHARA_REPLACE, inline)]
 unsafe fn fix_chara_replace(ctx: &skyline::hooks::InlineCtx) {

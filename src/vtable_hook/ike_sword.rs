@@ -2,7 +2,7 @@ use {
     smash::app::lua_bind::*,
     wubor_utils::vars,
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 extern "Rust" {
     #[link_name = "ike_sword_set_spawn_pos_internal"]

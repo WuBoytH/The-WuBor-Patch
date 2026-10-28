@@ -1,5 +1,5 @@
 use super::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::system::command::C_623)]
 unsafe extern "C" fn c_623_a(

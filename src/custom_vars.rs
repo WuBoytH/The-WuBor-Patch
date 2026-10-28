@@ -5,7 +5,7 @@ use {
     custom_var::*,
     wubor_utils::wua_bind::*
 };
-use crate::offsets;
+use wubor_utils::offsets;
 
 #[skyline::hook(offset = offsets::system::module_accessor::INITIALIZE_MODULES)]
 pub unsafe fn battleobjectmoduleaccessor__initialize_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: *const u64) {

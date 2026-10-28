@@ -21,6 +21,7 @@ mod agent_init;
 
 mod whip;
 mod axe;
+mod cross;
 
 pub fn install() {
     let agent = &mut Agent::new("simon");
@@ -32,4 +33,5 @@ pub fn install() {
 
     whip::install();
     axe::install();
+    cross::install();
 }

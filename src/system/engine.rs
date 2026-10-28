@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 
 // Only extra elec hitlag for hit character
 #[skyline::hook(offset = offsets::system::engine::CHANGE_ELEC_HITLAG_FOR_ATTACKER, inline)]
@@ -75,7 +75,7 @@ unsafe extern "C" fn shield_set_facing_lr(ctx: &mut skyline::hooks::InlineCtx) {
     else {
         0.0
     };
-    VarModule::set_float(module_accessor, guard::float::GUARD_DAMAGE_FACING_DIR, dir);
+    VarModule::set_float(module_accessor, vars::guard::float::GUARD_DAMAGE_FACING_DIR, dir);
 }
 
 #[skyline::hook(offset = offsets::system::engine::SHIELD_HEALTH_RECOVERY_CHECK_MAX, inline)]
@@ -92,7 +92,7 @@ unsafe extern "C" fn shield_health_recovery_check_less_than_max(ctx: &mut skylin
 
 unsafe extern "C" fn shield_recovery_burnout_check(fighter: *mut Fighter) {
     let module_accessor = (*fighter).battle_object.module_accessor;
-    if VarModule::is_flag(module_accessor, fighter::instance::flag::BURNOUT) {
+    if VarModule::is_flag(module_accessor, vars::fighter::instance::flag::BURNOUT) {
         let shield_recovery1 = WorkModule::get_param_float(module_accessor, hash40("common"), hash40("shield_recovery1"));
         let shield_recovery = WorkModule::get_param_float(module_accessor, hash40("shield_recovery"), 0);
         let mut shield_health = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
@@ -110,8 +110,8 @@ unsafe extern "C" fn shield_recovery_burnout_check(fighter: *mut Fighter) {
                 enSEType(0)
             );
             ColorBlendModule::cancel_main_color(module_accessor, 0);
-            VarModule::set_int(module_accessor, fighter::instance::int::BURNOUT_EFF_FRAME, 0);
-            VarModule::off_flag(module_accessor, fighter::instance::flag::BURNOUT);
+            VarModule::set_int(module_accessor, vars::fighter::instance::int::BURNOUT_EFF_FRAME, 0);
+            VarModule::off_flag(module_accessor, vars::fighter::instance::flag::BURNOUT);
         }
         WorkModule::set_float(module_accessor, shield_health, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     }
@@ -122,7 +122,7 @@ unsafe extern "C" fn fighter_global_per_frame(fighter: &mut Fighter) {
     original!()(fighter);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if *battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0 {
-        VarModule::countdown_int(fighter.battle_object.module_accessor, fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
+        VarModule::countdown_int(fighter.battle_object.module_accessor, vars::fighter::instance::int::GUARD_CANCEL_PASS_FRAME, 0);
     }
 }
 
@@ -199,6 +199,119 @@ unsafe fn force_normal_hitstun_fallspeeds1(ctx: &mut skyline::hooks::InlineCtx) 
 #[skyline::hook(offset = offsets::system::engine::FORCE_NORMAL_HITSTUN_FALLSPEEDS_2, inline)]
 unsafe fn force_normal_hitstun_fallspeeds2(ctx: &mut skyline::hooks::InlineCtx) {
     ctx.registers[8].set_w(1);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_1, inline)]
+unsafe extern "C" fn reset_combo_counter_check_1(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 1");
+    reset_combo_counter_check_inner(ctx, 22, 8);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_2, inline)]
+unsafe extern "C" fn reset_combo_counter_check_2(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 2");
+    reset_combo_counter_check_inner(ctx, 22, 19);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_3, inline)]
+unsafe extern "C" fn reset_combo_counter_check_3(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 3");
+    reset_combo_counter_check_inner(ctx, 20, 8);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_4, inline)]
+unsafe extern "C" fn reset_combo_counter_check_4(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 4");
+    reset_combo_counter_check_inner(ctx, 20, 24);
+}
+
+unsafe extern "C" fn reset_combo_counter_check_inner(
+    ctx: &mut skyline::hooks::InlineCtx,
+    fighter_register: usize,
+    store_register: usize
+) {
+    let fighter = ctx.registers[fighter_register].x() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let can_transition = check_combo_transitions(module_accessor);
+
+    ctx.registers[store_register].set_w(can_transition as u32);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_HITSTUN_CHECK, inline)]
+unsafe extern "C" fn reset_combo_counter_hitstun_check(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter hitstun check");
+    let fighter = ctx.registers[19].x() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let can_transition = check_combo_transitions(module_accessor);
+
+    // if !can_transition {
+    //     ctx.registers[24].set_w(1);
+    // }
+    ctx.registers[0].set_w(!can_transition as u32);
+}
+
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_HITSTUN_CHECK_2, inline)]
+unsafe extern "C" fn reset_combo_counter_hitstun_check_2(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter hitstun check 2");
+    let old = ctx.registers[8].w();
+    if old == 1 {
+        let fighter = ctx.registers[19].x() as *mut Fighter;
+        let module_accessor = (*fighter).battle_object.module_accessor;
+        let can_transition = check_combo_transitions(module_accessor);
+
+        if !can_transition {
+            ctx.registers[8].set_w(2);
+        }
+    }
+}
+
+#[skyline::hook(offset = offsets::system::engine::SET_COMBO_COUNTER_RED1, inline)]
+unsafe extern "C" fn set_combo_counter_red1(ctx: &mut skyline::hooks::InlineCtx) {
+    set_combo_counter_red_inner(ctx, 22);
+}
+
+#[skyline::hook(offset = offsets::system::engine::SET_COMBO_COUNTER_RED2, inline)]
+unsafe extern "C" fn set_combo_counter_red2(ctx: &mut skyline::hooks::InlineCtx) {
+    set_combo_counter_red_inner(ctx, 20);
+}
+
+#[allow(unused_variables)]
+unsafe extern "C" fn set_combo_counter_red_inner(ctx: &mut skyline::hooks::InlineCtx, fighter_register: usize) {
+    // let fighter = ctx.registers[fighter_register].x() as *mut Fighter;
+    // let module_accessor = (*fighter).battle_object.module_accessor;
+    // let hit_count = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_HIT_COUNT);
+    // let brother_why_are_you_red = if hit_count == 0 {
+    //     false
+    // }
+    // else {
+    //     check_combo_transitions(module_accessor)
+    // };
+    // ctx.registers[0].set_w(!brother_why_are_you_red as u32);
+    ctx.registers[0].set_w(1 as u32);
+}
+
+unsafe extern "C" fn check_combo_transitions(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    let transitions = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR,
+    ];
+    for transition in transitions.iter() {
+        if WorkModule::is_enable_transition_term(module_accessor, *transition) {
+            println!("[wubor::engine] Transition Term {:#x} is enabled.", *transition);
+            return true;
+        }
+    }
+
+    false
 }
 
 pub fn install() {
@@ -301,7 +414,15 @@ pub fn install() {
             hitstun_fall_speed_2,
             hitstun_fall_speed_3,
             force_normal_hitstun_fallspeeds1,
-            force_normal_hitstun_fallspeeds2
+            force_normal_hitstun_fallspeeds2,
+            reset_combo_counter_check_1,
+            reset_combo_counter_check_2,
+            reset_combo_counter_check_3,
+            reset_combo_counter_check_4,
+            reset_combo_counter_hitstun_check,
+            reset_combo_counter_hitstun_check_2,
+            set_combo_counter_red1,
+            set_combo_counter_red2
         );
     }
 }

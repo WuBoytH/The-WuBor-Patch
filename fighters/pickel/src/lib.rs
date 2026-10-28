@@ -18,6 +18,8 @@ mod acmd;
 mod status;
 mod frame;
 
+mod vtable;
+
 mod forge;
 mod trolley;
 mod table;
@@ -28,6 +30,8 @@ pub fn install() {
     status::install(agent);
     frame::install(agent);
     agent.install();
+
+    vtable::install();
 
     forge::install();
     trolley::install();

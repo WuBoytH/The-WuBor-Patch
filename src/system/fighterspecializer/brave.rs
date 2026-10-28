@@ -27,7 +27,7 @@ unsafe fn set_command_for_slot(object: &mut BattleObject, slot: usize, id: i32) 
         WorkModule::set_int(object.module_accessor, -1, 0x10000d4 + slot as i32);
     }
 
-    VarModule::set_int(object.module_accessor, brave::instance::int::SPELL_SLOT_1 + slot as i32, id);
+    VarModule::set_int(object.module_accessor, vars::brave::instance::int::SPELL_SLOT_1 + slot as i32, id);
     *(*(object as *mut _ as *const u64).add(0xd8 / 8) as *mut u8).add(slot) = id as u8;
 }
 
@@ -169,13 +169,13 @@ unsafe fn special_lw_open_command_hook(object: &mut BattleObject) {
     WorkModule::set_int(object.module_accessor, 3, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_WINDOW_STATE);
     WorkModule::set_int(object.module_accessor, 0, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_WINDOW_OVERWRITE_FRAME);
     WorkModule::off_flag(object.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_ENABLE_COMMAND_WINDOW_OVERWRITE);
-    let index = VarModule::get_int(object.module_accessor, brave::instance::int::NEXT_ROLL_INDEX);
+    let index = VarModule::get_int(object.module_accessor, vars::brave::instance::int::NEXT_ROLL_INDEX);
 
     let mut rolls = vec![];
     // println!("Getting saved spell list...");
     let mut current_spells = 0;
     for x in 0..4 {
-        let mut spell = VarModule::get_int(object.module_accessor, brave::instance::int::SPELL_SLOT_1 + x);
+        let mut spell = VarModule::get_int(object.module_accessor, vars::brave::instance::int::SPELL_SLOT_1 + x);
         if spell == 0xE {
             // println!("Hocus Pocus found! Force reroll...");
             spell = -1;
@@ -187,13 +187,13 @@ unsafe fn special_lw_open_command_hook(object: &mut BattleObject) {
         rolls.push(spell);
     }
     for x in 0..4 {
-        let mask = VarModule::get_int(object.module_accessor, brave::instance::int::USED_SPELL_MASK);
+        let mask = VarModule::get_int(object.module_accessor, vars::brave::instance::int::USED_SPELL_MASK);
         let mut spell = rolls[x];
         if spell == -1 {
             spell = roll_spell(mask, current_spells);
             current_spells |= 1 << spell;
             if let Some(new_mask) = check_linked_spells(spell, mask) {
-                VarModule::set_int(object.module_accessor, brave::instance::int::USED_SPELL_MASK, new_mask);
+                VarModule::set_int(object.module_accessor, vars::brave::instance::int::USED_SPELL_MASK, new_mask);
             }
         }
         rolls[x] = spell;

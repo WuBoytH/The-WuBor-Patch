@@ -65,7 +65,6 @@ unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) 
     }
 
     if VarModule::is_flag(fighter.module_accessor, vars::fighter::instance::flag::JUMP_FROM_SQUAT) {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
         if VarModule::get_int(fighter.module_accessor, vars::fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS) < 2
         && ![
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -82,6 +81,48 @@ unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) 
             VarModule::off_flag(fighter.module_accessor, vars::fighter::instance::flag::SUPER_JUMP);
             VarModule::off_flag(fighter.module_accessor, vars::fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
             VarModule::set_int(fighter.module_accessor, vars::fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS, 0);
+        }
+    }
+
+    // set the combo counter to red
+    // brother why am I red
+    let hit_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_HIT_COUNT);
+    if hit_count != 0 {
+        if [
+            *FIGHTER_STATUS_KIND_DOWN,
+            *FIGHTER_STATUS_KIND_DOWN_CONTINUE,
+            *FIGHTER_STATUS_KIND_DOWN_WAIT,
+            *FIGHTER_STATUS_KIND_DOWN_WAIT_CONTINUE,
+            *FIGHTER_STATUS_KIND_SLIP_WAIT,
+        ].contains(&status) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUCCEED_HIT_COUNT_RED);
+        }
+        else if [
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD,
+        ].contains(&status) {
+            let can_tech = fighter.is_enable_passive().get_bool();
+            let passives = [
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE
+            ];
+            let mut tech_transition_check = false;
+            for transition in passives.iter() {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *transition) {
+                    tech_transition_check = true;
+                    break;
+                }
+            }
+    
+            if can_tech && tech_transition_check {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SUCCEED_HIT_COUNT_RED);
+            }
         }
     }
 }

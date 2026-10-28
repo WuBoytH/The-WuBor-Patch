@@ -20,6 +20,8 @@ mod status;
 mod agent_init;
 pub mod vl;
 
+mod vtable;
+
 // unsafe fn kirby_copy_motion_patcher(mut motions: Vec<u64>, offset: usize) {
 //     let ptr = motions.as_mut_ptr();
 //     let len = motions.len();

@@ -21,6 +21,8 @@ mod agent_init;
 pub mod helper;
 mod fgc;
 
+mod vtable;
+
 mod auraball;
 mod qigong;
 
@@ -33,6 +35,8 @@ pub fn install() {
     fgc::install();
     smashline::add_param_object("lucario", "param_auracharge");
     agent.install();
+
+    vtable::install();
 
     auraball::install();
     qigong::install();

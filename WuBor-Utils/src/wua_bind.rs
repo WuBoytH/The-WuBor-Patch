@@ -944,6 +944,9 @@ pub mod MiscModule {
         };
         (*table).get_map(hash).unwrap().clone()
     }
+
+    #[skyline::from_offset(0x3737e70)]
+    pub unsafe extern "C" fn destruct_sub_object(sub_object: *mut SubObjectRef);
 }
 
 extern "C" {

@@ -20,6 +20,10 @@ mod frame;
 mod fgc;
 pub mod helper;
 
+mod vtable;
+
+mod rollerink;
+
 pub fn install() {
     let agent = &mut Agent::new("inkling");
     acmd::install(agent);
@@ -27,4 +31,6 @@ pub fn install() {
     frame::install(agent);
     fgc::install();
     agent.install();
+
+    vtable::install();
 }

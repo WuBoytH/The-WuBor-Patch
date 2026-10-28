@@ -20,6 +20,8 @@ mod frame;
 mod agent_init;
 pub mod helper;
 
+mod vtable;
+
 mod hadoken;
 mod shinkuhadoken;
 
@@ -30,6 +32,8 @@ pub fn install() {
     frame::install(agent);
     agent_init::install(agent);
     agent.install();
+
+    vtable::install();
 
     hadoken::install();
     shinkuhadoken::install();

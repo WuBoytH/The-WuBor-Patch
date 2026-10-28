@@ -2,12 +2,12 @@ pub use {
     smash::{
         hash40,
         phx::*,
-        app::{self, lua_bind::*, *},
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     smash_script::*,
     custom_var::*,
-    wubor_utils::{app::*, wua_bind::*, vars::*}
+    wubor_utils::vars
 };
 
 // pub use {

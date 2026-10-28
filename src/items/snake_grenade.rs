@@ -1,5 +1,5 @@
 use crate::imports::*;
-use crate::offsets;
+use wubor_utils::offsets;
 use crate::system::func_links;
 
 pub static mut GRENADE_STATUS_FALL : usize = 0;

@@ -201,6 +201,119 @@ unsafe fn force_normal_hitstun_fallspeeds2(ctx: &mut skyline::hooks::InlineCtx) 
     ctx.registers[8].set_w(1);
 }
 
+#[skyline::hook(offset = 0x632728, inline)]
+unsafe extern "C" fn reset_combo_counter_check_1(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 1");
+    reset_combo_counter_check_inner(ctx, 22, 8);
+}
+
+#[skyline::hook(offset = 0x632e74, inline)]
+unsafe extern "C" fn reset_combo_counter_check_2(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 2");
+    reset_combo_counter_check_inner(ctx, 22, 19);
+}
+
+#[skyline::hook(offset = 0x634a80, inline)]
+unsafe extern "C" fn reset_combo_counter_check_3(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 3");
+    reset_combo_counter_check_inner(ctx, 20, 8);
+}
+
+#[skyline::hook(offset = 0x634b5c, inline)]
+unsafe extern "C" fn reset_combo_counter_check_4(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter check 4");
+    reset_combo_counter_check_inner(ctx, 20, 24);
+}
+
+unsafe extern "C" fn reset_combo_counter_check_inner(
+    ctx: &mut skyline::hooks::InlineCtx,
+    fighter_register: usize,
+    store_register: usize
+) {
+    let fighter = ctx.registers[fighter_register].x() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let can_transition = check_combo_transitions(module_accessor);
+
+    ctx.registers[store_register].set_w(can_transition as u32);
+}
+
+#[skyline::hook(offset = 0x62bd98, inline)]
+unsafe extern "C" fn reset_combo_counter_hitstun_check(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter hitstun check");
+    let fighter = ctx.registers[19].x() as *mut Fighter;
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let can_transition = check_combo_transitions(module_accessor);
+
+    // if !can_transition {
+    //     ctx.registers[24].set_w(1);
+    // }
+    ctx.registers[0].set_w(!can_transition as u32);
+}
+
+#[skyline::hook(offset = 0x615158, inline)]
+unsafe extern "C" fn reset_combo_counter_hitstun_check_2(ctx: &mut skyline::hooks::InlineCtx) {
+    println!("[wubor::engine] reset combo counter hitstun check 2");
+    let old = ctx.registers[8].w();
+    if old == 1 {
+        let fighter = ctx.registers[19].x() as *mut Fighter;
+        let module_accessor = (*fighter).battle_object.module_accessor;
+        let can_transition = check_combo_transitions(module_accessor);
+
+        if !can_transition {
+            ctx.registers[8].set_w(2);
+        }
+    }
+}
+
+#[skyline::hook(offset = 0x6333c4, inline)]
+unsafe extern "C" fn set_combo_counter_red1(ctx: &mut skyline::hooks::InlineCtx) {
+    set_combo_counter_red_inner(ctx, 22);
+}
+
+#[skyline::hook(offset = 0x634e24, inline)]
+unsafe extern "C" fn set_combo_counter_red2(ctx: &mut skyline::hooks::InlineCtx) {
+    set_combo_counter_red_inner(ctx, 20);
+}
+
+#[allow(unused_variables)]
+unsafe extern "C" fn set_combo_counter_red_inner(ctx: &mut skyline::hooks::InlineCtx, fighter_register: usize) {
+    // let fighter = ctx.registers[fighter_register].x() as *mut Fighter;
+    // let module_accessor = (*fighter).battle_object.module_accessor;
+    // let hit_count = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_HIT_COUNT);
+    // let brother_why_are_you_red = if hit_count == 0 {
+    //     false
+    // }
+    // else {
+    //     check_combo_transitions(module_accessor)
+    // };
+    // ctx.registers[0].set_w(!brother_why_are_you_red as u32);
+    ctx.registers[0].set_w(1 as u32);
+}
+
+unsafe extern "C" fn check_combo_transitions(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    let transitions = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR,
+    ];
+    for transition in transitions.iter() {
+        if WorkModule::is_enable_transition_term(module_accessor, *transition) {
+            println!("[wubor::engine] Transition Term {:#x} is enabled.", *transition);
+            return true;
+        }
+    }
+
+    false
+}
+
 pub fn install() {
     unsafe {
         // Stubs parry hitlag calculation
@@ -301,7 +414,15 @@ pub fn install() {
             hitstun_fall_speed_2,
             hitstun_fall_speed_3,
             force_normal_hitstun_fallspeeds1,
-            force_normal_hitstun_fallspeeds2
+            force_normal_hitstun_fallspeeds2,
+            reset_combo_counter_check_1,
+            reset_combo_counter_check_2,
+            reset_combo_counter_check_3,
+            reset_combo_counter_check_4,
+            reset_combo_counter_hitstun_check,
+            reset_combo_counter_hitstun_check_2,
+            set_combo_counter_red1,
+            set_combo_counter_red2
         );
     }
 }

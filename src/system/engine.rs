@@ -201,25 +201,25 @@ unsafe fn force_normal_hitstun_fallspeeds2(ctx: &mut skyline::hooks::InlineCtx) 
     ctx.registers[8].set_w(1);
 }
 
-#[skyline::hook(offset = 0x632728, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_1, inline)]
 unsafe extern "C" fn reset_combo_counter_check_1(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter check 1");
     reset_combo_counter_check_inner(ctx, 22, 8);
 }
 
-#[skyline::hook(offset = 0x632e74, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_2, inline)]
 unsafe extern "C" fn reset_combo_counter_check_2(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter check 2");
     reset_combo_counter_check_inner(ctx, 22, 19);
 }
 
-#[skyline::hook(offset = 0x634a80, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_3, inline)]
 unsafe extern "C" fn reset_combo_counter_check_3(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter check 3");
     reset_combo_counter_check_inner(ctx, 20, 8);
 }
 
-#[skyline::hook(offset = 0x634b5c, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_CHECK_4, inline)]
 unsafe extern "C" fn reset_combo_counter_check_4(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter check 4");
     reset_combo_counter_check_inner(ctx, 20, 24);
@@ -237,7 +237,7 @@ unsafe extern "C" fn reset_combo_counter_check_inner(
     ctx.registers[store_register].set_w(can_transition as u32);
 }
 
-#[skyline::hook(offset = 0x62bd98, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_HITSTUN_CHECK, inline)]
 unsafe extern "C" fn reset_combo_counter_hitstun_check(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter hitstun check");
     let fighter = ctx.registers[19].x() as *mut Fighter;
@@ -250,7 +250,7 @@ unsafe extern "C" fn reset_combo_counter_hitstun_check(ctx: &mut skyline::hooks:
     ctx.registers[0].set_w(!can_transition as u32);
 }
 
-#[skyline::hook(offset = 0x615158, inline)]
+#[skyline::hook(offset = offsets::system::engine::RESET_COMBO_COUNTER_HITSTUN_CHECK_2, inline)]
 unsafe extern "C" fn reset_combo_counter_hitstun_check_2(ctx: &mut skyline::hooks::InlineCtx) {
     println!("[wubor::engine] reset combo counter hitstun check 2");
     let old = ctx.registers[8].w();
@@ -265,12 +265,12 @@ unsafe extern "C" fn reset_combo_counter_hitstun_check_2(ctx: &mut skyline::hook
     }
 }
 
-#[skyline::hook(offset = 0x6333c4, inline)]
+#[skyline::hook(offset = offsets::system::engine::SET_COMBO_COUNTER_RED1, inline)]
 unsafe extern "C" fn set_combo_counter_red1(ctx: &mut skyline::hooks::InlineCtx) {
     set_combo_counter_red_inner(ctx, 22);
 }
 
-#[skyline::hook(offset = 0x634e24, inline)]
+#[skyline::hook(offset = offsets::system::engine::SET_COMBO_COUNTER_RED2, inline)]
 unsafe extern "C" fn set_combo_counter_red2(ctx: &mut skyline::hooks::InlineCtx) {
     set_combo_counter_red_inner(ctx, 20);
 }

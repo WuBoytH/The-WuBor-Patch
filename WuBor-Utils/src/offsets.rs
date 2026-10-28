@@ -126,6 +126,12 @@ pub mod fighter {
         }
     }
 
+    pub mod inkling {
+        pub mod vtable {
+            pub static mut REVERSE_INK_DETECTION : usize = 0x6b3450;
+        }
+    }
+
     pub mod jack {
         pub static mut CUSTOMIZER : usize = 0xb2f820;
         pub static mut CHECK_DOYLE_SUMMON_DISPATCH : usize = 0xb30954;
@@ -569,5 +575,14 @@ pub mod system {
         pub static mut TRAINING_CPU_COUNT_SET_VALUE_CLAMP_PATCH : usize = 0x1bbad14;
         /// Allow 0 CPUs in Training Mode menu: fix clamp logic to clamp underflow to 0 instead of 1.
         pub static mut TRAINING_CPU_COUNT_CLAMP_UNDERFLOW_PATCH : usize = 0x1bbad18;
+
+        pub static mut RESET_COMBO_COUNTER_CHECK_1 : usize = 0x632728;
+        pub static mut RESET_COMBO_COUNTER_CHECK_2 : usize = 0x632e74;
+        pub static mut RESET_COMBO_COUNTER_CHECK_3 : usize = 0x634a80;
+        pub static mut RESET_COMBO_COUNTER_CHECK_4 : usize = 0x634b5c;
+        pub static mut RESET_COMBO_COUNTER_HITSTUN_CHECK : usize = 0x62bd98;
+        pub static mut RESET_COMBO_COUNTER_HITSTUN_CHECK_2 : usize = 0x615158;
+        pub static mut SET_COMBO_COUNTER_RED1 : usize = 0x6333c4;
+        pub static mut SET_COMBO_COUNTER_RED2 : usize = 0x634e24;
     }
 }

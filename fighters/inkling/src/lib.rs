@@ -20,6 +20,8 @@ mod frame;
 mod fgc;
 pub mod helper;
 
+mod vtable;
+
 mod rollerink;
 
 pub fn install() {
@@ -29,4 +31,6 @@ pub fn install() {
     frame::install(agent);
     fgc::install();
     agent.install();
+
+    vtable::install();
 }
